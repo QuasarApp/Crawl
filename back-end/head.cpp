@@ -1,4 +1,6 @@
 #include "head.h"
+#include <cmath>
+#include <QDateTime>
 
 double Head::getAngle() const {
     return angle;
@@ -22,6 +24,24 @@ double Head::getX() const {
 
 void Head::setX(double x) {
     this->x = x;
+}
+
+double Head::getSpeed() const
+{
+    return speed;
+}
+
+void Head::setSpeed(double value)
+{
+    speed = value;
+}
+
+void Head::render(){
+    qint64 tempTime = QDateTime::currentMSecsSinceEpoch() - time;
+    double my = y + speed * sin(angle * TO_RADIAN);
+    y += (my - y) / 1000 * tempTime;
+    time = QDateTime::currentMSecsSinceEpoch();
+
 }
 
 Head::Head() {
