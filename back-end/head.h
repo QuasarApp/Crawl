@@ -9,12 +9,12 @@
 class Head : BaseClass
 {
 private:
-    double _x, _y, _angle;
-    QString _texture;
-    qint64 _time;
-    double *_speed;
+    double x, y, angle;
+    QString texture;
+    qint64 time;
+    double *speed;
 public:
-    Head(double *spead);
+    Head(double *speed);
     double getAngle() const;
     void setAngle(double angle);
 
