@@ -1,11 +1,19 @@
 #include "snake.h"
 
+
+Snake::Snake() :
+    _speed(SPEEDSNAKE){
+}
+
 const QVector<Head *> &Snake::getItems() const {
     return _items;
 }
 
-Snake::Snake() :
-    _speed(SPEEDSNAKE){
+void Snake::render() {
+// зздесь должна быть реализация рендера змейки
+//    for (auto i : _items) {
+//        i->render();
+//    }
 }
 
 bool Snake::init(int size, double spead) {
@@ -21,5 +29,13 @@ bool Snake::init(int size, double spead) {
     }
 
     return true;
+
+}
+
+Snake::~Snake() {
+    for (auto i : _items) {
+        delete i;
+    }
+    _items.clear();
 
 }
