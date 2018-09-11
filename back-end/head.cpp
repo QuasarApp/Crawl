@@ -33,18 +33,12 @@ void Head::render(){
     time = QDateTime::currentMSecsSinceEpoch();
 }
 
-double *Head::getSpeed() const
-{
-    return speed;
+double Head::getSpeed() const {
+    return *speed;
 }
 
-void Head::setSpeed(double *speed)
-{
-    this->speed = speed;
-}
-
-Head::Head() {
-
+Head::Head(double *spead) {
+    this->speed = spead;
 }
 
 Head::~Head() {

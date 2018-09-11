@@ -14,7 +14,7 @@ private:
     qint64 time;
     double *speed;
 public:
-    Head();
+    Head(double *speed);
     double getAngle() const;
     void setAngle(double angle);
 
@@ -24,7 +24,7 @@ public:
     double getX() const;
     void setX(double x);
 
-    double *getSpeed() const;
+    double getSpeed() const;
     void setSpeed(double *value);
     
     void render();
