@@ -8,14 +8,13 @@
 class Snake
 {
 private:
-    QVector<Head*> items;
-    double speed;
-    bool isClick;
+    QVector<Head*> _items;
+    double _speed;
+    bool _isClick;
 public:
     Snake();
-    bool init(int size, bool click);
-    void setItems(const QVector<Head *> &value);
-    QVector<Head *> getItems() const;
+    bool init(int size, double spead);
+    const QVector<Head*>& getItems() const;
     void setSpeedHead (void);
 };
 

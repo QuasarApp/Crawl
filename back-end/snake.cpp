@@ -1,23 +1,25 @@
 #include "snake.h"
 
-void Snake::setItems(const QVector<Head *> &value)
-{
-    items = value;
-}
-
-QVector<Head *> Snake::getItems() const
-{
-    return items;
-}
-
-void Snake::setSpeedHead(){
-    for(int i = 0;i < getItems().size(); ++i){
-        getItems().at(i)->setSpeed(&speed);
-    }
+const QVector<Head *> &Snake::getItems() const {
+    return _items;
 }
 
 Snake::Snake() :
-    speed(SPEEDSNAKE)
-{
-    setSpeedHead();
+    _speed(SPEEDSNAKE){
+}
+
+bool Snake::init(int size, double spead) {
+
+    if (size < 0 || spead <= 0) {
+        return false;
+    }
+
+    _speed = spead;
+
+    for ( int i = size; i >= 0; --i ) {
+        _items.push_back( new Head(&_speed));
+    }
+
+    return true;
+
 }

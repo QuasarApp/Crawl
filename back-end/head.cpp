@@ -3,48 +3,42 @@
 #include <QDateTime>
 
 double Head::getAngle() const {
-    return angle;
+    return _angle;
 }
 
 void Head::setAngle(double angle) {
-    this->angle = angle;
+    _angle = angle;
 }
 
 double Head::getY() const {
-    return y;
+    return _y;
 }
 
 void Head::setY(double y) {
-    this->y = y;
+    _y = y;
 }
 
 double Head::getX() const {
-    return x;
+    return _x;
 }
 
 void Head::setX(double x) {
-    this->x = x;
+    _x = x;
 }
 
 void Head::render(){
-    qint64 tempTime = QDateTime::currentMSecsSinceEpoch() - time;
-    double my = y + *speed * sin(angle * TO_RADIAN);
-    y += (my - y) / 1000 * tempTime;
-    time = QDateTime::currentMSecsSinceEpoch();
+    qint64 tempTime = QDateTime::currentMSecsSinceEpoch() - _time;
+    double my = _y + *_speed * sin(_angle * TO_RADIAN);
+    _y += (my - _y) / 1000 * tempTime;
+    _time = QDateTime::currentMSecsSinceEpoch();
 }
 
-double *Head::getSpeed() const
-{
-    return speed;
+double Head::getSpeed() const {
+    return *_speed;
 }
 
-void Head::setSpeed(double *speed)
-{
-    this->speed = speed;
-}
-
-Head::Head() {
-
+Head::Head(double *spead) {
+    _speed = spead;
 }
 
 Head::~Head() {
