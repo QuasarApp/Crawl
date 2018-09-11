@@ -15,7 +15,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     back-end/main.cpp \
     back-end/baseclass.cpp \
-    back-end/head.cpp
+    back-end/head.cpp \
+    back-end/snake.cpp \
+    back-end/controller.cpp
 
 RESOURCES += qml.qrc
 
@@ -32,4 +34,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     back-end/baseclass.h \
-    back-end/head.h
+    back-end/head.h \
+    back-end/snake.h \
+    back-end/controller.h

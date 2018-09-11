@@ -26,22 +26,21 @@ void Head::setX(double x) {
     this->x = x;
 }
 
-double Head::getSpeed() const
+void Head::render(){
+    qint64 tempTime = QDateTime::currentMSecsSinceEpoch() - time;
+    double my = y + *speed * sin(angle * TO_RADIAN);
+    y += (my - y) / 1000 * tempTime;
+    time = QDateTime::currentMSecsSinceEpoch();
+}
+
+double *Head::getSpeed() const
 {
     return speed;
 }
 
-void Head::setSpeed(double value)
+void Head::setSpeed(double *speed)
 {
-    speed = value;
-}
-
-void Head::render(){
-    qint64 tempTime = QDateTime::currentMSecsSinceEpoch() - time;
-    double my = y + speed * sin(angle * TO_RADIAN);
-    y += (my - y) / 1000 * tempTime;
-    time = QDateTime::currentMSecsSinceEpoch();
-
+    this->speed = speed;
 }
 
 Head::Head() {

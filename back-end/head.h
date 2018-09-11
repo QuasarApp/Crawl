@@ -9,9 +9,10 @@
 class Head : BaseClass
 {
 private:
-    double x, y, angle, speed;
+    double x, y, angle;
     QString texture;
     qint64 time;
+    double *speed;
 public:
     Head();
     double getAngle() const;
@@ -23,12 +24,13 @@ public:
     double getX() const;
     void setX(double x);
 
-    double getSpeed() const;
-    void setSpeed(double value);
-
+    double *getSpeed() const;
+    void setSpeed(double *value);
+    
     void render();
 
     ~Head();
+    
 };
 
 #endif // HEAD_H
