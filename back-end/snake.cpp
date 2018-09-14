@@ -10,21 +10,19 @@ const QVector<Head *> &Snake::getItems() const {
 }
 
 void Snake::render() {
-    for (auto i = items.rbegin(); i != items.rend(); ++i) {
-        if(i==items.rend()-1){
+    for (int i = items.length(); i >= 0; --i) {
+        if(i == 0){
             if(isClick){
                 if(countClick & 1){
-                    (*i)->setAngle(45);
+                    items[i]->setAngle(45);
                 }else{
-                    (*i)->setAngle(315);
+                    items[i]->setAngle(315);
                 }
             }
         }else{
-
+            items[i]->setAngle(items[i-1]->getAngle());
         }
-        (*i)->render();
     }
-
 }
 
 bool Snake::init(int size, double speed) {
