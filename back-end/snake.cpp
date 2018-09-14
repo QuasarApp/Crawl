@@ -2,30 +2,41 @@
 
 
 Snake::Snake() :
-    _speed(SPEEDSNAKE){
+    speed(SPEEDSNAKE){
 }
 
 const QVector<Head *> &Snake::getItems() const {
-    return _items;
+    return items;
 }
 
 void Snake::render() {
-// зздесь должна быть реализация рендера змейки
-//    for (auto i : _items) {
-//        i->render();
-//    }
+    for (auto i = items.rbegin(); i != items.rend(); ++i) {
+        if(i==items.rend()-1){
+            if(isClick){
+                if(countClick & 1){
+                    (*i)->setAngle(45);
+                }else{
+                    (*i)->setAngle(315);
+                }
+            }
+        }else{
+
+        }
+        (*i)->render();
+    }
+
 }
 
-bool Snake::init(int size, double spead) {
+bool Snake::init(int size, double speed) {
 
-    if (size < 0 || spead <= 0) {
+    if (size < 0 || speed <= 0) {
         return false;
     }
 
-    _speed = spead;
+    this->speed = speed;
 
     for ( int i = size; i >= 0; --i ) {
-        _items.push_back( new Head(&_speed));
+        items.push_back( new Head(&this->speed));
     }
 
     return true;
@@ -33,9 +44,9 @@ bool Snake::init(int size, double spead) {
 }
 
 Snake::~Snake() {
-    for (auto i : _items) {
+    for (auto i : items) {
         delete i;
     }
-    _items.clear();
+    items.clear();
 
 }

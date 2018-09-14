@@ -23,14 +23,13 @@ public:
 
     double getX() const;
     void setX(double x);
-
-    double getSpeed() const;
-    void setSpeed(double *value);
     
     void render();
 
     ~Head();
     
+    bool getIsHead() const;
+    void setIsHead(bool value);
 };
 
 #endif // HEAD_H

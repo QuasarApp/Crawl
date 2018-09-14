@@ -10,14 +10,15 @@
 class Snake : public BaseClass
 {
 private:
-    QVector<Head*> _items;
-    double _speed;
-    bool _isClick;
+    QVector<Head*> items;
+    double speed;
+    bool isClick;
+    int countClick;
 public:
     Snake();
     ~Snake() override;
     void render() override;
-    bool init(int size, double spead);
+    bool init(int size, double speed);
     const QVector<Head*>& getItems() const;
     void setSpeedHead (void);
 };
