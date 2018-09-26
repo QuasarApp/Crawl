@@ -17,7 +17,10 @@ SOURCES += \
     back-end/baseclass.cpp \
     back-end/head.cpp \
     back-end/snake.cpp \
-    back-end/controller.cpp
+    back-end/controller.cpp \
+    back-end/world.cpp \
+    back-end/itemworld.cpp \
+    back-end/box.cpp
 
 RESOURCES += qml.qrc
 
@@ -36,4 +39,7 @@ HEADERS += \
     back-end/baseclass.h \
     back-end/head.h \
     back-end/snake.h \
-    back-end/controller.h
+    back-end/controller.h \
+    back-end/world.h \
+    back-end/itemworld.h \
+    back-end/box.h

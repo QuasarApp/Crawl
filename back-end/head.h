@@ -27,9 +27,6 @@ public:
     void render();
 
     ~Head();
-    
-    bool getIsHead() const;
-    void setIsHead(bool value);
 };
 
 #endif // HEAD_H

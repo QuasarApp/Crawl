@@ -20,7 +20,6 @@ public:
     void render() override;
     bool init(int size, double speed);
     const QVector<Head*>& getItems() const;
-    void setSpeedHead (void);
 };
 
 #endif // SNAKE_H
