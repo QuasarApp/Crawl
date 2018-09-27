@@ -3,14 +3,10 @@
 
 #include "itemworld.h"
 
-class Box
+class Box: public ItemWorld
 {
-private:
-    double sizeX, sizeY, radius;
-    QString texture;
 public:
-    Box();
-    void setSize(double sizeX, double sizeY, double radius);
+    Box(double *speed);
 
 };
 
