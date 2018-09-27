@@ -15,7 +15,7 @@ World::~World() {
 void World::render()
 {
     for (int i = items.length(); i >= 0; --i) {
-
+        items[i]->render();
     }
 }
 

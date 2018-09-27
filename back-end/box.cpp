@@ -1,6 +1,7 @@
 #include "box.h"
 
-Box::Box()
+Box::Box(double *speed):
+    ItemWorld (speed)
 {
 
 }

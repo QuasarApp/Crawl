@@ -22,7 +22,7 @@ public:
     double getY() const;
     void setY(double value);
 
-    virtual void setSize();
+    virtual void setSize(double x, double y);
 
     void render();
 
