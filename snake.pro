@@ -20,7 +20,8 @@ SOURCES += \
     back-end/controller.cpp \
     back-end/world.cpp \
     back-end/itemworld.cpp \
-    back-end/box.cpp
+    back-end/box.cpp \
+    back-end/guiobject.cpp
 
 RESOURCES += qml.qrc
 
@@ -42,4 +43,5 @@ HEADERS += \
     back-end/controller.h \
     back-end/world.h \
     back-end/itemworld.h \
-    back-end/box.h
+    back-end/box.h \
+    back-end/guiobject.h

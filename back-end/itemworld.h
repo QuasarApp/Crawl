@@ -2,32 +2,20 @@
 #define ITEMWORLD_H
 
 
-#include "baseclass.h"
+#include "gui.h"
 #include <QString>
 
-class ItemWorld : BaseClass
+class ItemWorld : public Gui
 {
-private:
-    double x, y;
-    QString *texture;
-    double sizeX, sizeY, radius;
+private:    
     qint64 time;
     double *speed;
 public:
-    ItemWorld(double *speed);
-
-    double getX() const;
-    void setX(double value);
-
-    double getY() const;
-    void setY(double value);
+    ItemWorld(double *speed, double x, double y);
 
     virtual void setSize(double x, double y);
 
     void render();
-
-    QString *getTexture() const;
-    void setTexture(QString *value);
 
     ~ItemWorld();
 };

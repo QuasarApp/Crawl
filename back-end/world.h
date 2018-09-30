@@ -7,7 +7,7 @@
 #include "itemworld.h"
 #include "baseclass.h"
 
-class World : BaseClass
+class World : public BaseClass
 {
 private:
     QVector<ItemWorld*> items;

@@ -2,4 +2,7 @@
     <qresource prefix="/">
         <file>front-end/main.qml</file>
     </qresource>
+    <qresource prefix="/texture">
+        <file alias="box-texture">img/box-texture.png</file>
+    </qresource>
 </RCC>
