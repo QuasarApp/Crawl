@@ -3,10 +3,10 @@
 #define TO_RADIAN 0.017453293
 
 
-#include "gui.h"
+#include "guiobject.h"
 #include <QString>
 
-class Head : public Gui
+class Head : public GuiObject
 {
 private:
     qint64 time;

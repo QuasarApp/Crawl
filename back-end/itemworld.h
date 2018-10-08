@@ -2,10 +2,10 @@
 #define ITEMWORLD_H
 
 
-#include "gui.h"
+#include "guiobject.h"
 #include <QString>
 
-class ItemWorld : public Gui
+class ItemWorld : public GuiObject
 {
 private:    
     qint64 time;

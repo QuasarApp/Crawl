@@ -3,7 +3,7 @@ import QtQuick.Window 2.2
 
 Window {
     visible: true
-    width: 640
-    height: 480
+    width: 1140
+    height: 540
     title: qsTr("SnakeOnTheRoad")
 }
