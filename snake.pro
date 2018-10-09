@@ -45,3 +45,6 @@ HEADERS += \
     back-end/itemworld.h \
     back-end/box.h \
     back-end/guiobject.h
+
+DISTFILES += \
+    doc/calassdiagramm.qmodel
