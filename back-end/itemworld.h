@@ -9,15 +9,22 @@ class ItemWorld : public GuiObject
 {
 private:    
     qint64 time;
-    double *speed;
-public:
-    ItemWorld(double *speed, double x, double y);
-
+    double *speed = nullptr;
+    bool beckGroundObject = false;
+protected:
     virtual void setSize(double x, double y);
+    void setBeckGroundObject(bool value);
+
+public:
+    ItemWorld(double x, double y);
 
     void render();
 
+    bool checkContact(const QRectF& riger);
+    bool isBeckGroundObject();
+
     ~ItemWorld();
+    void setSpeed(double *value);
 };
 
 #endif // ITEMWORLD_H

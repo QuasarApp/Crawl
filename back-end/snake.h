@@ -7,6 +7,8 @@
 #include "head.h"
 #include "baseclass.h"
 
+class GuiObject;
+
 class Snake : public BaseClass
 {
 private:
@@ -17,8 +19,10 @@ private:
 public:
     Snake();
     ~Snake() override;
+
+    QRectF getRiger() const;
     void render() override;
-    bool init(int size, double speed);
+    QMap<int, GuiObject *> init(int size, double speed);
     const QVector<Head*>& getItems() const;
 };
 
