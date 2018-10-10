@@ -1,0 +1,15 @@
+#ifndef UTILS_H
+#define UTILS_H
+
+#include <QMap>
+
+/**
+ * @brief WorldRules
+ * this map conteins:
+ * 1. list of generated objects and they count.
+ * 2. long of world (long),
+ * !!!Note: all object show on map alltime.
+ */
+typedef QMap<QString, int> WorldRules;
+
+#endif // UTILS_H

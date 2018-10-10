@@ -7,8 +7,9 @@
 
 class Controller : public QObject
 {
+    Q_OBJECT
+
 private:
-    Snake snake;
     World world;
 
 public:

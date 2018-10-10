@@ -1,9 +1,18 @@
 #include "guiobject.h"
 
 GuiObject::GuiObject(QObject *ptr) :
-    QObject (ptr)
-{
+    QObject (ptr) {
 
+    generateId();
+}
+
+void GuiObject::generateId() {
+    static int _id = 0;
+    id = _id ++;
+}
+
+int GuiObject::getId() const {
+    return id;
 }
 
 double GuiObject::getAngle() const {
@@ -32,6 +41,14 @@ void GuiObject::setX(double x) {
 
 QString GuiObject::getTexture() const {
     return texture;
+}
+
+double GuiObject::getSizeX() const {
+    return sizeX;
+}
+
+double GuiObject::getSizeY() const {
+    return sizeY;
 }
 
 void GuiObject::setTexture(const QString &texture) {

@@ -21,7 +21,9 @@ SOURCES += \
     back-end/world.cpp \
     back-end/itemworld.cpp \
     back-end/box.cpp \
-    back-end/guiobject.cpp
+    back-end/guiobject.cpp \
+    back-end/lvls.cpp \
+    back-end/guiobjectfactory.cpp
 
 RESOURCES += qml.qrc
 
@@ -44,7 +46,10 @@ HEADERS += \
     back-end/world.h \
     back-end/itemworld.h \
     back-end/box.h \
-    back-end/guiobject.h
+    back-end/guiobject.h \
+    back-end/utils.h \
+    back-end/lvls.h \
+    back-end/guiobjectfactory.h
 
 DISTFILES += \
     doc/calassdiagramm.qmodel

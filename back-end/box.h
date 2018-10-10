@@ -6,7 +6,7 @@
 class Box: public ItemWorld
 {
 public:
-    Box(double *speed, double x, double y);
+    Box(double x, double y);
 
 };
 

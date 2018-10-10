@@ -1,5 +1,8 @@
 #include "snake.h"
+#include "guiobject.h"
 
+#include <QMap>
+#include <QRectF>
 
 Snake::Snake() :
     speed(SPEEDSNAKE){
@@ -25,19 +28,23 @@ void Snake::render() {
     }
 }
 
-bool Snake::init(int size, double speed) {
+QMap<int, GuiObject*> Snake::init(int size, double speed) {
+
+    QMap<int, GuiObject*> res;
 
     if (size < 0 || speed <= 0) {
-        return false;
+        return res;
     }
 
     this->speed = speed;
 
     for ( int i = size; i >= 0; --i ) {
-        items.push_back( new Head(&this->speed));
+        auto obj = new Head(&this->speed);
+        items.push_back(obj);
+        res[obj->getId()] = obj;
     }
 
-    return true;
+    return res;
 
 }
 
@@ -47,4 +54,19 @@ Snake::~Snake() {
     }
     items.clear();
 
+}
+
+QRectF Snake::getRiger() const {
+    QRectF result;
+
+    if (!items.length()) {
+        return result;
+    }
+
+    result.setX(items.first()->getX());
+    result.setY(items.first()->getY());
+    result.setSize(QSizeF(items.first()->getSizeX(),
+                          items.first()->getSizeY()));
+
+    return  result;
 }

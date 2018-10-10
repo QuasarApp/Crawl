@@ -7,10 +7,15 @@
 class GuiObject:public QObject, public BaseClass
 {
     Q_OBJECT
+private:
+    void generateId();
 protected:
     double x, y, angle;
+    int id;
     QString texture;
     double sizeX, sizeY, radius;
+
+    void setTexture(const QString &texture);
 public:
     GuiObject(QObject *ptr = nullptr);
 
@@ -23,8 +28,11 @@ public:
     double getX() const;
     void setX(double x);
 
+
     QString getTexture() const;
-    void setTexture(const QString &texture);
+    int getId() const;
+    double getSizeX() const;
+    double getSizeY() const;
 };
 
 #endif // GUIOBJECT_H
