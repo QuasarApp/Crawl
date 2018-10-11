@@ -20,10 +20,11 @@ public:
     Snake();
     ~Snake() override;
 
-    QRectF getRiger() const;
+    const QRectF &getRiger() const;
     void render() override;
     QMap<int, GuiObject *> init(int size, double speed);
     const QVector<Head*>& getItems() const;
+    double getMovedLong() const;
 };
 
 #endif // SNAKE_H

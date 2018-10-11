@@ -1,7 +1,5 @@
 #include "box.h"
 
-/** todo fix size points ;
-*/
 Box::Box(double x, double y):
     ItemWorld (x, y) {
 

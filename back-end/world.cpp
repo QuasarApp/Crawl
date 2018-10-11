@@ -3,8 +3,8 @@
 #include <QMap>
 #include "guiobject.h"
 #include "guiobjectfactory.h"
+#include <QDateTime>
 #include <QDebug>
-#include <QRectF>
 
 World::World() {
     currentLong = 0;
@@ -19,11 +19,34 @@ void World::clearItems() {
     items.clear();
 }
 
+void World::changeCountObjects(const QString &name, int count) {
+    if (count > 0) {
+
+        for ( int i = 0; i < count; ++i ) {
+            auto obj = GuiObjectFactory::generate(name);
+
+            if (!obj) {
+                qWarning() <<"object not created line:" << Q_FUNC_INFO;
+                break;
+            }
+
+            items.push_back(obj);
+        }
+
+    } else {
+        for ( int i = count; i < 0; ++i ) {
+            auto obj = items.first();
+            items.removeFirst();
+            delete obj;
+        }
+    }
+}
+
 QMap<int, GuiObject *> World::init(const WorldRules &rules) {
 
     QMap<int, GuiObject*> res;
 
-    clearItems();
+    snake.init(10, 10);
 
     currentLong = -1;
     for (auto i = rules.begin(); i != rules.end(); ++i) {
@@ -31,25 +54,19 @@ QMap<int, GuiObject *> World::init(const WorldRules &rules) {
             endLong = rules["Long"];
             currentLong = 0;
         }
+        else if (i.key() == "Spead") {
+            spead = rules["Spead"];
+        }
         else {
-
-            auto size = i.value();
-            for ( int j = 0; j < size; ++i ) {
-                auto obj = GuiObjectFactory::generate(i.key());
-
-                if (!obj) {
-                    qWarning() <<"object not created line:" << Q_FUNC_INFO;
-                    break;
-                }
-
-                obj->setSpeed(&spead);
-
-                items.push_back(obj);
-                res[obj->getId()] = obj;
-            }
+            changeCountObjects(i.key(), i.value());
         }
     }
 
+    for (auto i : items) {
+        res[i->guiId()] = i;
+    }
+
+    oldRules = rules;
     return res;
 }
 
@@ -59,18 +76,22 @@ World::~World() {
 
 void World::render() {
 
+    qint64 tempTime = QDateTime::currentMSecsSinceEpoch() - time;
+    time = QDateTime::currentMSecsSinceEpoch();
+    auto dx = speed / 1000 * tempTime;
+
     snake.render();
-    QRectF rig = snake.getRiger();
+    const QRectF &rig = snake.getRiger();
 
     for (int i = items.length(); i >= 0; --i) {
+        defiat |= items[i]->move(rig, dx);
         items[i]->render();
-        defiat |= items[i]->checkContact(rig);
     }
+
+    currentLong += dx;
 }
 
-bool World::move(double spead) {
-    this->spead = spead;
-    currentLong += spead;
+bool World::move() {
     return isEnd();
 }
 

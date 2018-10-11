@@ -9,12 +9,15 @@ class Controller : public QObject
 {
     Q_OBJECT
 
+    Q_PROPERTY(QPoint deviceSize WRITE setDeviceSize)
 private:
     World world;
 
 public:
     Controller();
     void update();
+public slots:
+    void setDeviceSize(QPoint deviceSize);
 };
 
 #endif // CONTROLLER_H

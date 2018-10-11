@@ -1,47 +1,41 @@
 #include "itemworld.h"
+#include "utils.h"
 #include <cmath>
-#include <QDateTime>
 #include <QDebug>
 #include <QRectF>
 
 ItemWorld::ItemWorld(double x, double y) {
-    this->x = x;
-    this->y = y;
+    setSize(x, y);
 }
 
-void ItemWorld::setSpeed(double *value) {
-    speed = value;
-}
-
-void ItemWorld::setBeckGroundObject(bool value)
-{
+void ItemWorld::setBeckGroundObject(bool value) {
     beckGroundObject = value;
 }
 
 void ItemWorld::setSize(double x, double y) {
-    sizeX = x;
-    sizeY = y;
+    m_rect.setX(x);
+    m_rect.setY(y);
+    emit rectChanged(m_rect);
 }
 
 void ItemWorld::render() {
-    qint64 tempTime = QDateTime::currentMSecsSinceEpoch() - time;
-    double mx = x + *speed;
-    x += (mx - x) / 1000 * tempTime;
-    time = QDateTime::currentMSecsSinceEpoch();
+    if (m_rect.x() < 0) {
+        m_rect.setX(Global::deviceSize.x() + rand() % Global::deviceSize.x());
+        m_rect.setY(rand() % Global::deviceSize.y());
+        emit rectChanged(m_rect);
+
+    }
 }
 
-bool ItemWorld::checkContact(const QRectF &riger) {
+bool ItemWorld::move(const QRectF &snakeRiger, double dx) {
+    m_rect.setX( m_rect.x() - dx);
+    emit rectChanged(m_rect);
 
-    bool result = riger.intersects(QRectF(x,y,sizeX, sizeY));
-
-    return result && !beckGroundObject;
+    return snakeRiger.intersects(m_rect) && !beckGroundObject;
 }
 
 bool ItemWorld::isBeckGroundObject() {
     return beckGroundObject;
 }
 
-ItemWorld::~ItemWorld()
-{
-
-}
+ItemWorld::~ItemWorld() {}
