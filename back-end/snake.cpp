@@ -5,7 +5,7 @@
 #include <QRectF>
 
 Snake::Snake() :
-    speed(SPEEDSNAKE){
+    speed(SPEEDSNAKE) {
 }
 
 const QVector<Head *> &Snake::getItems() const {
@@ -23,7 +23,7 @@ void Snake::render() {
                 }
             }
         }else{
-            items[i]->setAngle(items[i-1]->getAngle());
+            items[i]->setAngle(items[i-1]->angle());
         }
     }
 }
@@ -38,14 +38,17 @@ QMap<int, GuiObject*> Snake::init(int size, double speed) {
 
     this->speed = speed;
 
+    if (!size) {
+        size ++;
+    }
+
     for ( int i = size; i >= 0; --i ) {
         auto obj = new Head(&this->speed);
         items.push_back(obj);
-        res[obj->getId()] = obj;
+        res[obj->guiId()] = obj;
     }
 
     return res;
-
 }
 
 Snake::~Snake() {
@@ -56,17 +59,6 @@ Snake::~Snake() {
 
 }
 
-QRectF Snake::getRiger() const {
-    QRectF result;
-
-    if (!items.length()) {
-        return result;
-    }
-
-    result.setX(items.first()->getX());
-    result.setY(items.first()->getY());
-    result.setSize(QSizeF(items.first()->getSizeX(),
-                          items.first()->getSizeY()));
-
-    return  result;
+const QRectF& Snake::getRiger() const {
+    return items.first()->getRect();
 }

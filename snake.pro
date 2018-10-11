@@ -23,7 +23,8 @@ SOURCES += \
     back-end/box.cpp \
     back-end/guiobject.cpp \
     back-end/lvls.cpp \
-    back-end/guiobjectfactory.cpp
+    back-end/guiobjectfactory.cpp \
+    back-end/utils.cpp
 
 RESOURCES += qml.qrc
 

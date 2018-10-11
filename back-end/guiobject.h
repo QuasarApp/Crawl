@@ -4,35 +4,45 @@
 #include "baseclass.h"
 #include "QObject"
 
+#include <QRectF>
+
 class GuiObject:public QObject, public BaseClass
 {
     Q_OBJECT
+
+    Q_PROPERTY(double angle READ angle NOTIFY angleChanged)
+    Q_PROPERTY(QString texture READ texture NOTIFY textureChanged)
+    Q_PROPERTY(QRectF rect READ rect NOTIFY rectChanged)
+    Q_PROPERTY(int guiId READ guiId NOTIFY guiIdChanged)
+
 private:
     void generateId();
+
 protected:
-    double x, y, angle;
-    int id;
-    QString texture;
-    double sizeX, sizeY, radius;
+    int m_guiId;
+    double m_angle;
+    QString m_texture;
+    QRectF m_rect;
 
     void setTexture(const QString &texture);
 public:
     GuiObject(QObject *ptr = nullptr);
 
-    double getAngle() const;
+    double angle() const;
+    QString texture() const;
+
+    void render();
+
+    QRectF rect() const;
+    QRectF &getRect();
     void setAngle(double angle);
+    int guiId() const;
 
-    double getY() const;
-    void setY(double y);
-
-    double getX() const;
-    void setX(double x);
-
-
-    QString getTexture() const;
-    int getId() const;
-    double getSizeX() const;
-    double getSizeY() const;
+signals:
+    void angleChanged(double angle);
+    void textureChanged(QString texture);
+    void rectChanged(QRectF rect);
+    void guiIdChanged(int guiId);
 };
 
 #endif // GUIOBJECT_H

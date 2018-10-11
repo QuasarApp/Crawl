@@ -1,17 +1,13 @@
 #include "guiobjectfactory.h"
 #include "box.h"
-#include <cmath>
-#include <ctime>
+#include "utils.h"
 
-GuiObjectFactory::GuiObjectFactory() {
-
-    srand(static_cast<unsigned int>(time(nullptr)));
-}
+GuiObjectFactory::GuiObjectFactory() {}
 
 ItemWorld *GuiObjectFactory::generate(const QString &name) {
     ItemWorld *obj = nullptr;
     if (name == "Box") {
-        obj = new Box(100, rand() % 100); // x and y on %
+        obj = new Box(-Global::deviceSize.x(), 0);
     }
 
     return obj;

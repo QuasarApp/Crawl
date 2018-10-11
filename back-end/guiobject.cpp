@@ -6,51 +6,41 @@ GuiObject::GuiObject(QObject *ptr) :
     generateId();
 }
 
-void GuiObject::generateId() {
-    static int _id = 0;
-    id = _id ++;
+double GuiObject::angle() const {
+    return m_angle;
 }
 
-int GuiObject::getId() const {
-    return id;
+QString GuiObject::texture() const {
+    return m_texture;
 }
 
-double GuiObject::getAngle() const {
-    return angle;
+void GuiObject::render() {
+
+}
+
+QRectF GuiObject::rect() const {
+    return m_rect;
+}
+
+QRectF& GuiObject::getRect() {
+    return m_rect;
 }
 
 void GuiObject::setAngle(double angle) {
-    this->angle = angle;
+    m_angle = angle;
+    emit angleChanged(m_angle);
 }
 
-double GuiObject::getY() const {
-    return y;
+int GuiObject::guiId() const {
+    return m_guiId;
 }
 
-void GuiObject::setY(double y) {
-    this->y = y;
-}
-
-double GuiObject::getX() const {
-    return x;
-}
-
-void GuiObject::setX(double x) {
-    this->x = x;
-}
-
-QString GuiObject::getTexture() const {
-    return texture;
-}
-
-double GuiObject::getSizeX() const {
-    return sizeX;
-}
-
-double GuiObject::getSizeY() const {
-    return sizeY;
+void GuiObject::generateId() {
+    static int id = 0;
+    m_guiId = id++;
 }
 
 void GuiObject::setTexture(const QString &texture) {
-    this->texture = texture;
+    m_texture = texture;
+    emit textureChanged(m_texture);
 }

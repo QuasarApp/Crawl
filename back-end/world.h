@@ -21,17 +21,21 @@ private:
     int endLong;
     double spead;
     QString background;
-
+    double speed;
+    qint64 time;
     bool defiat = false;
+    WorldRules oldRules;
 
     void clearItems();
+
+    void changeCountObjects(const QString &name, int count);
 
 public:
     World();
     QMap<int, GuiObject*> init(const WorldRules &rules);
     ~World() override;
     void render() override;
-    bool move(double spead);
+    bool move();
     bool isEnd();
     const QVector<ItemWorld*>& getItems() const;
     bool isDefiat() const;
