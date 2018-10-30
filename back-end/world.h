@@ -14,8 +14,6 @@ class World : public BaseClass
 private:
 
     Snake snake;
-
-private:
     QVector<ItemWorld*> items;
     double currentLong;
     int endLong;
