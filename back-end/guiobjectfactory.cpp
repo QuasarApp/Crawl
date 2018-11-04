@@ -1,6 +1,7 @@
 #include "guiobjectfactory.h"
 #include "box.h"
 #include "utils.h"
+#include "head.h"
 
 GuiObjectFactory::GuiObjectFactory() {}
 

@@ -20,6 +20,7 @@ void World::clearItems() {
 }
 
 void World::changeCountObjects(const QString &name, int count) {
+
     if (count > 0) {
 
         for ( int i = 0; i < count; ++i ) {
@@ -46,7 +47,11 @@ QMap<int, GuiObject *> World::init(const WorldRules &rules) {
 
     QMap<int, GuiObject*> res;
 
-    snake.init(10, 10);
+    auto snakeItems = snake.init(10, 10);
+
+    for (auto i = snakeItems.begin(); i != snakeItems.end(); ++i) {
+        res.insert(i.key(), i.value());
+    }
 
     currentLong = -1;
     for (auto i = rules.begin(); i != rules.end(); ++i) {
@@ -58,13 +63,14 @@ QMap<int, GuiObject *> World::init(const WorldRules &rules) {
             spead = rules["Spead"];
         }
         else {
-            changeCountObjects(i.key(), i.value());
+            changeCountObjects(i.key(), i.value() - oldRules.value(i.key()));
         }
     }
 
     for (auto i : items) {
         res[i->guiId()] = i;
     }
+
 
     oldRules = rules;
     return res;
@@ -101,6 +107,10 @@ bool World::isEnd() {
 
 bool World::isDefiat() const {
     return defiat;
+}
+
+WorldRules World::currentRules() const {
+    return oldRules;
 }
 
 const QVector<ItemWorld *> &World::getItems() const {

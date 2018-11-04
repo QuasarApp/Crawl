@@ -10,7 +10,9 @@ void Head::render(){
     time = QDateTime::currentMSecsSinceEpoch();
 }
 
-Head::Head(double *spead) {
+Head::Head(const QRectF &rect, double *spead):
+    GuiObject () {
+    setRect(rect);
     this->speed = spead;
 }
 
