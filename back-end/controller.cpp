@@ -4,6 +4,10 @@
 
 Controller::Controller() {
     srand(static_cast<unsigned int>(time(nullptr)));
+    timer = new QTimer();
+    timer->setInterval(33);
+    connect(timer, SIGNAL(timeout()), this, SLOT(update()));
+    startTimer();
 }
 
 void Controller::setDeviceSize(QPoint deviceSize) {
@@ -11,14 +15,11 @@ void Controller::setDeviceSize(QPoint deviceSize) {
 }
 
 void Controller::update() {
-    timer = new QTimer();
-    timer->setInterval(33);
-    connect(timer, SIGNAL(timeout()), this, SLOT(setDeviceSize()));
+    world.render();
 }
 
-void Controller::startTimer()
-{
-    timer->start();
+void Controller::startTimer() {
+   timer->start();
 }
 
 void Controller::stopTimer() {

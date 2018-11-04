@@ -18,12 +18,12 @@ private:
 
 public:
     Controller();
-    void update();
     void startTimer();
     void stopTimer();
 
 public slots:
     void setDeviceSize(QPoint deviceSize);
+    void update();
 };
 
 #endif // CONTROLLER_H
