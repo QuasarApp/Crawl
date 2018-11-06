@@ -28,27 +28,46 @@ void Snake::render() {
     }
 }
 
+void Snake::changeCountObjects(int count) {
+    if (count > 0) {
+
+        for ( int i = 0; i < count; ++i ) {
+            QRectF rect(0 + 10 * (count - i), 0, 10, 10);
+            auto obj = new Head(rect, &this->speed);
+
+            items.push_back(obj);
+        }
+
+    } else {
+        for ( int i = count; i < 0; ++i ) {
+            auto obj = items.first();
+            items.removeFirst();
+            delete obj;
+        }
+    }
+}
+
 QMap<int, GuiObject*> Snake::init(int size, double speed) {
 
     QMap<int, GuiObject*> res;
 
-    if (size < 0 || speed <= 0) {
+    if (size <= 0 || speed <= 0) {
         return res;
     }
 
     this->speed = speed;
 
-    if (!size) {
-        size ++;
-    }
+    changeCountObjects(size -items.size());
 
-    for ( int i = size; i >= 0; --i ) {
-        auto obj = new Head(&this->speed);
-        items.push_back(obj);
-        res[obj->guiId()] = obj;
+    for (auto i : items) {
+        res[i->guiId()] = i;
     }
 
     return res;
+}
+
+bool Snake::isInited() const {
+    return items.size();
 }
 
 Snake::~Snake() {

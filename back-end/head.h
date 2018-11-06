@@ -12,7 +12,7 @@ private:
     qint64 time;
     double *speed;
 public:
-    Head(double *speed);
+    Head(const QRectF &rect , double *speed);
     
     void render();
 

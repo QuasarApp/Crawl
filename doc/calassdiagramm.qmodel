@@ -624,7 +624,7 @@
                           </DElement>
                          </base-DElement>
                          <object>{eac9ab00-70e1-4346-a40e-a09dfa347d20}</object>
-                         <name>Objects Diff Interface</name>
+                         <name> Diff </name>
                          <pos>x:515;y:750</pos>
                          <rect>x:-100;y:-30;w:200;h:60</rect>
                          <auto-sized>false</auto-sized>
@@ -2499,7 +2499,7 @@
                     <uid>{eac9ab00-70e1-4346-a40e-a09dfa347d20}</uid>
                    </MElement>
                   </base-MElement>
-                  <name>Objects Diff Interface</name>
+                  <name> Diff </name>
                   <relations>
                    <handles>
                     <handles>

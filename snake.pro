@@ -24,7 +24,8 @@ SOURCES += \
     back-end/guiobject.cpp \
     back-end/lvls.cpp \
     back-end/guiobjectfactory.cpp \
-    back-end/utils.cpp
+    back-end/utils.cpp \
+    back-end/diff.cpp
 
 RESOURCES += qml.qrc
 
@@ -50,7 +51,8 @@ HEADERS += \
     back-end/guiobject.h \
     back-end/utils.h \
     back-end/lvls.h \
-    back-end/guiobjectfactory.h
+    back-end/guiobjectfactory.h \
+    back-end/diff.h
 
 DISTFILES += \
     doc/calassdiagramm.qmodel

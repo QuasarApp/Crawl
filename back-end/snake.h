@@ -16,6 +16,7 @@ private:
     double speed;
     bool isClick;
     int countClick;
+    void changeCountObjects(int count);
 public:
     Snake();
     ~Snake() override;
@@ -23,6 +24,7 @@ public:
     const QRectF &getRiger() const;
     void render() override;
     QMap<int, GuiObject *> init(int size, double speed);
+    bool isInited() const;
     const QVector<Head*>& getItems() const;
     double getMovedLong() const;
 };

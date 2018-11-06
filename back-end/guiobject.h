@@ -12,7 +12,7 @@ class GuiObject:public QObject, public BaseClass
 
     Q_PROPERTY(double angle READ angle NOTIFY angleChanged)
     Q_PROPERTY(QString texture READ texture NOTIFY textureChanged)
-    Q_PROPERTY(QRectF rect READ rect NOTIFY rectChanged)
+    Q_PROPERTY(QRectF rect READ rect WRITE setRect NOTIFY rectChanged)
     Q_PROPERTY(int guiId READ guiId NOTIFY guiIdChanged)
 
 private:
@@ -25,6 +25,9 @@ protected:
     QRectF m_rect;
 
     void setTexture(const QString &texture);
+    void setRect(QRectF rect);
+
+
 public:
     GuiObject(QObject *ptr = nullptr);
 

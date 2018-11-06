@@ -13,9 +13,10 @@ void ItemWorld::setBeckGroundObject(bool value) {
 }
 
 void ItemWorld::setSize(double x, double y) {
-    m_rect.setX(x);
-    m_rect.setY(y);
-    emit rectChanged(m_rect);
+    QRectF rect;
+    rect.setX(x);
+    rect.setY(y);
+    setRect(rect);
 }
 
 void ItemWorld::render() {

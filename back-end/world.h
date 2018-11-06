@@ -37,6 +37,7 @@ public:
     bool isEnd();
     const QVector<ItemWorld*>& getItems() const;
     bool isDefiat() const;
+    WorldRules currentRules() const;
 };
 
 #endif // WORLD_H
