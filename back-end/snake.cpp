@@ -13,7 +13,7 @@ const QVector<Head *> &Snake::getItems() const {
 }
 
 void Snake::render() {
-    for (int i = items.length(); i >= 0; --i) {
+    for (int i = items.length() - 1; i >= 0; --i) {
         if(i == 0){
             if(isClick){
                 if(countClick & 1){

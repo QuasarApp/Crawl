@@ -89,7 +89,7 @@ void World::render() {
     snake.render();
     const QRectF &rig = snake.getRiger();
 
-    for (int i = items.length(); i >= 0; --i) {
+    for (int i = items.length() - 1; i >= 0; --i) {
         defiat |= items[i]->move(rig, dx);
         items[i]->render();
     }

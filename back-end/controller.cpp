@@ -9,7 +9,6 @@ Controller::Controller() {
     timer = new QTimer();
     timer->setInterval(33);
     connect(timer, SIGNAL(timeout()), this, SLOT(update()));
-    startTimer();
 }
 
 void Controller::setDeviceSize(QPoint deviceSize) {
@@ -53,12 +52,16 @@ void Controller::generateDiff(const QMap<int, GuiObject *>& objs) {
 
 void Controller::update() {
     world.render();
+    if(world.isDefiat()) {
+        stopTimer();
+    }
 }
 
 void Controller::newGame() {
     WorldRules newGameRules = lvls.first();
     lvl = 0;
     generateDiff(world.init(newGameRules));
+    startTimer();
 }
 
 QObject *Controller::getGameObject(int id) {

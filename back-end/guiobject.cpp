@@ -36,6 +36,18 @@ int GuiObject::guiId() const {
     return m_guiId;
 }
 
+QString GuiObject::color() const {
+    return m_color;
+}
+
+void GuiObject::setColor(QString color) {
+    if (m_color == color)
+        return;
+
+    m_color = color;
+    emit colorChanged(m_color);
+}
+
 void GuiObject::setRect(QRectF rect) {
     if (m_rect == rect)
         return;
