@@ -15,8 +15,9 @@ Rectangle {
     y: rec.y * mainWindow.point;
 
     transform: Rotation {
-        origin.x: 0;
-        origin.y: 0;
+        origin.x: rec.x / 2;
+        origin.y: rec.y / 2;
         angle: graphicItem.angle;
     }
+
 }
