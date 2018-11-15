@@ -47,7 +47,7 @@ QMap<int, GuiObject *> World::init(const WorldRules &rules) {
 
     QMap<int, GuiObject*> res;
 
-    auto snakeItems = snake.init(10, 10);
+    auto snakeItems = snake.init(10, 100);
 
     for (auto i = snakeItems.begin(); i != snakeItems.end(); ++i) {
         res.insert(i.key(), i.value());
@@ -111,6 +111,10 @@ bool World::isDefiat() const {
 
 WorldRules World::currentRules() const {
     return oldRules;
+}
+
+void World::reversClick() {
+    snake.reverse();
 }
 
 const QVector<ItemWorld *> &World::getItems() const {

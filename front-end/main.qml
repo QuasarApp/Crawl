@@ -15,8 +15,8 @@ ApplicationWindow {
 
     Scene {
         anchors.fill: parent;
-
     }
+
 
 
 }

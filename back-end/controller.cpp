@@ -11,10 +11,6 @@ Controller::Controller() {
     connect(timer, SIGNAL(timeout()), this, SLOT(update()));
 }
 
-void Controller::setDeviceSize(QPoint deviceSize) {
-    Global::deviceSize = deviceSize;
-}
-
 bool Controller::nextLvl() {
     if (lvl + 1 >= lvls.size()) {
         return true;
@@ -74,5 +70,9 @@ void Controller::startTimer() {
 
 void Controller::stopTimer() {
     timer->stop();
+}
+
+void Controller::buttonPress() {
+    world.reversClick();
 }
 

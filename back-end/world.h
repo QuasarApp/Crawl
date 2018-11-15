@@ -38,6 +38,7 @@ public:
     const QVector<ItemWorld*>& getItems() const;
     bool isDefiat() const;
     WorldRules currentRules() const;
+    void reversClick();
 };
 
 #endif // WORLD_H

@@ -7,6 +7,7 @@ Item {
     id: item1
     visible: true
 
+
     ColumnLayout {
         id: columnLayout
         width: 642
@@ -25,6 +26,11 @@ Item {
             Layout.preferredHeight: 75
             Layout.preferredWidth: 500
             anchors.horizontalCenter: parent.horizontalCenter
+
+            onClicked: {
+
+            }
+
         }
 
         Button {
@@ -50,6 +56,7 @@ Item {
                 Qt.quit();
             }
         }
+
     }
 
     RoundButton {
@@ -67,6 +74,5 @@ Item {
 
 /*##^## Designer {
     D{i:0;autoSize:true;height:480;width:640}D{i:4;anchors_height:100;anchors_width:100;anchors_x:284;anchors_y:167}
-D{i:11;anchors_y:31}
 }
  ##^##*/

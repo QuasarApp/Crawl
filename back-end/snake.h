@@ -13,14 +13,16 @@ class Snake : public BaseClass
 {
 private:
     QVector<Head*> items;
-    double speed;
-    bool isClick;
-    int countClick;
+    double speed = 0;
+    bool isClick = false;
+    int countClick = 0;
     void changeCountObjects(int count);
+
 public:
     Snake();
     ~Snake() override;
 
+    void reverse();
     const QRectF &getRiger() const;
     void render() override;
     QMap<int, GuiObject *> init(int size, double speed);

@@ -21,10 +21,12 @@ void Snake::render() {
                 }else{
                     items[i]->setAngle(315);
                 }
+                isClick = false;
             }
         }else{
             items[i]->setAngle(items[i-1]->angle());
         }
+        items[i]->render();
     }
 }
 
@@ -32,7 +34,7 @@ void Snake::changeCountObjects(int count) {
     if (count > 0) {
 
         for ( int i = 0; i < count; ++i ) {
-            QRectF rect(0 + 10 * (count - i), 0, 10, 10);
+            QRectF rect(0 + 10 * (count - i), 50, 10, 10);
             auto obj = new Head(rect, &this->speed);
 
             items.push_back(obj);
@@ -76,6 +78,14 @@ Snake::~Snake() {
     }
     items.clear();
 
+}
+
+void Snake::reverse() {
+    if (isClick) {
+        return;
+    }
+    isClick = true;
+    countClick++;
 }
 
 const QRectF& Snake::getRiger() const {

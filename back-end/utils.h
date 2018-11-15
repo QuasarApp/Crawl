@@ -14,8 +14,5 @@
  */
 typedef QMap<QString, int> WorldRules;
 
-namespace Global {
-    extern QPoint deviceSize;
-};
 
 #endif // UTILS_H

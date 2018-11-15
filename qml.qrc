@@ -6,6 +6,7 @@
         <file>qtquickcontrols2.conf</file>
         <file>front-end/Scene.qml</file>
         <file>front-end/Image.qml</file>
+        <file>front-end/SelectLevelScene.qml</file>
     </qresource>
     <qresource prefix="/texture">
         <file alias="box-texture">img/box-texture.png</file>

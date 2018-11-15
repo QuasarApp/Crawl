@@ -22,7 +22,7 @@ Item {
             arrayObjects.push(obj)
         }
     }
-// todo: array object delete;
+
     function remove(id) {
         if (typeof id !== "number" || id < 0) {
             console.log("id not found");
@@ -31,7 +31,7 @@ Item {
 
         for (var i = 0; i < arrayObjects.length; ++i) {
             if (id === arrayObjects[i].guiId) {
-                arrayObjects[i].guiId = null;
+                arrayObjects.splice(i,1);
             }
         }
     }
@@ -56,6 +56,19 @@ Item {
             for (i = 0; i < tempDifRem.length; ++i) {
                 remove(tempDifRem[i]);
             }
+        }
+    }
+
+    MouseArea {
+        anchors.fill: parent;
+
+        onClicked: {
+            if (!model) {
+                console.log("model not found");
+                return;
+            }
+
+            model.buttonPress();
         }
     }
 }

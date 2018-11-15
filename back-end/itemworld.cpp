@@ -4,6 +4,8 @@
 #include <QDebug>
 #include <QRectF>
 
+#define POINT 100
+
 ItemWorld::ItemWorld(double x, double y) {
     setSize(x, y);
 }
@@ -21,8 +23,8 @@ void ItemWorld::setSize(double x, double y) {
 
 void ItemWorld::render() {
     if (m_rect.x() < 0) {
-        m_rect.setX(Global::deviceSize.x() + rand() % Global::deviceSize.x());
-        m_rect.setY(rand() % Global::deviceSize.y());
+        m_rect.setX(rand() % 200);
+        m_rect.setY(rand() % 100);
         emit rectChanged(m_rect);
 
     }

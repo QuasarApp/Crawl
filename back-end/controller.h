@@ -32,7 +32,7 @@ public:
     void stopTimer();
 
 public slots:
-    void setDeviceSize(QPoint deviceSize);
+    void buttonPress();
     void update();
 
     /**
