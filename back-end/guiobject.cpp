@@ -27,7 +27,6 @@ QRectF& GuiObject::getRect() {
 }
 
 void GuiObject::setAngle(double angle) {
-
     m_angle = angle;
     emit angleChanged(m_angle);
 }

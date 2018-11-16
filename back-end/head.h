@@ -13,10 +13,10 @@ private:
     double *speed;
 public:
     Head(const QRectF &rect , double *speed);
-    
-    void render();
+    void setAngle(double angle) override;
+    void render() override;
 
-    ~Head();
+    ~Head() override;
 };
 
 #endif // HEAD_H

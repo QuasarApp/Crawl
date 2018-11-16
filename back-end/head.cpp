@@ -17,6 +17,11 @@ Head::Head(const QRectF &rect, double *spead):
     this->speed = spead;
 }
 
+void Head::setAngle(double angle) {
+    m_angle = angle/2;
+    emit angleChanged(m_angle);
+}
+
 Head::~Head() {
     
 }

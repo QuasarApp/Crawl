@@ -8,9 +8,14 @@ Rectangle {
     property rect rec: (model) ? model.rect : Qt.rect(0, 0, 0, 0);
     property int guiId: (model) ? model.color : -1;
 
+
+
+
     color: (model) ? model.color : "#11ff32";
+
     width: rec.width * mainWindow.point;
     height: rec.height * mainWindow.point;
+
     x: rec.x * mainWindow.point;
     y: rec.y * mainWindow.point;
 

@@ -42,7 +42,7 @@ public:
 
     QRectF rect() const;
     QRectF &getRect();
-    void setAngle(double angle);
+    virtual void setAngle(double angle);
     int guiId() const;
 
     QString color() const;

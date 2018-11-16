@@ -47,7 +47,7 @@ QMap<int, GuiObject *> World::init(const WorldRules &rules) {
 
     QMap<int, GuiObject*> res;
 
-    auto snakeItems = snake.init(10, 100);
+    auto snakeItems = snake.init(10, 15);
 
     for (auto i = snakeItems.begin(); i != snakeItems.end(); ++i) {
         res.insert(i.key(), i.value());

@@ -32,9 +32,9 @@ void Snake::render() {
 
 void Snake::changeCountObjects(int count) {
     if (count > 0) {
-
+        double margin = 40.0 / count;
         for ( int i = 0; i < count; ++i ) {
-            QRectF rect(0 + 10 * (count - i), 50, 10, 10);
+            QRectF rect(margin * (count - i), 50, 10, 10);
             auto obj = new Head(rect, &this->speed);
 
             items.push_back(obj);
