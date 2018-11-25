@@ -68,6 +68,11 @@ void GuiObject::setH(double h) {
     emit hChanged(m_h);
 }
 
+void GuiObject::reset() {
+    setX(-1);
+    setY(-1);
+}
+
 void GuiObject::setW(double w) {
     m_w = w;
     emit wChanged(m_w);

@@ -81,12 +81,11 @@ QMap<int, GuiObject*> Snake::init(int size, double *speed) {
 
     this->speed = speed;
 
-    changeCountObjects(size -items.size());
+    changeCountObjects(size - items.size());
 
     for (auto i : items) {
         res[i->guiId()] = i;
     }
-
     return res;
 }
 
@@ -99,6 +98,16 @@ void Snake::clearItems() {
         delete i;
     }
     items.clear();
+}
+
+void Snake::resetPosotion() {
+    double margin = 60.0 / items.size();
+
+    for ( int i = 0; i < items.size(); ++i ) {
+        items[i]->setX(margin * (items.size() - i));
+        items[i]->setY(50);
+        items[i]->setAngle(0);
+    }
 }
 
 Snake::~Snake() {

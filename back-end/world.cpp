@@ -25,7 +25,10 @@ void World::clearItems() {
     for (auto i : items) {
         delete i;
     }
+    oldRules.clear();
     items.clear();
+    spead = 0;
+    d_spead = 0;
 }
 
 void World::changeCountObjects(const QString &name, int count) {
@@ -83,7 +86,8 @@ QMap<int, GuiObject *> World::init(const WorldRules &rules) {
 
     oldRules = rules;
     time = QDateTime::currentMSecsSinceEpoch();
-
+    defiat = false;
+    spead = 0;
     return res;
 }
 
@@ -112,6 +116,13 @@ void World::render() {
 
 
     currentLong += dx;
+}
+
+void World::resetPosition() {
+    for (auto i : items) {
+        i->reset();
+    }
+    snake.resetPosotion();
 }
 
 bool World::move() {

@@ -1,10 +1,14 @@
-import QtQuick 2.9
+import QtQuick 2.11
+import QtQuick.Controls.Material 2.0
+import QtQuick.Controls 2.3
+import QtQuick.Layouts 1.3
 
 Item {
     id: scene;
+    z: -2
     property var model: (contr)? contr: null;
     property var arrayObjects: []
-    signal showMenu();
+    property bool showMenu: false
     function add (cppObjId) {
         if (!model) {
             console.log("create object fail")
@@ -41,6 +45,7 @@ Item {
             model.newGame();
 
         }
+        showMenu = (auto && model)
         autoTimer.running = auto && model;
     }
 
@@ -79,15 +84,21 @@ Item {
 
         onFinished: {
             var isVictory = victory;
-            var gameLvl = lvl;
+            var gameLvl = lvl + 1;
             var dist = distance;
 
             if (isVictory ) {
+
+                if (!autoTimer.running)
+                    notification.show(qsTr(" Next Lvl!!!"),
+                                  qsTr(" You anblock next lvl (" + gameLvl + ")" ),
+                                  "qrc:/texture/up");
+
                 model.nextLvl();
             } else if (autoTimer.running) {
                 model.newGame();
             } else {
-                showMenu();
+                showMenu = true;
             }
         }
     }
@@ -103,5 +114,72 @@ Item {
 
             model.buttonPress();
         }
+    }
+
+    NotificationForm {
+        z: -1
+        id: notification;
+        margin: mainWindow.point;
+
+        x: parent.width - width - margin;
+        y: margin;
+
+        width: 40 * mainWindow.point;
+        height: width * 0.5
+
+    }
+
+    Button {
+        id: returnToMenu;
+
+        text: "<<"
+
+        anchors.left: parent.left
+        anchors.leftMargin: point
+
+        anchors.top: parent.top
+        anchors.topMargin: point
+
+        visible: !showMenu
+    }
+
+    Button {
+        id: pause
+
+        text: "||"
+
+        anchors.left: returnToMenu.right
+        anchors.leftMargin: point
+
+        anchors.top: parent.top
+        anchors.topMargin: point
+
+        visible: !showMenu
+
+    }
+
+    Button {
+        Label {
+            anchors.fill: parent;
+
+            textFormat: Text.AutoText
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignHCenter
+            wrapMode: Text.WordWrap
+
+            text: qsTr("long: ") + (model)? model.long_: "0"
+        }
+
+        width: 15 * point;
+        height: pause.height;
+
+        anchors.left: pause.right
+        anchors.leftMargin: point
+
+        anchors.top: parent.top
+        anchors.topMargin: point
+
+        visible: !showMenu
+
     }
 }

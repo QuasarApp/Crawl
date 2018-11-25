@@ -12,6 +12,8 @@ class Controller : public QObject
 {
     Q_OBJECT
 
+    Q_PROPERTY(int long_ READ long_ NOTIFY long_changed)
+
 private:
     World world;
     QTimer *timer;
@@ -19,11 +21,12 @@ private:
     QMap<int, GuiObject *> objectsContainer;
 
     void generateDiff(const QMap<int, GuiObject *> &);
-
 public:
     Controller();
     void startTimer();
     void stopTimer();
+
+    int long_() const;
 
 public slots:
     void buttonPress();
@@ -61,6 +64,7 @@ signals:
      * @param dif
      */
     void gameObjectsChanged(const Diff &dif);
+    void long_changed(int m_long);
 };
 
 #endif // CONTROLLER_H

@@ -22,10 +22,12 @@ private:
     double checDistance(int i);
     void clearItems();
 
+
 public:
     Snake();
     ~Snake() override;
     void clear();
+    void resetPosotion();
 
     void reverse();
     void render() override;

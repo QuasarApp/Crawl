@@ -14,6 +14,9 @@ void Head::render() {
     emit yChanged(m_y);
 }
 
+void Head::reset() {
+}
+
 Head::Head(double x, double y, double h, double w, double *spead):
     GuiObject () {
     setX(x);

@@ -33,6 +33,7 @@ public:
     QMap<int, GuiObject*> init(const WorldRules &rules);
     ~World() override;
     void render() override;
+    void resetPosition();
     bool move();
     bool isEnd();
     const QVector<ItemWorld*>& getItems() const;

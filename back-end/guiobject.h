@@ -43,7 +43,7 @@ public:
     double angle() const;
     QString texture() const;
 
-    void render();
+    void render() override;
 
     QRectF rect() const;
     virtual void setAngle(double angle);
@@ -62,6 +62,8 @@ public:
     void setY(double y);
     void setW(double w);
     void setH(double h);
+
+    virtual void reset();
 
 signals:
     void angleChanged(double angle);

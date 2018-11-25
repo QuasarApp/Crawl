@@ -24,7 +24,6 @@ bool Controller::nextLvl() {
 
 void Controller::generateDiff(const QMap<int, GuiObject *>& objs) {
 
-
     auto removeIds = objectsContainer.keys();
     QList<int> addedIds;
 
@@ -57,11 +56,13 @@ void Controller::update() {
         stopTimer();
         emit finished(true, lvl, world.getCurrentLong());
     }
+
+    long_changed(static_cast<int>(world.getCurrentLong()));
 }
 
 void Controller::newGame() {
 
-    world.clear();
+    world.resetPosition();
 
     WorldRules newGameRules = lvls.first();
     lvl = 0;
@@ -79,6 +80,10 @@ void Controller::startTimer() {
 
 void Controller::stopTimer() {
     timer->stop();
+}
+
+int Controller::long_() const {
+    return static_cast<int>(world.getCurrentLong());
 }
 
 void Controller::buttonPress() {

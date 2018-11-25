@@ -15,6 +15,7 @@ ApplicationWindow {
 
     Component.onCompleted: {
         scane.setAuto(true);
+//        contr.newGame();
     }
 
     Scene {
@@ -22,8 +23,14 @@ ApplicationWindow {
         anchors.fill: parent;
     }
 
-//    MainMenu {
+    MainMenu {
 
-//        anchors.fill: parent;
-//    }
+        anchors.fill: parent;
+        visible: scane.showMenu;
+
+        onPaly: {
+            scane.setAuto(false);
+        }
+
+    }
 }
