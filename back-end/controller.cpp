@@ -17,7 +17,7 @@ bool Controller::nextLvl() {
     }
 
     generateDiff(world.init(lvls.value(++lvl)));
-
+    startTimer();
 
     return false;
 }
@@ -50,10 +50,19 @@ void Controller::update() {
     world.render();
     if(world.isDefiat()) {
         stopTimer();
+        emit finished(false, lvl, world.getCurrentLong());
+    }
+
+    if (world.isEnd()) {
+        stopTimer();
+        emit finished(true, lvl, world.getCurrentLong());
     }
 }
 
 void Controller::newGame() {
+
+    world.clear();
+
     WorldRules newGameRules = lvls.first();
     lvl = 0;
     generateDiff(world.init(newGameRules));

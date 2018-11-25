@@ -3,9 +3,9 @@
 
 #include <QMap>
 #include <QRectF>
+#include <cmath>
 
-Snake::Snake() :
-    speed(SPEEDSNAKE) {
+Snake::Snake() {
 }
 
 const QVector<Head *> &Snake::getItems() const {
@@ -14,7 +14,8 @@ const QVector<Head *> &Snake::getItems() const {
 
 void Snake::render() {
     for (int i = items.length() - 1; i >= 0; --i) {
-        if(i == 0){
+
+        if(i == 0) {
             if(isClick){
                 if(countClick & 1){
                     items[i]->setAngle(45);
@@ -23,19 +24,40 @@ void Snake::render() {
                 }
                 isClick = false;
             }
-        }else{
-            items[i]->setAngle(items[i-1]->angle());
+        }else  {
+            double _atan2 = atan2(items[i - 1]->rect().center().y() - items[i]->rect().center().y(),
+                    items[i - 1]->rect().center().x() - items[i]->rect().center().x()) * 180;
+
+            items[i]->setAngle(_atan2);
         }
+
         items[i]->render();
     }
 }
 
+double Snake::checDistance(int i) {
+
+    auto result = (items[i]->rect().y() -
+    items[i - 1]->rect().y()) / rataticonDistance;
+
+    return result;
+
+}
+
+double Snake::getRataticonDistance() const {
+    return rataticonDistance;
+}
+
+void Snake::setRataticonDistance(double value) {
+    rataticonDistance = value;
+}
+
 void Snake::changeCountObjects(int count) {
     if (count > 0) {
-        double margin = 40.0 / count;
+        double margin = 60.0 / count;
         for ( int i = 0; i < count; ++i ) {
-            QRectF rect(margin * (count - i), 50, 10, 10);
-            auto obj = new Head(rect, &this->speed);
+            auto obj = new Head(margin * (count - i),
+                                50, 7, 7, this->speed);
 
             items.push_back(obj);
         }
@@ -49,11 +71,11 @@ void Snake::changeCountObjects(int count) {
     }
 }
 
-QMap<int, GuiObject*> Snake::init(int size, double speed) {
+QMap<int, GuiObject*> Snake::init(int size, double *speed) {
 
     QMap<int, GuiObject*> res;
 
-    if (size <= 0 || speed <= 0) {
+    if (size <= 0) {
         return res;
     }
 
@@ -72,12 +94,19 @@ bool Snake::isInited() const {
     return items.size();
 }
 
-Snake::~Snake() {
+void Snake::clearItems() {
     for (auto i : items) {
         delete i;
     }
     items.clear();
+}
 
+Snake::~Snake() {
+    clearItems();
+}
+
+void Snake::clear() {
+    clearItems();
 }
 
 void Snake::reverse() {
@@ -86,8 +115,4 @@ void Snake::reverse() {
     }
     isClick = true;
     countClick++;
-}
-
-const QRectF& Snake::getRiger() const {
-    return items.first()->getRect();
 }

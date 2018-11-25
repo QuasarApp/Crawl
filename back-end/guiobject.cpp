@@ -15,15 +15,10 @@ QString GuiObject::texture() const {
 }
 
 void GuiObject::render() {
-
 }
 
 QRectF GuiObject::rect() const {
-    return m_rect;
-}
-
-QRectF& GuiObject::getRect() {
-    return m_rect;
+    return QRectF(m_x, m_y, m_w, m_h);
 }
 
 void GuiObject::setAngle(double angle) {
@@ -47,17 +42,48 @@ void GuiObject::setColor(QString color) {
     emit colorChanged(m_color);
 }
 
-void GuiObject::setRect(QRectF rect) {
-    if (m_rect == rect)
-        return;
+double GuiObject::x() const {
+    return m_x;
+}
 
-    m_rect = rect;
-    emit rectChanged(m_rect);
+double GuiObject::y() const {
+    return m_y;
+}
+
+double GuiObject::w() const {
+    return m_w;
+}
+
+double GuiObject::h() const {
+    return m_h;
 }
 
 void GuiObject::generateId() {
     static int id = 0;
     m_guiId = id++;
+}
+
+void GuiObject::setH(double h) {
+    m_h = h;
+    emit hChanged(m_h);
+}
+
+void GuiObject::setW(double w) {
+    m_w = w;
+    emit wChanged(m_w);
+
+}
+
+void GuiObject::setY(double y) {
+    m_y = y;
+    emit yChanged(m_y);
+
+}
+
+void GuiObject::setX(double x) {
+    m_x = x;
+    emit xChanged(m_x);
+
 }
 
 void GuiObject::setTexture(const QString &texture) {

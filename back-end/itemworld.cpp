@@ -7,34 +7,37 @@
 #define POINT 100
 
 ItemWorld::ItemWorld(double x, double y) {
-    setSize(x, y);
+    setLoc(x, y);
 }
 
 void ItemWorld::setBeckGroundObject(bool value) {
     beckGroundObject = value;
 }
 
-void ItemWorld::setSize(double x, double y) {
-    QRectF rect;
-    rect.setX(x);
-    rect.setY(y);
-    setRect(rect);
+void ItemWorld::setSize(double h, double w) {
+    setH(h);
+    setW(w);
+}
+
+void ItemWorld::setLoc(double x, double y) {
+    setX(x);
+    setY(y);
 }
 
 void ItemWorld::render() {
-    if (m_rect.x() < 0) {
-        m_rect.setX(rand() % 200);
-        m_rect.setY(rand() % 100);
-        emit rectChanged(m_rect);
-
+    if (m_x < 0) {
+        m_x = (rand() % 400) + 200;
+        m_y = rand() % 100;
+        emit xChanged(m_x);
+        emit yChanged(m_y);
     }
 }
 
-bool ItemWorld::move(const QRectF &snakeRiger, double dx) {
-    m_rect.setX( m_rect.x() - dx);
-    emit rectChanged(m_rect);
+bool ItemWorld::move(const GuiObject *snakeRiger, double dx) {
+    m_x -= dx;
+    emit xChanged(m_x);
 
-    return snakeRiger.intersects(m_rect) && !beckGroundObject;
+    return snakeRiger->rect().intersects(rect()) && !beckGroundObject;
 }
 
 bool ItemWorld::isBeckGroundObject() {

@@ -28,7 +28,7 @@ Item {
             anchors.horizontalCenter: parent.horizontalCenter
 
             onClicked: {
-
+                contr.newGame();
             }
 
         }

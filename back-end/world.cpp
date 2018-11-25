@@ -12,6 +12,15 @@ World::World() {
     background = "";
 }
 
+void World::clear() {
+    clearItems();
+    snake.clear();
+}
+
+double World::getCurrentLong() const {
+    return currentLong;
+}
+
 void World::clearItems() {
     for (auto i : items) {
         delete i;
@@ -47,12 +56,6 @@ QMap<int, GuiObject *> World::init(const WorldRules &rules) {
 
     QMap<int, GuiObject*> res;
 
-    auto snakeItems = snake.init(10, 15);
-
-    for (auto i = snakeItems.begin(); i != snakeItems.end(); ++i) {
-        res.insert(i.key(), i.value());
-    }
-
     currentLong = -1;
     for (auto i = rules.begin(); i != rules.end(); ++i) {
         if (i.key() == "Long") {
@@ -60,11 +63,17 @@ QMap<int, GuiObject *> World::init(const WorldRules &rules) {
             currentLong = 0;
         }
         else if (i.key() == "Spead") {
-            spead = rules["Spead"];
+            d_spead = rules["Spead"];
         }
         else {
             changeCountObjects(i.key(), i.value() - oldRules.value(i.key()));
         }
+    }
+
+    auto snakeItems = snake.init(10, &spead);
+
+    for (auto i = snakeItems.begin(); i != snakeItems.end(); ++i) {
+        res.insert(i.key(), i.value());
     }
 
     for (auto i : items) {
@@ -73,6 +82,8 @@ QMap<int, GuiObject *> World::init(const WorldRules &rules) {
 
 
     oldRules = rules;
+    time = QDateTime::currentMSecsSinceEpoch();
+
     return res;
 }
 
@@ -84,15 +95,21 @@ void World::render() {
 
     qint64 tempTime = QDateTime::currentMSecsSinceEpoch() - time;
     time = QDateTime::currentMSecsSinceEpoch();
-    auto dx = speed / 1000 * tempTime;
+    double dx = spead / 1000 * tempTime;
+
+    spead -= 0.0310 * tempTime;
+
+    if (spead < 0)
+        spead = 0;
 
     snake.render();
-    const QRectF &rig = snake.getRiger();
+    auto rig = snake.getItems().first();
 
     for (int i = items.length() - 1; i >= 0; --i) {
         defiat |= items[i]->move(rig, dx);
         items[i]->render();
     }
+
 
     currentLong += dx;
 }
@@ -115,6 +132,7 @@ WorldRules World::currentRules() const {
 
 void World::reversClick() {
     snake.reverse();
+    spead += d_spead;
 }
 
 const QVector<ItemWorld *> &World::getItems() const {

@@ -5,23 +5,23 @@ Rectangle {
     property var model: null
     property real angle: (model) ? model.angle : 0;
     property string texture: (model) ? model.texture : "";
-    property rect rec: (model) ? model.rect : Qt.rect(0, 0, 0, 0);
     property int guiId: (model) ? model.color : -1;
 
-
+    property double devX: width / 2
+    property double devY: height / 2
 
 
     color: (model) ? model.color : "#11ff32";
 
-    width: rec.width * mainWindow.point;
-    height: rec.height * mainWindow.point;
+    width: (model) ? model.w * mainWindow.point: 0;
+    height: (model) ? model.h * mainWindow.point: 0;
 
-    x: rec.x * mainWindow.point;
-    y: rec.y * mainWindow.point;
+    x: (model) ? model.x * mainWindow.point - devX: 0;
+    y: (model) ? model.y * mainWindow.point - devY: 0;
 
     transform: Rotation {
-        origin.x: rec.x / 2;
-        origin.y: rec.y / 2;
+        origin.x: devX;
+        origin.y: devY;
         angle: graphicItem.angle;
     }
 

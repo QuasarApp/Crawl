@@ -18,12 +18,6 @@ private:
     int lvl = 0;
     QMap<int, GuiObject *> objectsContainer;
 
-    /**
-     * @brief nextLvl - switch to next lvl from array lvels
-     * @return true if all levels are passed
-     */
-    bool nextLvl();
-
     void generateDiff(const QMap<int, GuiObject *> &);
 
 public:
@@ -34,6 +28,12 @@ public:
 public slots:
     void buttonPress();
     void update();
+
+    /**
+     * @brief nextLvl - switch to next lvl from array lvels
+     * @return true if all levels are passed
+     */
+    bool nextLvl();
 
     /**
      * @brief newGame - start game from first lvl
@@ -54,7 +54,7 @@ signals:
      * @param lvl - game over lvl
      * @param distance - game over distance
      */
-    void finished(bool victory, int lvl, int distance);
+    void finished(bool victory, int lvl, double distance);
 
     /**
      * @brief gameObjectsChanged

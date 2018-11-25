@@ -9,14 +9,15 @@ class ItemWorld : public GuiObject
 private:    
     bool beckGroundObject = false;
 protected:
-    virtual void setSize(double x, double y);
+    virtual void setSize(double h, double w);
+    virtual void setLoc(double x, double y);
     void setBeckGroundObject(bool value);
 
 public:
     ItemWorld(double x, double y);
 
     void render();
-    bool move(const QRectF& snakeRiger, double dx);
+    bool move(const GuiObject* snakeRiger, double dx);
     bool isBeckGroundObject();
 
     ~ItemWorld();

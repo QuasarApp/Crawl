@@ -12,23 +12,29 @@ class GuiObject;
 class Snake : public BaseClass
 {
 private:
+    double rataticonDistance = 1;
     QVector<Head*> items;
-    double speed = 0;
+    double *speed = nullptr;
     bool isClick = false;
     int countClick = 0;
     void changeCountObjects(int count);
 
+    double checDistance(int i);
+    void clearItems();
+
 public:
     Snake();
     ~Snake() override;
+    void clear();
 
     void reverse();
-    const QRectF &getRiger() const;
     void render() override;
-    QMap<int, GuiObject *> init(int size, double speed);
+    QMap<int, GuiObject *> init(int size, double *speed);
     bool isInited() const;
     const QVector<Head*>& getItems() const;
     double getMovedLong() const;
+    double getRataticonDistance() const;
+    void setRataticonDistance(double value);
 };
 
 #endif // SNAKE_H

@@ -12,7 +12,7 @@ private:
     qint64 time;
     double *speed;
 public:
-    Head(const QRectF &rect , double *speed);
+    Head(double x , double y, double h, double w, double *speed);
     void setAngle(double angle) override;
     void render() override;
 

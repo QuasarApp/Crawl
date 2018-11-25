@@ -15,11 +15,10 @@ private:
 
     Snake snake;
     QVector<ItemWorld*> items;
-    double currentLong;
+    double currentLong = 0;
     int endLong;
-    double spead;
+    double spead = 0, d_spead = 0;
     QString background;
-    double speed;
     qint64 time;
     bool defiat = false;
     WorldRules oldRules;
@@ -30,6 +29,7 @@ private:
 
 public:
     World();
+    void clear();
     QMap<int, GuiObject*> init(const WorldRules &rules);
     ~World() override;
     void render() override;
@@ -39,6 +39,7 @@ public:
     bool isDefiat() const;
     WorldRules currentRules() const;
     void reversClick();
+    double getCurrentLong() const;
 };
 
 #endif // WORLD_H

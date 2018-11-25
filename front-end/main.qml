@@ -13,10 +13,17 @@ ApplicationWindow {
 
     property real point: (width < height) ? width/pointCount : height/pointCount;
 
+    Component.onCompleted: {
+        scane.setAuto(true);
+    }
+
     Scene {
+        id: scane;
         anchors.fill: parent;
     }
 
+//    MainMenu {
 
-
+//        anchors.fill: parent;
+//    }
 }

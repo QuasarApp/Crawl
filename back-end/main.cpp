@@ -16,17 +16,16 @@ int main(int argc, char *argv[])
     qmlRegisterType <GuiObject> ();
     qmlRegisterType <Diff> ();
 
-
-    engine.load(QUrl(QStringLiteral("qrc:/front-end/main.qml")));
-    if (engine.rootObjects().isEmpty())
-        return -1;
-
     auto root = engine.rootContext();
     if (!root)
         return -1;
 
     Controller contr;
     root->setContextProperty("contr", &contr);
-    contr.newGame();
+
+    engine.load(QUrl(QStringLiteral("qrc:/front-end/main.qml")));
+    if (engine.rootObjects().isEmpty())
+        return -1;
+
     return app.exec();
 }

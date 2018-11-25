@@ -2,9 +2,9 @@ import QtQuick 2.9
 
 Item {
     id: scene;
-    property var model: contr;
-
+    property var model: (contr)? contr: null;
     property var arrayObjects: []
+    signal showMenu();
     function add (cppObjId) {
         if (!model) {
             console.log("create object fail")
@@ -36,6 +36,25 @@ Item {
         }
     }
 
+    function setAuto (auto) {
+        if (auto && model) {
+            model.newGame();
+
+        }
+        autoTimer.running = auto && model;
+    }
+
+    Timer {
+        id :autoTimer;
+        repeat: true;
+        running: false;
+        interval: 1000
+        onTriggered: {
+            interval = Math.random() * 600
+            scene.model.buttonPress();
+        }
+    }
+
     Connections {
         target: model;
         onGameObjectsChanged: {
@@ -55,6 +74,20 @@ Item {
 
             for (i = 0; i < tempDifRem.length; ++i) {
                 remove(tempDifRem[i]);
+            }
+        }
+
+        onFinished: {
+            var isVictory = victory;
+            var gameLvl = lvl;
+            var dist = distance;
+
+            if (isVictory ) {
+                model.nextLvl();
+            } else if (autoTimer.running) {
+                model.newGame();
+            } else {
+                showMenu();
             }
         }
     }
