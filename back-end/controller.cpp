@@ -9,11 +9,6 @@ Controller::Controller() {
     timer = new QTimer();
     timer->setInterval(33);
     connect(timer, SIGNAL(timeout()), this, SLOT(update()));
-    startTimer();
-}
-
-void Controller::setDeviceSize(QPoint deviceSize) {
-    Global::deviceSize = deviceSize;
 }
 
 bool Controller::nextLvl() {
@@ -22,13 +17,12 @@ bool Controller::nextLvl() {
     }
 
     generateDiff(world.init(lvls.value(++lvl)));
-
+    startTimer();
 
     return false;
 }
 
 void Controller::generateDiff(const QMap<int, GuiObject *>& objs) {
-
 
     auto removeIds = objectsContainer.keys();
     QList<int> addedIds;
@@ -53,12 +47,27 @@ void Controller::generateDiff(const QMap<int, GuiObject *>& objs) {
 
 void Controller::update() {
     world.render();
+    if(world.isDefiat()) {
+        stopTimer();
+        emit finished(false, lvl, world.getCurrentLong());
+    }
+
+    if (world.isEnd()) {
+        stopTimer();
+        emit finished(true, lvl, world.getCurrentLong());
+    }
+
+    long_changed(static_cast<int>(world.getCurrentLong()));
 }
 
 void Controller::newGame() {
+
+    world.resetPosition();
+
     WorldRules newGameRules = lvls.first();
     lvl = 0;
     generateDiff(world.init(newGameRules));
+    startTimer();
 }
 
 QObject *Controller::getGameObject(int id) {
@@ -71,5 +80,13 @@ void Controller::startTimer() {
 
 void Controller::stopTimer() {
     timer->stop();
+}
+
+int Controller::long_() const {
+    return static_cast<int>(world.getCurrentLong());
+}
+
+void Controller::buttonPress() {
+    world.reversClick();
 }
 

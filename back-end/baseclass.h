@@ -11,6 +11,7 @@ public:
     virtual void render() = 0;
     virtual ~BaseClass();
     QString getName() const;
+    void setName(const QString &value);
 };
 
 #endif // BASECLASS_H

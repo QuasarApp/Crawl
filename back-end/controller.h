@@ -12,28 +12,31 @@ class Controller : public QObject
 {
     Q_OBJECT
 
+    Q_PROPERTY(int long_ READ long_ NOTIFY long_changed)
+
 private:
     World world;
     QTimer *timer;
     int lvl = 0;
     QMap<int, GuiObject *> objectsContainer;
 
-    /**
-     * @brief nextLvl - switch to next lvl from array lvels
-     * @return true if all levels are passed
-     */
-    bool nextLvl();
-
     void generateDiff(const QMap<int, GuiObject *> &);
-
 public:
     Controller();
     void startTimer();
     void stopTimer();
 
+    int long_() const;
+
 public slots:
-    void setDeviceSize(QPoint deviceSize);
+    void buttonPress();
     void update();
+
+    /**
+     * @brief nextLvl - switch to next lvl from array lvels
+     * @return true if all levels are passed
+     */
+    bool nextLvl();
 
     /**
      * @brief newGame - start game from first lvl
@@ -54,13 +57,14 @@ signals:
      * @param lvl - game over lvl
      * @param distance - game over distance
      */
-    void finished(bool victory, int lvl, int distance);
+    void finished(bool victory, int lvl, double distance);
 
     /**
      * @brief gameObjectsChanged
      * @param dif
      */
     void gameObjectsChanged(const Diff &dif);
+    void long_changed(int m_long);
 };
 
 #endif // CONTROLLER_H

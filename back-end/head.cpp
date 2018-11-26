@@ -2,18 +2,33 @@
 #include <cmath>
 #include <QDateTime>
 
-void Head::render(){
+void Head::render() {
+
+
     qint64 tempTime = QDateTime::currentMSecsSinceEpoch() - time;
-    double my = m_rect.y() + *speed * sin(m_angle * TO_RADIAN);
-    auto dy = (my - m_rect.y()) / 1000 * tempTime;
-    m_rect.setY(m_rect.y() + dy);
     time = QDateTime::currentMSecsSinceEpoch();
+
+    double my = (m_y + (*speed * 0.75) * sin(m_angle * TO_RADIAN));
+    m_y += (my - m_y) / 1000 * tempTime;
+
+    emit yChanged(m_y);
 }
 
-Head::Head(const QRectF &rect, double *spead):
+void Head::reset() {
+}
+
+Head::Head(double x, double y, double h, double w, double *spead):
     GuiObject () {
-    setRect(rect);
+    setX(x);
+    setY(y);
+    setW(w);
+    setH(h);
     this->speed = spead;
+}
+
+void Head::setAngle(double angle) {
+    m_angle = angle;
+    emit angleChanged(m_angle);
 }
 
 Head::~Head() {

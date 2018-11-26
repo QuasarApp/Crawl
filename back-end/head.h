@@ -12,11 +12,11 @@ private:
     qint64 time;
     double *speed;
 public:
-    Head(const QRectF &rect , double *speed);
-    
-    void render();
-
-    ~Head();
+    Head(double x , double y, double h, double w, double *speed);
+    void setAngle(double angle) override;
+    void render() override;
+    void reset() override;
+    ~Head() override;
 };
 
 #endif // HEAD_H
