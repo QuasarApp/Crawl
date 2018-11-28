@@ -8,7 +8,7 @@ void Head::render() {
     qint64 tempTime = QDateTime::currentMSecsSinceEpoch() - time;
     time = QDateTime::currentMSecsSinceEpoch();
 
-    double my = (m_y + (*speed * 0.75) * sin(m_angle * TO_RADIAN));
+    double my = (m_y + (*speed * 0.55) * sin(m_angle * TO_RADIAN));
     m_y += (my - m_y) / 1000 * tempTime;
 
     emit yChanged(m_y);

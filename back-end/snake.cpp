@@ -1,6 +1,7 @@
 #include "snake.h"
 #include "guiobject.h"
 
+#include <QDateTime>
 #include <QMap>
 #include <QRectF>
 #include <cmath>
@@ -13,7 +14,13 @@ const QVector<Head *> &Snake::getItems() const {
 }
 
 void Snake::render() {
+
     for (int i = items.length() - 1; i >= 0; --i) {
+
+        if (dead) {
+            items[i]->render();
+            continue;
+        }
 
         if(i == 0) {
             if(isClick){
@@ -86,6 +93,9 @@ QMap<int, GuiObject*> Snake::init(int size, double *speed) {
     for (auto i : items) {
         res[i->guiId()] = i;
     }
+
+    dead = false;
+
     return res;
 }
 
@@ -108,6 +118,14 @@ void Snake::resetPosotion() {
         items[i]->setY(50);
         items[i]->setAngle(0);
     }
+}
+
+void Snake::kill() {
+    dead = true;
+}
+
+bool Snake::isDead() const {
+    return dead;
 }
 
 Snake::~Snake() {

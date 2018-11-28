@@ -14,7 +14,8 @@ class World : public BaseClass
 private:
 
     Snake snake;
-    QVector<ItemWorld*> items;
+//    QVector<ItemWorld*> items;
+    QMultiMap<QString, ItemWorld*> items;
     double currentLong = 0;
     int endLong;
     double spead = 0, d_spead = 0;
@@ -30,17 +31,17 @@ private:
 public:
     World();
     void clear();
-    QMap<int, GuiObject*> init(const WorldRules &rules);
+    QMap<int, GuiObject*> init(WorldRules rules);
     ~World() override;
     void render() override;
     void resetPosition();
     bool move();
     bool isEnd();
-    const QVector<ItemWorld*>& getItems() const;
     bool isDefiat() const;
     WorldRules currentRules() const;
     void reversClick();
     double getCurrentLong() const;
+    QMultiMap<QString, ItemWorld *> getItems() const;
 };
 
 #endif // WORLD_H

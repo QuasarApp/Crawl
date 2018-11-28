@@ -139,6 +139,7 @@ Item {
 
         anchors.top: parent.top
         anchors.topMargin: point
+        z: 1
 
         visible: !showMenu
     }
@@ -153,6 +154,7 @@ Item {
 
         anchors.top: parent.top
         anchors.topMargin: point
+        z: 1
 
         visible: !showMenu
 
@@ -178,6 +180,7 @@ Item {
 
         anchors.top: parent.top
         anchors.topMargin: point
+        z: 1
 
         visible: !showMenu
 

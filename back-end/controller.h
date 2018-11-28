@@ -17,6 +17,7 @@ class Controller : public QObject
 private:
     World world;
     QTimer *timer;
+    bool pause = false;
     int lvl = 0;
     QMap<int, GuiObject *> objectsContainer;
 
@@ -30,6 +31,9 @@ public:
 
 public slots:
     void buttonPress();
+
+    void setPause(bool);
+
     void update();
 
     /**

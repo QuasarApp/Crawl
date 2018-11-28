@@ -9,6 +9,8 @@
 
 class GuiObject;
 
+
+
 class Snake : public BaseClass
 {
 private:
@@ -17,6 +19,7 @@ private:
     double *speed = nullptr;
     bool isClick = false;
     int countClick = 0;
+    bool dead = false;
     void changeCountObjects(int count);
 
     double checDistance(int i);
@@ -29,6 +32,9 @@ public:
     void clear();
     void resetPosotion();
 
+    void kill();
+    bool isDead() const;
+
     void reverse();
     void render() override;
     QMap<int, GuiObject *> init(int size, double *speed);
@@ -37,6 +43,8 @@ public:
     double getMovedLong() const;
     double getRataticonDistance() const;
     void setRataticonDistance(double value);
+    int getDeadTimer() const;
+    void setDeadTimer(int value);
 };
 
 #endif // SNAKE_H

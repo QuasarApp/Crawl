@@ -17,7 +17,7 @@ public:
     ItemWorld(double x, double y);
 
     void render();
-    bool move(const GuiObject* snakeRiger, double dx);
+    virtual bool move(const GuiObject* snakeRiger, double dx);
     bool isBeckGroundObject();
 
     ~ItemWorld();

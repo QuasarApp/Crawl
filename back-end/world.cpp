@@ -1,3 +1,4 @@
+#include "background.h"
 #include "world.h"
 
 #include <QMap>
@@ -19,6 +20,11 @@ void World::clear() {
 
 double World::getCurrentLong() const {
     return currentLong;
+}
+
+QMultiMap<QString, ItemWorld *> World::getItems() const
+{
+    return items;
 }
 
 void World::clearItems() {
@@ -43,21 +49,25 @@ void World::changeCountObjects(const QString &name, int count) {
                 break;
             }
 
-            items.push_back(obj);
+            items.insertMulti(name, obj);
         }
 
     } else {
         for ( int i = count; i < 0; ++i ) {
-            auto obj = items.first();
-            items.removeFirst();
+            auto obj = items.value(name);
+            if (1 != items.remove(name, obj)) {
+                qWarning() << "World::changeCountObjects error delete object!";
+            }
             delete obj;
         }
     }
 }
 
-QMap<int, GuiObject *> World::init(const WorldRules &rules) {
+QMap<int, GuiObject *> World::init(WorldRules rules) {
 
     QMap<int, GuiObject*> res;
+
+    rules["BackGround"] = 1;
 
     currentLong = -1;
     for (auto i = rules.begin(); i != rules.end(); ++i) {
@@ -87,7 +97,6 @@ QMap<int, GuiObject *> World::init(const WorldRules &rules) {
     oldRules = rules;
     time = QDateTime::currentMSecsSinceEpoch();
     defiat = false;
-    spead = 0;
     return res;
 }
 
@@ -109,11 +118,16 @@ void World::render() {
     snake.render();
     auto rig = snake.getItems().first();
 
-    for (int i = items.length() - 1; i >= 0; --i) {
-        defiat |= items[i]->move(rig, dx);
-        items[i]->render();
+    for (auto i = items.begin(); i != items.end(); ++i) {
+        defiat |= (*i)->move(rig, dx);
+        (*i)->render();
     }
 
+    defiat |= (rig->y()< 0 || rig->y() > 100);
+
+    if (!snake.isDead() && defiat) {
+        snake.kill();
+    }
 
     currentLong += dx;
 }
@@ -122,6 +136,8 @@ void World::resetPosition() {
     for (auto i : items) {
         i->reset();
     }
+    spead = 0;
+
     snake.resetPosotion();
 }
 
@@ -134,7 +150,7 @@ bool World::isEnd() {
 }
 
 bool World::isDefiat() const {
-    return defiat;
+    return defiat && !static_cast<bool>(spead);
 }
 
 WorldRules World::currentRules() const {
@@ -142,10 +158,11 @@ WorldRules World::currentRules() const {
 }
 
 void World::reversClick() {
+    if (snake.isDead()) {
+        spead = 0;
+        return;
+    }
+
     snake.reverse();
     spead += d_spead;
-}
-
-const QVector<ItemWorld *> &World::getItems() const {
-    return items;
 }

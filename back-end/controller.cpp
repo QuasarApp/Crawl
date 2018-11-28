@@ -46,6 +46,10 @@ void Controller::generateDiff(const QMap<int, GuiObject *>& objs) {
 }
 
 void Controller::update() {
+    if (pause) {
+        return;
+    }
+
     world.render();
     if(world.isDefiat()) {
         stopTimer();
@@ -88,5 +92,9 @@ int Controller::long_() const {
 
 void Controller::buttonPress() {
     world.reversClick();
+}
+
+void Controller::setPause(bool p){
+    pause = p;
 }
 

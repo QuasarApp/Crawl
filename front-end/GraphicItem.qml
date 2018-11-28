@@ -7,9 +7,17 @@ Rectangle {
     property string texture: (model) ? model.texture : "";
     property int guiId: (model) ? model.color : -1;
 
+    z:-1
     property double devX: width / 2
     property double devY: height / 2
 
+    Image {
+        id: name
+        visible: texture.length
+        source: texture
+
+        anchors.fill: parent;
+    }
 
     color: (model) ? model.color : "#11ff32";
 
