@@ -25,6 +25,7 @@ public:
     void setAngle(double angle) override;
     void render() override;
     void reset() override;
+    void unPause();
     ~Head() override;
 };
 

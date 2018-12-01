@@ -26,6 +26,8 @@ Item {
     property var model: (contr)? contr: null;
     property var arrayObjects: []
     property bool showMenu: false
+    property bool isPause: false
+
     function add (cppObjId) {
         if (!model) {
             console.log("create object fail")
@@ -44,7 +46,7 @@ Item {
         if (temp.status === Component.Ready) {
             var obj = temp.createObject(parent) // parent - это обьект на который будет помещен соззданный элемент
             obj.model = model.getGameObject(cppObjId);
-            obj.z = -1;
+            obj.z = -2;
             arrayObjects.push(obj)
         } else {
             console.log("wrong viewTemplate in model");
@@ -186,20 +188,56 @@ Item {
         anchors.topMargin: point
         z: 1
 
+        onClicked: {
+            showMenu = true;
+        }
+
         visible: !showMenu
     }
 
     Button {
         id: pause
 
-        text: "||"
+        text: (isPause)?  "▶" :"||"
 
         anchors.left: returnToMenu.right
         anchors.leftMargin: point
 
         anchors.top: parent.top
         anchors.topMargin: point
-        z: 1
+        z: returnToMenu.z
+
+        onClicked: {
+            isPause = !isPause;
+            if (model) model.setPause(isPause);
+        }
+
+        visible: !showMenu
+
+    }
+
+    Button {
+        id: long_
+        Label {
+            anchors.fill: parent;
+
+            textFormat: Text.AutoText
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignHCenter
+            wrapMode: Text.WordWrap
+
+            text: qsTr("lvl long: ") + ((model)? model.long_: "0")
+        }
+
+        width: 35 * point;
+        height: pause.height;
+
+        anchors.left: pause.right
+        anchors.leftMargin: point
+
+        anchors.top: parent.top
+        anchors.topMargin: point
+        z: returnToMenu.z
 
         visible: !showMenu
 
@@ -214,18 +252,18 @@ Item {
             horizontalAlignment: Text.AlignHCenter
             wrapMode: Text.WordWrap
 
-            text: qsTr("long: ") + (model)? model.long_: "0"
+            text: qsTr("general long: ") + ((model)? model.generalLong: "0")
         }
 
-        width: 15 * point;
-        height: pause.height;
+        width: 35 * point;
+        height: long_.height;
 
-        anchors.left: pause.right
+        anchors.left: long_.right
         anchors.leftMargin: point
 
         anchors.top: parent.top
         anchors.topMargin: point
-        z: 1
+        z: returnToMenu.z
 
         visible: !showMenu
 

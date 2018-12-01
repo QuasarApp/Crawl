@@ -46,6 +46,7 @@ public:
     void setRataticonDistance(double value);
     int getDeadTimer() const;
     void setDeadTimer(int value);
+    void unPause();
 };
 
 #endif // SNAKE_H

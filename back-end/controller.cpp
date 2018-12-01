@@ -15,9 +15,11 @@ bool Controller::nextLvl() {
     if (lvl + 1 >= lvls.size()) {
         return true;
     }
+    m_generalLong += static_cast<int>(world.getCurrentLong());
 
     generateDiff(world.init(lvls.value(++lvl)));
     startTimer();
+
 
     return false;
 }
@@ -62,6 +64,8 @@ void Controller::update() {
     }
 
     long_changed(static_cast<int>(world.getCurrentLong()));
+    generalLongchanged(generalLong());
+
 }
 
 void Controller::newGame() {
@@ -70,6 +74,7 @@ void Controller::newGame() {
 
     WorldRules newGameRules = lvls.first();
     lvl = 0;
+    m_generalLong = 0;
     generateDiff(world.init(newGameRules));
     startTimer();
 }
@@ -90,11 +95,18 @@ int Controller::long_() const {
     return static_cast<int>(world.getCurrentLong());
 }
 
+int Controller::generalLong() const {
+    return m_generalLong + long_();
+}
+
 void Controller::buttonPress() {
     world.reversClick();
 }
 
 void Controller::setPause(bool p){
     pause = p;
+    if (!pause) {
+        world.unPause();
+    }
 }
 

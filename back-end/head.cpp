@@ -13,19 +13,19 @@ void Head::render() {
 
     if (*speed < 1) {
         setColor(generalSpeadColor);
-        setRadius(static_cast<int>(m_w * 0.0));
+        setRadius(static_cast<int>(m_w * 0.1));
 
     } else if (*speed < normSpead) {
         setColor(normSpeadColor);
-        setRadius(static_cast<int>(m_w * 0.15));
+        setRadius(static_cast<int>(m_w * 0.2));
 
     } else if (*speed < fastSpead) {
         setColor(fastSpeadColor);
-        setRadius(static_cast<int>(m_w * 0.35));
+        setRadius(static_cast<int>(m_w * 0.3));
 
     } else if (*speed < megaFastSpead) {
         setColor(megaFastSpeadColor);
-        setRadius(static_cast<int>(m_w * 0.5));
+        setRadius(static_cast<int>(m_w * 0.4));
 
     }
 
@@ -33,6 +33,10 @@ void Head::render() {
 }
 
 void Head::reset() {
+}
+
+void Head::unPause() {
+    time = QDateTime::currentMSecsSinceEpoch();
 }
 
 Head::Head(double x, double y, double h, double w, double *spead):

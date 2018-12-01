@@ -15,6 +15,14 @@ const QVector<Head *> &Snake::getItems() const {
 
 void Snake::render() {
 
+    auto centerX = [](const Head* head) {
+        return head->x()/* + (head->w() / 2)*/;
+    };
+
+    auto centerY = [](const Head* head) {
+        return head->y() /*+ (head->h() / 2)*/;
+    };
+
     for (int i = items.length() - 1; i >= 0; --i) {
 
         if (dead) {
@@ -31,9 +39,10 @@ void Snake::render() {
                 }
                 isClick = false;
             }
-        }else  {
-            double _atan2 = atan2(items[i - 1]->rect().center().y() - items[i]->rect().center().y(),
-                    items[i - 1]->rect().center().x() - items[i]->rect().center().x()) * 180;
+        } else  {
+
+            double _atan2 = atan2(centerY(items[i - 1]) - centerY(items[i]),
+                    centerX(items[i - 1]) - centerX(items[i])) * 180;
 
             items[i]->setAngle(_atan2);
         }
@@ -59,6 +68,12 @@ void Snake::setRataticonDistance(double value) {
     rataticonDistance = value;
 }
 
+void Snake::unPause() {
+    for ( int i = 0; i < items.size(); ++i ) {
+        items[i]->unPause();
+    }
+}
+
 double Snake::sizeByLvl(double lvl , int count) const {
     double maxSize = 9;
     double minSize = 5;
@@ -66,34 +81,32 @@ double Snake::sizeByLvl(double lvl , int count) const {
     double pos = (1 - (lvl / count));
 
     QList<QPair<double, double>> snakeGradientSize {
-        {1, 4},
-        {0.9, 7},
-        {0.7, 5},
-        {0.5, 6},
+        {1, 5},
+        {0.99, 7},
+        {0.9, 5},
+        {0.8, 6},
         {0.0, 3}
     };
 
-    double localPos = 0;
+    double local = 0;
     int index = 0;
 
     while (index + 1 < snakeGradientSize.size()
            && pos <= snakeGradientSize[index].first) {
 
-        maxSize = std::max(snakeGradientSize[index].second,
-                           snakeGradientSize[index + 1].second);
+        maxSize = snakeGradientSize[index].second;
+        minSize = snakeGradientSize[index + 1].second;
 
-        minSize = std::min(snakeGradientSize[index].second,
-                           snakeGradientSize[index + 1].second);
+        auto range = snakeGradientSize[index].first -
+                snakeGradientSize[index + 1].first;
 
-        auto range = snakeGradientSize[index].first - snakeGradientSize[index + 1].first;
-
-        localPos = ( range - (snakeGradientSize[index].first - pos)) /
+        local = ( range - (snakeGradientSize[index].first - pos)) /
                    range;
 
         index++;
     }
 
-    return localPos * (maxSize - minSize) + minSize;
+    return local * (maxSize - minSize) + minSize;
 }
 
 void Snake::changeCountObjects(int count) {

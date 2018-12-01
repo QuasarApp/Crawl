@@ -42,6 +42,7 @@ public:
     void reversClick();
     double getCurrentLong() const;
     QMultiMap<QString, ItemWorld *> getItems() const;
+    void unPause();
 };
 
 #endif // WORLD_H

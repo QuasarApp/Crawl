@@ -13,6 +13,7 @@ class Controller : public QObject
     Q_OBJECT
 
     Q_PROPERTY(int long_ READ long_ NOTIFY long_changed)
+    Q_PROPERTY(int generalLong READ generalLong NOTIFY generalLongchanged)
 
 private:
     World world;
@@ -22,12 +23,17 @@ private:
     QMap<int, GuiObject *> objectsContainer;
 
     void generateDiff(const QMap<int, GuiObject *> &);
+
+    int m_generalLong = 0;
+
 public:
     Controller();
     void startTimer();
     void stopTimer();
 
     int long_() const;
+
+    int generalLong() const;
 
 public slots:
     void buttonPress();
@@ -69,6 +75,7 @@ signals:
      */
     void gameObjectsChanged(const Diff &dif);
     void long_changed(int m_long);
+    void generalLongchanged(int generalLong);
 };
 
 #endif // CONTROLLER_H

@@ -27,6 +27,11 @@ QMultiMap<QString, ItemWorld *> World::getItems() const
     return items;
 }
 
+void World::unPause() {
+    time = QDateTime::currentMSecsSinceEpoch();
+    snake.unPause();
+}
+
 void World::clearItems() {
     for (auto i : items) {
         delete i;
