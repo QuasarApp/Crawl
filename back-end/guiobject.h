@@ -14,6 +14,8 @@ class GuiObject:public QObject, public BaseClass
     Q_PROPERTY(double angle READ angle NOTIFY angleChanged)
     Q_PROPERTY(QString texture READ texture NOTIFY textureChanged)
     Q_PROPERTY(int guiId READ guiId NOTIFY guiIdChanged)
+    Q_PROPERTY(QString viewTemplate READ viewTemplate NOTIFY viewTemplateChanged)
+    Q_PROPERTY(int radius READ radius WRITE setRadius NOTIFY radiusChanged)
 
     Q_PROPERTY(double x READ x NOTIFY xChanged)
     Q_PROPERTY(double y READ y NOTIFY yChanged)
@@ -22,23 +24,25 @@ class GuiObject:public QObject, public BaseClass
 
 private:
     void generateId();
+    QString m_viewTemplate;
 
 protected:
-    int m_guiId;
-    double m_angle;
-    QString m_texture;
-    QString m_color;
+    int m_guiId = -1;
+    double m_angle = 0;
+    QString m_texture = "";
+    QString m_color = "";
+    int m_radius = 0;
 
-    double m_x;
-    double m_y;
-    double m_w;
-    double m_h;
+    double m_x = 0;
+    double m_y = 0;
+    double m_w = 0;
+    double m_h = 0;
 
     void setTexture(const QString &texture);
 
 
 public:
-    GuiObject(QObject *ptr = nullptr);
+    GuiObject(const QString& viewTempalte = "GraphicItem", QObject *ptr = nullptr);
 
     double angle() const;
     QString texture() const;
@@ -64,6 +68,12 @@ public:
     void setH(double h);
 
     virtual void reset();
+    int radius() const;
+    QString viewTemplate() const;
+
+public slots:
+
+    void setRadius(int radius);
 
 signals:
     void angleChanged(double angle);
@@ -74,6 +84,8 @@ signals:
     void yChanged(double y);
     void wChanged(double w);
     void hChanged(double h);
+    void radiusChanged(int radius);
+    void viewTemplateChanged(QString viewTemplate);
 };
 
 #endif // GUIOBJECT_H

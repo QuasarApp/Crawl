@@ -28,8 +28,8 @@ Item {
             spacing: 4
             focusPolicy: Qt.StrongFocus
             display: AbstractButton.TextBesideIcon
-            Layout.preferredHeight: 75
-            Layout.preferredWidth: 500
+            Layout.preferredHeight: item1.height / 5
+            Layout.preferredWidth: item1.height * 0.8
 
             onClicked: {
                 paly();
@@ -43,8 +43,8 @@ Item {
             text: qsTr("Select level")
             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
             font.pixelSize: 20
-            Layout.preferredWidth: 500
-            Layout.preferredHeight: 75
+            Layout.preferredHeight: item1.height / 5
+            Layout.preferredWidth: item1.height * 0.8
             spacing: 2
         }
 
@@ -53,8 +53,8 @@ Item {
             text: qsTr("Exit")
             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
             font.pixelSize: 20
-            Layout.preferredHeight: 75
-            Layout.preferredWidth: 500
+            Layout.preferredHeight: item1.height / 5
+            Layout.preferredWidth: item1.height * 0.8
 
             onClicked: {
                 Qt.quit();

@@ -6,6 +6,23 @@ import QtQuick.Layouts 1.3
 Item {
     id: scene;
     z: -2
+
+    Rectangle {
+        id: background;
+        color: "#ffffff"
+        anchors.fill: parent;
+
+        Behavior on color {
+
+            ColorAnimation {
+                duration: 5000
+            }
+        }
+
+        z: -3
+
+    }
+
     property var model: (contr)? contr: null;
     property var arrayObjects: []
     property bool showMenu: false
@@ -14,16 +31,23 @@ Item {
             console.log("create object fail")
             return;
         }
+        var objModel = model.getGameObject(cppObjId);
 
-        var temp = Qt.createComponent("GraphicItem.qml")
+        if (!objModel) {
+            console.log("object model not found");
+            return;
+        }
+
+        var viewTemplate = objModel.viewTemplate;
+
+        var temp = Qt.createComponent( viewTemplate + ".qml")
         if (temp.status === Component.Ready) {
             var obj = temp.createObject(parent) // parent - это обьект на который будет помещен соззданный элемент
             obj.model = model.getGameObject(cppObjId);
-            if (!obj.model) {
-                console.log("object model not found");
-                return;
-            }
+            obj.z = -1;
             arrayObjects.push(obj)
+        } else {
+            console.log("wrong viewTemplate in model");
         }
     }
 
@@ -48,6 +72,21 @@ Item {
         showMenu = (auto && model)
         autoTimer.running = auto && model;
     }
+
+    function updateBackgroundColor(lvl) {
+        switch(lvl % 7) {
+        case 0: background.color = "#d6eaf8"; break;
+        case 1: background.color = "#d0ece7"; break;
+        case 2: background.color = "#d4efdf"; break;
+        case 3: background.color = "#fcf3cf"; break;
+        case 4: background.color = "#f6ddcc"; break;
+        case 5: background.color = "#f2d7d5"; break;
+        case 6: background.color = "#ebdef0"; break;
+        case 7: background.color = "#fbfcfc"; break;
+
+        }
+    }
+
 
     Timer {
         id :autoTimer;
@@ -83,9 +122,11 @@ Item {
         }
 
         onFinished: {
+
             var isVictory = victory;
             var gameLvl = lvl + 1;
             var dist = distance;
+            updateBackgroundColor(gameLvl);
 
             if (isVictory ) {
 
@@ -101,6 +142,10 @@ Item {
                 showMenu = true;
             }
         }
+    }
+
+    Component.onCompleted: {
+        updateBackgroundColor(0);
     }
 
     MouseArea {

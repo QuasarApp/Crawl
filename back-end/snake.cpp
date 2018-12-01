@@ -59,12 +59,54 @@ void Snake::setRataticonDistance(double value) {
     rataticonDistance = value;
 }
 
+double Snake::sizeByLvl(double lvl , int count) const {
+    double maxSize = 9;
+    double minSize = 5;
+
+    double pos = (1 - (lvl / count));
+
+    QList<QPair<double, double>> snakeGradientSize {
+        {1, 4},
+        {0.9, 7},
+        {0.7, 5},
+        {0.5, 6},
+        {0.0, 3}
+    };
+
+    double localPos = 0;
+    int index = 0;
+
+    while (index + 1 < snakeGradientSize.size()
+           && pos <= snakeGradientSize[index].first) {
+
+        maxSize = std::max(snakeGradientSize[index].second,
+                           snakeGradientSize[index + 1].second);
+
+        minSize = std::min(snakeGradientSize[index].second,
+                           snakeGradientSize[index + 1].second);
+
+        auto range = snakeGradientSize[index].first - snakeGradientSize[index + 1].first;
+
+        localPos = ( range - (snakeGradientSize[index].first - pos)) /
+                   range;
+
+        index++;
+    }
+
+    return localPos * (maxSize - minSize) + minSize;
+}
+
 void Snake::changeCountObjects(int count) {
     if (count > 0) {
         double margin = 60.0 / count;
         for ( int i = 0; i < count; ++i ) {
+
+            auto size = sizeByLvl(i, count);
             auto obj = new Head(margin * (count - i),
-                                50, 7, 7, this->speed);
+                                50, size, size,
+                                this->speed);
+
+            obj->setY(50 + obj->h() / 2);
 
             items.push_back(obj);
         }
@@ -115,7 +157,7 @@ void Snake::resetPosotion() {
 
     for ( int i = 0; i < items.size(); ++i ) {
         items[i]->setX(margin * (items.size() - i));
-        items[i]->setY(50);
+        items[i]->setY(50 + items[i]->h() / 2);
         items[i]->setAngle(0);
     }
 }

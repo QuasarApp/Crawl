@@ -1,18 +1,20 @@
 #include "background.h"
 
 BackGround::BackGround(double x, double y): ItemWorld (x, y) {
-    this->setSize(200, 4000);
-    this->setTexture("qrc:/texture/box-texture");
+    this->setSize(200, 400);
+    this->setTexture("qrc:/texture/asphalt");
     setBeckGroundObject(true);
 }
 
 void BackGround::render() {
-    if (m_x + w() < 0) {
-        m_x = w() * 0.5;
-        emit xChanged(m_x);
+    auto wPart = w() / 2;
+
+    if (m_x + wPart < 200) {
+        setX(wPart);
     }
 }
 
 void BackGround::reset() {
-   setX(-10 - (m_x + w()));
+   setX(0 - w());
+   render();
 }

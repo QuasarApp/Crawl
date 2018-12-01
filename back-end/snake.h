@@ -20,6 +20,7 @@ private:
     bool isClick = false;
     int countClick = 0;
     bool dead = false;
+    double sizeByLvl(double lvl, int count) const;
     void changeCountObjects(int count);
 
     double checDistance(int i);

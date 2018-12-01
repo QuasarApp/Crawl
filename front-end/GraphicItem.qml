@@ -5,7 +5,7 @@ Rectangle {
     property var model: null
     property real angle: (model) ? model.angle : 0;
     property string texture: (model) ? model.texture : "";
-    property int guiId: (model) ? model.color : -1;
+    property int guiId: (model) ? model.guiId : -1;
 
     z:-1
     property double devX: width / 2
@@ -26,6 +26,8 @@ Rectangle {
 
     x: (model) ? model.x * mainWindow.point - devX: 0;
     y: (model) ? model.y * mainWindow.point - devY: 0;
+
+    radius: (model) ? model.radius * mainWindow.point : 0;
 
     transform: Rotation {
         origin.x: devX;

@@ -6,7 +6,8 @@
 
 #define POINT 100
 
-ItemWorld::ItemWorld(double x, double y) {
+ItemWorld::ItemWorld(double x, double y, const QString& guiTemplate):
+    GuiObject (guiTemplate) {
     setLoc(x, y);
 }
 
@@ -25,7 +26,7 @@ void ItemWorld::setLoc(double x, double y) {
 }
 
 void ItemWorld::render() {
-    if (m_x < 0) {
+    if (m_x + w() < 0) {
         m_x = (rand() % 400) + 200;
         m_y = rand() % 100;
         emit xChanged(m_x);

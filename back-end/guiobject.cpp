@@ -1,7 +1,8 @@
 #include "guiobject.h"
 
-GuiObject::GuiObject(QObject *ptr):
+GuiObject::GuiObject(const QString &viewTempalte, QObject *ptr):
     QObject (ptr) {
+    m_viewTemplate = viewTempalte;
     generateId();
 
 }
@@ -71,6 +72,22 @@ void GuiObject::setH(double h) {
 void GuiObject::reset() {
     setX(-1);
     setY(-1);
+}
+
+int GuiObject::radius() const {
+    return m_radius;
+}
+
+QString GuiObject::viewTemplate() const {
+    return m_viewTemplate;
+}
+
+void GuiObject::setRadius(int radius) {
+    if (m_radius == radius)
+        return;
+
+    m_radius = radius;
+    emit radiusChanged(m_radius);
 }
 
 void GuiObject::setW(double w) {

@@ -67,7 +67,7 @@ QMap<int, GuiObject *> World::init(WorldRules rules) {
 
     QMap<int, GuiObject*> res;
 
-    rules["BackGround"] = 1;
+//    rules["BackGround"] = 1;
 
     currentLong = -1;
     for (auto i = rules.begin(); i != rules.end(); ++i) {
@@ -83,7 +83,7 @@ QMap<int, GuiObject *> World::init(WorldRules rules) {
         }
     }
 
-    auto snakeItems = snake.init(10, &spead);
+    auto snakeItems = snake.init(20, &spead);
 
     for (auto i = snakeItems.begin(); i != snakeItems.end(); ++i) {
         res.insert(i.key(), i.value());

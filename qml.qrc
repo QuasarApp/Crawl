@@ -7,10 +7,9 @@
         <file>front-end/Scene.qml</file>
         <file>front-end/Image.qml</file>
         <file>front-end/NotificationForm.qml</file>
+        <file>front-end/SnakeItem.qml</file>
     </qresource>
     <qresource prefix="/texture">
-        <file alias="box-texture">img/box-texture.png</file>
         <file alias="up">img/up.svg</file>
-        <file alias="settings">img/Settings-icon.png</file>
     </qresource>
 </RCC>

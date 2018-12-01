@@ -7,7 +7,7 @@
 Controller::Controller() {
     srand(static_cast<unsigned int>(time(nullptr)));
     timer = new QTimer();
-    timer->setInterval(33);
+    timer->setInterval(1);
     connect(timer, SIGNAL(timeout()), this, SLOT(update()));
 }
 
