@@ -81,8 +81,7 @@ double Snake::sizeByLvl(double lvl , int count) const {
     double pos = (1 - (lvl / count));
 
     QList<QPair<double, double>> snakeGradientSize {
-        {1, 5},
-        {0.99, 7},
+        {1, 7},
         {0.9, 5},
         {0.8, 6},
         {0.0, 3}
@@ -116,7 +115,7 @@ void Snake::changeCountObjects(int count) {
 
             auto size = sizeByLvl(i, count);
             auto obj = new Head(margin * (count - i),
-                                50, size, size,
+                                50, size , size,
                                 this->speed);
 
             obj->setY(50 + obj->h() / 2);

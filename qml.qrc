@@ -12,4 +12,8 @@
     <qresource prefix="/texture">
         <file alias="up">img/up.svg</file>
     </qresource>
+    <qresource prefix="/logo">
+        <file alias="logo">img/logo.png</file>
+        <file alias="icon">img/icon.ico</file>
+    </qresource>
 </RCC>

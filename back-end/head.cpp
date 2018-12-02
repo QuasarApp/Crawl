@@ -13,15 +13,15 @@ void Head::render() {
 
     if (*speed < 1) {
         setColor(generalSpeadColor);
-        setRadius(static_cast<int>(m_w * 0.1));
+        setRadius(static_cast<int>(m_w * 0.4));
 
     } else if (*speed < normSpead) {
         setColor(normSpeadColor);
-        setRadius(static_cast<int>(m_w * 0.2));
+        setRadius(static_cast<int>(m_w * 0.5));
 
     } else if (*speed < fastSpead) {
         setColor(fastSpeadColor);
-        setRadius(static_cast<int>(m_w * 0.3));
+        setRadius(static_cast<int>(m_w * 0.5));
 
     } else if (*speed < megaFastSpead) {
         setColor(megaFastSpeadColor);
