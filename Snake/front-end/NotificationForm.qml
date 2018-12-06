@@ -3,38 +3,10 @@ import QtQuick.Controls 2.3
 import QtQuick.Controls.Material 2.0
 import QtQuick.Layouts 1.3
 
-Popup {
+BasePopUp {
     id : popup
-    width: 200
-    height: 100
-    x: 0
-    y: 0
-    transformOrigin: Item.Center
-
-    property bool autoClose: true
-    property int closeInterval: 15000;
-    property int margin : 0
-
-    NumberAnimation {
-        id: animation;
-        target: popup
-        property: "opacity"
-        easing.period: 0.33
-        easing.amplitude: 1
-        duration: 2000
-        easing.type: Easing.OutElastic
-
-        onStopped: {
-            if (to < 1)
-                close();
-        }
-    }
 
     function show(title_, message_, img_) {
-        animation.from = 0;
-        animation.to = 1;
-        animation.start();
-
         title.text = title_;
         message.text = message_;
         if (img_) {
@@ -43,33 +15,14 @@ Popup {
             image.source = "";
         }
 
-        if (autoClose) {
-            timerAnimation.start();
-        }
-
-        open();
-    }
-
-    Timer {
-        id: timerAnimation;
-        running: false;
-        repeat: false;
-
-        onTriggered: {
-            animation.from = 1;
-            animation.to = 0;
-            animation.start();
-        }
-    }
-
-    onClosed: {
-        opacity = 0;
+        _show();
     }
 
     Page {
         id: page
         title: "Level Up!!!"
         anchors.fill: parent
+
 
         Label {
             id: title
@@ -132,7 +85,6 @@ Popup {
             }
         }
     }
-    closePolicy: Popup.NoAutoClose
 
 
 }

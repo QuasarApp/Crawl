@@ -40,12 +40,16 @@ Item {
 
         Button {
             id: level
-            text: qsTr("Select level")
+            text: qsTr("My Status")
             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
             font.pixelSize: 20
             Layout.preferredHeight: item1.height / 5
             Layout.preferredWidth: item1.height * 0.8
             spacing: 2
+
+            onClicked: {
+//                rec._show();
+            }
         }
 
         Button {
@@ -73,7 +77,32 @@ Item {
         anchors.rightMargin: 23
         anchors.top: parent.top
         anchors.topMargin: 20
+
+        onClicked: {
+            about._show();
+        }
     }
+
+
+    PagePopUp {
+        id: about;
+        width: parent.width / 2
+        height: parent.height / 2;
+        x: parent.width / 2 - width / 2
+        y: parent.height / 2 - height / 2
+
+        source: "About.qml"
+    }
+
+//    PagePopUp {
+//        id: rec;
+//        width: parent.width / 2
+//        height: parent.height / 2;
+//        x: parent.width / 2 - width / 2
+//        y: parent.height / 2 - height / 2
+
+//        source: "RecordsPage.qml"
+//    }
 
 }
 

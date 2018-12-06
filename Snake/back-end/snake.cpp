@@ -81,9 +81,10 @@ double Snake::sizeByLvl(double lvl , int count) const {
     double pos = (1 - (lvl / count));
 
     QList<QPair<double, double>> snakeGradientSize {
-        {1, 7},
-        {0.9, 5},
-        {0.8, 6},
+        {1, 4},
+        {0.99, 7},
+        {0.8, 5},
+        {0.6, 6},
         {0.0, 3}
     };
 
