@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Installer>
+    <WizardDefaultWidth>640px</WizardDefaultWidth>
+    <WizardDefaultHeight>400px</WizardDefaultHeight>
+    <Name>Noisier</Name>
+    <Version>1.0.0</Version>
+    <Title>Noisier</Title>
+    <Publisher>SKB</Publisher>
+    <StartMenuDir>Noisier</StartMenuDir>
+    <TargetDir>fromScript</TargetDir>
+    <CreateLocalRepository>true</CreateLocalRepository>
+    <InstallActionColumnVisible>true</InstallActionColumnVisible>
+    <RemoveTargetDir>true</RemoveTargetDir>
+    <ControlScript>controlScript.js</ControlScript>
+    <MaintenanceToolName>Uninstall</MaintenanceToolName>
+    <WizardStyle>Aero</WizardStyle>
+    <Logo>Noisier.png</Logo>
+    <RunProgram>@TargetDir@/NoisierStart.exe</RunProgram>
+</Installer>
