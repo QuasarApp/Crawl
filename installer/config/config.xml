@@ -2,18 +2,18 @@
 <Installer>
     <WizardDefaultWidth>640px</WizardDefaultWidth>
     <WizardDefaultHeight>400px</WizardDefaultHeight>
-    <Name>Noisier</Name>
+    <Name>Snake</Name>
     <Version>1.0.0</Version>
-    <Title>Noisier</Title>
+    <Title>Snake</Title>
     <Publisher>SKB</Publisher>
-    <StartMenuDir>Noisier</StartMenuDir>
-    <TargetDir>fromScript</TargetDir>
+    <StartMenuDir>Snake</StartMenuDir>
+    <TargetDir>@HomeDir@/Snake</TargetDir>
     <CreateLocalRepository>true</CreateLocalRepository>
     <InstallActionColumnVisible>true</InstallActionColumnVisible>
     <RemoveTargetDir>true</RemoveTargetDir>
     <ControlScript>controlScript.js</ControlScript>
     <MaintenanceToolName>Uninstall</MaintenanceToolName>
     <WizardStyle>Aero</WizardStyle>
-    <Logo>Noisier.png</Logo>
-    <RunProgram>@TargetDir@/NoisierStart.exe</RunProgram>
+    <Logo>icon.png</Logo>
+    <RunProgram>@TargetDir@/Snake.exe</RunProgram>
 </Installer>

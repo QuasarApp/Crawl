@@ -1,10 +1,13 @@
 QT_DIR = $$dirname(QMAKE_QMAKE)
-QML_DIR = $$PWD/../NoisierGui/QML
-QT_BASE_DIR = $$QT_DIR/../
+QML_DIR = $$PWD/../Snake
+DEPLOY_TARGET = $$PWD/../Snake/build/release
+
 LUPDATE = $$QT_DIR/lupdate
 LRELEASE = $$QT_DIR/lrelease
 
-WINDEPLOY = $$QT_DIR/windeployqt.exe
+win32:DEPLOYER = $$PWD/../CQtDeployer/build/release/cqtdeployer.exe
+unix:DEPLOYER = $$PWD/../CQtDeployer/build/release/cqtdeployer.exe
+
 
 OUT_FILE = installer
 
@@ -78,15 +81,7 @@ for(command, commands) {
     system($$command)|error("Failed to run: $$command")
 }
 
-
-win32:deploy_depends.commands = $$WINDEPLOY --qmldir $$QML_DIR $$PWD/packages/Noisier/data/NoisierStart.exe & $$WINDEPLOY --qmldir $$QML_DIR $$PWD/packages/Noisier/data/NoisierDevice.dll
-
-
-unix:deploy_depends.commands = python \
-                             $$PWD/linuxQtDeploy.py \
-                             $$PWD/packages/Noisier/data/NoisierStart \
-                             --qt-base-dir  $$QT_BASE_DIR \
-                             --qml-scan-dir $$QML_DIR
+deploy_depends.commands = "$$DEPLOYER -bin $$DEPLOY_TARGET -qmlDir $$QML_DIR clear -qmake $$QMAKE_QMAKE"
 
 create_installer.commands = $$EXEC \
                                -c $$PWD/config/config.xml \

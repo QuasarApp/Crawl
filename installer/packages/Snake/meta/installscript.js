@@ -43,7 +43,7 @@ Component.prototype.createOperations = function()
 
             console.log("create icons!!! on Windows");
             component.addOperation("CreateShortcut",
-                                   "@TargetDir@/@Name@.exe",
+                                   "@TargetDir@/snake.exe",
                                    "@DesktopDir@/@Name@.lnk");
         }
 
@@ -56,7 +56,7 @@ Component.prototype.createOperations = function()
                                    "Version=@Version@\n
                                     Type=Application\n
                                     Terminal=false\n
-                                    Exec=@TargetDir@/@Name@.sh\n
+                                    Exec=@TargetDir@/snake.sh\n
                                     Name=@Name@\n
                                     Icon=@TargetDir@/icons/icon.png\n
                                     Name[en_US]=@Name@");
