@@ -5,9 +5,9 @@ DEPLOY_TARGET = $$PWD/../Snake/build/release
 LUPDATE = $$QT_DIR/lupdate
 LRELEASE = $$QT_DIR/lrelease
 
-win32:DEPLOYER = $$PWD/../CQtDeployer/build/release/cqtdeployer.exe
-unix:DEPLOYER = $$PWD/../CQtDeployer/build/release/cqtdeployer.exe
-
+win32:DEPLOYER = $$PWD/../CQtDeployer/distro/cqtdeployer.exe
+unix:DEPLOYER = $$PWD/../CQtDeployer/distro/cqtdeployer
+#QMAKE_LFLAGS += --rpath=$$PWD/../CQtDeployer/distro/cqtdeployer
 
 OUT_FILE = installer
 
@@ -81,7 +81,7 @@ for(command, commands) {
     system($$command)|error("Failed to run: $$command")
 }
 
-deploy_depends.commands = "$$DEPLOYER -bin $$DEPLOY_TARGET -qmlDir $$QML_DIR clear -qmake $$QMAKE_QMAKE"
+deploy_depends.commands = $$DEPLOYER -bin $$DEPLOY_TARGET -qmlDir $$QML_DIR clear -qmake $$QMAKE_QMAKE
 
 create_installer.commands = $$EXEC \
                                -c $$PWD/config/config.xml \
@@ -104,6 +104,8 @@ OTHER_FILES += \
     $$PWD/packages/Snake/meta/installscript.js \
     $$PWD/packages/Snake/meta/ru.ts
 
+deploy_depends.depends = install
+create_installer.depends = deploy_depends
 
 QMAKE_EXTRA_TARGETS += \
     deploy_depends \

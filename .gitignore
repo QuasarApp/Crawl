@@ -35,8 +35,11 @@ qrc_*.cpp
 ui_*.h
 Makefile*
 *build-*
-
+*_qml.cpp
 *.snap
+*.qm
+qml_qmlcache.qrc
+qmlcache_loader.cpp
 snake
 
 # QtCreator
