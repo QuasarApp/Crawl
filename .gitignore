@@ -45,6 +45,7 @@ snake
 # QtCreator
 installer/HanoiTowersInstaller
 *.autosave
+installer/installer
 
 # QtCtreator Qml
 *.qmlproject.user
@@ -52,5 +53,5 @@ installer/HanoiTowersInstaller
 
 # QtCtreator CMake
 CMakeLists.txt.user*
-
+installer/packages/Snake/data
 \.buildconfig

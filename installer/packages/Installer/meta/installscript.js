@@ -1,15 +1,6 @@
 // Constructor
 function Component()
 {
-    installer.setValue("DefTargetDir", target);
-    installer.setValue("TargetDir", target);
-
-    console.log("target dir = " + target)
-
-
-    component.loaded.connect(this, Component.prototype.installerLoaded);
-    installer.setDefaultPageVisible(QInstaller.TargetDirectory, false);
-
     generateTr();
 }
 

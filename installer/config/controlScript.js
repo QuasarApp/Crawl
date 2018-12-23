@@ -12,15 +12,15 @@ function Controller()
 function generateTr() {
     console.log("generate tr start ")
 
-    installer.setValue("Name", qsTr("Noisier"));
-    installer.setValue("Title", qsTr("Install Noisier"));
+    installer.setValue("Name", qsTr("Snake"));
+    installer.setValue("Title", qsTr("Install Snake"));
 }
 
 function runProgramm() {
     if (systemInfo.kernelType === "winnt") {
-        installer.setValue("RunProgram", "@TargetDir@/Snake.exe")
+        installer.setValue("RunProgram", "@TargetDir@/snake.exe")
     } else {
-        installer.setValue("RunProgram", "@TargetDir@/Snake.sh")
+        installer.setValue("RunProgram", "@TargetDir@/snake.sh")
     }
 }
 

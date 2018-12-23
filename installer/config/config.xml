@@ -13,7 +13,9 @@
     <RemoveTargetDir>true</RemoveTargetDir>
     <ControlScript>controlScript.js</ControlScript>
     <MaintenanceToolName>Uninstall</MaintenanceToolName>
-    <WizardStyle>Aero</WizardStyle>
-    <Logo>icon.png</Logo>
+    <WizardStyle>Classic</WizardStyle>
+    <StyleSheet>style.css</StyleSheet>
+    <Banner>banner.png</Banner>
+    <Logo>logo.png</Logo>
     <RunProgram>@TargetDir@/Snake.exe</RunProgram>
 </Installer>

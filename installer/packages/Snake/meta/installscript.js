@@ -58,7 +58,7 @@ Component.prototype.createOperations = function()
                                     Terminal=false\n
                                     Exec=@TargetDir@/snake.sh\n
                                     Name=@Name@\n
-                                    Icon=@TargetDir@/icons/icon.png\n
+                                    Icon=@TargetDir@/logo.png\n
                                     Name[en_US]=@Name@");
 
             console.log("create icons!!! on LINUX done");
