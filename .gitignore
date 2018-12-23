@@ -35,13 +35,17 @@ qrc_*.cpp
 ui_*.h
 Makefile*
 *build-*
-
+*_qml.cpp
 *.snap
+*.qm
+qml_qmlcache.qrc
+qmlcache_loader.cpp
 snake
 
 # QtCreator
 installer/HanoiTowersInstaller
 *.autosave
+installer/installer
 
 # QtCtreator Qml
 *.qmlproject.user
@@ -49,5 +53,5 @@ installer/HanoiTowersInstaller
 
 # QtCtreator CMake
 CMakeLists.txt.user*
-
+installer/packages/Snake/data
 \.buildconfig
