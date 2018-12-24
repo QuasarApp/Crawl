@@ -17,5 +17,5 @@
     <StyleSheet>style.css</StyleSheet>
     <Banner>banner.png</Banner>
     <Logo>logo.png</Logo>
-    <RunProgram>@TargetDir@/Snake.exe</RunProgram>
+    <RunProgram>@TargetDir@/snake.exe</RunProgram>
 </Installer>

@@ -5,7 +5,7 @@ DEPLOY_TARGET = $$PWD/../Snake/build/release
 LUPDATE = $$QT_DIR/lupdate
 LRELEASE = $$QT_DIR/lrelease
 
-win32:DEPLOYER = $$PWD/../CQtDeployer/distro/cqtdeployer.exe
+win32:DEPLOYER = $$PWD/cqtdeployer/cqtdeployer.exe
 unix:DEPLOYER = $$PWD/../CQtDeployer/distro/cqtdeployer.sh
 
 OUT_FILE = installer

@@ -5,12 +5,13 @@
     <name>controlScript</name>
     <message>
         <location filename="controlScript.js" line="15"/>
-        <source>Noisier</source>
+        <source>Snake</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="controlScript.js" line="16"/>
-        <source>Install Noisier</source>
+        <source>Install Snake</source>
+        <oldsource>Install Noisier</oldsource>
         <translation type="unfinished"></translation>
     </message>
 </context>
