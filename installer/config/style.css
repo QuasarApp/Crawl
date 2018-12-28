@@ -30,7 +30,7 @@
 
 
 .QProgressBar {
-    background: "#b1dbff";
+    background: "#b1dbcc";
     border: 1px solid #dddddd;
     border-radius: 2px;
     padding: 0;
@@ -41,7 +41,7 @@
 }
 
 .QProgressBar::chunk {
-    background: "#16dbff";
+    background: "#16dbcc";
     border-radius: 2px;
     margin: 0;
 }
