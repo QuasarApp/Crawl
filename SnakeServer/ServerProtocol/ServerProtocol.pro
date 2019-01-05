@@ -5,7 +5,7 @@
 #-------------------------------------------------
 
 QT       -= gui
-
+QT       += network
 TARGET = ServerProtocol
 TEMPLATE = lib
 
@@ -36,11 +36,13 @@ DISTFILES += \
     ServerProtocol.pri
 
 SOURCES += \
-        serverprotocol.cpp \
-    serverutils.cpp
+    serverutils.cpp \
+    server.cpp \
+    serverprotocol.cpp
 
 HEADERS += \
         serverprotocol.h \
         serverprotocol_global.h \ 
-    serverutils.h
+    serverutils.h \
+    server.h
 
