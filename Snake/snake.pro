@@ -48,7 +48,8 @@ QML_DESIGNER_IMPORT_PATH =
 include($$PWD/../QuasarAppLib/Etalons/qmake/install_prefix.pri)
 include($$PWD/../QuasarAppLib/QuasarLib.pri)
 
-target_dir.files += QUASARAPP_LIB_OUTPUT_DIR
+install_data.files += $$QUASARAPP_LIB_OUTPUT_DIR/$$libfiletype
+install_data.files += $$DESTDIR/$$runfiletype
 
 
 HEADERS += \

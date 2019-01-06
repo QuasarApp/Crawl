@@ -5,6 +5,8 @@ import QtQuick.Layouts 1.3
 
 Page {
 
+    signal close();
+
     title: "Page"
     header: Rectangle {
         height: parent.height * 0.1

@@ -6,7 +6,7 @@
 *.a
 *.la
 *.lai
-*.so
+*.so*
 *.dll
 *.dylib
 *.exe
@@ -55,3 +55,9 @@ installer/installer
 CMakeLists.txt.user*
 installer/packages/Snake/data
 \.buildconfig
+
+SnakeServer/Daemon/build/*
+
+SnakeServer/Client/build/*/Client
+
+SnakeServer/Daemon/build/*/Daemon
