@@ -2,9 +2,7 @@
 
 
 ServerProtocol::Header::Header() {
-    size = 0;
-    command = undefined;
-    type = Responke;
+    reset();
 }
 
 bool ServerProtocol::Header::isValid() const {
@@ -26,6 +24,16 @@ bool ServerProtocol::Header::isValid() const {
     }
 }
 
+void ServerProtocol::Header::reset() {
+    size = 0;
+    command = undefined;
+    type = Responke;
+}
+
+ServerProtocol::Package::Package() {
+    reset();
+}
+
 bool ServerProtocol::Package::isValid() const {
     if (!hdr.isValid()) {
         return false;
@@ -43,7 +51,7 @@ QVariantMap ServerProtocol::Package::parse() const {
     switch (hdr.command) {
     case ping: {
         if (hdr.type == Responke) {
-            res["value"] = "Pong";
+            res["res"] = "Pong";
         } else {
             res["value"] = "Ping";
         }
@@ -65,5 +73,10 @@ QByteArray ServerProtocol::Package::toBytes() const {
 
     res.append(data);
     return res;
+}
+
+void ServerProtocol::Package::reset() {
+    hdr.reset();
+    data.clear();
 }
 

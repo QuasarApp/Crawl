@@ -1,3 +1,5 @@
+#include "sarverdaemon.h"
+
 #include <QCoreApplication>
 #include <serverutils.h>
 #include <quasarapp.h>
@@ -15,11 +17,13 @@ int main(int argc, char *argv[])
         return 0;
     }
 
-    if (ServerUtils::runDaemon()) {
-        
+    if(ServerUtils::runDaemon()) {
+        return 0;
     }
 
     QCoreApplication a(argc, argv);
+
+    SarverDaemon loclaServer;
 
     return a.exec();
 }

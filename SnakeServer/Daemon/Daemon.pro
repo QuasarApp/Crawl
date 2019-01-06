@@ -1,4 +1,5 @@
 QT -= gui
+QT += network
 
 CONFIG += c++17 console
 CONFIG -= app_bundle
@@ -15,7 +16,10 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-        main.cpp
+        main.cpp \
+    sarverdaemon.cpp
+
+TARGET = SnakeServer-daemon
 
 CONFIG(release, debug|release): {
     DESTDIR = $$PWD/build/release
@@ -31,3 +35,6 @@ include($$PWD/../ServerProtocol/ServerProtocol.pri)
 install_data.files += $$QUASARAPP_LIB_OUTPUT_DIR/$$libfiletype
 install_data.files += $$SERVERPROTOCOL_LIB_OUTPUT_DIR/$$libfiletype
 install_data.files += $$DESTDIR/$$runfiletype
+
+HEADERS += \
+    sarverdaemon.h

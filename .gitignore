@@ -56,6 +56,7 @@ CMakeLists.txt.user*
 installer/packages/Snake/data
 \.buildconfig
 
+SnakeServer/Daemon/build/*
 
 SnakeServer/Client/build/*/Client
 

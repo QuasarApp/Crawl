@@ -52,6 +52,7 @@ void Server::avelableBytes() {
 
     if (_downloadPackage.isValid()) {
         parsePackage(_downloadPackage);
+        _downloadPackage.reset();
         return;
     }
 }

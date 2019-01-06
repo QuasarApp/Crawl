@@ -38,11 +38,13 @@ DISTFILES += \
 SOURCES += \
     serverutils.cpp \
     server.cpp \
-    serverprotocol.cpp
+    serverprotocol.cpp \
+    client.cpp
 
 HEADERS += \
         serverprotocol.h \
         serverprotocol_global.h \ 
     serverutils.h \
-    server.h
+    server.h \
+    client.h
 
