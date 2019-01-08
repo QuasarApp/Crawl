@@ -28,13 +28,5 @@ CONFIG(release, debug|release): {
     DESTDIR = $$PWD/build/debug
 }
 
-include($$PWD/../../QuasarAppLib/Etalons/qmake/install_prefix.pri)
-include($$PWD/../../QuasarAppLib/QuasarLib.pri)
-include($$PWD/../ServerProtocol/ServerProtocol.pri)
-
-install_data.files += $$QUASARAPP_LIB_OUTPUT_DIR/$$libfiletype
-install_data.files += $$SERVERPROTOCOL_LIB_OUTPUT_DIR/$$libfiletype
-install_data.files += $$DESTDIR/$$runfiletype
-
 HEADERS += \
     sarverdaemon.h

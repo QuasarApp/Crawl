@@ -1,12 +1,14 @@
 QT_DIR = $$dirname(QMAKE_QMAKE)
 QML_DIR = $$PWD/../Snake
-DEPLOY_TARGET = $$PWD/../Snake/build/release
+DEPLOY_TARGET_ALL = $$PWD/../Snake/build/release,$$PWD/../SnakeServer/Daemon/build/release,$$PWD/../SnakeServer/Client/build/release,$$PWD/../SnakeServer/ServerProtocol/build/release,$$PWD/../QuasarAppLib/build/release
+DEPLOY_TARGET_SNAKE = $$PWD/../Snake/build/release,$$PWD/../QuasarAppLib/build/release
+DEPLOY_TARGET_SERVER = $$PWD/../SnakeServer/Daemon/build/release,SnakeServer/Client/build/release,$$PWD/../SnakeServer/ServerProtocol/build/release,$$PWD/../QuasarAppLib/build/release
 
 LUPDATE = $$QT_DIR/lupdate
 LRELEASE = $$QT_DIR/lrelease
 
 win32:DEPLOYER = $$PWD/../CQtDeployerBinaries/Windows/cqtdeployer.exe
-unix:DEPLOYER = $$PWD/../CQtDeployerBinaries/Linux/cqtdeployer.sh
+unix:DEPLOYER = cqtdeployer
 
 OUT_FILE = installer
 
@@ -80,9 +82,28 @@ for(command, commands) {
     system($$command)|error("Failed to run: $$command")
 }
 
-deploy_depends.commands += $$DEPLOYER -bin $$DEPLOY_TARGET -qmlDir $$QML_DIR clear -qmake $$QMAKE_QMAKE -targetDir $$PWD/packages/Snake/data
+BASE_DEPLOY_FLAGS= clear -qmake $$QMAKE_QMAKE -targetDir $$PWD/packages/Snake/data
+
+deploy_depends_all.commands += $$DEPLOYER -bin $$DEPLOY_TARGET_ALL $$BASE_DEPLOY_FLAGS  -qmlDir $$QML_DIR
+deploy_depends_server.commands += $$DEPLOYER -bin $$DEPLOY_TARGET_SERVER $$BASE_DEPLOY_FLAGS
+deploy_depends_snake.commands += $$DEPLOYER -bin $$DEPLOY_TARGET_SNAKE $$BASE_DEPLOY_FLAGS -qmlDir $$QML_DIR
 
 create_installer.commands = $$EXEC \
+                               -c $$PWD/config/config.xml \
+                               -p $$PWD/packages \
+                               $$PWD/$$OUT_FILE
+
+create_installer_all.commands = $$EXEC \
+                               -c $$PWD/config/config.xml \
+                               -p $$PWD/packages \
+                               $$PWD/$$OUT_FILE
+
+create_installer_snake.commands = $$EXEC \
+                               -c $$PWD/config/config.xml \
+                               -p $$PWD/packages \
+                               $$PWD/$$OUT_FILE
+
+create_installer_server.commands = $$EXEC \
                                -c $$PWD/config/config.xml \
                                -p $$PWD/packages \
                                $$PWD/$$OUT_FILE
@@ -103,9 +124,14 @@ OTHER_FILES += \
     $$PWD/packages/Snake/meta/installscript.js \
     $$PWD/packages/Snake/meta/ru.ts
 
-deploy_depends.depends = install
-create_installer.depends = deploy_depends
+create_installer_all.depends = deploy_depends_all
+create_installer_snake.depends = deploy_depends_snake
+create_installer_server.depends = deploy_depends_server
 
 QMAKE_EXTRA_TARGETS += \
-    deploy_depends \
-    create_installer
+    deploy_depends_all \
+    deploy_depends_snake \
+    deploy_depends_server \
+    create_installer_all \
+    create_installer_snake \
+    create_installer_server

@@ -13,6 +13,7 @@
 
 # Qt-es
 /Build*
+/build*
 *.stash
 /Release*
 /parts/*
