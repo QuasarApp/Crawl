@@ -24,3 +24,7 @@ CONFIG(release, debug|release): {
 } else {
     DESTDIR = $$PWD/build/debug
 }
+
+include($$PWD/../../QuasarAppLib/QuasarLib.pri)
+include($$PWD/../ServerProtocol/ServerProtocol.pri)
+

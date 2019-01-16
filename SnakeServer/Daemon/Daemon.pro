@@ -30,3 +30,6 @@ CONFIG(release, debug|release): {
 
 HEADERS += \
     sarverdaemon.h
+
+include($$PWD/../../QuasarAppLib/QuasarLib.pri)
+include($$PWD/../ServerProtocol/ServerProtocol.pri)
