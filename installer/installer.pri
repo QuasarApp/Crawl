@@ -1,8 +1,8 @@
 QT_DIR = $$dirname(QMAKE_QMAKE)
-QML_DIR = $$PWD/../Snake
-DEPLOY_TARGET_ALL = $$PWD/../Snake/build/release,$$PWD/../SnakeServer/Daemon/build/release,$$PWD/../SnakeServer/Client/build/release,$$PWD/../SnakeServer/ServerProtocol/build/release,$$PWD/../QuasarAppLib/build/release
-DEPLOY_TARGET_SNAKE = $$PWD/../Snake/build/release,$$PWD/../QuasarAppLib/build/release
-DEPLOY_TARGET_SERVER = $$PWD/../SnakeServer/Daemon/build/release,SnakeServer/Client/build/release,$$PWD/../SnakeServer/ServerProtocol/build/release,$$PWD/../QuasarAppLib/build/release
+QML_DIR = $$PWD/../Snake/
+DEPLOY_TARGET_ALL = $$PWD/../Snake/build/release,$$PWD/../SnakeServer/Daemon/build/release,$$PWD/../SnakeServer/Client/build/release
+DEPLOY_TARGET_SNAKE = $$PWD/../Snake/build/release
+DEPLOY_TARGET_SERVER = $$PWD/../SnakeServer/Daemon/build/release,SnakeServer/Client/build/release
 
 LUPDATE = $$QT_DIR/lupdate
 LRELEASE = $$QT_DIR/lrelease
@@ -82,11 +82,11 @@ for(command, commands) {
     system($$command)|error("Failed to run: $$command")
 }
 
-BASE_DEPLOY_FLAGS= clear -qmake $$QMAKE_QMAKE -targetDir $$PWD/packages/Snake/data
+BASE_DEPLOY_FLAGS = clear -qmake $$QMAKE_QMAKE -targetDir $$PWD/packages/Snake/data -libDir $$PWD/../ -recursiveDepth 5
 
-deploy_depends_all.commands += $$DEPLOYER -bin $$DEPLOY_TARGET_ALL $$BASE_DEPLOY_FLAGS  -qmlDir $$QML_DIR
+deploy_depends_all.commands += $$DEPLOYER -bin $$DEPLOY_TARGET_ALL -qmlDir $$QML_DIR $$BASE_DEPLOY_FLAGS
 deploy_depends_server.commands += $$DEPLOYER -bin $$DEPLOY_TARGET_SERVER $$BASE_DEPLOY_FLAGS
-deploy_depends_snake.commands += $$DEPLOYER -bin $$DEPLOY_TARGET_SNAKE $$BASE_DEPLOY_FLAGS -qmlDir $$QML_DIR
+deploy_depends_snake.commands += $$DEPLOYER -bin $$DEPLOY_TARGET_SNAKE -qmlDir $$QML_DIR $$BASE_DEPLOY_FLAGS
 
 create_installer.commands = $$EXEC \
                                -c $$PWD/config/config.xml \
