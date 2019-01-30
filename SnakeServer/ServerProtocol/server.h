@@ -23,6 +23,7 @@ protected:
     void incomingConnection(quintptr socketDescriptor);
 public:
     explicit Server(QObject * ptr = nullptr);
+    bool run(const QString& name);
 };
 }
 #endif // SERVER_H
