@@ -2,6 +2,7 @@
 #include <QLocalSocket>
 #include <quasarapp.h>
 #include <cstring>
+#include <QFile>
 
 #include "serverutils.h"
 #include "serverprotocol.h"
@@ -80,13 +81,13 @@ Server::Server(QObject *ptr):
             this, &Server::avelableBytes);
 }
 
+Server::~Server() {
+    close();
+}
+
 bool Server::run(const QString &name) {
 
-    if (isListening()) {
-        close();
-    }
-
-    if (!listen(name)) {
+    if (!listen(name) && !(QFile::remove("/tmp/" + name) && listen(name))) {
         QuasarAppUtils::Params::verboseLog("listing fail " + this->errorString());
         return false;
     }

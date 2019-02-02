@@ -3,6 +3,7 @@
 #include <client.h>
 #include <thread>
 #include <quasarapp.h>
+#include <QCoreApplication>
 
 // add necessary includes here
 
@@ -43,35 +44,34 @@ void testServerProtocol::cleanupTestCase()
 
 void testServerProtocol::testPing()
 {
-    char * array[] = {
-        "verbose"
-    };
+    QuasarAppUtils::Params::setEnable("verbose", true);
 
-    QuasarAppUtils::Params::parseParams(1, array);
+    int argc =0;
+    char * argv[] = {nullptr};
+
+    QCoreApplication app(argc, argv);
 
     auto serv = new ServerProtocol::Server(this);
+
     QVERIFY(serv->run(DEFAULT_SERVER));
 
     auto client = new ServerProtocol::Client(this);
-    ServerProtocol::Client cli;
 
     bool isWork = false;
     QObject::connect(client, &ServerProtocol::Client::sigIncommingData,
-                     [&isWork] (const QVariantMap& map) {
+                     [&isWork, &app] (const QVariantMap& map) {
 
         isWork = map["res"].toString() == "Pong";
+        app.exit(0);
 
     });
 
     ServerProtocol::Package pkg;
     pkg.hdr.command = ServerProtocol::ping;
 
-    QVERIFY(cli.sendPackage(pkg));
+    QVERIFY(client->sendPackage(pkg));
 
-    auto current = QDateTime::currentMSecsSinceEpoch();
-    while(!isWork || QDateTime::currentMSecsSinceEpoch() - current > 10000) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    }
+    app.exec();
 
     QVERIFY(isWork);
 

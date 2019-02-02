@@ -20,9 +20,10 @@ private slots:
     void avelableBytes();
 
 protected:
-    void incomingConnection(quintptr socketDescriptor);
+    void incomingConnection(quintptr socketDescriptor) override;
 public:
     explicit Server(QObject * ptr = nullptr);
+    ~Server() override;
     bool run(const QString& name);
 };
 }
