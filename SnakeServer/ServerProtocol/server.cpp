@@ -2,6 +2,7 @@
 #include <QLocalSocket>
 #include <quasarapp.h>
 #include <cstring>
+#include <QFile>
 
 #include "serverutils.h"
 #include "serverprotocol.h"
@@ -29,7 +30,7 @@ void Server::parsePackage(const Package& pkg) {
         auto bytes = resp.toBytes();
 
         if (bytes.size() != _client->write(bytes)) {
-            QuasarAppUtils::Params::verboseLog("!responce sendet not wrong");
+            QuasarAppUtils::Params::verboseLog("!responce not sendet!");
         }
         break;
     }
@@ -78,5 +79,19 @@ Server::Server(QObject *ptr):
 
     connect(_client, &QLocalSocket::readyRead,
             this, &Server::avelableBytes);
+}
+
+Server::~Server() {
+    close();
+}
+
+bool Server::run(const QString &name) {
+
+    if (!listen(name) && !(QFile::remove("/tmp/" + name) && listen(name))) {
+        QuasarAppUtils::Params::verboseLog("listing fail " + this->errorString());
+        return false;
+    }
+
+    return true;
 }
 }
