@@ -14,7 +14,7 @@
 # Qt-es
 /Build*
 /build*
-/build/*
+SnakeServer/serverProtocolTests/build/
 *.stash
 /Release*
 /parts/*
