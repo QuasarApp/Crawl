@@ -30,11 +30,11 @@ void Snake::render() {
             continue;
         }
 
-        if(i == 0) {
-            if(isClick){
-                if(countClick & 1){
+        if (i == 0) {
+            if (isClick) {
+                if (countClick & 1){
                     items[i]->setAngle(45);
-                }else{
+                } else {
                     items[i]->setAngle(315);
                 }
                 isClick = false;
@@ -42,7 +42,7 @@ void Snake::render() {
         } else  {
 
             double _atan2 = atan2(centerY(items[i - 1]) - centerY(items[i]),
-                    centerX(items[i - 1]) - centerX(items[i])) * 180;
+                    centerX(items[i - 1]) - centerX(items[i])) * 90;
 
             items[i]->setAngle(_atan2);
         }
