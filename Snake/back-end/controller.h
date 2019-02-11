@@ -8,6 +8,8 @@
 #include "snake.h"
 #include "world.h"
 
+class Reactor;
+
 class Controller : public QObject
 {
     Q_OBJECT
@@ -17,9 +19,9 @@ class Controller : public QObject
 
 private:
     World world;
-    QTimer *timer;
-    bool pause = false;
+    bool runReactor = false;
     int lvl = 0;
+    Reactor * reactor = nullptr;
     QMap<int, GuiObject *> objectsContainer;
 
     void generateDiff(const QMap<int, GuiObject *> &);
@@ -28,6 +30,7 @@ private:
 
 public:
     Controller();
+    ~Controller();
     void startTimer();
     void stopTimer();
 
@@ -39,8 +42,6 @@ public slots:
     void buttonPress();
 
     void setPause(bool);
-
-    void update();
 
     /**
      * @brief nextLvl - switch to next lvl from array lvels

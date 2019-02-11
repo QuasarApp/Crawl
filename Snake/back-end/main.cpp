@@ -1,6 +1,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include <QThread>
 #include "controller.h"
 #include "diff.h"
 
@@ -12,7 +13,6 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
 
-    //qmlRegisterType <Controller> ("Controller", 1, 0,"Controller");
     qmlRegisterType <GuiObject> ();
     qmlRegisterType <Diff> ();
 
@@ -22,6 +22,7 @@ int main(int argc, char *argv[])
 
     Controller contr;
     root->setContextProperty("contr", &contr);
+
 
     engine.load(QUrl(QStringLiteral("qrc:/front-end/main.qml")));
     if (engine.rootObjects().isEmpty())

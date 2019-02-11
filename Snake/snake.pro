@@ -27,7 +27,8 @@ SOURCES += \
     back-end/utils.cpp \
     back-end/diff.cpp \
     back-end/background.cpp \
-    back-end/backgrounditem.cpp
+    back-end/backgrounditem.cpp \
+    back-end/reactor.cpp
 
 RESOURCES += qml.qrc
 
@@ -66,7 +67,8 @@ HEADERS += \
     back-end/guiobjectfactory.h \
     back-end/diff.h \
     back-end/background.h \
-    back-end/backgrounditem.h
+    back-end/backgrounditem.h \
+    back-end/reactor.h
 
 DISTFILES += \
     doc/calassdiagramm.qmodel \

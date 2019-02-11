@@ -1,14 +1,35 @@
 #include "controller.h"
+#include <QThread>
 #include <cmath>
 #include <ctime>
 #include "diff.h"
 #include "lvls.h"
+#include "reactor.h"
 
 Controller::Controller() {
     srand(static_cast<unsigned int>(time(nullptr)));
-    timer = new QTimer();
-    timer->setInterval(1);
-    connect(timer, SIGNAL(timeout()), this, SLOT(update()));
+
+    reactor = new Reactor([this]() {
+
+        world.render();
+        if(world.isDefiat()) {
+            stopTimer();
+            emit finished(false, lvl, world.getCurrentLong());
+        }
+
+        if (world.isEnd()) {
+            stopTimer();
+            emit finished(true, lvl, world.getCurrentLong());
+        }
+
+        emit long_changed(static_cast<int>(world.getCurrentLong()));
+        emit generalLongchanged(generalLong());
+
+    });
+}
+
+Controller::~Controller() {
+    delete reactor;
 }
 
 bool Controller::nextLvl() {
@@ -47,27 +68,6 @@ void Controller::generateDiff(const QMap<int, GuiObject *>& objs) {
     }
 }
 
-void Controller::update() {
-    if (pause) {
-        return;
-    }
-
-    world.render();
-    if(world.isDefiat()) {
-        stopTimer();
-        emit finished(false, lvl, world.getCurrentLong());
-    }
-
-    if (world.isEnd()) {
-        stopTimer();
-        emit finished(true, lvl, world.getCurrentLong());
-    }
-
-    long_changed(static_cast<int>(world.getCurrentLong()));
-    generalLongchanged(generalLong());
-
-}
-
 void Controller::newGame() {
 
     world.resetPosition();
@@ -84,11 +84,11 @@ QObject *Controller::getGameObject(int id) {
 }
 
 void Controller::startTimer() {
-    timer->start();
+    reactor->start();
 }
 
 void Controller::stopTimer() {
-    timer->stop();
+    reactor->stop();
 }
 
 int Controller::long_() const {
@@ -104,8 +104,8 @@ void Controller::buttonPress() {
 }
 
 void Controller::setPause(bool p){
-    pause = p;
-    if (!pause) {
+    reactor->setPause(p);
+    if (!reactor->pause()) {
         world.unPause();
     }
 }
