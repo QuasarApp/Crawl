@@ -19,7 +19,7 @@ void GuiObject::render() {
 }
 
 QRectF GuiObject::rect() const {
-    return QRectF(m_x, m_y, m_w, m_h);
+    return QRectF(m_x - m_w / 2, m_y - m_h / 2, m_w, m_h);
 }
 
 void GuiObject::setAngle(double angle) {

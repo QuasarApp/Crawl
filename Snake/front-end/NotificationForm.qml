@@ -34,7 +34,7 @@ BasePopUp {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.top: parent.top
             anchors.topMargin: 0
-            font.pointSize: 14
+            font.pointSize: 13
             fontSizeMode: Text.Fit
             renderType: Text.QtRendering
             textFormat: Text.AutoText
@@ -85,6 +85,4 @@ BasePopUp {
             }
         }
     }
-
-
 }
