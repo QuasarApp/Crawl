@@ -19,6 +19,9 @@ enum Type: unsigned char {
 enum Command: unsigned char {
     undefined = 0x00,
     ping = 0x01,
+    item = 0x02,
+    login = 0x04,
+    playerData = 0x08
 };
 
 /**

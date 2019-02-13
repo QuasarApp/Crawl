@@ -53,4 +53,16 @@ bool Client::sendPackage(const Package &pkg) {
     return bytes.size() == _destination->write(bytes);
 }
 
+Player *Client::login(const QString &gmail, const QByteArray &pass, QString &error) {
+
+}
+
+bool Client::updateData(Player *) {
+
+}
+
+BaseItem *Client::getItem(int id) {
+
+}
+
 }

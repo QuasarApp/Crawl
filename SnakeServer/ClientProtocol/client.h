@@ -7,6 +7,8 @@
 
 
 class QTcpSocket;
+class Player;
+class BaseItem;
 
 namespace ClientProtocol {
 
@@ -24,6 +26,28 @@ private slots:
 public:
     explicit Client(QObject * ptr = nullptr);
     bool sendPackage(const Package& pkg);
+    /**
+     * @brief login - register or login a user
+     * @param gmail - gmail of user
+     * @param pass - hash of pass of user
+     * @param error - error ( if all good this variable is empty)
+     * @return player with all data
+     */
+    Player* login(const QString& gmail, const QByteArray &pass, QString& error);
+
+    /**
+     * @brief updateData
+     * @return  true if refresh seсcessfully completed
+     */
+    bool updateData(Player*);
+
+    /**
+     * @brief getItem
+     * @param id of item
+     * @return item data
+     */
+    BaseItem* getItem(int id);
+
 
 signals:
     void sigIncommingData(const QVariantMap& map);
