@@ -3,14 +3,18 @@
 #include "baseitem.h"
 
 #include <QVector>
+#define SNAKE_MAX_SIZE 15
+
 
 namespace ClientProtocol {
+
+constexpr int snakeSize = SNAKE_MAX_SIZE * 4 + 1;
 
 class CLIENTPROTOCOLSHARED_EXPORT SnakeItem: public BaseItem
 {
 private:
-    unsigned int _spead = 0;
-    QVector<double> _skillet;
+    unsigned char _spead = 0;
+    QVector<float> _skillet;
 
 public:
     explicit SnakeItem(unsigned int id);

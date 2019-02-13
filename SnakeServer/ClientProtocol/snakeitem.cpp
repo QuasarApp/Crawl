@@ -11,7 +11,10 @@ SnakeItem::~SnakeItem() {
 }
 
 bool SnakeItem::isValid() {
-    return BaseItem::isValid() && _spead > 0 && _skillet.size();
+    return BaseItem::isValid() &&
+            _spead > 0 &&
+            _skillet.size() &&
+            _skillet.size() < 15;
 }
 
 QDataStream &SnakeItem::operator <<(QDataStream &stream)  {

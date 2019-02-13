@@ -2,6 +2,8 @@
 
 
 #include <QVariantMap>
+#include "snakeitem.h"
+#include "player.h"
 
 #define DEFAULT_GAME_PORT 7777
 
@@ -14,17 +16,47 @@ Header::Header() {
 
 bool Header::isValid() const {
 
-    if (sizeof (*this) != 1) {
+    if (sizeof (*this) != 2) {
         return false;
     }
 
     switch (command) {
     case ping: {
 
-        if (type > 1)
+        if (type > 1 || size > 0)
             return false;
 
         return true;
+    }
+
+    case item: {
+
+        switch (type) {
+        case Request: return size == 36; // key sha256 (32byte) + id item 4
+        case Responke: return size < snakeSize;
+        }
+
+        return false;
+    }
+
+    case login: {
+
+        switch (type) {
+        case Request: return size == 96; // key sha256 (32byte) + maxsize of name of gmail (64)
+        case Responke: return size < MAX_SIZE_PLAYER && size > MIN_SIZE_PLAYER;
+        }
+
+        return false;
+    }
+
+    case playerData: {
+
+        switch (type) {
+        case Request: return size == 96; // key sha256 (32byte) + maxsize of name of gmail (64)
+        case Responke: return size < MAX_SIZE_PLAYER && size > MIN_SIZE_PLAYER;
+        }
+
+        return false;
     }
 
     default: return false;
@@ -64,6 +96,15 @@ QVariantMap Package::parse() const {
         }
         break;
     }
+
+//    case ping: {
+//        if (hdr.type == Responke) {
+//            res["res"] = "Pong";
+//        } else {
+//            res["value"] = "Ping";
+//        }
+//        break;
+//    }
 
     default:
         return res;

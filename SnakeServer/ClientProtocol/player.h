@@ -5,6 +5,11 @@
 #include <QDataStream>
 #include <QList>
 
+#define MIN_SIZE_PLAYER 21
+#define MAX_SIZE_PLAYER 128
+
+namespace ClientProtocol {
+
 class CLIENTPROTOCOLSHARED_EXPORT Player {
 private:
     QString _name = "";
@@ -37,5 +42,7 @@ public:
     friend QDataStream &operator <<(QDataStream& stream, const Player& data);
 
 };
+}
+
 
 #endif // PLAYER_H

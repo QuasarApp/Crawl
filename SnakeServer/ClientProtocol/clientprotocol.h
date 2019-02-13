@@ -20,8 +20,8 @@ enum Command: unsigned char {
     undefined = 0x00,
     ping = 0x01,
     item = 0x02,
-    login = 0x04,
-    playerData = 0x08
+    login = 0x03,
+    playerData = 0x04
 };
 
 /**
@@ -31,7 +31,7 @@ struct Header {
     /**
      * @brief size - size of package data (not header)
      */
-    unsigned char size: 4;
+    unsigned short size: 10;
     /**
      * @brief type of package see Type
      */
