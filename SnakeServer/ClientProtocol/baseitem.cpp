@@ -1,8 +1,12 @@
 #include "baseitem.h"
 
 namespace ClientProtocol {
-BaseItem::BaseItem() {
+unsigned int BaseItem::id() const {
+    return _id;
+}
 
+BaseItem::BaseItem(unsigned int id) {
+    _id = id;
 }
 
 BaseItem::~BaseItem() {
@@ -16,6 +20,10 @@ QDataStream& BaseItem::operator <<(QDataStream &stream)  {
     stream >> _id;
 
     return stream;
+}
+
+bool BaseItem::operator ==(const BaseItem & item) {
+    return _id == item._id;
 }
 
 QDataStream &BaseItem::operator >>(QDataStream &stream) const{

@@ -1,18 +1,21 @@
-#ifndef CLIENT_SP_H
-#define CLIENT_SP_H
-#include "serverprotocol.h"
-#include "serverprotocol_global.h"
+#ifndef CLIENT_CP_H
+#define CLIENT_CP_H
+
+#include "clientprotocol_global.h"
+#include "clientprotocol.h"
 #include <QObject>
 
-class QLocalSocket;
 
-namespace ServerProtocol {
+class QTcpSocket;
 
-class SERVERPROTOCOLSHARED_EXPORT Client : public QObject
+namespace ClientProtocol {
+
+
+class CLIENTPROTOCOLSHARED_EXPORT Client: public QObject
 {
     Q_OBJECT
 private:
-    QLocalSocket *_destination;
+    QTcpSocket *_destination;
     Package _downloadPackage;
 
 private slots:
@@ -24,9 +27,8 @@ public:
 
 signals:
     void sigIncommingData(const QVariantMap& map);
+
 };
 
 }
-
-
-#endif // CLIENT_SP_H
+#endif // CLIENT_CP_H

@@ -6,8 +6,8 @@ CONFIG -= app_bundle
 
 TEMPLATE = app
 
-SOURCES += \ 
-    tst_testserverprotockol.cpp
+SOURCES += \   
+    tst_testsnakeserver.cpp
 
 CONFIG(release, debug|release): {
     DESTDIR = $$PWD/build/release
@@ -18,3 +18,4 @@ CONFIG(release, debug|release): {
 
 include($$PWD/../../QuasarAppLib/QuasarLib.pri)
 include($$PWD/../ServerProtocol/ServerProtocol.pri)
+include($$PWD/../ClientProtocol/ClientProtocol.pri)

@@ -1,5 +1,5 @@
-#ifndef SERVER_H
-#define SERVER_H
+#ifndef SERVER_SP_H
+#define SERVER_SP_H
 #include "serverprotocol.h"
 #include "serverprotocol_global.h"
 #include <QLocalServer>
@@ -27,4 +27,4 @@ public:
     bool run(const QString& name);
 };
 }
-#endif // SERVER_H
+#endif // SERVER_SP_H

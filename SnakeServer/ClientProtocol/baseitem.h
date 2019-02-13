@@ -11,18 +11,19 @@ namespace ClientProtocol {
 class CLIENTPROTOCOLSHARED_EXPORT BaseItem {
 private:
     unsigned int _id = 0;
-protected:
-    BaseItem();
-
 public:
+    explicit BaseItem(unsigned int _id);
+
     virtual ~BaseItem();
 
     virtual QDataStream &operator >>(QDataStream& stream) const;
     virtual QDataStream &operator <<(QDataStream& stream);
+    bool operator ==(const BaseItem&);
 
     virtual bool isValid();
 
     friend ServerFactory;
+    unsigned int id() const;
 };
 
 }

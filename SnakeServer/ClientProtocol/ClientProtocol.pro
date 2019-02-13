@@ -1,3 +1,10 @@
+#
+# Copyright (C) 2018 - 2019 QuasarApp.
+# Distributed under the lgplv3 software license, see the accompanying
+# Everyone is permitted to copy and distribute verbatim copies
+# of this license document, but changing it is not allowed.
+#
+
 #-------------------------------------------------
 #
 # Project created by QtCreator 2019-02-12T11:08:54
@@ -5,6 +12,7 @@
 #-------------------------------------------------
 
 QT       -= gui
+QT       += network
 
 TARGET = ClientProtocol
 TEMPLATE = lib
@@ -35,16 +43,16 @@ SOURCES += \
         clientprotocol.cpp \
     player.cpp \
     baseitem.cpp \
-    snakeitem.cpp
+    snakeitem.cpp \
+    client.cpp \
+    server.cpp
 
 HEADERS += \
         clientprotocol.h \
         clientprotocol_global.h \ 
     player.h \
     baseitem.h \
-    snakeitem.h
-
-unix {
-    target.path = /usr/lib
-    INSTALLS += target
-}
+    snakeitem.h \
+    client.h \
+    server.h \
+    cp.h

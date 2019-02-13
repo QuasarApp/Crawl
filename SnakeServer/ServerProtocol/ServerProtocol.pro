@@ -37,8 +37,8 @@ DISTFILES += \
 
 SOURCES += \
     serverutils.cpp \
-    server.cpp \
     serverprotocol.cpp \
+    server.cpp \
     client.cpp
 
 HEADERS += \
@@ -46,5 +46,6 @@ HEADERS += \
         serverprotocol_global.h \ 
     serverutils.h \
     server.h \
-    client.h
+    client.h \
+    sp.h
 
