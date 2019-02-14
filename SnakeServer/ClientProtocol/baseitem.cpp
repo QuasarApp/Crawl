@@ -1,36 +1,26 @@
 #include "baseitem.h"
 
+#include <QVariantMap>
+
 namespace ClientProtocol {
-unsigned int BaseItem::id() const {
-    return _id;
+
+bool BaseItem::read(QDataStream &stream ,QVariantMap &map) {
+
+    unsigned int id;
+
+    stream >> id;
+    map["id"] = id;
+
+    return id;
 }
 
-BaseItem::BaseItem(unsigned int id) {
-    _id = id;
+bool BaseItem::write( QDataStream &stream, const QVariantMap &map) {
+    unsigned int id = map.value("id", 0).toUInt();
+    stream << id;
+
+    return id;
 }
 
-BaseItem::~BaseItem() {
-}
-
-bool BaseItem::isValid() {
-    return _id > 0;
-}
-
-QDataStream& BaseItem::operator <<(QDataStream &stream)  {
-    stream >> _id;
-
-    return stream;
-}
-
-bool BaseItem::operator ==(const BaseItem & item) {
-    return _id == item._id;
-}
-
-QDataStream &BaseItem::operator >>(QDataStream &stream) const{
-    stream << _id;
-
-    return stream;
-}
 }
 
 

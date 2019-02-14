@@ -8,22 +8,16 @@
 
 namespace ClientProtocol {
 
-constexpr int snakeSize = SNAKE_MAX_SIZE * 4 + 1;
+constexpr int snakeSize = SNAKE_MAX_SIZE * sizeof (float) + 2;
 
 class CLIENTPROTOCOLSHARED_EXPORT SnakeItem: public BaseItem
 {
-private:
-    unsigned char _spead = 0;
-    QVector<float> _skillet;
 
 public:
-    explicit SnakeItem(unsigned int id);
-    ~SnakeItem() override;
+    SnakeItem() = delete;
 
-    bool isValid() override;
-
-    QDataStream &operator <<(QDataStream &stream) override;
-    QDataStream &operator >>(QDataStream &stream) const override;
+    static bool read(QDataStream &stream, QVariantMap &map);
+    static bool write(QDataStream &stream, const QVariantMap &map);
 };
 }
 

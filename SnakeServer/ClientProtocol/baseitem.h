@@ -3,27 +3,14 @@
 #include "clientprotocol_global.h"
 #include <QDataStream>
 
-
-class ServerFactory;
-
 namespace ClientProtocol {
 
 class CLIENTPROTOCOLSHARED_EXPORT BaseItem {
-private:
-    unsigned int _id = 0;
 public:
-    explicit BaseItem(unsigned int _id);
+    explicit BaseItem() = delete;
 
-    virtual ~BaseItem();
-
-    virtual QDataStream &operator >>(QDataStream& stream) const;
-    virtual QDataStream &operator <<(QDataStream& stream);
-    bool operator ==(const BaseItem&);
-
-    virtual bool isValid();
-
-    friend ServerFactory;
-    unsigned int id() const;
+    static bool read(QDataStream &stream, QVariantMap &map);
+    static bool write(QDataStream &stream, const QVariantMap &map);
 };
 
 }

@@ -2,6 +2,7 @@
 
 
 #include <QVariantMap>
+#include <typeinfo>
 #include "snakeitem.h"
 #include "player.h"
 
@@ -33,7 +34,7 @@ bool Header::isValid() const {
 
         switch (type) {
         case Request: return size == 36; // key sha256 (32byte) + id item 4
-        case Responke: return size < snakeSize;
+        case Responke: return size < (snakeSize + sizeof (Class));
         }
 
         return false;
@@ -87,6 +88,10 @@ QVariantMap Package::parse() const {
 
     QVariantMap res;
 
+    res["command"] = hdr.command;
+    res["type"] = hdr.type;
+    res["status"] = true;
+
     switch (hdr.command) {
     case ping: {
         if (hdr.type == Responke) {
@@ -97,15 +102,80 @@ QVariantMap Package::parse() const {
         break;
     }
 
-//    case ping: {
-//        if (hdr.type == Responke) {
-//            res["res"] = "Pong";
-//        } else {
-//            res["value"] = "Ping";
-//        }
-//        break;
-//    }
+    case item: {
 
+        if (hdr.type == Responke) {
+
+            QDataStream stream(data);
+            unsigned char type;
+            stream >> type;
+
+            switch (type) {
+            case SnakeData:{
+                if (!SnakeItem::read(stream, res)) {
+                    res["status"] = false;
+                }
+                break;
+            }
+
+            default: break;
+
+            }
+        } else {
+            res["hash"] = data.left(32);
+            res["id"] = data.right(4).toInt();
+        }
+
+        break;
+
+    }
+
+    case login: {
+
+        if (hdr.type == Responke) {
+
+            QDataStream stream(data);
+
+            if (!Player::read(stream, res)) {
+                res["status"] = false;
+            }
+
+        } else {
+            QDataStream stream(data);
+            QString gmail;
+            QByteArray hash;
+
+            stream >> gmail;
+            stream >> hash;
+
+            res["gmail"] = gmail;
+            res["hash"] = hash;
+        }
+        break;
+    }
+
+    case playerData: {
+
+        if (hdr.type == Responke) {
+
+            QDataStream stream(data);
+            if (!Player::read(stream, res)) {
+                res["status"] = false;
+            }
+
+        } else {
+            QDataStream stream(data);
+            QString gmail;
+            QByteArray hash;
+
+            stream >> gmail;
+            stream >> hash;
+
+            res["gmail"] = gmail;
+            res["hash"] = hash;
+        }
+        break;
+    }
     default:
         return res;
 

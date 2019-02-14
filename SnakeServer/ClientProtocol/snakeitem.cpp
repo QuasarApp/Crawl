@@ -1,37 +1,52 @@
 #include "snakeitem.h"
 
+#include <QVariantMap>
+
 namespace ClientProtocol {
 
-SnakeItem::SnakeItem(unsigned int id):
-    BaseItem (id) {
 
+bool SnakeItem::read(QDataStream &stream, QVariantMap &map) {
+
+    if (!BaseItem::read(stream, map)) {
+        return false;
+    };
+
+    unsigned char spead;
+    QList<float> skillet;
+
+    stream >> spead;
+    stream >> skillet;
+    QVariantList varList;
+
+    for (auto i : skillet) {
+        varList.push_back(i);
+    }
+
+    map["spead"] = spead;
+    map["skillet"] = varList;
+
+    return stream.status() == QDataStream::Ok ||
+           stream.status() == QDataStream::ReadPastEnd;
 }
 
-SnakeItem::~SnakeItem() {
-}
+bool SnakeItem::write(QDataStream &stream ,const QVariantMap &map) {
 
-bool SnakeItem::isValid() {
-    return BaseItem::isValid() &&
-            _spead > 0 &&
-            _skillet.size() &&
-            _skillet.size() < 15;
-}
+    if (!BaseItem::write(stream, map)) {
+        return false;
+    };
 
-QDataStream &SnakeItem::operator <<(QDataStream &stream)  {
-    BaseItem::operator<<(stream);
-    stream >> _spead;
-    stream >> _skillet;
+    stream << static_cast<quint8>(map.value("spead").toUInt());
 
-    return stream;
-}
+    QList<float> skillet;
+    auto varList = map.value("skillet").toList();
+    for (auto &&i : varList) {
+        skillet.push_back(i.toFloat());
+    }
 
-QDataStream &SnakeItem::operator >>(QDataStream &stream) const {
+    stream << skillet;
 
-    BaseItem::operator>>(stream);
-    stream << _spead;
-    stream << _skillet;
-
-    return stream;
+    return stream.status() == QDataStream::Ok ||
+           stream.status() == QDataStream::ReadPastEnd;
 }
 
 }

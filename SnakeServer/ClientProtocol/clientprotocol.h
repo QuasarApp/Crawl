@@ -11,6 +11,11 @@
 #define DEFAULT_SNAKE_PORT      7777
 
 namespace ClientProtocol {
+
+enum Class: unsigned char {
+    SnakeData = 0
+};
+
 enum Type: unsigned char {
     Responke = 0,
     Request = 1

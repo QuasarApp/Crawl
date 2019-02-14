@@ -1,7 +1,7 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 #include "clientprotocol_global.h"
-
+#include "baseitem.h"
 #include <QDataStream>
 #include <QList>
 
@@ -10,37 +10,14 @@
 
 namespace ClientProtocol {
 
-class CLIENTPROTOCOLSHARED_EXPORT Player {
+class CLIENTPROTOCOLSHARED_EXPORT Player : public BaseItem {
 private:
-    QString _name = "";
-    QString _post = "";
-    unsigned int _maney = 0;
-    unsigned int _record = 0;
-    QList<int> _items;
-    unsigned int _currentSnake;
 
 public:
-    Player();
-    ~Player();
+    Player() = delete;
 
-    QString name() const;
-    void setName(const QString &name);
-    QString post() const;
-    void setPost(const QString &post);
-    unsigned int maney() const;
-    void setManey(unsigned int maney);
-    unsigned int record() const;
-    void setRecord(unsigned int record);
-    QList<int> items() const;
-    void setItems(const QList<int> &items);
-    unsigned int currentSnake() const;
-    void setCurrentSnake(unsigned int currentSnake);
-
-    bool isValid() const;
-
-    friend QDataStream &operator >>(QDataStream& stream, Player& data);
-    friend QDataStream &operator <<(QDataStream& stream, const Player& data);
-
+    static bool read(QDataStream &stream, QVariantMap &map);
+    static bool write(QDataStream &stream, const QVariantMap &map);
 };
 }
 
