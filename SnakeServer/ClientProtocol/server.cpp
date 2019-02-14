@@ -56,8 +56,8 @@ void Server::avelableBytes() {
 
     } else {
         memcpy(&_downloadPackage.hdr,
-               array.data(), sizeof(unsigned char));
-        _downloadPackage.data.append(array.mid(1));
+               array.data(), sizeof(Header));
+        _downloadPackage.data.append(array.mid(sizeof(Header)));
     }
 
     if (_downloadPackage.isValid()) {
