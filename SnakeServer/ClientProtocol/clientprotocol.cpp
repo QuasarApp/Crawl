@@ -22,7 +22,7 @@ bool Header::isValid() const {
     }
 
     switch (command) {
-    case ping: {
+    case Ping: {
 
         if (type > 1 || size > 0)
             return false;
@@ -30,7 +30,7 @@ bool Header::isValid() const {
         return true;
     }
 
-    case item: {
+    case Item: {
 
         switch (type) {
         case Request: return size == 36; // key sha256 (32byte) + id item 4
@@ -40,7 +40,7 @@ bool Header::isValid() const {
         return false;
     }
 
-    case login: {
+    case Login: {
 
         switch (type) {
         case Request: return size == 96; // key sha256 (32byte) + maxsize of name of gmail (64)
@@ -50,7 +50,7 @@ bool Header::isValid() const {
         return false;
     }
 
-    case playerData: {
+    case PlayerData: {
 
         switch (type) {
         case Request: return size == 96; // key sha256 (32byte) + maxsize of name of gmail (64)
@@ -66,7 +66,7 @@ bool Header::isValid() const {
 
 void Header::reset() {
     size = 0;
-    command = undefined;
+    command = Undefined;
     type = Responke;
 }
 
@@ -82,18 +82,15 @@ bool Package::isValid() const {
     return hdr.size == data.size();
 }
 
-QVariantMap Package::parse() const {
+bool Package::parse(QVariantMap& res) const {
     if (!isValid())
-        return QVariantMap();
-
-    QVariantMap res;
+        return false;
 
     res["command"] = hdr.command;
     res["type"] = hdr.type;
-    res["status"] = true;
 
     switch (hdr.command) {
-    case ping: {
+    case Ping: {
         if (hdr.type == Responke) {
             res["res"] = "Pong";
         } else {
@@ -102,7 +99,7 @@ QVariantMap Package::parse() const {
         break;
     }
 
-    case item: {
+    case Item: {
 
         if (hdr.type == Responke) {
 
@@ -113,7 +110,7 @@ QVariantMap Package::parse() const {
             switch (type) {
             case SnakeData:{
                 if (!SnakeItem::read(stream, res)) {
-                    res["status"] = false;
+                    return false;
                 }
                 break;
             }
@@ -127,17 +124,16 @@ QVariantMap Package::parse() const {
         }
 
         break;
-
     }
 
-    case login: {
+    case Login: {
 
         if (hdr.type == Responke) {
 
             QDataStream stream(data);
 
             if (!Player::read(stream, res)) {
-                res["status"] = false;
+                return false;
             }
 
         } else {
@@ -154,13 +150,13 @@ QVariantMap Package::parse() const {
         break;
     }
 
-    case playerData: {
+    case PlayerData: {
 
         if (hdr.type == Responke) {
 
             QDataStream stream(data);
             if (!Player::read(stream, res)) {
-                res["status"] = false;
+                return false;
             }
 
         } else {
@@ -177,11 +173,123 @@ QVariantMap Package::parse() const {
         break;
     }
     default:
-        return res;
+        return false;
 
     }
 
-    return res;
+    return true;
+}
+
+bool Package::create(const QVariantMap &map) {
+
+    auto command = static_cast<unsigned char>(map.value("command", 0xff).toInt());
+    auto type = static_cast<unsigned char>(map.value("type", 0xff).toInt());
+
+    if (command == 0xff || type == 0xff) {
+        return false;
+    }
+
+    switch (command) {
+    case Ping: {
+        break;
+    }
+
+    case Item: {
+
+        if (type == Responke) {
+
+            QDataStream stream(data);
+            auto cls = static_cast<unsigned char>(map.value("class", 0xff).toInt());
+            stream << static_cast<unsigned char>(cls);
+
+            switch (cls) {
+            case SnakeData:{
+                if (!SnakeItem::write(stream, map)) {
+                    return false;
+                }
+
+                break;
+            }
+            default: return false;
+
+            }
+        } else {
+            QDataStream stream(data);
+
+            QByteArray hash = map.value("hash", "").toByteArray();
+            int id = static_cast<Class>(map.value("id", 0).toInt());
+
+            if (hash.size() != 32 || !id) {
+                return false;
+            }
+
+            data.append(hash.data());
+            data.append(reinterpret_cast<char*>(&id), sizeof (id));
+        }
+
+        break;
+
+    }
+
+    case Login: {
+
+        if (type == Responke) {
+
+            QDataStream stream(data);
+
+            if (!Player::write(stream, map)) {
+                return false;
+            }
+
+        } else {
+            QDataStream stream(data);
+
+            QByteArray hash = map.value("hash", "").toByteArray();
+            QString gmail = map.value("id", "").toString();
+
+            if (hash.size() != 32 || gmail.isEmpty()) {
+                return false;
+            }
+
+            stream << gmail;
+            stream << hash;
+        }
+        break;
+    }
+
+    case PlayerData: {
+
+        if (type == Responke) {
+
+            QDataStream stream(data);
+
+            if (!Player::write(stream, map)) {
+                return false;
+            }
+
+        } else {
+            QDataStream stream(data);
+
+            QByteArray hash = map.value("hash", "").toByteArray();
+            QString gmail = map.value("id", "").toString();
+
+            if (hash.size() != 32 || gmail.isEmpty()) {
+                return false;
+            }
+
+            stream << gmail;
+            stream << hash;
+        }
+        break;
+    }
+    default: return false;
+
+    }
+
+    hdr.command = command;
+    hdr.type = type;
+
+    return isValid();
 }
 
 QByteArray Package::toBytes() const {

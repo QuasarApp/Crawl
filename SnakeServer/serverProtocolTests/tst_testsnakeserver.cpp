@@ -117,7 +117,7 @@ void testSankeServer::testPingClientProtockol() {
     });
 
     ClientProtocol::Package pkg;
-    pkg.hdr.command = ClientProtocol::ping;
+    pkg.hdr.command = ClientProtocol::Ping;
 
     QVERIFY(client->sendPackage(pkg));
 

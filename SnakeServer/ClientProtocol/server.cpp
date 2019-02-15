@@ -16,20 +16,38 @@ bool Server::parsePackage(const Package &pkg, QTcpSocket* sender) {
     }
 
     switch (pkg.hdr.command) {
-    case ping: {
+    case Ping: {
 
         if (pkg.hdr.type != Responke) {
             return false;
         }
 
         Package resp;
-        resp.hdr.command = ping;
+        resp.hdr.command = Ping;
 
         auto bytes = resp.toBytes();
 
         if (bytes.size() != sender->write(bytes)) {
             QuasarAppUtils::Params::verboseLog("!responce not sendet!");
         }
+        break;
+    }
+
+    case Item:
+    case PlayerData:
+    case Login:{
+
+        if (pkg.hdr.type != Responke) {
+            return false;
+        }
+
+        QVariantMap data;
+        if (!pkg.parse(data)) {
+            return false;
+        }
+
+        emit incomingReques (data, sender);
+
         break;
     }
 

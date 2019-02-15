@@ -31,22 +31,22 @@ public:
      * @param gmail - gmail of user
      * @param pass - hash of pass of user
      * @param error - error ( if all good this variable is empty)
-     * @return player with all data
+     * @return
      */
-    Player* login(const QString& gmail, const QByteArray &pass, QString& error);
+    bool login(const QString& gmail, const QByteArray &pass);
 
     /**
      * @brief updateData
      * @return  true if refresh seсcessfully completed
      */
-    bool updateData(Player*);
+    bool updateData(const QString& gmail, const QByteArray &pass);
 
     /**
      * @brief getItem
      * @param id of item
      * @return item data
      */
-    BaseItem* getItem(int id);
+    bool getItem(int id, const QByteArray &pass);
 
 
 signals:

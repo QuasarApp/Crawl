@@ -1,5 +1,5 @@
 #include "snakeitem.h"
-
+#include "clientprotocol.h"
 #include <QVariantMap>
 
 namespace ClientProtocol {
@@ -22,6 +22,7 @@ bool SnakeItem::read(QDataStream &stream, QVariantMap &map) {
         varList.push_back(i);
     }
 
+    map["class"] = SnakeData;
     map["spead"] = spead;
     map["skillet"] = varList;
 

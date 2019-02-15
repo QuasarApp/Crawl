@@ -22,11 +22,11 @@ enum Type: unsigned char {
 };
 
 enum Command: unsigned char {
-    undefined = 0x00,
-    ping = 0x01,
-    item = 0x02,
-    login = 0x03,
-    playerData = 0x04
+    Undefined = 0x00,
+    Ping = 0x01,
+    Item = 0x02,
+    Login = 0x03,
+    PlayerData = 0x04
 };
 
 /**
@@ -89,7 +89,14 @@ struct Package {
      * @brief parse
      * @return Qmap of package (default key if "value")
      */
-    QVariantMap parse() const;
+    bool parse(QVariantMap &res) const;
+
+    /**
+     * @brief create - fill package
+     * @param data - data of filled
+     * @return true if all done
+     */
+    bool create(const QVariantMap &data);
 
     /**
      * @brief toBytes
@@ -103,6 +110,7 @@ struct Package {
     void reset();
 
 };
+
 }
 
 #endif // CLIENTPROTOCOL_H

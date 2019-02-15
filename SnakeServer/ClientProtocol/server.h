@@ -25,6 +25,8 @@ public:
     ~Server() override;
     bool run(const QString& ip, unsigned short port);
 
+signals:
+    void incomingReques(const QVariantMap &map, QTcpSocket * sender);
 };
 
 }

@@ -1,5 +1,7 @@
 #include "client.h"
+#include <QRegularExpression>
 #include <QTcpSocket>
+#include <QVariantMap>
 
 namespace ClientProtocol {
 
@@ -16,7 +18,11 @@ void Client::incommingData() {
     }
 
     if (_downloadPackage.isValid()) {
-        emit sigIncommingData(_downloadPackage.parse());
+        QVariantMap res;
+        if (_downloadPackage.parse(res)) {
+            emit sigIncommingData(res);
+        }
+
         _downloadPackage.reset();
         return;
     }
@@ -53,16 +59,59 @@ bool Client::sendPackage(const Package &pkg) {
     return bytes.size() == _destination->write(bytes);
 }
 
-Player *Client::login(const QString &gmail, const QByteArray &pass, QString &error) {
+bool Client::login(const QString &gmail, const QByteArray &pass) {
+    if (!pass.size()) {
+        return false;
+    }
 
+    if (!gmail.size()) {
+        return false;
+    }
+
+    Package pcg;
+    QVariantMap map;
+    map["gmail"] = gmail;
+    map["type"] = Request;
+    map["hash"] = pass;
+    if (!pcg.create(map)) {
+        return false;
+    };
+
+    if (!sendPackage(pcg)) {
+        return false;
+
+    }
+
+    return true;
 }
 
-bool Client::updateData(Player *) {
-
+bool Client::updateData(const QString &gmail, const QByteArray &pass) {
+    return login(gmail, pass);
 }
 
-BaseItem *Client::getItem(int id) {
+bool Client::getItem(int id, const QByteArray &pass) {
+    if (!pass.size()) {
+        return false;
+    }
 
+    if (!id) {
+        return false;
+    }
+
+    Package pcg;
+    QVariantMap map;
+    map["id"] = id;
+    map["hash"] = pass;
+    if (!pcg.create(map)) {
+        return false;
+    };
+
+    if (!sendPackage(pcg)) {
+        return false;
+
+    }
+
+    return true;
 }
 
 }
