@@ -5,6 +5,7 @@ CONFIG += ordered
 SUBDIRS += \
     ServerProtocol \
     ClientProtocol \
-    Client \
+    Terminal \
+    Server \
     Daemon \
-    serverProtocolTests
+    serverProtocolTests \

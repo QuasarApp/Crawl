@@ -13,7 +13,11 @@ class testSankeServer : public QObject
 
 private:
     void testPingServerProtockol();
+
     void testPingClientProtockol();
+    void testLoginClientProtockol();
+    void testUserDataClientProtockol();
+    void testGetItemClientProtockol();
 
 public:
     testSankeServer();
@@ -131,7 +135,17 @@ void testSankeServer::testPingClientProtockol() {
 
     delete serv;
     delete client;
+}
 
+void testSankeServer::testLoginClientProtockol() {
+
+}
+
+void testSankeServer::testUserDataClientProtockol() {
+
+}
+
+void testSankeServer::testGetItemClientProtockol() {
 
 }
 
@@ -141,6 +155,10 @@ void testSankeServer::testServerProtockol() {
 
 void testSankeServer::testClientProtockol() {
     testPingClientProtockol();
+
+    testLoginClientProtockol();
+    testGetItemClientProtockol();
+    testUserDataClientProtockol();
 }
 
 QTEST_APPLESS_MAIN(testSankeServer)

@@ -69,7 +69,6 @@ HEADERS += \
     back-end/backgrounditem.h
 
 DISTFILES += \
-    doc/calassdiagramm.qmodel \
     android/AndroidManifest.xml \
     android/gradle/wrapper/gradle-wrapper.jar \
     android/gradlew \

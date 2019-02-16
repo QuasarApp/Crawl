@@ -5,7 +5,6 @@
 #include "clientprotocol.h"
 #include <QObject>
 
-
 class QTcpSocket;
 class Player;
 class BaseItem;

@@ -33,3 +33,4 @@ HEADERS += \
 
 include($$PWD/../../QuasarAppLib/QuasarLib.pri)
 include($$PWD/../ServerProtocol/ServerProtocol.pri)
+include($$PWD/../Server/Server.pri)
