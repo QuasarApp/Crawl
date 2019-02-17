@@ -28,6 +28,14 @@ CREATE TABLE IF NOT EXISTS players(
 CREATE TABLE IF NOT EXISTS ovners(
 	player int NOT NULL,
 	item int NOT NULL
+
+    FOREIGN KEY(player) REFERENCES players(id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+
+    FOREIGN KEY(item) REFERENCES items(id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
 );
 
 CREATE UNIQUE INDEX IF NOT EXISTS iovners ON ovners(player,item);

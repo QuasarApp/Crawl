@@ -13,6 +13,9 @@ class SERVERSHARED_EXPORT Server: public QObject
 private:
     ServerProtocol::Server *_serverDaemon = nullptr;
 
+    bool payItem(int player, int idItem);
+    bool sellItem(int player, int idItem);
+
 public:
     Server(QObject *ptr = nullptr);
     virtual ~Server();
