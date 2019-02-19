@@ -24,12 +24,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         snakeutils.cpp \
-    lvls.cpp
+    lvls.cpp \
+    steamers.cpp
 
 HEADERS += \
         snakeutils.h \
         snakeutils_global.h \
-    lvls.h
+    lvls.h \
+    steamers.h
 
 CONFIG(release, debug|release): {
     DESTDIR = $$PWD/build/release
