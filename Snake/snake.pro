@@ -22,9 +22,7 @@ SOURCES += \
     back-end/itemworld.cpp \
     back-end/box.cpp \
     back-end/guiobject.cpp \
-    back-end/lvls.cpp \
     back-end/guiobjectfactory.cpp \
-    back-end/utils.cpp \
     back-end/diff.cpp \
     back-end/background.cpp \
     back-end/backgrounditem.cpp
@@ -47,6 +45,7 @@ QML_DESIGNER_IMPORT_PATH =
 
 include($$PWD/../QuasarAppLib/Etalons/qmake/install_prefix.pri)
 include($$PWD/../QuasarAppLib/QuasarLib.pri)
+include($$PWD/../SnakeUtils/SnakeUtils.pri)
 
 install_data.files += $$QUASARAPP_LIB_OUTPUT_DIR/$$libfiletype
 install_data.files += $$DESTDIR/$$runfiletype
@@ -61,8 +60,6 @@ HEADERS += \
     back-end/itemworld.h \
     back-end/box.h \
     back-end/guiobject.h \
-    back-end/utils.h \
-    back-end/lvls.h \
     back-end/guiobjectfactory.h \
     back-end/diff.h \
     back-end/background.h \

@@ -2,7 +2,7 @@
 #include <cmath>
 #include <ctime>
 #include "diff.h"
-#include "lvls.h"
+#include <lvls.h>
 
 Controller::Controller() {
     srand(static_cast<unsigned int>(time(nullptr)));

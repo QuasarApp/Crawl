@@ -1,23 +1,15 @@
-#
-# Copyright (C) 2018 - 2019 QuasarApp.
-# Distributed under the lgplv3 software license, see the accompanying
-# Everyone is permitted to copy and distribute verbatim copies
-# of this license document, but changing it is not allowed.
-#
-
 #-------------------------------------------------
 #
-# Project created by QtCreator 2019-02-12T11:08:54
+# Project created by QtCreator 2019-02-19T14:37:16
 #
 #-------------------------------------------------
 
 QT       -= gui
-QT       += network
 
-TARGET = ClientProtocol
+TARGET = SnakeUtils
 TEMPLATE = lib
 
-DEFINES += CLIENTPROTOCOL_LIBRARY
+DEFINES += SNAKEUTILS_LIBRARY
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
@@ -30,6 +22,15 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+SOURCES += \
+        snakeutils.cpp \
+    lvls.cpp
+
+HEADERS += \
+        snakeutils.h \
+        snakeutils_global.h \
+    lvls.h
+
 CONFIG(release, debug|release): {
     DESTDIR = $$PWD/build/release
 
@@ -37,24 +38,7 @@ CONFIG(release, debug|release): {
     DESTDIR = $$PWD/build/debug
 }
 
-include($$PWD/../../QuasarAppLib/QuasarLib.pri)
+include($$PWD/../QuasarAppLib/QuasarLib.pri)
 
-SOURCES += \
-        clientprotocol.cpp \
-    player.cpp \
-    baseitem.cpp \
-    snakeitem.cpp \
-    client.cpp \
-    server.cpp \
-    map.cpp
-
-HEADERS += \
-        clientprotocol.h \
-        clientprotocol_global.h \ 
-    player.h \
-    baseitem.h \
-    snakeitem.h \
-    client.h \
-    server.h \
-    cp.h \
-    map.h
+DISTFILES += \
+    SnakeUtils.pri

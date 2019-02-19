@@ -23,6 +23,8 @@ public:
     QVariantMap getItem(int id) const;
     bool isValidItem(const QVariantMap& player, int idItem, QByteArray tocken);
     bool isValidPlayer(const QVariantMap& player);
+    bool isValidMap(const QVariantMap& map);
+
 };
 
 #endif // SQLDATABASE_H

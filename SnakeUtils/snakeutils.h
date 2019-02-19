@@ -1,5 +1,7 @@
-#ifndef UTILS_H
-#define UTILS_H
+#ifndef SNAKEUTILS_H
+#define SNAKEUTILS_H
+
+#include "snakeutils_global.h"
 
 #include <QMap>
 #include <QPoint>
@@ -15,4 +17,11 @@
 typedef QMap<QString, int> WorldRules;
 
 
-#endif // UTILS_H
+class SNAKEUTILSSHARED_EXPORT SnakeUtils
+{
+
+public:
+    SnakeUtils();
+};
+
+#endif // SNAKEUTILS_H

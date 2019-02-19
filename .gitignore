@@ -46,6 +46,7 @@ Makefile*
 qml_qmlcache.qrc
 qmlcache_loader.cpp
 snake
+SnakeServer/Terminal/build/debug/Terminal
 
 # QtCreator
 installer/HanoiTowersInstaller
