@@ -3,8 +3,6 @@
 
 #include <QVariantMap>
 #include <typeinfo>
-#include "snakeitem.h"
-#include "player.h"
 
 #define DEFAULT_GAME_PORT 7777
 

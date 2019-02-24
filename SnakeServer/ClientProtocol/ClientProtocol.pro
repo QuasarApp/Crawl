@@ -41,20 +41,12 @@ include($$PWD/../../QuasarAppLib/QuasarLib.pri)
 
 SOURCES += \
         clientprotocol.cpp \
-    player.cpp \
-    baseitem.cpp \
-    snakeitem.cpp \
     client.cpp \
-    server.cpp \
-    map.cpp
+    server.cpp
 
 HEADERS += \
         clientprotocol.h \
         clientprotocol_global.h \ 
-    player.h \
-    baseitem.h \
-    snakeitem.h \
     client.h \
     server.h \
-    cp.h \
-    map.h
+    cp.h
