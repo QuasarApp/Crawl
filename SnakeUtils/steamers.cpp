@@ -19,8 +19,8 @@ bool Steamers::baseWrite(QDataStream &stream, const QVariantMap &map) {
 
     return id;
 }
-
-unsigned int Steamers::getMaxSize(SnakeUtils::Type type) {
+//to do move this method into ClientProtockol
+int Steamers::getMaxSize(SnakeUtils::Type type) {
     auto size = SnakeUtils::getSizeType(type);
     if (size) {
         return size;
@@ -42,20 +42,8 @@ unsigned int Steamers::getMaxSize(SnakeUtils::Type type) {
     return size;
 }
 
-int Steamers::getMinSize(Steamers::Type type) {
-
-}
-
-void Steamers::writeArray(QDataStream &stream, const QVariantList &map) {
-    QList<unsigned int> items;
-    auto varList = map.value("items").toList();
-    for (auto &&i : varList) {
-        items.push_back(i.toUInt());
-    }
-}
-
-void Steamers::readArray(QDataStream &stream, QVariantList &map)
-{
+//to do move this method into ClientProtockol
+int Steamers::getMinSize(SnakeUtils::Type type) {
 
 }
 
@@ -73,9 +61,9 @@ bool Steamers::read(QDataStream &stream, QVariantMap &map, SnakeUtils::Type type
 
         if (SnakeUtils::isNumber(typeItem)) {
 
-            auto size = SnakeUtils::getSizeType(typeItem);
+            int size =static_cast<int> (SnakeUtils::getSizeType(typeItem));
 
-            if (size < 0)
+            if (!size)
                 return false;
 
             char *data = new char[static_cast<unsigned int>(size)];
@@ -136,7 +124,7 @@ bool Steamers::write(QDataStream &stream, const QVariantMap &map, SnakeUtils::Ty
         if (SnakeUtils::isNumber(typeItem)) {
 
             auto val = value.toByteArray();
-            auto size = SnakeUtils::getSizeType(typeItem);
+            auto size = static_cast<int>(SnakeUtils::getSizeType(typeItem));
 
             if (size != stream.writeRawData(val.data(), size)) {
                 return false;
@@ -169,12 +157,4 @@ bool Steamers::write(QDataStream &stream, const QVariantMap &map, SnakeUtils::Ty
     }
 
     return true;
-}
-
-bool Steamers::isVaidSize(Type type) {
-    return
-}
-
-bool Steamers::isGeneralObject(Steamers::Type t) {
-    return t & Steamers::GeneralObject;
 }

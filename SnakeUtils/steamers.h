@@ -17,7 +17,7 @@ private:
     static bool baseRead(QDataStream &stream, QVariantMap &map);
     static bool baseWrite(QDataStream &stream, const QVariantMap &map);
 
-    static unsigned int getMaxSize(SnakeUtils::Type type);
+    static int getMaxSize(SnakeUtils::Type type);
     static int getMinSize(SnakeUtils::Type type);
 
     static void writeArray(QDataStream &stream, const QVariantList &map);

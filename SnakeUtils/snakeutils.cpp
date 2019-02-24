@@ -32,7 +32,7 @@ bool SnakeUtils::isVariant(SnakeUtils::Type type) {
     return type == SnakeUtils::Variant;
 }
 
-unsigned int SnakeUtils::getSizeType(SnakeUtils::Type type) {
+int SnakeUtils::getSizeType(SnakeUtils::Type type) {
     switch (type) {
     case SnakeUtils::Char:
     case SnakeUtils::UChar: return sizeof (char);

@@ -75,7 +75,7 @@ public:
     static bool isNumber(Type);
     static bool isStream(Type);
 
-    static unsigned int getSizeType(Type);
+    static int getSizeType(Type);
     SnakeUtils();
 };
 
