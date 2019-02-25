@@ -4,17 +4,10 @@
 #include "clientprotocol_global.h"
 
 #include <QVariantMap>
-
-#define DEFAULT_SNAKE_SERVER    "127.0.0.1"
-#define LOCAL_SNAKE_SERVER    "127.0.0.1"
-
-#define DEFAULT_SNAKE_PORT      7777
+#include <snakeutils.h>
+#include "config.h"
 
 namespace ClientProtocol {
-
-enum Class: unsigned char {
-    SnakeData = 0
-};
 
 enum Type: unsigned char {
     Responke = 0,
@@ -28,6 +21,11 @@ enum Command: unsigned char {
     Login = 0x03,
     PlayerData = 0x04
 };
+
+int getSize(SnakeUtils::Type type, bool isMax = true);
+bool isStaticObject(SnakeUtils::Type type, int& max, int &min);
+bool isValidSize(SnakeUtils::Type type, int size);
+
 
 /**
  * @brief The Header struct 1 byte

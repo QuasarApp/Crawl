@@ -1,8 +1,9 @@
 #include "clientprotocol.h"
 
-
+#include <QDataStream>
 #include <QVariantMap>
-#include <typeinfo>
+#include <networkobjects.h>
+#include <streamers.h>
 
 #define DEFAULT_GAME_PORT 7777
 
@@ -32,7 +33,7 @@ bool Header::isValid() const {
 
         switch (type) {
         case Request: return size == 36; // key sha256 (32byte) + id item 4
-        case Responke: return size < (snakeSize + sizeof (Class));
+        case Responke: return true;
         }
 
         return false;
@@ -42,7 +43,7 @@ bool Header::isValid() const {
 
         switch (type) {
         case Request: return size == 96; // key sha256 (32byte) + maxsize of name of gmail (64)
-        case Responke: return size < MAX_SIZE_PLAYER && size > MIN_SIZE_PLAYER;
+        case Responke: return isValidSize(SnakeUtils::Player, size);
         }
 
         return false;
@@ -52,7 +53,7 @@ bool Header::isValid() const {
 
         switch (type) {
         case Request: return size == 96; // key sha256 (32byte) + maxsize of name of gmail (64)
-        case Responke: return size < MAX_SIZE_PLAYER && size > MIN_SIZE_PLAYER;
+        case Responke: return isValidSize(SnakeUtils::Player, size);
         }
 
         return false;
@@ -102,20 +103,10 @@ bool Package::parse(QVariantMap& res) const {
         if (hdr.type == Responke) {
 
             QDataStream stream(data);
-            unsigned char type;
-            stream >> type;
-
-            switch (type) {
-            case SnakeData:{
-                if (!SnakeItem::read(stream, res)) {
-                    return false;
-                }
-                break;
+            if (!Streamers::read(stream, res)) {
+                return false;
             }
 
-            default: break;
-
-            }
         } else {
             res["hash"] = data.left(32);
             res["id"] = data.right(4).toInt();
@@ -130,7 +121,7 @@ bool Package::parse(QVariantMap& res) const {
 
             QDataStream stream(data);
 
-            if (!Player::read(stream, res)) {
+            if (!Streamers::read(stream, res)) {
                 return false;
             }
 
@@ -153,7 +144,7 @@ bool Package::parse(QVariantMap& res) const {
         if (hdr.type == Responke) {
 
             QDataStream stream(data);
-            if (!Player::read(stream, res)) {
+            if (!Streamers::read(stream, res)) {
                 return false;
             }
 
@@ -197,25 +188,16 @@ bool Package::create(const QVariantMap &map) {
         if (type == Responke) {
 
             QDataStream stream(data);
-            auto cls = static_cast<unsigned char>(map.value("class", 0xff).toInt());
-            stream << static_cast<unsigned char>(cls);
 
-            switch (cls) {
-            case SnakeData:{
-                if (!SnakeItem::write(stream, map)) {
-                    return false;
-                }
-
-                break;
+            if (!Streamers::write(stream, map)) {
+                return false;
             }
-            default: return false;
 
-            }
         } else {
             QDataStream stream(data);
 
             QByteArray hash = map.value("hash", "").toByteArray();
-            int id = static_cast<Class>(map.value("id", 0).toInt());
+            int id = map.value("id", 0).toInt();
 
             if (hash.size() != 32 || !id) {
                 return false;
@@ -235,7 +217,7 @@ bool Package::create(const QVariantMap &map) {
 
             QDataStream stream(data);
 
-            if (!Player::write(stream, map)) {
+            if (!Streamers::write(stream, map)) {
                 return false;
             }
 
@@ -243,7 +225,7 @@ bool Package::create(const QVariantMap &map) {
             QDataStream stream(data);
 
             QByteArray hash = map.value("hash", "").toByteArray();
-            QString gmail = map.value("id", "").toString();
+            QString gmail = map.value("gmail", "").toString();
 
             if (hash.size() != 32 || gmail.isEmpty()) {
                 return false;
@@ -261,7 +243,7 @@ bool Package::create(const QVariantMap &map) {
 
             QDataStream stream(data);
 
-            if (!Player::write(stream, map)) {
+            if (!Streamers::write(stream, map)) {
                 return false;
             }
 
@@ -269,7 +251,7 @@ bool Package::create(const QVariantMap &map) {
             QDataStream stream(data);
 
             QByteArray hash = map.value("hash", "").toByteArray();
-            QString gmail = map.value("id", "").toString();
+            QString gmail = map.value("gmail", "").toString();
 
             if (hash.size() != 32 || gmail.isEmpty()) {
                 return false;
@@ -302,6 +284,60 @@ QByteArray Package::toBytes() const {
 void Package::reset() {
     hdr.reset();
     data.clear();
+}
+
+int getSize(SnakeUtils::Type type, bool isMax) {
+    auto size = SnakeUtils::getSizeType(type);
+    if (size) {
+        return size;
+    }
+
+    if (type == SnakeUtils::String) {
+        return 255;
+    } else if (type == SnakeUtils::Variant) {
+        return 16;
+    }
+
+    auto listPropertyes = networkObjects.value(type);
+    size = 0;
+    for (auto &&i : listPropertyes) {
+
+        if (SnakeUtils::isArray(i)) {
+            SnakeUtils::Type arrayType = static_cast<SnakeUtils::Type>(type & ~SnakeUtils::Array);
+
+            auto sizeItem = SnakeUtils::getSizeType(arrayType);
+
+            if (arrayType == SnakeUtils::String) {
+                sizeItem = 255;
+            } else if (arrayType == SnakeUtils::Variant) {
+                sizeItem = 16;
+            }
+
+            size += sizeItem * ((isMax)? MAX_SIZE: MIN_SIZE);
+        }
+
+        size += getSize(i, isMax);
+    }
+
+    return size;
+}
+
+bool isStaticObject(SnakeUtils::Type type, int &max, int &min) {
+    max = getSize(type);
+    min = getSize(type, false);
+
+    return max == min;
+}
+
+bool isValidSize(SnakeUtils::Type type, int size) {
+    int max;
+    int min;
+    if (isStaticObject(type, max, min)) {
+        return size == max;
+    }
+
+    return size <= max && size >= min;
+
 }
 
 }

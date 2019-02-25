@@ -19,3 +19,4 @@ CONFIG(release, debug|release): {
 include($$PWD/../../QuasarAppLib/QuasarLib.pri)
 include($$PWD/../ServerProtocol/ServerProtocol.pri)
 include($$PWD/../ClientProtocol/ClientProtocol.pri)
+include($$PWD/../../SnakeUtils/SnakeUtils.pri)

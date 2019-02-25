@@ -38,6 +38,8 @@ CONFIG(release, debug|release): {
 }
 
 include($$PWD/../../QuasarAppLib/QuasarLib.pri)
+include($$PWD/../../SnakeUtils/SnakeUtils.pri)
+
 
 SOURCES += \
         clientprotocol.cpp \
@@ -49,4 +51,5 @@ HEADERS += \
         clientprotocol_global.h \ 
     client.h \
     server.h \
-    cp.h
+    cp.h \
+    config.h

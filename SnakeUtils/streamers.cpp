@@ -1,54 +1,44 @@
-#include "steamers.h"
+#include "streamers.h"
 
 #include <QDataStream>
 #include "networkobjects.h"
 #include <QMap>
+#include <QVariant>
+#include <QVariantMap>
 
-bool Steamers::baseRead(QDataStream &stream, QVariantMap &map) {
+SnakeUtils::Type Streamers::baseRead(QDataStream &stream, QVariantMap &map) {
     unsigned int id;
+    unsigned short _class;
 
+    stream >> _class;
     stream >> id;
     map["id"] = id;
+    map["class"] = _class;
 
-    return id;
+    if (id) {
+        return SnakeUtils::Undefined;
+    }
+
+    return static_cast<SnakeUtils::Type>(_class & SnakeUtils::CustomType);
 }
 
-bool Steamers::baseWrite(QDataStream &stream, const QVariantMap &map) {
+SnakeUtils::Type Streamers::baseWrite(QDataStream &stream, const QVariantMap &map) {
     unsigned int id = map.value("id", 0).toUInt();
+    unsigned short _class = static_cast<unsigned short>(map.value("class").toUInt());
+
+    if (id) {
+        return SnakeUtils::Undefined;
+    }
+
+    stream << _class;
     stream << id;
 
-    return id;
-}
-//to do move this method into ClientProtockol
-int Steamers::getMaxSize(SnakeUtils::Type type) {
-    auto size = SnakeUtils::getSizeType(type);
-    if (size) {
-        return size;
-    }
-    auto listPropertyes = networkObjects.value(type);
-    size = 0;
-    for (auto &&i : listPropertyes) {
-
-        if (SnakeUtils::isArray(i)) {
-            SnakeUtils::Type arrayType = static_cast<SnakeUtils::Type>(type & ~SnakeUtils::Array);
-
-            auto sizeItem = SnakeUtils::getSizeType(arrayType);
-
-        }
-
-        size += getMaxSize(i);
-    }
-
-    return size;
+    return static_cast<SnakeUtils::Type>(_class & SnakeUtils::CustomType);
 }
 
-//to do move this method into ClientProtockol
-int Steamers::getMinSize(SnakeUtils::Type type) {
-
-}
-
-bool Steamers::read(QDataStream &stream, QVariantMap &map, SnakeUtils::Type type) {
-    if (!baseRead(stream, map)) {
+bool Streamers::read(QDataStream &stream, QVariantMap &map) {
+    auto type = baseRead(stream, map);
+    if (!type) {
         return false;
     }
 
@@ -61,18 +51,17 @@ bool Steamers::read(QDataStream &stream, QVariantMap &map, SnakeUtils::Type type
 
         if (SnakeUtils::isNumber(typeItem)) {
 
-            int size =static_cast<int> (SnakeUtils::getSizeType(typeItem));
+            int size = static_cast<int> (SnakeUtils::getSizeType(typeItem));
 
             if (!size)
                 return false;
 
             char *data = new char[static_cast<unsigned int>(size)];
-
             if (size != stream.readRawData(data, size)) {
                 return false;
             }
 
-            map.insert(property, QVariant::fromValue(data));
+            map.insert(property, QVariant::fromValue(QByteArray(data, size)));
 
         }
         else if (SnakeUtils::isString(type)) {
@@ -108,9 +97,10 @@ bool Steamers::read(QDataStream &stream, QVariantMap &map, SnakeUtils::Type type
     return true;
 }
 
-bool Steamers::write(QDataStream &stream, const QVariantMap &map, SnakeUtils::Type type) {
+bool Streamers::write(QDataStream &stream, const QVariantMap &map) {
 
-    if (!baseWrite(stream, map)) {
+    auto type = baseWrite(stream, map);
+    if (!type) {
         return false;
     }
 

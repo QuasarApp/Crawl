@@ -55,6 +55,8 @@ public:
         ArrayString =   Array | String,
         ArrayVariant =  Array | Variant,
 
+        BaseType = 0x00FF,
+
         // custom types
         Snake =     0x0100,
         Player =    0x0200,
@@ -62,8 +64,9 @@ public:
         Game   =    0x0400,
 
         // general objects
-        GeneralObject = 0x8000
+        GeneralObject = 0x8000,
 
+        CustomType = 0xFF00,
 
     };
 
