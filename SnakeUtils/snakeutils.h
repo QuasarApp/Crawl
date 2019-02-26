@@ -38,6 +38,7 @@ public:
         UDouble =   0x0a,
         String =    0x0b,
         Variant =   0x0c,
+        SHA256 =    0x0d,
 
         // baseArray
         Array =     0x80,

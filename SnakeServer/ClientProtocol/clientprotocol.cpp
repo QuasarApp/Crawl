@@ -108,7 +108,7 @@ bool Package::parse(QVariantMap& res) const {
             }
 
         } else {
-            res["hash"] = data.left(32);
+            res["token"] = data.left(32);
             res["id"] = data.right(4).toInt();
         }
 
@@ -157,7 +157,25 @@ bool Package::parse(QVariantMap& res) const {
             stream >> hash;
 
             res["gmail"] = gmail;
-            res["hash"] = hash;
+            res["token"] = hash;
+        }
+        break;
+    }
+    case ApplyData: {
+
+        if (hdr.type == Responke) {
+
+            if (data.size() != 1) {
+                return false;
+            }
+            res["res"] = static_cast<bool>(data.at(0));
+
+//        } else {
+//            QDataStream stream(data);
+
+//            if (!Streamers::write(stream, res)) {
+//                return false;
+//            }
         }
         break;
     }
@@ -168,6 +186,7 @@ bool Package::parse(QVariantMap& res) const {
 
     return true;
 }
+
 
 bool Package::create(const QVariantMap &map) {
 
@@ -196,7 +215,7 @@ bool Package::create(const QVariantMap &map) {
         } else {
             QDataStream stream(data);
 
-            QByteArray hash = map.value("hash", "").toByteArray();
+            QByteArray hash = map.value("token", "").toByteArray();
             int id = map.value("id", 0).toInt();
 
             if (hash.size() != 32 || !id) {
@@ -250,15 +269,9 @@ bool Package::create(const QVariantMap &map) {
         } else {
             QDataStream stream(data);
 
-            QByteArray hash = map.value("hash", "").toByteArray();
-            QString gmail = map.value("gmail", "").toString();
+            QByteArray token = map.value("token", "").toByteArray();
 
-            if (hash.size() != 32 || gmail.isEmpty()) {
-                return false;
-            }
-
-            stream << gmail;
-            stream << hash;
+            stream << token;
         }
         break;
     }

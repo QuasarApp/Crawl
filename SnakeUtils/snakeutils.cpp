@@ -11,8 +11,8 @@ bool SnakeUtils::isStream(SnakeUtils::Type type) {
 
 bool SnakeUtils::isInteger(SnakeUtils::Type type) {
     return type == SnakeUtils::Int || type == SnakeUtils::UInt || type == SnakeUtils::Char ||
-            type == SnakeUtils::UChar || type == SnakeUtils::Short || type == SnakeUtils::UShort;
-
+            type == SnakeUtils::UChar || type == SnakeUtils::Short ||
+            type == SnakeUtils::UShort || type == SnakeUtils::SHA256;
 }
 
 bool SnakeUtils::isReal(SnakeUtils::Type type) {
@@ -44,6 +44,7 @@ int SnakeUtils::getSizeType(SnakeUtils::Type type) {
     case SnakeUtils::UFloat: return sizeof (float);
     case SnakeUtils::Double:
     case SnakeUtils::UDouble: return sizeof (double);
+    case SnakeUtils::SHA256: return 32;
     default: return 0;
     }
 }

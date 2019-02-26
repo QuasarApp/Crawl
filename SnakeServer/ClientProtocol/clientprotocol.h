@@ -19,7 +19,9 @@ enum Command: unsigned char {
     Ping = 0x01,
     Item = 0x02,
     Login = 0x03,
-    PlayerData = 0x04
+    PlayerData = 0x04,
+    ApplyData = 0x05
+
 };
 
 int getSize(SnakeUtils::Type type, bool isMax = true);
