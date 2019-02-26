@@ -150,14 +150,11 @@ bool Package::parse(QVariantMap& res) const {
 
         } else {
             QDataStream stream(data);
-            QString gmail;
-            QByteArray hash;
+            QByteArray token;
 
-            stream >> gmail;
-            stream >> hash;
+            stream >> token;
 
-            res["gmail"] = gmail;
-            res["token"] = hash;
+            res["token"] = token;
         }
         break;
     }
@@ -170,12 +167,12 @@ bool Package::parse(QVariantMap& res) const {
             }
             res["res"] = static_cast<bool>(data.at(0));
 
-//        } else {
-//            QDataStream stream(data);
+        } else {
+            QDataStream stream(data);
 
-//            if (!Streamers::write(stream, res)) {
-//                return false;
-//            }
+            if (!Streamers::read(stream, res, SnakeUtils::Game)) {
+                return false;
+            }
         }
         break;
     }

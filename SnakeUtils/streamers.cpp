@@ -6,7 +6,8 @@
 #include <QVariant>
 #include <QVariantMap>
 
-SnakeUtils::Type Streamers::baseRead(QDataStream &stream, QVariantMap &map) {
+SnakeUtils::Type Streamers::baseRead(QDataStream &stream, QVariantMap &map,
+                                     const SnakeUtils::Type checkType) {
     unsigned int id;
     unsigned short _class;
 
@@ -19,7 +20,7 @@ SnakeUtils::Type Streamers::baseRead(QDataStream &stream, QVariantMap &map) {
         return SnakeUtils::Undefined;
     }
 
-    return static_cast<SnakeUtils::Type>(_class & SnakeUtils::CustomType);
+    return static_cast<SnakeUtils::Type>(_class & checkType);
 }
 
 SnakeUtils::Type Streamers::baseWrite(QDataStream &stream, const QVariantMap &map) {
@@ -36,8 +37,8 @@ SnakeUtils::Type Streamers::baseWrite(QDataStream &stream, const QVariantMap &ma
     return static_cast<SnakeUtils::Type>(_class & SnakeUtils::CustomType);
 }
 
-bool Streamers::read(QDataStream &stream, QVariantMap &map) {
-    auto type = baseRead(stream, map);
+bool Streamers::read(QDataStream &stream, QVariantMap &map, const SnakeUtils::Type checkType) {
+    auto type = baseRead(stream, map, checkType);
     if (!type) {
         return false;
     }

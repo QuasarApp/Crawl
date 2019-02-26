@@ -9,12 +9,14 @@ class QDataStream;
 class Streamers {
 
 private:
-    static SnakeUtils::Type baseRead(QDataStream &stream, QVariantMap &map);
+    static SnakeUtils::Type baseRead(QDataStream &stream, QVariantMap &map,
+                                     const SnakeUtils::Type checkType);
     static SnakeUtils::Type baseWrite(QDataStream &stream, const QVariantMap &map);
 
 public:
 
-    static bool read(QDataStream &stream, QVariantMap &map);
+    static bool read(QDataStream &stream, QVariantMap &map,
+                     const SnakeUtils::Type checkType = SnakeUtils::CustomType);
     static bool write(QDataStream &stream, const QVariantMap &map);
     static bool isVaidSize(SnakeUtils::Type type);
 
