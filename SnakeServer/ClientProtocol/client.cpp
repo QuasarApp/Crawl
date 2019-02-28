@@ -5,6 +5,16 @@
 
 namespace ClientProtocol {
 
+void Client::receiveData(const QVariantMap &map) {
+
+    auto command = static_cast<Command>(map.value("command", Undefined).toInt());
+    auto type = static_cast<Type>(map.value("type", 2).toInt());
+
+    if (command == Login || command == PlayerData) {
+
+    }
+}
+
 void Client::incommingData() {
     auto array = _destination->readAll();
 
@@ -73,6 +83,8 @@ bool Client::login(const QString &gmail, const QByteArray &pass) {
     map["gmail"] = gmail;
     map["type"] = Request;
     map["hash"] = pass;
+    map["command"] = Command::Login;
+
     if (!pcg.create(map)) {
         return false;
     };
@@ -85,12 +97,54 @@ bool Client::login(const QString &gmail, const QByteArray &pass) {
     return true;
 }
 
-bool Client::updateData(const QString &gmail, const QByteArray &pass) {
-    return login(gmail, pass);
+bool Client::updateData() {
+
+    if (!isOnline()) {
+        return false;
+    }
+
+    Package pcg;
+    QVariantMap map;
+    map["type"] = Request;
+    map["token"] = _token;
+    map["command"] = Command::PlayerData;
+
+    if (!pcg.create(map)) {
+        return false;
+    };
+
+    if (!sendPackage(pcg)) {
+        return false;
+
+    }
+
+    return true;
 }
 
-bool Client::getItem(int id, const QByteArray &pass) {
-    if (!pass.size()) {
+bool Client::savaData(QVariantMap gameData) {
+    if (!isOnline()) {
+        return false;
+    }
+
+    Package pcg;
+    gameData["type"] = Request;
+    gameData["token"] = _token;
+    gameData["command"] = Command::ApplyData;
+
+    if (!pcg.create(gameData)) {
+        return false;
+    };
+
+    if (!sendPackage(pcg)) {
+        return false;
+    }
+
+    return true;
+}
+
+bool Client::getItem(int id) {
+
+    if (!isOnline()) {
         return false;
     }
 
@@ -101,17 +155,24 @@ bool Client::getItem(int id, const QByteArray &pass) {
     Package pcg;
     QVariantMap map;
     map["id"] = id;
-    map["hash"] = pass;
+    map["type"] = Request;
+    map["token"] = _token;
+    map["command"] = Command::Item;
+
     if (!pcg.create(map)) {
         return false;
     };
 
     if (!sendPackage(pcg)) {
         return false;
-
     }
 
     return true;
+}
+
+bool Client::isOnline() const
+{
+    return _online;
 }
 
 }

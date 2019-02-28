@@ -16,7 +16,7 @@ Header::Header() {
 
 bool Header::isValid() const {
 
-    if (sizeof (*this) != 2) {
+    if (sizeof (*this) != 3) {
         return false;
     }
 
@@ -52,7 +52,17 @@ bool Header::isValid() const {
     case PlayerData: {
 
         switch (type) {
-        case Request: return size == 96; // key sha256 (32byte) + maxsize of name of gmail (64)
+        case Request: return size == 32; // key sha256 (32byte)
+        case Responke: return isValidSize(NetworkClasses::Player, size);
+        }
+
+        return false;
+    }
+
+    case ApplyData: {
+
+        switch (type) {
+        case Request: return isValidSize(NetworkClasses::Game, size);; // key sha256 (32byte) + maxsize of name of gmail (64)
         case Responke: return isValidSize(NetworkClasses::Player, size);
         }
 

@@ -48,6 +48,13 @@ struct CLIENTPROTOCOLSHARED_EXPORT Header {
     unsigned char command: 3;
 
     /**
+     * @brief sig
+     * signed of package (package number)
+     */
+    unsigned char sig = 0;
+
+
+    /**
      * @brief Header default constructor
      */
     Header();
