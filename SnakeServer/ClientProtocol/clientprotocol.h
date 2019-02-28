@@ -6,6 +6,7 @@
 #include <QVariantMap>
 #include <snakeutils.h>
 #include "config.h"
+#include "networkclasses.h"
 
 namespace ClientProtocol {
 
@@ -24,15 +25,15 @@ enum Command: unsigned char {
 
 };
 
-int getSize(SnakeUtils::Type type, bool isMax = true);
-bool isStaticObject(SnakeUtils::Type type, int& max, int &min);
-bool isValidSize(SnakeUtils::Type type, int size);
+int getSize(NetworkClasses::Type type, bool isMax = true);
+bool isStaticObject(NetworkClasses::Type type, int& max, int &min);
+bool isValidSize(NetworkClasses::Type type, int size);
 
 
 /**
  * @brief The Header struct 1 byte
  */
-struct Header {
+struct CLIENTPROTOCOLSHARED_EXPORT Header {
     /**
      * @brief size - size of package data (not header)
      */
@@ -67,7 +68,7 @@ struct Header {
 /**
  * @brief The Package struct
  */
-struct Package {
+struct CLIENTPROTOCOLSHARED_EXPORT Package {
     /**
      * @brief hdr - header of package
      */

@@ -43,7 +43,7 @@ bool Header::isValid() const {
 
         switch (type) {
         case Request: return size == 96; // key sha256 (32byte) + maxsize of name of gmail (64)
-        case Responke: return isValidSize(SnakeUtils::Player, size);
+        case Responke: return isValidSize(NetworkClasses::Player, size);
         }
 
         return false;
@@ -53,7 +53,7 @@ bool Header::isValid() const {
 
         switch (type) {
         case Request: return size == 96; // key sha256 (32byte) + maxsize of name of gmail (64)
-        case Responke: return isValidSize(SnakeUtils::Player, size);
+        case Responke: return isValidSize(NetworkClasses::Player, size);
         }
 
         return false;
@@ -170,7 +170,7 @@ bool Package::parse(QVariantMap& res) const {
         } else {
             QDataStream stream(data);
 
-            if (!Streamers::read(stream, res, SnakeUtils::Game)) {
+            if (!Streamers::read(stream, res, NetworkClasses::Game)) {
                 return false;
             }
         }
@@ -296,15 +296,15 @@ void Package::reset() {
     data.clear();
 }
 
-int getSize(SnakeUtils::Type type, bool isMax) {
-    auto size = SnakeUtils::getSizeType(type);
+int getSize(NetworkClasses::Type type, bool isMax) {
+    auto size = NetworkClasses::getSizeType(type);
     if (size) {
         return size;
     }
 
-    if (type == SnakeUtils::String) {
+    if (type == NetworkClasses::String) {
         return 255;
-    } else if (type == SnakeUtils::Variant) {
+    } else if (type == NetworkClasses::Variant) {
         return 16;
     }
 
@@ -312,14 +312,14 @@ int getSize(SnakeUtils::Type type, bool isMax) {
     size = 0;
     for (auto &&i : listPropertyes) {
 
-        if (SnakeUtils::isArray(i)) {
-            SnakeUtils::Type arrayType = static_cast<SnakeUtils::Type>(type & ~SnakeUtils::Array);
+        if (NetworkClasses::isArray(i)) {
+            NetworkClasses::Type arrayType = static_cast<NetworkClasses::Type>(type & ~NetworkClasses::Array);
 
-            auto sizeItem = SnakeUtils::getSizeType(arrayType);
+            auto sizeItem = NetworkClasses::getSizeType(arrayType);
 
-            if (arrayType == SnakeUtils::String) {
+            if (arrayType == NetworkClasses::String) {
                 sizeItem = 255;
-            } else if (arrayType == SnakeUtils::Variant) {
+            } else if (arrayType == NetworkClasses::Variant) {
                 sizeItem = 16;
             }
 
@@ -332,14 +332,14 @@ int getSize(SnakeUtils::Type type, bool isMax) {
     return size;
 }
 
-bool isStaticObject(SnakeUtils::Type type, int &max, int &min) {
+bool isStaticObject(NetworkClasses::Type type, int &max, int &min) {
     max = getSize(type);
     min = getSize(type, false);
 
     return max == min;
 }
 
-bool isValidSize(SnakeUtils::Type type, int size) {
+bool isValidSize(NetworkClasses::Type type, int size) {
     int max;
     int min;
     if (isStaticObject(type, max, min)) {

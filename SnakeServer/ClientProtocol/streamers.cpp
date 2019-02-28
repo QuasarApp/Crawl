@@ -6,8 +6,11 @@
 #include <QVariant>
 #include <QVariantMap>
 
-SnakeUtils::Type Streamers::baseRead(QDataStream &stream, QVariantMap &map,
-                                     const SnakeUtils::Type checkType) {
+namespace ClientProtocol {
+
+
+NetworkClasses::Type Streamers::baseRead(QDataStream &stream, QVariantMap &map,
+                                     const NetworkClasses::Type checkType) {
     unsigned int id;
     unsigned short _class;
 
@@ -17,27 +20,27 @@ SnakeUtils::Type Streamers::baseRead(QDataStream &stream, QVariantMap &map,
     map["class"] = _class;
 
     if (id) {
-        return SnakeUtils::Undefined;
+        return NetworkClasses::Undefined;
     }
 
-    return static_cast<SnakeUtils::Type>(_class & checkType);
+    return static_cast<NetworkClasses::Type>(_class & checkType);
 }
 
-SnakeUtils::Type Streamers::baseWrite(QDataStream &stream, const QVariantMap &map) {
+NetworkClasses::Type Streamers::baseWrite(QDataStream &stream, const QVariantMap &map) {
     unsigned int id = map.value("id", 0).toUInt();
     unsigned short _class = static_cast<unsigned short>(map.value("class").toUInt());
 
     if (id) {
-        return SnakeUtils::Undefined;
+        return NetworkClasses::Undefined;
     }
 
     stream << _class;
     stream << id;
 
-    return static_cast<SnakeUtils::Type>(_class & SnakeUtils::CustomType);
+    return static_cast<NetworkClasses::Type>(_class & NetworkClasses::CustomType);
 }
 
-bool Streamers::read(QDataStream &stream, QVariantMap &map, const SnakeUtils::Type checkType) {
+bool Streamers::read(QDataStream &stream, QVariantMap &map, const NetworkClasses::Type checkType) {
     auto type = baseRead(stream, map, checkType);
     if (!type) {
         return false;
@@ -50,9 +53,9 @@ bool Streamers::read(QDataStream &stream, QVariantMap &map, const SnakeUtils::Ty
         auto property = iter.key();
         auto typeItem = iter.value();
 
-        if (SnakeUtils::isNumber(typeItem)) {
+        if (NetworkClasses::isNumber(typeItem)) {
 
-            int size = static_cast<int> (SnakeUtils::getSizeType(typeItem));
+            int size = static_cast<int> (NetworkClasses::getSizeType(typeItem));
 
             if (!size)
                 return false;
@@ -65,27 +68,27 @@ bool Streamers::read(QDataStream &stream, QVariantMap &map, const SnakeUtils::Ty
             map.insert(property, QVariant::fromValue(QByteArray(data, size)));
 
         }
-        else if (SnakeUtils::isString(type)) {
+        else if (NetworkClasses::isString(type)) {
             QStringList val;
             stream >> val;
             map.insert(property, val);
 
         }
-        else if (SnakeUtils::isArray(type)) {
+        else if (NetworkClasses::isArray(type)) {
 
-            if (type & SnakeUtils::String) {
+            if (type & NetworkClasses::String) {
                 QStringList list;
                 stream >> list;
                 map.insert(property, list);
 
             } else {
-                SnakeUtils::Type arrayType = static_cast<SnakeUtils::Type>(type & ~SnakeUtils::Array);
+                NetworkClasses::Type arrayType = static_cast<NetworkClasses::Type>(type & ~NetworkClasses::Array);
                 QByteArray array;
                 stream >> array;
 
                 QVariantList varList;
 
-                auto size = SnakeUtils::getSizeType(arrayType);
+                auto size = NetworkClasses::getSizeType(arrayType);
                 for (int i = 0; i < array.size(); i+= size) {
                     varList.push_back(QVariant::fromValue(array.mid(i, size)));
                 }
@@ -112,30 +115,30 @@ bool Streamers::write(QDataStream &stream, const QVariantMap &map) {
         auto typeItem = iter.value();
         auto value = map.value(property);
 
-        if (SnakeUtils::isNumber(typeItem)) {
+        if (NetworkClasses::isNumber(typeItem)) {
 
             auto val = value.toByteArray();
-            auto size = static_cast<int>(SnakeUtils::getSizeType(typeItem));
+            auto size = static_cast<int>(NetworkClasses::getSizeType(typeItem));
 
             if (size != stream.writeRawData(val.data(), size)) {
                 return false;
             }
         }
-        else if (SnakeUtils::isString(type)) {
+        else if (NetworkClasses::isString(type)) {
             stream << value.toString();
         }
-        else if (SnakeUtils::isArray(type)) {
-            if (type & SnakeUtils::String) {
+        else if (NetworkClasses::isArray(type)) {
+            if (type & NetworkClasses::String) {
                 stream << value.toStringList();
             } else {
-                SnakeUtils::Type arrayType = static_cast<SnakeUtils::Type>(type & ~SnakeUtils::Array);
+                NetworkClasses::Type arrayType = static_cast<NetworkClasses::Type>(type & ~NetworkClasses::Array);
 
                 QByteArray array;
                 auto varList = value.toList();
                 for (auto &&i : varList) {
                     auto temp = i.toByteArray();
 
-                    if (temp.size() != SnakeUtils::getSizeType(arrayType)) {
+                    if (temp.size() != NetworkClasses::getSizeType(arrayType)) {
                         return false;
                     }
 
@@ -148,4 +151,5 @@ bool Streamers::write(QDataStream &stream, const QVariantMap &map) {
     }
 
     return true;
+}
 }
