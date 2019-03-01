@@ -20,9 +20,10 @@ private:
     Package _downloadPackage;
     bool _online = false;
     QByteArray _token;
+    int currentIndex = 0;
     QVariantMap _requestsMap[256];
 
-    void receiveData(QVariantMap map);
+    bool receiveData(QVariantMap map);
     void setOnline(bool newStatus);
 
 private slots:

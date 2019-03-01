@@ -3,19 +3,26 @@
 #include <QTcpSocket>
 #include <QVariantMap>
 #include <QDateTime>
+#include <quasarapp.h>
 
 namespace ClientProtocol {
 
-void Client::receiveData(QVariantMap map) {
+bool Client::receiveData(QVariantMap map) {
 
     auto command = static_cast<Command>(map.value("command", Undefined).toInt());
     auto type = static_cast<Type>(map.value("type", 2).toInt());
     int index = map.value("sig", -1).toInt();
 
     if (index < 0 || index > 255)
-        return;
+        return false;
 
     map["time"] = QDateTime::currentMSecsSinceEpoch();
+
+    if (!_requestsMap[index].isEmpty()) {
+        QuasarAppUtils::Params::verboseLog("wrong sig of package");
+        return false;
+    }
+
     _requestsMap[index] = map;
 
     if ((command == Login || command == PlayerData) && type == Responke) {
@@ -24,6 +31,10 @@ void Client::receiveData(QVariantMap map) {
                 NetworkClasses::getSizeType(NetworkClasses::SHA256);
         emit onlineChanged(_online);
     }
+
+    emit sigIncommingData(map);
+
+    return true;
 
 }
 
@@ -49,9 +60,9 @@ void Client::incommingData() {
 
     if (_downloadPackage.isValid()) {
         QVariantMap res;
-        if (_downloadPackage.parse(res)) {
-            receiveData(res);
-            emit sigIncommingData(res);
+        if (_downloadPackage.parse(res) && !receiveData(res)) {
+            Q_UNUSED(res);
+            // ban
         }
 
         _downloadPackage.reset();
@@ -87,7 +98,11 @@ bool Client::sendPackage(const Package &pkg) {
 
     auto bytes = pkg.toBytes();
 
-    return bytes.size() == _destination->write(bytes);
+    bool sendet = bytes.size() == _destination->write(bytes);
+    _requestsMap[(currentIndex) % 256] = {};
+    currentIndex++;
+
+    return sendet;
 }
 
 bool Client::login(const QString &gmail, const QByteArray &pass) {
