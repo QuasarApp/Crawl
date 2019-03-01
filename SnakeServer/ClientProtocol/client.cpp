@@ -2,16 +2,36 @@
 #include <QRegularExpression>
 #include <QTcpSocket>
 #include <QVariantMap>
+#include <QDateTime>
 
 namespace ClientProtocol {
 
-void Client::receiveData(const QVariantMap &map) {
+void Client::receiveData(QVariantMap map) {
 
     auto command = static_cast<Command>(map.value("command", Undefined).toInt());
     auto type = static_cast<Type>(map.value("type", 2).toInt());
+    int index = map.value("sig", -1).toInt();
 
-    if (command == Login || command == PlayerData) {
+    if (index < 0 || index > 255)
+        return;
 
+    map["time"] = QDateTime::currentMSecsSinceEpoch();
+    _requestsMap[index] = map;
+
+    if ((command == Login || command == PlayerData) && type == Responke) {
+
+        _online = map.value("token", "").toByteArray().size() ==
+                NetworkClasses::getSizeType(NetworkClasses::SHA256);
+        emit onlineChanged(_online);
+    }
+
+}
+
+void Client::setOnline(bool newStatus)
+{
+    if (newStatus != _online) {
+        _online = newStatus;
+        emit onlineChanged(_online);
     }
 }
 
@@ -30,6 +50,7 @@ void Client::incommingData() {
     if (_downloadPackage.isValid()) {
         QVariantMap res;
         if (_downloadPackage.parse(res)) {
+            receiveData(res);
             emit sigIncommingData(res);
         }
 
