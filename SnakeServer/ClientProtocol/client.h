@@ -8,6 +8,7 @@
 class QTcpSocket;
 class Player;
 class BaseItem;
+class testSankeServer;
 
 namespace ClientProtocol {
 
@@ -25,13 +26,15 @@ private:
 
     bool receiveData(QVariantMap map);
     void setOnline(bool newStatus);
+    bool sendPackage(const Package& pkg);
+
+
 
 private slots:
     void incommingData();
 
 public:
     explicit Client(QObject * ptr = nullptr);
-    bool sendPackage(const Package& pkg);
 
 
     /**
@@ -68,11 +71,11 @@ public:
      * @return true if player online
      */
     bool isOnline() const;
+    friend class ::testSankeServer;
 
 signals:
     void sigIncommingData(const QVariantMap& map);
     void onlineChanged(bool);
-
 };
 
 }
