@@ -21,7 +21,6 @@ public:
     static bool read(QDataStream &stream, QVariantMap &map,
                      const NetworkClasses::Type checkType = NetworkClasses::CustomType);
     static bool write(QDataStream &stream, const QVariantMap &map);
-    static bool isVaidSize(NetworkClasses::Type type);
 
     static bool isGeneralObject(NetworkClasses::Type);
     Streamers() = delete;

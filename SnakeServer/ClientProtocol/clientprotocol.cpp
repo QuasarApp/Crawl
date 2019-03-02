@@ -214,14 +214,14 @@ bool Package::create(const QVariantMap &map) {
 
         if (type == Responke) {
 
-            QDataStream stream(data);
+            QDataStream stream(&data);
 
             if (!Streamers::write(stream, map)) {
                 return false;
             }
 
         } else {
-            QDataStream stream(data);
+            QDataStream stream(&data);
 
             QByteArray hash = map.value("token", "").toByteArray();
             int id = map.value("id", 0).toInt();
@@ -242,14 +242,14 @@ bool Package::create(const QVariantMap &map) {
 
         if (type == Responke) {
 
-            QDataStream stream(data);
+            QDataStream stream(&data);
 
             if (!Streamers::write(stream, map)) {
                 return false;
             }
 
         } else {
-            QDataStream stream(data);
+            QDataStream stream(&data);
 
             QByteArray hash = map.value("hash", "").toByteArray();
             QString gmail = map.value("gmail", "").toString();
@@ -268,14 +268,14 @@ bool Package::create(const QVariantMap &map) {
 
         if (type == Responke) {
 
-            QDataStream stream(data);
+            QDataStream stream(&data);
 
             if (!Streamers::write(stream, map)) {
                 return false;
             }
 
         } else {
-            QDataStream stream(data);
+            QDataStream stream(&data);
 
             QByteArray token = map.value("token", "").toByteArray();
 
@@ -289,6 +289,7 @@ bool Package::create(const QVariantMap &map) {
 
     hdr.command = command;
     hdr.type = type;
+    hdr.size = static_cast<unsigned int>(data.size());
 
     return isValid();
 }

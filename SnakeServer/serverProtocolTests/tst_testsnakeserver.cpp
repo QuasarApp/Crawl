@@ -4,6 +4,10 @@
 #include <thread>
 #include <quasarapp.h>
 #include <QCoreApplication>
+#include <streamers.h>
+#include <QCryptographicHash>
+
+#include "randomobjectfactory.h"
 
 // add necessary includes here
 
@@ -15,9 +19,11 @@ private:
     void testPingServerProtockol();
 
     void testPingClientProtockol();
-    void testLoginClientProtockol();
-    void testUserDataClientProtockol();
-    void testGetItemClientProtockol();
+    void testLogin();
+    void testUserData();
+    void testGetItem();
+    void testApplyData();
+    void testNetworkClasses();
 
 public:
     testSankeServer();
@@ -137,15 +143,50 @@ void testSankeServer::testPingClientProtockol() {
     delete client;
 }
 
-void testSankeServer::testLoginClientProtockol() {
+void testSankeServer::testLogin() {
+    ClientProtocol::Client cle;
+
+    auto pass = QCryptographicHash::hash("testpass", QCryptographicHash::Sha256);
+    QVERIFY(cle.login("Test@gmail.com", pass));
 
 }
 
-void testSankeServer::testUserDataClientProtockol() {
+void testSankeServer::testUserData() {
+    ClientProtocol::Client cle;
 
+    QVERIFY(!cle.updateData());
+
+    auto token = QCryptographicHash::hash("testtoken", QCryptographicHash::Sha256);
+    cle._token = token;
+
+    QVERIFY(cle.updateData());
 }
 
-void testSankeServer::testGetItemClientProtockol() {
+void testSankeServer::testGetItem() {
+    ClientProtocol::Client cle;
+
+    QVERIFY(!cle.updateData());
+
+    auto token = QCryptographicHash::hash("testtoken", QCryptographicHash::Sha256);
+    cle._token = token;
+
+    QVERIFY(cle.getItem(0));
+}
+
+void testSankeServer::testApplyData()
+{
+    ClientProtocol::Client cle;
+
+    QVERIFY(!cle.updateData());
+
+    auto token = QCryptographicHash::hash("testtoken", QCryptographicHash::Sha256);
+    cle._token = token;
+
+    QVERIFY(!cle.savaData(QVariantMap()));
+
+    QVariantMap data = RandomObjectFactory::build(ClientProtocol::NetworkClasses::Game);
+
+    QVERIFY(cle.savaData(data));
 
 }
 
@@ -156,9 +197,10 @@ void testSankeServer::testServerProtockol() {
 void testSankeServer::testClientProtockol() {
     testPingClientProtockol();
 
-    testLoginClientProtockol();
-    testGetItemClientProtockol();
-    testUserDataClientProtockol();
+    testLogin();
+    testGetItem();
+    testUserData();
+    testApplyData();
 }
 
 QTEST_APPLESS_MAIN(testSankeServer)

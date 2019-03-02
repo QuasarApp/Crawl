@@ -4,6 +4,9 @@
 
 namespace ClientProtocol {
 
+#define BEGIN_CUSTOM_TYPE
+#define END_CUSTOM_TYPE LastCustomType,
+
 
 class CLIENTPROTOCOLSHARED_EXPORT NetworkClasses
 {
@@ -45,12 +48,14 @@ public:
 
         BaseType = 0x00FF,
 
+        BEGIN_CUSTOM_TYPE
         // custom types
         Snake =     0x0100,
         Player =    0x0200,
         Map    =    0x0300,
         Game   =    0x0400,
 
+        END_CUSTOM_TYPE
         // general objects
         GeneralObject = 0x8000,
 

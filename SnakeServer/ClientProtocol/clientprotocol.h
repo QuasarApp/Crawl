@@ -97,7 +97,7 @@ struct CLIENTPROTOCOLSHARED_EXPORT Package {
      * @brief parse
      * @return Qmap of package (default key if "value")
      */
-    bool parse(QVariantMap &res) const;
+    bool parse(QVariantMap &res);
 
     /**
      * @brief create - fill package

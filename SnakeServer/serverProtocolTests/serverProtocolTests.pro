@@ -7,7 +7,8 @@ CONFIG -= app_bundle
 TEMPLATE = app
 
 SOURCES += \   
-    tst_testsnakeserver.cpp
+    tst_testsnakeserver.cpp \
+    randomobjectfactory.cpp
 
 CONFIG(release, debug|release): {
     DESTDIR = $$PWD/build/release
@@ -20,3 +21,6 @@ include($$PWD/../../QuasarAppLib/QuasarLib.pri)
 include($$PWD/../ServerProtocol/ServerProtocol.pri)
 include($$PWD/../ClientProtocol/ClientProtocol.pri)
 include($$PWD/../../SnakeUtils/SnakeUtils.pri)
+
+HEADERS += \
+    randomobjectfactory.h
