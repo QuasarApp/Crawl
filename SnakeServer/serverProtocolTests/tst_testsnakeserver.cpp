@@ -158,29 +158,33 @@ void testSankeServer::testUserData() {
 
     auto token = QCryptographicHash::hash("testtoken", QCryptographicHash::Sha256);
     cle._token = token;
+    cle._online = true;
 
     QVERIFY(cle.updateData());
 }
 
 void testSankeServer::testGetItem() {
+
     ClientProtocol::Client cle;
 
     QVERIFY(!cle.updateData());
 
     auto token = QCryptographicHash::hash("testtoken", QCryptographicHash::Sha256);
     cle._token = token;
+    cle._online = true;
 
-    QVERIFY(cle.getItem(0));
+    QVERIFY(cle.getItem(1));
 }
 
-void testSankeServer::testApplyData()
-{
+void testSankeServer::testApplyData() {
+
     ClientProtocol::Client cle;
 
     QVERIFY(!cle.updateData());
 
     auto token = QCryptographicHash::hash("testtoken", QCryptographicHash::Sha256);
     cle._token = token;
+    cle._online = true;
 
     QVERIFY(!cle.savaData(QVariantMap()));
 
@@ -197,6 +201,8 @@ void testSankeServer::testServerProtockol() {
 void testSankeServer::testClientProtockol() {
     testPingClientProtockol();
 
+    auto serv = new ClientProtocol::Server(this);
+    QVERIFY(serv->run(LOCAL_SNAKE_SERVER, DEFAULT_SNAKE_PORT));
     testLogin();
     testGetItem();
     testUserData();

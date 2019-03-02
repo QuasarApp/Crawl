@@ -42,7 +42,7 @@ bool Header::isValid() const {
     case Login: {
 
         switch (type) {
-        case Request: return size == 96; // key sha256 (32byte) + maxsize of name of gmail (64)
+        case Request: return size > 36; // key sha256 (32byte) + 4 size array + maxsize of name of gmail (64)
         case Responke: return isValidSize(NetworkClasses::Player, size);
         }
 
@@ -52,7 +52,7 @@ bool Header::isValid() const {
     case PlayerData: {
 
         switch (type) {
-        case Request: return size == 32; // key sha256 (32byte)
+        case Request: return size == 36; // key sha256 (32byte + size of array)
         case Responke: return isValidSize(NetworkClasses::Player, size);
         }
 
@@ -214,14 +214,14 @@ bool Package::create(const QVariantMap &map) {
 
         if (type == Responke) {
 
-            QDataStream stream(&data);
+            QDataStream stream(&data, QIODevice::ReadWrite);
 
             if (!Streamers::write(stream, map)) {
                 return false;
             }
 
         } else {
-            QDataStream stream(&data);
+            QDataStream stream(&data, QIODevice::ReadWrite);
 
             QByteArray hash = map.value("token", "").toByteArray();
             int id = map.value("id", 0).toInt();
@@ -242,14 +242,14 @@ bool Package::create(const QVariantMap &map) {
 
         if (type == Responke) {
 
-            QDataStream stream(&data);
+            QDataStream stream(&data, QIODevice::ReadWrite);
 
             if (!Streamers::write(stream, map)) {
                 return false;
             }
 
         } else {
-            QDataStream stream(&data);
+            QDataStream stream(&data, QIODevice::ReadWrite);
 
             QByteArray hash = map.value("hash", "").toByteArray();
             QString gmail = map.value("gmail", "").toString();
@@ -268,14 +268,14 @@ bool Package::create(const QVariantMap &map) {
 
         if (type == Responke) {
 
-            QDataStream stream(&data);
+            QDataStream stream(&data, QIODevice::ReadWrite);
 
             if (!Streamers::write(stream, map)) {
                 return false;
             }
 
         } else {
-            QDataStream stream(&data);
+            QDataStream stream(&data, QIODevice::ReadWrite);
 
             QByteArray token = map.value("token", "").toByteArray();
 
