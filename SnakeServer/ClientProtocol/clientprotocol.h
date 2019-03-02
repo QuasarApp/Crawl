@@ -31,13 +31,13 @@ bool isValidSize(NetworkClasses::Type type, int size);
 
 
 /**
- * @brief The Header struct 1 byte
+ * @brief The Header struct 4 byte
  */
 struct CLIENTPROTOCOLSHARED_EXPORT Header {
     /**
      * @brief size - size of package data (not header)
      */
-    unsigned short size: 10;
+    unsigned int size: 20;
     /**
      * @brief type of package see Type
      */
@@ -51,7 +51,7 @@ struct CLIENTPROTOCOLSHARED_EXPORT Header {
      * @brief sig
      * signed of package (package number)
      */
-    unsigned char sig = 0;
+    unsigned char sig : 8;
 
 
     /**

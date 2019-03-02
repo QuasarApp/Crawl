@@ -16,7 +16,7 @@ Header::Header() {
 
 bool Header::isValid() const {
 
-    if (sizeof (*this) != 3) {
+    if (sizeof (*this) != 4) {
         return false;
     }
 
@@ -97,6 +97,7 @@ bool Package::parse(QVariantMap& res) const {
 
     res["command"] = hdr.command;
     res["type"] = hdr.type;
+    res["sig"] = hdr.sig;
 
     switch (hdr.command) {
     case Ping: {

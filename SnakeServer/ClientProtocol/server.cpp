@@ -24,6 +24,7 @@ bool Server::parsePackage(const Package &pkg, QTcpSocket* sender) {
 
         Package resp;
         resp.hdr.command = Ping;
+        resp.hdr.sig = pkg.hdr.sig;
 
         auto bytes = resp.toBytes();
 

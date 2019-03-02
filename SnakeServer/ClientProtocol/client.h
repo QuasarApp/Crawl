@@ -22,12 +22,12 @@ private:
     bool _online = false;
     QByteArray _token;
     int currentIndex = 0;
-    QVariantMap _requestsMap[256];
+    QHash<unsigned char, QVariantMap> _requestsMap;
 
     bool receiveData(QVariantMap map);
     void setOnline(bool newStatus);
-    bool sendPackage(const Package& pkg);
-
+    bool sendPackage(Package &pkg);
+    inline unsigned char nextIndex();
 
 
 private slots:

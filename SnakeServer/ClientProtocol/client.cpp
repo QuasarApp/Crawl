@@ -11,19 +11,20 @@ bool Client::receiveData(QVariantMap map) {
 
     auto command = static_cast<Command>(map.value("command", Undefined).toInt());
     auto type = static_cast<Type>(map.value("type", 2).toInt());
-    int index = map.value("sig", -1).toInt();
+    int  index = map.value("sig", -1).toInt();
 
     if (index < 0 || index > 255)
         return false;
 
-    map["time"] = QDateTime::currentMSecsSinceEpoch();
+#define idx static_cast<quint8>(index)
 
-    if (!_requestsMap[index].isEmpty()) {
+    if (!(_requestsMap.contains(idx) && _requestsMap[idx].isEmpty())) {
         QuasarAppUtils::Params::verboseLog("wrong sig of package");
         return false;
     }
 
-    _requestsMap[index] = map;
+    map["time"] = QDateTime::currentMSecsSinceEpoch();
+    _requestsMap[idx] = map;
 
     if ((command == Login || command == PlayerData) && type == Responke) {
 
@@ -35,7 +36,6 @@ bool Client::receiveData(QVariantMap map) {
     emit sigIncommingData(map);
 
     return true;
-
 }
 
 void Client::setOnline(bool newStatus)
@@ -81,7 +81,7 @@ Client::Client(QObject *ptr):
             this, &Client::incommingData);
 }
 
-bool Client::sendPackage(const Package &pkg) {
+bool Client::sendPackage(Package &pkg) {
     if (!pkg.isValid()) {
         return false;
     }
@@ -96,13 +96,18 @@ bool Client::sendPackage(const Package &pkg) {
         return false;
     }
 
-    auto bytes = pkg.toBytes();
+    auto index = nextIndex();
+    _requestsMap[index] = {};
+    pkg.hdr.sig = index;
 
+    auto bytes = pkg.toBytes();
     bool sendet = bytes.size() == _destination->write(bytes);
-    _requestsMap[(currentIndex) % 256] = {};
-    currentIndex++;
 
     return sendet;
+}
+
+unsigned char Client::nextIndex() {
+    return static_cast<unsigned char>((currentIndex++) % 256);
 }
 
 bool Client::login(const QString &gmail, const QByteArray &pass) {
