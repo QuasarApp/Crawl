@@ -50,10 +50,14 @@ public:
 
         BEGIN_CUSTOM_TYPE
         // custom types
-        Snake =     0x0100,
-        Player =    0x0200,
-        Map    =    0x0300,
-        Game   =    0x0400,
+        Ping =      0x0100,
+        Snake =     0x0200,
+        Player =    0x0300,
+        Map    =    0x0400,
+        Game   =    0x0500,
+        Login  =    0x0600,
+        UpdatePlayerData = 0x0700,
+        GetItem =   0x0800,
 
         END_CUSTOM_TYPE
         // general objects
@@ -71,7 +75,7 @@ public:
     static bool isNumber(Type);
     static bool isStream(Type);
 
-    static int getSizeType(Type);
+    static unsigned int getSizeType(Type);
     NetworkClasses();
 };
 }

@@ -4,12 +4,13 @@
 #include <QVariantMap>
 #include <QDateTime>
 #include <quasarapp.h>
+#include "factorynetobjects.h"
 
 namespace ClientProtocol {
 
 bool Client::receiveData(QVariantMap map) {
 
-    auto command = static_cast<Command>(map.value("command", Undefined).toInt());
+    auto command = static_cast<NetworkClasses::Type>(map.value("command", Undefined).toInt());
     auto type = static_cast<Type>(map.value("type", 2).toInt());
     int  index = map.value("sig", -1).toInt();
 
@@ -18,7 +19,9 @@ bool Client::receiveData(QVariantMap map) {
 
 #define idx static_cast<quint8>(index)
 
-    if (!(_requestsMap.contains(idx) && _requestsMap[idx].isEmpty())) {
+    auto expectedCommand = static_cast<NetworkClasses::Type>(_requestsMap[idx].value("expected", NetworkClasses::Undefined).toInt());
+
+    if (!expectedCommand || (command != expectedCommand) || type != Responke) {
         QuasarAppUtils::Params::verboseLog("wrong sig of package");
         return false;
     }
@@ -26,9 +29,10 @@ bool Client::receiveData(QVariantMap map) {
     map["time"] = QDateTime::currentMSecsSinceEpoch();
     _requestsMap[idx] = map;
 
-    if ((command == Login || command == PlayerData) && type == Responke) {
+    if (expectedCommand != NetworkClasses::Undefined &&
+            (command == expectedCommand) && type == Responke) {
 
-        _online = map.value("token", "").toByteArray().size() ==
+        _online = static_cast<quint32>(map.value("token", "").toByteArray().size()) ==
                 NetworkClasses::getSizeType(NetworkClasses::SHA256);
         emit onlineChanged(_online);
     }
@@ -97,7 +101,7 @@ bool Client::sendPackage(Package &pkg) {
     }
 
     auto index = nextIndex();
-    _requestsMap[index] = {};
+    _requestsMap[index] = {{"expected", static_cast<const unsigned short>(pkg.hdr.command)}};
     pkg.hdr.sig = index;
 
     auto bytes = pkg.toBytes();
@@ -110,6 +114,23 @@ unsigned char Client::nextIndex() {
     return static_cast<unsigned char>((currentIndex++) % 256);
 }
 
+bool Client::ping() {
+
+    Package pcg;
+
+    auto map = FactoryNetObjects::build(NetworkClasses::Ping);
+    if (!pcg.create(map, Request)) {
+        return false;
+    };
+
+    if (!sendPackage(pcg)) {
+        return false;
+
+    }
+
+    return true;
+}
+
 bool Client::login(const QString &gmail, const QByteArray &pass) {
     if (!pass.size()) {
         return false;
@@ -120,13 +141,12 @@ bool Client::login(const QString &gmail, const QByteArray &pass) {
     }
 
     Package pcg;
-    QVariantMap map;
-    map["gmail"] = gmail;
-    map["type"] = Request;
-    map["hash"] = pass;
-    map["command"] = Command::Login;
 
-    if (!pcg.create(map)) {
+    auto map = FactoryNetObjects::build(NetworkClasses::Login);
+    map["gmail"] = gmail;
+    map["hashPass"] = pass;
+
+    if (!pcg.create(map, Request)) {
         return false;
     };
 
@@ -145,12 +165,11 @@ bool Client::updateData() {
     }
 
     Package pcg;
-    QVariantMap map;
-    map["type"] = Request;
-    map["token"] = _token;
-    map["command"] = Command::PlayerData;
 
-    if (!pcg.create(map)) {
+    auto map = FactoryNetObjects::build(NetworkClasses::UpdatePlayerData);
+    map["token"] = _token;
+
+    if (!pcg.create(map, Request)) {
         return false;
     };
 
@@ -162,17 +181,18 @@ bool Client::updateData() {
     return true;
 }
 
-bool Client::savaData(QVariantMap gameData) {
+bool Client::savaData(const QList<int>& gameData) {
     if (!isOnline()) {
         return false;
     }
 
     Package pcg;
-    gameData["type"] = Request;
-    gameData["token"] = _token;
-    gameData["command"] = Command::ApplyData;
 
-    if (!pcg.create(gameData)) {
+    auto map = FactoryNetObjects::build(NetworkClasses::Game);
+    map["token"] = _token;
+    map["time"] = FactoryNetObjects::buildArray(gameData);
+
+    if (!pcg.create(map, Request)) {
         return false;
     };
 
@@ -194,13 +214,12 @@ bool Client::getItem(int id) {
     }
 
     Package pcg;
-    QVariantMap map;
-    map["id"] = id;
-    map["type"] = Request;
-    map["token"] = _token;
-    map["command"] = Command::Item;
 
-    if (!pcg.create(map)) {
+    auto map = FactoryNetObjects::build(NetworkClasses::GetItem);
+    map["token"] = _token;
+    map["id"] = id;
+
+    if (!pcg.create(map, Request)) {
         return false;
     };
 

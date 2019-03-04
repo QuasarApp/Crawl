@@ -38,7 +38,7 @@ bool NetworkClasses::isVariant(NetworkClasses::Type type) {
     return type == Variant;
 }
 
-int NetworkClasses::getSizeType(NetworkClasses::Type type) {
+unsigned int NetworkClasses::getSizeType(NetworkClasses::Type type) {
     switch (type) {
     case Char:
     case UChar: return sizeof (char);

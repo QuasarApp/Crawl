@@ -16,61 +16,63 @@ Header::Header() {
 
 bool Header::isValid() const {
 
-    if (sizeof (*this) != 4) {
+    if (sizeof (*this) != 8) {
         return false;
     }
 
-    switch (command) {
-    case Ping: {
+    return isValidSize(static_cast<NetworkClasses::Type>(command) , size);
 
-        if (type > 1 || size > 0)
-            return false;
+//    switch (command) {
+//    case Ping: {
 
-        return true;
-    }
+//        if (type > 1 || size > 0)
+//            return false;
 
-    case Item: {
+//        return true;
+//    }
 
-        switch (type) {
-        case Request: return size == 36; // key sha256 (32byte) + id item 4
-        case Responke: return true;
-        }
+//    case Item: {
 
-        return false;
-    }
+//        switch (type) {
+//        case Request: return size == 36; // key sha256 (32byte) + id item 4
+//        case Responke: return true;
+//        }
 
-    case Login: {
+//        return false;
+//    }
 
-        switch (type) {
-        case Request: return size > 36; // key sha256 (32byte) + 4 size array + maxsize of name of gmail (64)
-        case Responke: return isValidSize(NetworkClasses::Player, size);
-        }
+//    case Login: {
 
-        return false;
-    }
+//        switch (type) {
+//        case Request: return size > 36; // key sha256 (32byte) + 4 size array + maxsize of name of gmail (64)
+//        case Responke: return isValidSize(NetworkClasses::Player, size);
+//        }
 
-    case PlayerData: {
+//        return false;
+//    }
 
-        switch (type) {
-        case Request: return size == 36; // key sha256 (32byte + size of array)
-        case Responke: return isValidSize(NetworkClasses::Player, size);
-        }
+//    case PlayerData: {
 
-        return false;
-    }
+//        switch (type) {
+//        case Request: return size == 36; // key sha256 (32byte + size of array)
+//        case Responke: return isValidSize(NetworkClasses::Player, size);
+//        }
 
-    case ApplyData: {
+//        return false;
+//    }
 
-        switch (type) {
-        case Request: return isValidSize(NetworkClasses::Game, size);; // key sha256 (32byte) + maxsize of name of gmail (64)
-        case Responke: return isValidSize(NetworkClasses::Player, size);
-        }
+//    case SaveData: {
 
-        return false;
-    }
+//        switch (type) {
+//        case Request: return isValidSize(NetworkClasses::Game, size);; // key sha256 (32byte) + maxsize of name of gmail (64)
+//        case Responke: return isValidSize(NetworkClasses::Player, size);
+//        }
 
-    default: return false;
-    }
+//        return false;
+//    }
+
+//    default: return false;
+//    }
 }
 
 void Header::reset() {
@@ -88,7 +90,7 @@ bool Package::isValid() const {
         return false;
     }
 
-    return hdr.size == data.size();
+    return hdr.size == static_cast<unsigned int> (data.size());
 }
 
 bool Package::parse(QVariantMap& res) const {
@@ -99,192 +101,28 @@ bool Package::parse(QVariantMap& res) const {
     res["type"] = hdr.type;
     res["sig"] = hdr.sig;
 
-    switch (hdr.command) {
-    case Ping: {
-        if (hdr.type == Responke) {
-            res["res"] = "Pong";
-        } else {
-            res["value"] = "Ping";
-        }
-        break;
-    }
+    QDataStream stream(data);
 
-    case Item: {
-
-        if (hdr.type == Responke) {
-
-            QDataStream stream(data);
-            if (!Streamers::read(stream, res)) {
-                return false;
-            }
-
-        } else {
-            res["token"] = data.left(32);
-            res["id"] = data.right(4).toInt();
-        }
-
-        break;
-    }
-
-    case Login: {
-
-        if (hdr.type == Responke) {
-
-            QDataStream stream(data);
-
-            if (!Streamers::read(stream, res)) {
-                return false;
-            }
-
-        } else {
-            QDataStream stream(data);
-            QString gmail;
-            QByteArray hash;
-
-            stream >> gmail;
-            stream >> hash;
-
-            res["gmail"] = gmail;
-            res["hash"] = hash;
-        }
-        break;
-    }
-
-    case PlayerData: {
-
-        if (hdr.type == Responke) {
-
-            QDataStream stream(data);
-            if (!Streamers::read(stream, res)) {
-                return false;
-            }
-
-        } else {
-            QDataStream stream(data);
-            QByteArray token;
-
-            stream >> token;
-
-            res["token"] = token;
-        }
-        break;
-    }
-    case ApplyData: {
-
-        if (hdr.type == Responke) {
-
-            if (data.size() != 1) {
-                return false;
-            }
-            res["res"] = static_cast<bool>(data.at(0));
-
-        } else {
-            QDataStream stream(data);
-
-            if (!Streamers::read(stream, res, NetworkClasses::Game)) {
-                return false;
-            }
-        }
-        break;
-    }
-    default:
+    if (!Streamers::read(stream, res, static_cast<NetworkClasses::Type>(hdr.command))) {
         return false;
-
     }
 
     return true;
 }
 
 
-bool Package::create(const QVariantMap &map) {
+bool Package::create(const QVariantMap &map, Type type) {
 
     auto command = static_cast<unsigned char>(map.value("command", 0xff).toInt());
-    auto type = static_cast<unsigned char>(map.value("type", 0xff).toInt());
 
-    if (command == 0xff || type == 0xff) {
+    if (!(command & NetworkClasses::CustomType) || type == Type::Undefined) {
         return false;
     }
 
-    switch (command) {
-    case Ping: {
-        break;
-    }
+    QDataStream stream(&data, QIODevice::ReadWrite);
 
-    case Item: {
-
-        if (type == Responke) {
-
-            QDataStream stream(&data, QIODevice::ReadWrite);
-
-            if (!Streamers::write(stream, map)) {
-                return false;
-            }
-
-        } else {
-            QDataStream stream(&data, QIODevice::ReadWrite);
-
-            QByteArray hash = map.value("token", "").toByteArray();
-            int id = map.value("id", 0).toInt();
-
-            if (hash.size() != 32 || !id) {
-                return false;
-            }
-
-            data.append(hash.data());
-            data.append(reinterpret_cast<char*>(&id), sizeof (id));
-        }
-
-        break;
-
-    }
-
-    case Login: {
-
-        if (type == Responke) {
-
-            QDataStream stream(&data, QIODevice::ReadWrite);
-
-            if (!Streamers::write(stream, map)) {
-                return false;
-            }
-
-        } else {
-            QDataStream stream(&data, QIODevice::ReadWrite);
-
-            QByteArray hash = map.value("hash", "").toByteArray();
-            QString gmail = map.value("gmail", "").toString();
-
-            if (hash.size() != 32 || gmail.isEmpty()) {
-                return false;
-            }
-
-            stream << gmail;
-            stream << hash;
-        }
-        break;
-    }
-
-    case PlayerData: {
-
-        if (type == Responke) {
-
-            QDataStream stream(&data, QIODevice::ReadWrite);
-
-            if (!Streamers::write(stream, map)) {
-                return false;
-            }
-
-        } else {
-            QDataStream stream(&data, QIODevice::ReadWrite);
-
-            QByteArray token = map.value("token", "").toByteArray();
-
-            stream << token;
-        }
-        break;
-    }
-    default: return false;
-
+    if (!Streamers::write(stream, map)) {
+        return false;
     }
 
     hdr.command = command;
@@ -308,52 +146,58 @@ void Package::reset() {
     data.clear();
 }
 
-int getSize(NetworkClasses::Type type, bool isMax) {
+unsigned int getSize(NetworkClasses::Type type, bool isMax) {
     auto size = NetworkClasses::getSizeType(type);
     if (size) {
         return size;
     }
 
     if (type == NetworkClasses::String) {
-        return 255;
+        return (isMax)? 255: 5;
     } else if (type == NetworkClasses::Variant) {
-        return 16;
+        return (isMax)? 16 : 6;
+    }
+
+    if (NetworkClasses::isArray(type)) {
+        NetworkClasses::Type arrayType = static_cast<NetworkClasses::Type>(type & ~NetworkClasses::Array);
+
+        auto sizeItem = NetworkClasses::getSizeType(arrayType);
+
+        if (arrayType == NetworkClasses::String) {
+            sizeItem = (isMax)? 255: 5;
+        } else if (arrayType == NetworkClasses::Variant) {
+            sizeItem = (isMax)? 16 : 6;
+        }
+
+        constexpr int description = sizeof(int);
+
+        size += description + sizeItem * ((isMax)? MAX_SIZE: MIN_SIZE);
+        return size;
+    }
+
+    if (type & NetworkClasses::CustomType) {
+        constexpr auto baseSize = sizeof (short) + sizeof (int);
+        size += baseSize;
     }
 
     auto listPropertyes = networkObjects.value(type);
-    size = 0;
     for (auto &&i : listPropertyes) {
-
-        if (NetworkClasses::isArray(i)) {
-            NetworkClasses::Type arrayType = static_cast<NetworkClasses::Type>(type & ~NetworkClasses::Array);
-
-            auto sizeItem = NetworkClasses::getSizeType(arrayType);
-
-            if (arrayType == NetworkClasses::String) {
-                sizeItem = 255;
-            } else if (arrayType == NetworkClasses::Variant) {
-                sizeItem = 16;
-            }
-
-            size += sizeItem * ((isMax)? MAX_SIZE: MIN_SIZE);
-        }
-
         size += getSize(i, isMax);
     }
 
     return size;
 }
 
-bool isStaticObject(NetworkClasses::Type type, int &max, int &min) {
-    max = getSize(type);
-    min = getSize(type, false);
+bool isStaticObject(NetworkClasses::Type type, unsigned int &max, unsigned int &min) {
+    max = getSize(type, true);
+    min = getSize(type);
 
     return max == min;
 }
 
-bool isValidSize(NetworkClasses::Type type, int size) {
-    int max;
-    int min;
+bool isValidSize(NetworkClasses::Type type, unsigned int size) {
+    unsigned int max;
+    unsigned int min;
     if (isStaticObject(type, max, min)) {
         return size == max;
     }

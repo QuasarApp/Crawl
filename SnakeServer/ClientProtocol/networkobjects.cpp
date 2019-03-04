@@ -3,6 +3,8 @@
 namespace ClientProtocol {
 
 const QHash<NetworkClasses::Type, QMap<QString, NetworkClasses::Type>> networkObjects = {
+    {NetworkClasses::Type::Ping, {}
+    },
     {NetworkClasses::Type::Snake, {
          {"spead", NetworkClasses::UChar},
          {"class", NetworkClasses::UChar},
@@ -19,6 +21,15 @@ const QHash<NetworkClasses::Type, QMap<QString, NetworkClasses::Type>> networkOb
          {"currentSnake", NetworkClasses::UInt}
      }
     },
+    {NetworkClasses::Type::Login, {
+         {"gmail", NetworkClasses::String},
+         {"hashPass", NetworkClasses::SHA256}
+     }
+    },
+    {NetworkClasses::Type::UpdatePlayerData, {
+         {"token", NetworkClasses::SHA256}
+     }
+    },
     {NetworkClasses::Type::Map, {
          {"lvl", NetworkClasses::UChar},
          {"long", NetworkClasses::UShort},
@@ -31,6 +42,11 @@ const QHash<NetworkClasses::Type, QMap<QString, NetworkClasses::Type>> networkOb
     {NetworkClasses::Type::Game, {
          {"token", NetworkClasses::SHA256},
          {"time", NetworkClasses::ArrayInt}
+     }
+    },
+    {NetworkClasses::Type::GetItem, {
+         {"token", NetworkClasses::SHA256},
+         {"id", NetworkClasses::Int}
      }
     }
 };

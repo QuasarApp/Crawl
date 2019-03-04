@@ -16,14 +16,14 @@ bool Server::parsePackage(const Package &pkg, QTcpSocket* sender) {
     }
 
     switch (pkg.hdr.command) {
-    case Ping: {
+    case NetworkClasses::Ping: {
 
         if (pkg.hdr.type != Responke) {
             return false;
         }
 
         Package resp;
-        resp.hdr.command = Ping;
+        resp.hdr.command = NetworkClasses::Ping;
         resp.hdr.sig = pkg.hdr.sig;
 
         auto bytes = resp.toBytes();
@@ -34,23 +34,23 @@ bool Server::parsePackage(const Package &pkg, QTcpSocket* sender) {
         break;
     }
 
-    case Item:
-    case PlayerData:
-    case Login:{
+//    case Item:
+//    case PlayerData:
+//    case Login:{
 
-        if (pkg.hdr.type != Responke) {
-            return false;
-        }
+//        if (pkg.hdr.type != Responke) {
+//            return false;
+//        }
 
-        QVariantMap data;
-        if (!pkg.parse(data)) {
-            return false;
-        }
+//        QVariantMap data;
+//        if (!pkg.parse(data)) {
+//            return false;
+//        }
 
-        emit incomingReques (data, sender);
+//        emit incomingReques (data, sender);
 
-        break;
-    }
+//        break;
+//    }
 
     default:{
         QuasarAppUtils::Params::verboseLog("!responce not sendet!");

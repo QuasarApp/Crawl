@@ -47,7 +47,8 @@ SOURCES += \
     server.cpp \
     streamers.cpp \
     networkobjects.cpp \
-    networkclasses.cpp
+    networkclasses.cpp \
+    factorynetobjects.cpp
 
 
 HEADERS += \
@@ -59,5 +60,6 @@ HEADERS += \
     config.h \
     streamers.h \
     networkobjects.h \
-    networkclasses.h
+    networkclasses.h \
+    factorynetobjects.h
 

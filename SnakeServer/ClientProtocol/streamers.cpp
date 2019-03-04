@@ -12,32 +12,32 @@ namespace ClientProtocol {
 NetworkClasses::Type Streamers::baseRead(QDataStream &stream, QVariantMap &map,
                                      const NetworkClasses::Type checkType) {
     unsigned int id;
-    unsigned short _class;
+    unsigned short command;
 
-    stream >> _class;
+    stream >> command;
     stream >> id;
     map["id"] = id;
-    map["class"] = _class;
+    map["command"] = command;
 
     if (id) {
         return NetworkClasses::Undefined;
     }
 
-    return static_cast<NetworkClasses::Type>(_class & checkType);
+    return static_cast<NetworkClasses::Type>(command & checkType);
 }
 
 NetworkClasses::Type Streamers::baseWrite(QDataStream &stream, const QVariantMap &map) {
     unsigned int id = map.value("id", 0).toUInt();
-    unsigned short _class = static_cast<unsigned short>(map.value("class").toUInt());
+    unsigned short command = static_cast<unsigned short>(map.value("command").toUInt());
 
     if (id) {
         return NetworkClasses::Undefined;
     }
 
-    stream << _class;
+    stream << command;
     stream << id;
 
-    return static_cast<NetworkClasses::Type>(_class & NetworkClasses::CustomType);
+    return static_cast<NetworkClasses::Type>(command & NetworkClasses::CustomType);
 }
 
 bool Streamers::read(QDataStream &stream, QVariantMap &map, const NetworkClasses::Type checkType) {
@@ -68,27 +68,27 @@ bool Streamers::read(QDataStream &stream, QVariantMap &map, const NetworkClasses
             map.insert(property, QVariant::fromValue(QByteArray(data, size)));
 
         }
-        else if (NetworkClasses::isString(type)) {
+        else if (NetworkClasses::isString(typeItem)) {
             QStringList val;
             stream >> val;
             map.insert(property, val);
 
         }
-        else if (NetworkClasses::isArray(type)) {
+        else if (NetworkClasses::isArray(typeItem)) {
+            NetworkClasses::Type arrayType = static_cast<NetworkClasses::Type>(type & ~NetworkClasses::Array);
 
-            if (type & NetworkClasses::String) {
+            if (arrayType & NetworkClasses::String) {
                 QStringList list;
                 stream >> list;
                 map.insert(property, list);
 
             } else {
-                NetworkClasses::Type arrayType = static_cast<NetworkClasses::Type>(type & ~NetworkClasses::Array);
                 QByteArray array;
                 stream >> array;
 
                 QVariantList varList;
 
-                auto size = NetworkClasses::getSizeType(arrayType);
+                auto size = static_cast<int>(NetworkClasses::getSizeType(arrayType));
                 for (int i = 0; i < array.size(); i+= size) {
                     varList.push_back(QVariant::fromValue(array.mid(i, size)));
                 }
@@ -124,21 +124,24 @@ bool Streamers::write(QDataStream &stream, const QVariantMap &map) {
                 return false;
             }
         }
-        else if (NetworkClasses::isString(type)) {
+        else if (NetworkClasses::isString(typeItem)) {
             stream << value.toString();
         }
-        else if (NetworkClasses::isArray(type)) {
-            if (type & NetworkClasses::String) {
+        else if (NetworkClasses::isArray(typeItem)) {
+            NetworkClasses::Type arrayType = static_cast<NetworkClasses::Type>(type & ~NetworkClasses::Array);
+
+            if (arrayType & NetworkClasses::String) {
                 stream << value.toStringList();
             } else {
-                NetworkClasses::Type arrayType = static_cast<NetworkClasses::Type>(type & ~NetworkClasses::Array);
 
                 QByteArray array;
                 auto varList = value.toList();
                 for (auto &&i : varList) {
                     auto temp = i.toByteArray();
 
-                    if (temp.size() != NetworkClasses::getSizeType(arrayType)) {
+                    if (static_cast<quint32>(temp.size())
+                            != NetworkClasses::getSizeType(arrayType)) {
+
                         return false;
                     }
 

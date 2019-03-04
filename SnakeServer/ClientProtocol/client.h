@@ -29,6 +29,8 @@ private:
     bool sendPackage(Package &pkg);
     inline unsigned char nextIndex();
 
+    bool ping();
+
 
 private slots:
     void incommingData();
@@ -57,7 +59,7 @@ public:
      * @param gameData - data of lvl
      * @return true if all good
      */
-    bool savaData(QVariantMap gameData);
+    bool savaData(const QList<int> &gameData);
 
     /**
      * @brief getItem

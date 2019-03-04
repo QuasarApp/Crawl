@@ -7,7 +7,7 @@
 #include <streamers.h>
 #include <QCryptographicHash>
 
-#include "randomobjectfactory.h"
+#include "factorynetobjects.h"
 
 // add necessary includes here
 
@@ -126,10 +126,7 @@ void testSankeServer::testPingClientProtockol() {
 
     });
 
-    ClientProtocol::Package pkg;
-    pkg.hdr.command = ClientProtocol::Ping;
-
-    QVERIFY(client->sendPackage(pkg));
+    client->ping();
 
     QTimer::singleShot(1000, [&app](){
         app.exit(0);
@@ -180,18 +177,16 @@ void testSankeServer::testApplyData() {
 
     ClientProtocol::Client cle;
 
-    QVERIFY(!cle.updateData());
 
     auto token = QCryptographicHash::hash("testtoken", QCryptographicHash::Sha256);
     cle._token = token;
     cle._online = true;
 
-    QVERIFY(!cle.savaData(QVariantMap()));
+    QVERIFY(!cle.savaData(QList<int>()));
 
-    QVariantMap data = RandomObjectFactory::build(ClientProtocol::NetworkClasses::Game);
+    QList<int> listData = {1};
 
-    QVERIFY(cle.savaData(data));
-
+    QVERIFY(cle.savaData(listData));
 }
 
 void testSankeServer::testServerProtockol() {

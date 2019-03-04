@@ -11,41 +11,43 @@
 namespace ClientProtocol {
 
 enum Type: unsigned char {
-    Responke = 0,
-    Request = 1
-};
-
-enum Command: unsigned char {
     Undefined = 0x00,
-    Ping = 0x01,
-    Item = 0x02,
-    Login = 0x03,
-    PlayerData = 0x04,
-    ApplyData = 0x05
-
+    Responke = 0x01,
+    Request = 0x02,
+    Stream = 0x03,
 };
 
-int getSize(NetworkClasses::Type type, bool isMax = true);
-bool isStaticObject(NetworkClasses::Type type, int& max, int &min);
-bool isValidSize(NetworkClasses::Type type, int size);
+//enum class Command: unsigned char {
+//    Undefined = 0x00,
+//    Ping = 0x01,
+//    Item = 0x02,
+//    Login = 0x03,
+//    PlayerData = 0x04,
+//    SaveData = 0x05
+
+//};
+
+unsigned int getSize(NetworkClasses::Type type, bool isMax = false);
+bool isStaticObject(NetworkClasses::Type type, unsigned int &max, unsigned int &min);
+bool isValidSize(NetworkClasses::Type type, unsigned int size);
 
 
 /**
- * @brief The Header struct 4 byte
+ * @brief The Header struct 8 byte
  */
 struct CLIENTPROTOCOLSHARED_EXPORT Header {
     /**
      * @brief size - size of package data (not header)
      */
-    unsigned int size: 20;
+    unsigned int size: 32;
     /**
      * @brief type of package see Type
      */
-    unsigned char type: 1;
+    unsigned char type: 8;
     /**
      * @brief command of pacage see Command
      */
-    unsigned char command: 3;
+    unsigned short command: 16;
 
     /**
      * @brief sig
@@ -104,7 +106,7 @@ struct CLIENTPROTOCOLSHARED_EXPORT Package {
      * @param data - data of filled
      * @return true if all done
      */
-    bool create(const QVariantMap &data);
+    bool create(const QVariantMap &data, Type type);
 
     /**
      * @brief toBytes
