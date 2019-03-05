@@ -32,9 +32,8 @@ bool Client::receiveData(QVariantMap map) {
     if (expectedCommand != NetworkClasses::Undefined &&
             (command == expectedCommand) && type == Responke) {
 
-        _online = static_cast<quint32>(map.value("token", "").toByteArray().size()) ==
-                NetworkClasses::getSizeType(NetworkClasses::SHA256);
-        emit onlineChanged(_online);
+        setOnline(static_cast<quint32>(map.value("token", "").toByteArray().size()) ==
+                  NetworkClasses::getSizeType(NetworkClasses::SHA256));
     }
 
     emit sigIncommingData(map);

@@ -1,6 +1,7 @@
 #include "server.h"
 #include "quasarapp.h"
 #include <QTcpSocket>
+#include <factorynetobjects.h>
 
 namespace ClientProtocol {
 
@@ -18,39 +19,22 @@ bool Server::parsePackage(const Package &pkg, QTcpSocket* sender) {
     switch (pkg.hdr.command) {
     case NetworkClasses::Ping: {
 
-        if (pkg.hdr.type != Responke) {
+        if (pkg.hdr.type != Request) {
             return false;
         }
 
-        Package resp;
-        resp.hdr.command = NetworkClasses::Ping;
-        resp.hdr.sig = pkg.hdr.sig;
+        Package pcg;
 
-        auto bytes = resp.toBytes();
+        auto map = FactoryNetObjects::build(NetworkClasses::Ping);
+        if (!pcg.create(map, Responke)) {
+            return false;
+        };
 
-        if (bytes.size() != sender->write(bytes)) {
+        if (!sendPackage(pcg, sender)) {
             QuasarAppUtils::Params::verboseLog("!responce not sendet!");
         }
         break;
     }
-
-//    case Item:
-//    case PlayerData:
-//    case Login:{
-
-//        if (pkg.hdr.type != Responke) {
-//            return false;
-//        }
-
-//        QVariantMap data;
-//        if (!pkg.parse(data)) {
-//            return false;
-//        }
-
-//        emit incomingReques (data, sender);
-
-//        break;
-//    }
 
     default:{
         QuasarAppUtils::Params::verboseLog("!responce not sendet!");
@@ -59,6 +43,27 @@ bool Server::parsePackage(const Package &pkg, QTcpSocket* sender) {
     }
 
     return true;
+}
+
+bool Server::sendPackage(Package &pkg, QTcpSocket * target) {
+    if (!pkg.isValid()) {
+        return false;
+    }
+
+    if (!target->isValid()) {
+        qCritical() << "destination server not valid!";
+        return false;
+    }
+
+    if (!target->waitForConnected()) {
+        qCritical() << "no connected to server! " << target->errorString();
+        return false;
+    }
+
+    auto bytes = pkg.toBytes();
+    bool sendet = bytes.size() == target->write(bytes);
+
+    return sendet;
 }
 
 void Server::avelableBytes() {

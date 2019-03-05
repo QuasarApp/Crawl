@@ -121,7 +121,7 @@ void testSankeServer::testPingClientProtockol() {
     QObject::connect(client, &ClientProtocol::Client::sigIncommingData,
                      [&isWork, &app] (const QVariantMap& map) {
 
-        isWork = map["res"].toString() == "Pong";
+        isWork = map["command"].toInt() == ClientProtocol::NetworkClasses::Ping;
         app.exit(0);
 
     });

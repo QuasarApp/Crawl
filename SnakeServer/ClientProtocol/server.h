@@ -16,6 +16,7 @@ private:
 
     bool parsePackage(const Package &pkg, QTcpSocket * sender);
 
+    bool sendPackage(Package &pkg, QTcpSocket * target);
 private slots:
     void avelableBytes();
     void handleIncommingConnection();

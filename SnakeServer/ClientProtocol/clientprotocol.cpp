@@ -177,7 +177,7 @@ unsigned int getSize(NetworkClasses::Type type, bool isMax) {
     }
 
     if (type & NetworkClasses::CustomType) {
-        constexpr auto baseSize = sizeof (short) + sizeof (int);
+        constexpr auto baseSize = sizeof (short);
         size += baseSize;
     }
 
@@ -197,6 +197,11 @@ bool isStaticObject(NetworkClasses::Type type, unsigned int &max, unsigned int &
 }
 
 bool isValidSize(NetworkClasses::Type type, unsigned int size) {
+
+    if (type == NetworkClasses::Undefined) {
+        return false;
+    }
+
     unsigned int max;
     unsigned int min;
     if (isStaticObject(type, max, min)) {
