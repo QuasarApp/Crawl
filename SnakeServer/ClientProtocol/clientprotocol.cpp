@@ -113,7 +113,8 @@ bool Package::parse(QVariantMap& res) const {
 
 bool Package::create(const QVariantMap &map, Type type) {
 
-    auto command = static_cast<unsigned char>(map.value("command", 0xff).toInt());
+    auto command = static_cast<NetworkClasses::Type>(
+                map.value("command", NetworkClasses::Undefined).toInt());
 
     if (!(command & NetworkClasses::CustomType) || type == Type::Undefined) {
         return false;

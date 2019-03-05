@@ -35,6 +35,7 @@ bool isValidSize(NetworkClasses::Type type, unsigned int size);
 /**
  * @brief The Header struct 8 byte
  */
+#pragma pack(push, 1)
 struct CLIENTPROTOCOLSHARED_EXPORT Header {
     /**
      * @brief size - size of package data (not header)
@@ -73,6 +74,7 @@ struct CLIENTPROTOCOLSHARED_EXPORT Header {
      */
     void reset();
 };
+#pragma pack(pop)
 
 /**
  * @brief The Package struct
