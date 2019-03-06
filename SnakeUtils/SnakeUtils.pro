@@ -1,15 +1,15 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2019-01-02T12:44:05
+# Project created by QtCreator 2019-02-19T14:37:16
 #
 #-------------------------------------------------
 
 QT       -= gui
-QT       += network
-TARGET = ServerProtocol
+
+TARGET = SnakeUtils
 TEMPLATE = lib
 
-DEFINES += SERVERPROTOCOL_LIBRARY
+DEFINES += SNAKEUTILS_LIBRARY
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
@@ -22,6 +22,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+SOURCES += \
+        snakeutils.cpp \
+    lvls.cpp
+
+HEADERS += \
+        snakeutils.h \
+        snakeutils_global.h \
+    lvls.h
 
 CONFIG(release, debug|release): {
     DESTDIR = $$PWD/build/release
@@ -30,23 +38,7 @@ CONFIG(release, debug|release): {
     DESTDIR = $$PWD/build/debug
 }
 
-include($$PWD/../../QuasarAppLib/QuasarLib.pri)
+include($$PWD/../QuasarAppLib/QuasarLib.pri)
 
 DISTFILES += \
-    ServerProtocol.pri
-
-SOURCES += \
-    serverutils.cpp \
-    serverprotocol.cpp \
-    server.cpp \
-    client.cpp
-
-HEADERS += \
-        serverprotocol.h \
-        serverprotocol_global.h \ 
-    serverutils.h \
-    server.h \
-    client.h \
-    sp.h \
-    spserver.h
-
+    SnakeUtils.pri

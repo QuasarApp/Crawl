@@ -1,7 +1,8 @@
 #ifndef LVLS_H
 #define LVLS_H
 
-#include "utils.h"
+#include <QList>
+#include "snakeutils.h"
 
 extern QList<WorldRules> lvls;
 

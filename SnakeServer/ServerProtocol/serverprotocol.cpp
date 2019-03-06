@@ -14,7 +14,7 @@ bool ServerProtocol::Header::isValid() const {
     switch (command) {
     case ping: {
 
-        if (type > 1)
+        if (type > 1 || size > 0)
             return false;
 
         return true;

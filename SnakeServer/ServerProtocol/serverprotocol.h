@@ -6,7 +6,6 @@
 #include <QVariantMap>
 
 #define DEFAULT_SERVER "SnnakeServer"
-#define DEFAULT_GAME_PORT 7777
 
 namespace ServerProtocol {
 

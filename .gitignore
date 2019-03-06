@@ -15,8 +15,9 @@
 /Build*
 /build*
 Snake/build/
-SnakeServer/Client/build/
+SnakeServer/Server/build/
 SnakeServer/serverProtocolTests/build/
+SnakeServer/Terminal/build
 *.stash
 /Release*
 /parts/*
@@ -45,6 +46,7 @@ Makefile*
 qml_qmlcache.qrc
 qmlcache_loader.cpp
 snake
+SnakeServer/Terminal/build/debug/Terminal
 
 # QtCreator
 installer/HanoiTowersInstaller

@@ -5,7 +5,7 @@
 
 void handleResponcke(const QVariantMap &data) {
     for(auto iter = data.begin(); iter != data.end(); ++iter) {
-      qInfo() << QString("%0: %1").arg( iter.key()).arg(iter.value().toString());
+        qInfo() << QString("%0: %1").arg( iter.key()).arg(iter.value().toString());
     }
 
     QCoreApplication::exit(0);
@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
             return 1;
         }
     } else {
-       return 0;
+        return 0;
     }
 
     return a.exec();

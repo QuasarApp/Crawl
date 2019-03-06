@@ -1,5 +1,5 @@
-#ifndef CLIENT_H
-#define CLIENT_H
+#ifndef CLIENT_SP_H
+#define CLIENT_SP_H
 #include "serverprotocol.h"
 #include "serverprotocol_global.h"
 #include <QObject>
@@ -29,4 +29,4 @@ signals:
 }
 
 
-#endif // CLIENT_H
+#endif // CLIENT_SP_H

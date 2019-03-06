@@ -6,7 +6,7 @@
 #include <QVector>
 #include "itemworld.h"
 #include "baseclass.h"
-#include "utils.h"
+#include "snakeutils.h"
 #include "snake.h"
 
 class World : public BaseClass

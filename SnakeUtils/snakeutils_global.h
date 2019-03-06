@@ -1,0 +1,12 @@
+#ifndef SNAKEUTILS_GLOBAL_H
+#define SNAKEUTILS_GLOBAL_H
+
+#include <QtCore/qglobal.h>
+
+#if defined(SNAKEUTILS_LIBRARY)
+#  define SNAKEUTILSSHARED_EXPORT Q_DECL_EXPORT
+#else
+#  define SNAKEUTILSSHARED_EXPORT Q_DECL_IMPORT
+#endif
+
+#endif // SNAKEUTILS_GLOBAL_H

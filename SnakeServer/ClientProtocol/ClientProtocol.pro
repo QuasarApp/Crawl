@@ -1,15 +1,23 @@
+#
+# Copyright (C) 2018 - 2019 QuasarApp.
+# Distributed under the lgplv3 software license, see the accompanying
+# Everyone is permitted to copy and distribute verbatim copies
+# of this license document, but changing it is not allowed.
+#
+
 #-------------------------------------------------
 #
-# Project created by QtCreator 2019-01-02T12:44:05
+# Project created by QtCreator 2019-02-12T11:08:54
 #
 #-------------------------------------------------
 
 QT       -= gui
 QT       += network
-TARGET = ServerProtocol
+
+TARGET = ClientProtocol
 TEMPLATE = lib
 
-DEFINES += SERVERPROTOCOL_LIBRARY
+DEFINES += CLIENTPROTOCOL_LIBRARY
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
@@ -22,7 +30,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-
 CONFIG(release, debug|release): {
     DESTDIR = $$PWD/build/release
 
@@ -31,22 +38,28 @@ CONFIG(release, debug|release): {
 }
 
 include($$PWD/../../QuasarAppLib/QuasarLib.pri)
+include($$PWD/../../SnakeUtils/SnakeUtils.pri)
 
-DISTFILES += \
-    ServerProtocol.pri
 
 SOURCES += \
-    serverutils.cpp \
-    serverprotocol.cpp \
+        clientprotocol.cpp \
+    client.cpp \
     server.cpp \
-    client.cpp
+    streamers.cpp \
+    networkobjects.cpp \
+    networkclasses.cpp \
+    factorynetobjects.cpp
+
 
 HEADERS += \
-        serverprotocol.h \
-        serverprotocol_global.h \ 
-    serverutils.h \
-    server.h \
+        clientprotocol.h \
+        clientprotocol_global.h \ 
     client.h \
-    sp.h \
-    spserver.h
+    server.h \
+    cp.h \
+    config.h \
+    streamers.h \
+    networkobjects.h \
+    networkclasses.h \
+    factorynetobjects.h
 
