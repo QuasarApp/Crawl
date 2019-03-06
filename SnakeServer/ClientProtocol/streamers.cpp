@@ -115,7 +115,7 @@ bool Streamers::write(QDataStream &stream, const QVariantMap &map) {
             stream << value.toString();
         }
         else if (NetworkClasses::isArray(typeItem)) {
-            NetworkClasses::Type arrayType = static_cast<NetworkClasses::Type>(type & ~NetworkClasses::Array);
+            NetworkClasses::Type arrayType = static_cast<NetworkClasses::Type>(typeItem & ~NetworkClasses::Array);
 
             if (arrayType & NetworkClasses::String) {
                 stream << value.toStringList();
