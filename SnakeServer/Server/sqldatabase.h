@@ -16,9 +16,11 @@ private:
     bool exec(QSqlQuery *sq, const QString &sqlFile);
     QSqlDatabase *db = nullptr;
     QSqlQuery *query = nullptr;
+
 public:
     SQLDataBase(QObject * ptr = nullptr);
     bool initDb(const QString &sql = DEFAULT_DB_NAME);
+    bool isValid() const;
 
     QVariantMap getItem(int id) const;
     bool isValidItem(const QVariantMap& player, int idItem, QByteArray tocken);

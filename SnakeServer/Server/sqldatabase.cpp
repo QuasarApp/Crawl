@@ -8,10 +8,10 @@
 #include <QSqlQuery>
 #include <QTextStream>
 #include <quasarapp.h>
+#include <QSqlError>
 
 SQLDataBase::SQLDataBase(QObject *ptr):
     QObject (ptr) {
-
 }
 
 bool SQLDataBase::exec(QSqlQuery *sq,const QString& sqlFile){
@@ -63,5 +63,26 @@ bool SQLDataBase::initDb(const QString& database) {
     }
 
     return true;
+}
+
+bool SQLDataBase::isValid() const {
+    if (!db) {
+        return false;
+    }
+
+    return db->isValid() && db->isOpen();
+}
+
+QVariantMap SQLDataBase::getItem(int id) const {
+    QString request = QString("SELECT type,data WHERE id=%0").arg(id);
+
+    QVariantMap res;
+
+    if (!query->exec(request)) {
+        QuasarAppUtils::Params::verboseLog("request error : " + query->lastError().text());
+        return res;
+    }
+
+    return res;
 }
 

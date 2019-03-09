@@ -1,9 +1,9 @@
 CREATE TABLE IF NOT EXISTS items(
     id int NOT NULL AUTO_INCREMENT,
     type int NOT NULL,
-	data BLOB NOT NULL,
-    PRIMARY KEY(id)
+    data BLOB NOT NULL,
 
+    PRIMARY KEY(id)
 );
 
 CREATE TABLE IF NOT EXISTS players(
