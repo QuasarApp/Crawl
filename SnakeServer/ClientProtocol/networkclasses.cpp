@@ -15,6 +15,10 @@ bool NetworkClasses::isStream(NetworkClasses::Type type) {
     return isString(type) || isVariant(type);
 }
 
+bool NetworkClasses::isCustomType(NetworkClasses::Type type) {
+    return (type & CustomType) && type <= LastCustomType && !(type & BaseType);
+}
+
 bool NetworkClasses::isInteger(NetworkClasses::Type type) {
     return type == Int || type == UInt || type == Char ||
             type == UChar || type == Short ||

@@ -8,11 +8,13 @@ namespace ClientProtocol {
 bool Server::parsePackage(const Package &pkg, QTcpSocket* sender) {
     if (!pkg.isValid()) {
         QuasarAppUtils::Params::verboseLog("incomming package is not valid!");
+        changeKarma(sender->peerAddress(), CRITICAL_ERROOR);
         return false;
     }
 
     if (!sender->isValid()) {
         QuasarAppUtils::Params::verboseLog("incomming package is not valid!");
+        changeKarma(sender->peerAddress(), LOGICK_ERROOR);
         return false;
     }
 
@@ -36,9 +38,10 @@ bool Server::parsePackage(const Package &pkg, QTcpSocket* sender) {
         break;
     }
 
-    default:{
-        QuasarAppUtils::Params::verboseLog("!responce not sendet!");
-        return false;
+    default: {
+        QVariantMap data;
+        pkg.parse(data);
+        emit incomingReques(data, sender->peerAddress());
     }
     }
 
@@ -64,6 +67,40 @@ bool Server::sendPackage(Package &pkg, QTcpSocket * target) {
     bool sendet = bytes.size() == target->write(bytes);
 
     return sendet;
+}
+
+void Server::ban(const QHostAddress& target) {
+    karma.insert(target, BANED_KARMA);
+}
+
+void Server::unBan(const QHostAddress& target) {
+    karma.insert(target, RESTORE_KARMA);
+}
+
+void Server::registerSocket(const QTcpSocket *socket) {
+    if (!karma.contains(socket->peerAddress())) {
+        karma.insert(socket->peerAddress(), DEFAULT_KARMA);
+        connect(socket, &QTcpSocket::readyRead, this,  &Server::avelableBytes);
+    }
+}
+
+bool Server::changeKarma(const QHostAddress &addresss, int diff) {
+    int objKarma = karma.value(addresss, NOT_VALID_CARMA);
+
+    if (objKarma >= NOT_VALID_CARMA) {
+        return false;
+    }
+
+    if (objKarma <= BANED_KARMA) {
+        return false;
+    }
+
+    karma.insert(addresss, objKarma + diff);
+    return true;
+}
+
+bool Server::isBaned(const QTcpSocket * adr) const {
+    return karma.value(adr->peerAddress(), NOT_VALID_CARMA) < 1;
 }
 
 void Server::avelableBytes() {
@@ -94,7 +131,13 @@ void Server::avelableBytes() {
 void Server::handleIncommingConnection() {
     while (hasPendingConnections()) {
         auto socket = nextPendingConnection();
-        connect(socket, &QTcpSocket::readyRead, this,  &Server::avelableBytes);
+
+        if (isBaned(socket)) {
+            socket->abort();
+            break;
+        }
+
+        registerSocket(socket);
     }
 }
 

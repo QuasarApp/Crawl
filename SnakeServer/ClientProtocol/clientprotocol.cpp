@@ -20,6 +20,10 @@ bool Header::isValid() const {
         return false;
     }
 
+    if (!NetworkClasses::isCustomType(static_cast<NetworkClasses::Type>(command))) {
+        return false;
+    }
+
     return isValidSize(static_cast<NetworkClasses::Type>(command) , size);
 
 //    switch (command) {

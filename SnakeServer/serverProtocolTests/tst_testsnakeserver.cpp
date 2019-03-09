@@ -23,7 +23,6 @@ private:
     void testUserData();
     void testGetItem();
     void testApplyData();
-    void testNetworkClasses();
 
 public:
     testSankeServer();
@@ -198,6 +197,7 @@ void testSankeServer::testClientProtockol() {
 
     auto serv = new ClientProtocol::Server(this);
     QVERIFY(serv->run(LOCAL_SNAKE_SERVER, DEFAULT_SNAKE_PORT));
+
     testLogin();
     testGetItem();
     testUserData();

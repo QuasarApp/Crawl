@@ -74,6 +74,7 @@ public:
     static bool isVariant(Type);
     static bool isNumber(Type);
     static bool isStream(Type);
+    static bool isCustomType(Type type);
 
     static unsigned int getSizeType(Type);
     NetworkClasses();
