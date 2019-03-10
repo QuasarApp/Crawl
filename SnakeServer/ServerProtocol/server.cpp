@@ -22,12 +22,13 @@ void Server::parsePackage(const Package& pkg) {
     switch (pkg.hdr.command) {
     case Ping: {
 
-        if (pkg.hdr.type != Responke) {
+        if (pkg.hdr.type != Request) {
             return;
         }
 
         Package resp;
         resp.hdr.command = Ping;
+        resp.hdr.type = Responke;
 
         if (!sendPackage(resp)) {
             QuasarAppUtils::Params::verboseLog("!responce not sendet!");

@@ -83,6 +83,8 @@ void testSankeServer::testPingServerProtockol()
 
     });
 
+    QVERIFY(client->ping());
+
     QTimer::singleShot(1000, [&app](){
         app.exit(0);
     });
