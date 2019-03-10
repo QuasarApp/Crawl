@@ -3,6 +3,7 @@
 #include <client.h>
 #include <QDebug>
 #include <serverutils.h>
+#include <QTimer>
 
 void handleResponcke(const QVariantMap &data) {
     for(auto iter = data.begin(); iter != data.end(); ++iter) {
@@ -34,30 +35,49 @@ int main(int argc, char *argv[])
                QuasarAppUtils::Params::isEndable("h")) {
 
         ServerUtils::helpClient();
+        return 0;
 
     } else if (QuasarAppUtils::Params::isEndable("State")) {
 
-        cli.getState();
+        if (!cli.getState()) {
+            qCritical() << "command not sendet!";
+            return 1;
+        };
 
     } else if (QuasarAppUtils::Params::isEndable("Ban")) {
 
         auto address = QuasarAppUtils::Params::getStrArg("Ban");
-        cli.ban(QHostAddress(address));
+
+        if (!cli.ban(QHostAddress(address))) {
+            qCritical() << "command not sendet!";
+            return 1;
+        }
 
     } else if (QuasarAppUtils::Params::isEndable("Unban")) {
 
         auto address = QuasarAppUtils::Params::getStrArg("Ban");
-        cli.unBan(QHostAddress(address));
+        if (!cli.unBan(QHostAddress(address))) {
+            qCritical() << "command not sendet!";
+            return 1;
+        }
 
     } else if (QuasarAppUtils::Params::isEndable("Restart")) {
 
         QStringList address = QuasarAppUtils::Params::getStrArg("Restart").split(":");
-        cli.restart(address[0], static_cast<quint16>(address[1].toShort()));
+        if (!cli.restart(address[0], static_cast<quint16>(address[1].toShort()))) {
+            qCritical() << "command not sendet!";
+            return 1;
+        }
     }
     else {
         ServerUtils::helpClient();
         return 0;
     }
+
+    QTimer::singleShot(5000, [&a] {
+        qCritical() << "server not responsed !";
+        a.exit(1);
+    });
 
     return a.exec();
 }
