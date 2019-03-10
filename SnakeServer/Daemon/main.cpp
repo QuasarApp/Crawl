@@ -7,13 +7,13 @@
 int main(int argc, char *argv[])
 {
     if (!ServerUtils::parseParams(argc, argv)) {
-        ServerUtils::help();
+        ServerUtils::helpDaemon();
         return 1;
     }
 
     if (QuasarAppUtils::Params::isEndable("help") ||
             QuasarAppUtils::Params::isEndable("h")) {
-        ServerUtils::help();
+        ServerUtils::helpDaemon();
         return 0;
     }
 
@@ -26,6 +26,7 @@ int main(int argc, char *argv[])
     MainServer loclaServer;
     if (!loclaServer.run()) {
         QuasarAppUtils::Params::verboseLog("server is not run!");
+        ServerUtils::helpDaemon();
         return 1;
     }
 

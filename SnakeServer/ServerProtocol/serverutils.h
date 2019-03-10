@@ -8,13 +8,13 @@ class SERVERPROTOCOLSHARED_EXPORT ServerUtils
 public:
 
     ServerUtils();
-    static void help();
+    static void helpDaemon();
+    static void helpClient();
     /**
      * @brief runDaemon
      * @return true if app running like a daemon
      */
     static bool runDaemon();
-
     static bool parseParams(int argc, char *argv[]);
 };
 

@@ -2,6 +2,7 @@
 #include <quasarapp.h>
 #include <client.h>
 #include <QDebug>
+#include <serverutils.h>
 
 void handleResponcke(const QVariantMap &data) {
     for(auto iter = data.begin(); iter != data.end(); ++iter) {
@@ -29,7 +30,32 @@ int main(int argc, char *argv[])
             qCritical() << "command not sendet!";
             return 1;
         }
-    } else {
+    } else if (QuasarAppUtils::Params::isEndable("Help") ||
+               QuasarAppUtils::Params::isEndable("h")) {
+
+        ServerUtils::helpClient();
+
+    } else if (QuasarAppUtils::Params::isEndable("State")) {
+
+        cli.getState();
+
+    } else if (QuasarAppUtils::Params::isEndable("Ban")) {
+
+        auto address = QuasarAppUtils::Params::getStrArg("Ban");
+        cli.ban(QHostAddress(address));
+
+    } else if (QuasarAppUtils::Params::isEndable("Unban")) {
+
+        auto address = QuasarAppUtils::Params::getStrArg("Ban");
+        cli.unBan(QHostAddress(address));
+
+    } else if (QuasarAppUtils::Params::isEndable("Restart")) {
+
+        QStringList address = QuasarAppUtils::Params::getStrArg("Restart").split(":");
+        cli.restart(address[0], static_cast<quint16>(address[1].toShort()));
+    }
+    else {
+        ServerUtils::helpClient();
         return 0;
     }
 
