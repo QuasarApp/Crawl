@@ -26,9 +26,11 @@ void MainServer::handleTerminalRequest(QVariantMap obj) {
     if (command == ServerProtocol::Command::State) {
         res ["Work State"] = _serverDaemon->getWorkState();
         res ["Connections count"] = _serverDaemon->connectionState();
-        res ["Baned Addresses count"] = _serverDaemon->banedCount();
-    }
+        auto banedList = _serverDaemon->baned();
+        res ["Baned Addresses count"] = banedList.size();
+        res ["Baned List"] = banedList;
 
+    }
 
     _terminalPort->sendResponce(res, command);
     return;

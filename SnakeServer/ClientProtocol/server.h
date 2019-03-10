@@ -61,8 +61,7 @@ public:
      */
     QString connectionState() const;
 
-    int banedCount() const;
-
+    QStringList baned() const;
 signals:
     void incomingReques(const QVariantMap &map, const QHostAddress &sender);
 };

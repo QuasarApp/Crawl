@@ -195,15 +195,15 @@ QString Server::connectionState() const {
     return QString("%0 / %1").arg(_connections.size()).arg(maxPendingConnections());
 }
 
-int Server::banedCount() const {
-    int count = 0;
-    for (int i :_karma) {
-        if (i <= 0) {
-            count++;
+QStringList Server::baned() const {
+    QStringList list = {};
+    for (auto i = _karma.begin() ; i != _karma.end(); i++) {
+        if (i.value() <= 0) {
+            list.push_back(i.key().toString());
         }
     }
 
-    return count;
+    return list;
 }
 
 }
