@@ -1,8 +1,8 @@
 QT_DIR = $$dirname(QMAKE_QMAKE)
 QML_DIR = $$PWD/../Snake/
-DEPLOY_TARGET_ALL = $$PWD/../Snake/build/release,$$PWD/../SnakeServer/Daemon/build/release,$$PWD/../SnakeServer/Client/build/release
+DEPLOY_TARGET_ALL = $$PWD/../Snake/build/release,$$PWD/../SnakeServer/Daemon/build/release,$$PWD/../SnakeServer/Terminal/build/release
 DEPLOY_TARGET_SNAKE = $$PWD/../Snake/build/release
-DEPLOY_TARGET_SERVER = $$PWD/../SnakeServer/Daemon/build/release,SnakeServer/Client/build/release
+DEPLOY_TARGET_SERVER = $$PWD/../SnakeServer/Daemon/build/release,SnakeServer/Terminal/build/release
 
 LUPDATE = $$QT_DIR/lupdate
 LRELEASE = $$QT_DIR/lrelease

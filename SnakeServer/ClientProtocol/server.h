@@ -16,25 +16,29 @@ namespace ClientProtocol {
 #define LOGICK_ERROOR   -20
 #define REQUEST_ERROR   -5
 
-//struct Connectioninfo {
-//    QTcpSocket *sct = nullptr;
-//    int karma = DEFAULT_KARMA;
-//};
+struct Connectioninfo {
+
+    QTcpSocket *sct;
+    int karma;
+
+    Connectioninfo(QTcpSocket * tcp = nullptr,
+                   int kar = NOT_VALID_CARMA);
+    ~Connectioninfo();
+
+};
 
 class CLIENTPROTOCOLSHARED_EXPORT Server : public QTcpServer
 {
     Q_OBJECT
 private:
     Package _downloadPackage;
-    QHash<QHostAddress, QTcpSocket*> _connections;
-    QHash<QHostAddress, int> _karma;
+    QHash<quint32, Connectioninfo> _connections;
+//    QHash<quint32, int> _karma;
 
     bool parsePackage(const Package &pkg, QTcpSocket * sender);
     bool sendPackage(Package &pkg, QTcpSocket * target);
-    void ban(const QHostAddress &target);
-    void unBan(const QHostAddress &target);
-    void registerSocket(const QTcpSocket *socket);
-    bool changeKarma(const QHostAddress& addresss, int diff);
+    void registerSocket(QTcpSocket *socket);
+    bool changeKarma(quint32 addresss, int diff);
     inline bool isBaned(const QTcpSocket *) const;
     void saveKarma() const;
     bool loadKarma();
@@ -48,6 +52,9 @@ public:
     ~Server() override;
     bool run(const QString& ip, unsigned short port);
     void stop(bool reset = false);
+
+    void ban(quint32 target);
+    void unBan(quint32 target);
 
     /**
      * @brief getWorkState

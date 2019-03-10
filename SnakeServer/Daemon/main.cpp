@@ -24,6 +24,10 @@ int main(int argc, char *argv[])
     QCoreApplication a(argc, argv);
 
     MainServer loclaServer;
+    if (!loclaServer.run()) {
+        QuasarAppUtils::Params::verboseLog("server is not run!");
+        return 1;
+    }
 
     return a.exec();
 }
