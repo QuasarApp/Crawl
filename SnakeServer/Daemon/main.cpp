@@ -1,8 +1,8 @@
-#include "sarverdaemon.h"
-
 #include <QCoreApplication>
 #include <serverutils.h>
 #include <quasarapp.h>
+#include <serverutils.h>
+#include <mainserver.h>
 
 int main(int argc, char *argv[])
 {
@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
 
     QCoreApplication a(argc, argv);
 
-    SarverDaemon loclaServer;
+    MainServer loclaServer;
 
     return a.exec();
 }

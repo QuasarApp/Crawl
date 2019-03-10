@@ -70,22 +70,22 @@ bool Server::sendPackage(Package &pkg, QTcpSocket * target) {
 }
 
 void Server::ban(const QHostAddress& target) {
-    karma.insert(target, BANED_KARMA);
+    _karma.insert(target, BANED_KARMA);
 }
 
 void Server::unBan(const QHostAddress& target) {
-    karma.insert(target, RESTORE_KARMA);
+    _karma.insert(target, RESTORE_KARMA);
 }
 
 void Server::registerSocket(const QTcpSocket *socket) {
-    if (!karma.contains(socket->peerAddress())) {
-        karma.insert(socket->peerAddress(), DEFAULT_KARMA);
+    if (!_karma.contains(socket->peerAddress())) {
+        _karma.insert(socket->peerAddress(), DEFAULT_KARMA);
         connect(socket, &QTcpSocket::readyRead, this,  &Server::avelableBytes);
     }
 }
 
 bool Server::changeKarma(const QHostAddress &addresss, int diff) {
-    int objKarma = karma.value(addresss, NOT_VALID_CARMA);
+    int objKarma = _karma.value(addresss, NOT_VALID_CARMA);
 
     if (objKarma >= NOT_VALID_CARMA) {
         return false;
@@ -95,12 +95,20 @@ bool Server::changeKarma(const QHostAddress &addresss, int diff) {
         return false;
     }
 
-    karma.insert(addresss, objKarma + diff);
+    _karma.insert(addresss, objKarma + diff);
     return true;
 }
 
 bool Server::isBaned(const QTcpSocket * adr) const {
-    return karma.value(adr->peerAddress(), NOT_VALID_CARMA) < 1;
+    return _karma.value(adr->peerAddress(), NOT_VALID_CARMA) < 1;
+}
+
+void Server::saveKarma() const {
+
+}
+
+bool Server::loadKarma() {
+    return false;
 }
 
 void Server::avelableBytes() {
@@ -158,6 +166,44 @@ bool Server::run(const QString &ip, unsigned short port) {
     }
 
     return true;
+}
+
+void Server::stop(bool reset) {
+    close();
+
+    if (reset) {
+        for (auto socket: _connections) {
+            socket->deleteLater();
+        }
+        _connections.clear();
+    }
+}
+
+QString Server::getWorkState() const {
+    if (isListening()) {
+        if (hasPendingConnections())
+            return "Work";
+        else {
+            return "overload";
+        }
+    }
+
+    return "Not running";
+}
+
+QString Server::connectionState() const {
+    return QString("%0 / %1").arg(_connections.size()).arg(maxPendingConnections());
+}
+
+int Server::banedCount() const {
+    int count = 0;
+    for (int i :_karma) {
+        if (i <= 0) {
+            count++;
+        }
+    }
+
+    return count;
 }
 
 }

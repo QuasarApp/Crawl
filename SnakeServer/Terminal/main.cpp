@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
 
     if (QuasarAppUtils::Params::isEndable("ping")) {
         ServerProtocol::Package pkg;
-        pkg.hdr.command = ServerProtocol::ping;
+        pkg.hdr.command = ServerProtocol::Ping;
         if (!cli.sendPackage(pkg)) {
             qCritical() << "command not sendet!";
             return 1;

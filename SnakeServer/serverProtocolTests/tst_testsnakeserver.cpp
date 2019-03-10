@@ -83,11 +83,6 @@ void testSankeServer::testPingServerProtockol()
 
     });
 
-    ServerProtocol::Package pkg;
-    pkg.hdr.command = ServerProtocol::ping;
-
-    QVERIFY(client->sendPackage(pkg));
-
     QTimer::singleShot(1000, [&app](){
         app.exit(0);
     });

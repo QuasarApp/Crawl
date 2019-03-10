@@ -63,5 +63,6 @@ HEADERS += \
     networkobjects.h \
     networkclasses.h \
     factorynetobjects.h \
-    connectioninfo.h
+    connectioninfo.h \
+    cpserver.h
 
