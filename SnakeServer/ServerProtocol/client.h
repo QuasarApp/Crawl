@@ -16,12 +16,13 @@ private:
     QLocalSocket *_destination;
     Package _downloadPackage;
 
+    bool sendPackage(const Package& pkg);
+
 private slots:
     void incommingData();
 
 public:
     explicit Client(QObject * ptr = nullptr);
-    bool sendPackage(const Package& pkg);
     bool ping();
     bool getState();
     bool ban(const QHostAddress& address);

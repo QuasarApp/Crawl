@@ -25,12 +25,12 @@ int main(int argc, char *argv[])
                      &handleResponcke);
 
     if (QuasarAppUtils::Params::isEndable("ping")) {
-        ServerProtocol::Package pkg;
-        pkg.hdr.command = ServerProtocol::Ping;
-        if (!cli.sendPackage(pkg)) {
+
+        if (!cli.ping()) {
             qCritical() << "command not sendet!";
             return 1;
         }
+
     } else if (QuasarAppUtils::Params::isEndable("Help") ||
                QuasarAppUtils::Params::isEndable("h")) {
 
@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
         return 0;
     }
 
-    QTimer::singleShot(5000, [&a] {
+    QTimer::singleShot(3000, [&a] {
         qCritical() << "server not responsed !";
         a.exit(1);
     });
