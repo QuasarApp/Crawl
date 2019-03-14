@@ -22,7 +22,9 @@ public:
     bool initDb(const QString &sql = DEFAULT_DB_NAME);
     bool isValid() const;
 
-    QVariantMap getItem(int id) const;
+    bool getItem(int id, QVariantMap &res) const;
+    bool saveItem(const QVariantMap &item) const;
+
     bool isValidItem(const QVariantMap& player, int idItem, QByteArray tocken);
     bool isValidPlayer(const QVariantMap& player);
     bool isValidMap(const QVariantMap& map);

@@ -21,8 +21,9 @@ public:
 
     static bool read(QDataStream &stream, QVariantMap &map,
                      const NetworkClasses::Type checkType = NetworkClasses::CustomType);
+    static bool read(const QByteArray &data, QVariantMap &map);
     static bool write(QDataStream &stream, const QVariantMap &map);
-    static bool write(QByteArray &stream, const QVariantMap &map);
+    static bool write(QByteArray &data, const QVariantMap &map);
 
 
     static bool isGeneralObject(NetworkClasses::Type);

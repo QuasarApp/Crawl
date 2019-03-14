@@ -10,6 +10,9 @@
 #include <quasarapp.h>
 #include <QSqlError>
 
+#include <networkclasses.h>
+#include <streamers.h>
+
 SQLDataBase::SQLDataBase(QObject *ptr):
     QObject (ptr) {
 }
@@ -73,16 +76,44 @@ bool SQLDataBase::isValid() const {
     return db->isValid() && db->isOpen();
 }
 
-QVariantMap SQLDataBase::getItem(int id) const {
-    QString request = QString("SELECT type,data WHERE id=%0").arg(id);
+bool SQLDataBase::getItem(int id, QVariantMap &res) const {
+    QString request = QString("SELECT data FROM items WHERE id=%0").arg(id);
+    if (!query->exec(request)) {
+        QuasarAppUtils::Params::verboseLog("request error : " + query->lastError().text());
+        return false;
+    }
 
-    QVariantMap res;
+    if (!query->next()) {
+        return false;
+    }
+    auto data = query->value(0).toByteArray();
+
+    return ClientProtocol::Streamers::read(data, res);
+}
+
+bool SQLDataBase::saveItem(const QVariantMap &item) const {
+    auto type = static_cast<ClientProtocol::NetworkClasses::Type>
+            (item.value("command", ClientProtocol::NetworkClasses::Undefined).toInt());
+
+    if (!ClientProtocol::NetworkClasses::isCustomType(type)) {
+        return false;
+    }
+
+    QByteArray bytes;
+    if (!ClientProtocol::Streamers::write(bytes, item)) {
+        return false;
+    }
+
+    QString request = QString("SINSERT INTO items(type,data) VALUES "
+                              "('%0', :bytes)").arg(static_cast<int>(type));
+
+    query->bindValue( ":bytes", bytes);
 
     if (!query->exec(request)) {
         QuasarAppUtils::Params::verboseLog("request error : " + query->lastError().text());
-        return res;
+        return false;
     }
 
-    return res;
+    return true;
 }
 

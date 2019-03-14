@@ -88,6 +88,11 @@ bool Streamers::read(QDataStream &stream, QVariantMap &map, const NetworkClasses
     return true;
 }
 
+bool Streamers::read(const QByteArray &data, QVariantMap &map) {
+    QDataStream stream(data);
+    return read(stream, map);
+}
+
 bool Streamers::write(QDataStream &stream, const QVariantMap &map) {
 
     auto type = baseWrite(stream, map);
@@ -141,5 +146,11 @@ bool Streamers::write(QDataStream &stream, const QVariantMap &map) {
     }
 
     return true;
+}
+
+bool Streamers::write(QByteArray &data, const QVariantMap &map) {
+    QDataStream stream(&data, QIODevice::WriteOnly);
+
+    return write(stream, map);
 }
 }
