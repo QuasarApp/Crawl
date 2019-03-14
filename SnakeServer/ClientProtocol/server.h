@@ -53,6 +53,8 @@ public:
     bool run(const QString& ip, unsigned short port);
     void stop(bool reset = false);
 
+    void badRequest(quint32 address);
+
     void ban(quint32 target);
     void unBan(quint32 target);
 
@@ -70,7 +72,7 @@ public:
 
     QStringList baned() const;
 signals:
-    void incomingReques(const QVariantMap &map, const QHostAddress &sender);
+    void incomingReques(const QVariantMap &map, const quint32 &sender);
 };
 
 }

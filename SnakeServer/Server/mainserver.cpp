@@ -15,8 +15,34 @@ bool MainServer::restartSrver(const QString &ip, unsigned short port) {
     return true;
 }
 
-void MainServer::handleRequest(QVariantMap obj, const QHostAddress &addres) {
+void MainServer::handleRequest(QVariantMap obj, const quint32 &addres) {
 
+    Q_UNUSED(addres);
+
+    auto command = static_cast<ClientProtocol::NetworkClasses::Type>
+            (obj.value("command").toInt());
+
+    switch (command) {
+    case ClientProtocol::NetworkClasses::Login: {
+        break;
+    }
+
+    case ClientProtocol::NetworkClasses::Game: {
+        break;
+    }
+
+    case ClientProtocol::NetworkClasses::UpdatePlayerData: {
+        break;
+    }
+
+    case ClientProtocol::NetworkClasses::GetItem: {
+        break;
+    }
+
+    default:
+        _serverDaemon->badRequest(addres);
+        break;
+    }
 }
 
 void MainServer::handleTerminalRequest(QVariantMap obj) {

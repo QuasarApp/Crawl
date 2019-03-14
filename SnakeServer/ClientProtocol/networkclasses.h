@@ -58,6 +58,7 @@ public:
         Login  =    0x0600,
         UpdatePlayerData = 0x0700,
         GetItem =   0x0800,
+        BadRequest = 0x0900,
 
         END_CUSTOM_TYPE
         // general objects

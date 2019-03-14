@@ -48,6 +48,8 @@ const QHash<NetworkClasses::Type, QMap<QString, NetworkClasses::Type>> networkOb
          {"token", NetworkClasses::SHA256},
          {"id", NetworkClasses::Int}
      }
+    },
+    {NetworkClasses::Type::BadRequest, {}
     }
 };
 

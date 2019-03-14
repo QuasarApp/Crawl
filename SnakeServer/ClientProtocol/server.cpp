@@ -41,7 +41,7 @@ bool Server::parsePackage(const Package &pkg, QTcpSocket* sender) {
     default: {
         QVariantMap data;
         pkg.parse(data);
-        emit incomingReques(data, sender->peerAddress());
+        emit incomingReques(data, qHash(sender->peerAddress()));
     }
     }
 
@@ -53,7 +53,7 @@ bool Server::sendPackage(Package &pkg, QTcpSocket * target) {
         return false;
     }
 
-    if (!target->isValid()) {
+    if (!target || !target->isValid()) {
         qCritical() << "destination server not valid!";
         return false;
     }
@@ -178,6 +178,25 @@ void Server::stop(bool reset) {
 
     if (reset) {
         _connections.clear();
+    }
+}
+
+void Server::badRequest(quint32 address) {
+    auto client = _connections.value(address);
+
+    if (!changeKarma(address, REQUEST_ERROR)) {
+        return;
+    }
+
+    auto map = FactoryNetObjects::build(NetworkClasses::BadRequest);
+
+    Package pcg;
+    if (!pcg.create(map, Request)) {
+        return;
+    };
+
+    if (!sendPackage(pcg, client.sct)) {
+        return;
     }
 }
 

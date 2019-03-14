@@ -25,7 +25,7 @@ private:
     bool restartSrver(const QString& ip, unsigned short port);
 
 private slots:
-    void handleRequest(QVariantMap obj, const QHostAddress& addres);
+    void handleRequest(QVariantMap obj, const quint32& addres);
     void handleTerminalRequest(QVariantMap obj);
 
 public:
