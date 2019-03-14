@@ -4,6 +4,7 @@
 #include <cstring>
 #include <QFile>
 #include <QDataStream>
+#include <QVariantMap>
 
 #include "serverutils.h"
 #include "serverprotocol.h"
@@ -29,6 +30,10 @@ void Server::parsePackage(const Package& pkg) {
         Package resp;
         resp.hdr.command = Ping;
         resp.hdr.type = Responke;
+
+        QVariantMap data;
+        data["res"] = "Pong";
+        resp.fromMap(data);
 
         if (!sendPackage(resp)) {
             QuasarAppUtils::Params::verboseLog("!responce not sendet!");

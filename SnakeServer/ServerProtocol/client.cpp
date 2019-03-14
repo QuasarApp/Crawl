@@ -81,6 +81,9 @@ bool Client::ban(const QHostAddress &address) {
     pkg.hdr.command = ServerProtocol::Ban;
     pkg.hdr.type = ServerProtocol::Request;
 
+    if (address.isNull())
+        return false;
+
     QVariantMap map;
     map["address"] = qHash(address);
 
@@ -90,6 +93,9 @@ bool Client::ban(const QHostAddress &address) {
 }
 
 bool Client::unBan(const QHostAddress &address) {
+
+    if (address.isNull())
+        return false;
 
     ServerProtocol::Package pkg;
     pkg.hdr.command = ServerProtocol::Unban;
@@ -104,6 +110,12 @@ bool Client::unBan(const QHostAddress &address) {
 }
 
 bool Client::restart(const QString &address, unsigned short port) {
+
+    QHostAddress test(address);
+
+    if (test.isNull() || port == 0) {
+        return false;
+    }
 
     ServerProtocol::Package pkg;
     pkg.hdr.command = ServerProtocol::Restart;

@@ -96,7 +96,7 @@ struct Package {
      */
     void reset();
 
-    void fromMap(const QVariantMap& map);
+    bool fromMap(const QVariantMap& map);
 
 };
 

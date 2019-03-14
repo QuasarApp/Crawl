@@ -15,17 +15,11 @@ bool ServerProtocol::Header::isValid() const {
         return false;
     }
 
-    switch (command) {
-    case Ping: {
-
-        if (type > 1 || size > 0)
-            return false;
-
-        return true;
+    if (type == Type::Request) {
+        return size < 256;
     }
 
-    default: return false;
-    }
+    return size >= 5;
 }
 
 void ServerProtocol::Header::reset() {
@@ -51,27 +45,13 @@ QVariantMap ServerProtocol::Package::parse() const {
         return QVariantMap();
 
     QVariantMap res;
+    QDataStream stream(data);
 
-    switch (hdr.command) {
-    case Ping: {
-        if (hdr.type == Responke) {
-            res["res"] = "Pong";
-        } else {
-            res["value"] = "Ping";
-        }
-        break;
-    }
+    res["command"] = hdr.command;
+    res["type"] = hdr.type;
 
-    default: {
-
-        QDataStream stream(data);
-
-        if (hdr.type == Responke) {
-            stream >> res;
-        }
-
-        return res;
-    }
+    if (hdr.type == Responke) {
+        stream >> res;
     }
 
     return res;
@@ -91,10 +71,18 @@ void ServerProtocol::Package::reset() {
     data.clear();
 }
 
-void ServerProtocol::Package::fromMap(const QVariantMap &map) {
+bool ServerProtocol::Package::fromMap(const QVariantMap &map) {
     QDataStream stream(&data, QIODevice::ReadWrite);
 
     stream << map;
+
+    if (data.size() > 1024) {
+        return false;
+    }
+
+    hdr.size =  static_cast<unsigned short>(data.size());
+
+    return true;
 
 }
 

@@ -17,6 +17,10 @@ class testSankeServer : public QObject
 
 private:
     void testPingServerProtockol();
+    void testStateServerProtockol();
+    void testBanServerProtockol();
+    void testUnBanServerProtockol();
+    void testRestartServerProtockol();
 
     void testPingClientProtockol();
     void testLogin();
@@ -95,6 +99,44 @@ void testSankeServer::testPingServerProtockol()
 
     delete serv;
     delete client;
+
+}
+
+void testSankeServer::testStateServerProtockol()
+{
+    ServerProtocol::Client cle;
+    QVERIFY(cle.getState());
+}
+
+void testSankeServer::testBanServerProtockol()
+{
+    ServerProtocol::Client cle;
+    QVERIFY(!cle.ban(QHostAddress()));
+
+    QVERIFY(cle.ban(QHostAddress("192.192.192.192")));
+}
+
+void testSankeServer::testUnBanServerProtockol()
+{
+    ServerProtocol::Client cle;
+    QVERIFY(!cle.unBan(QHostAddress()));
+
+    QVERIFY(cle.unBan(QHostAddress("192.192.192.192")));
+}
+
+void testSankeServer::testRestartServerProtockol()
+{
+    ServerProtocol::Client cle;
+    QVERIFY(!cle.restart("lolo", 0));
+
+    QVERIFY(!cle.restart("192.168.1.999", 0));
+    QVERIFY(!cle.restart("192.168.1.99", 0));
+    QVERIFY(!cle.restart("192.168.1.9", 0));
+
+    QVERIFY(!cle.restart("-1.168.1.999", 77));
+    QVERIFY(!cle.restart("192.168.-1.99", 7777));
+
+    QVERIFY(cle.restart("192.168.1.9", 3456));
 
 }
 
@@ -187,6 +229,13 @@ void testSankeServer::testApplyData() {
 
 void testSankeServer::testServerProtockol() {
     testPingServerProtockol();
+
+    auto serv = new ServerProtocol::Server(this);
+    QVERIFY(serv->run(DEFAULT_SERVER));
+    testStateServerProtockol();
+    testBanServerProtockol();
+    testUnBanServerProtockol();
+    testRestartServerProtockol();
 }
 
 void testSankeServer::testClientProtockol() {
