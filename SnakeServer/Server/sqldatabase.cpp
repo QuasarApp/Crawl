@@ -117,3 +117,55 @@ bool SQLDataBase::saveItem(const QVariantMap &item) const {
     return true;
 }
 
+bool SQLDataBase::getPlayer(int id, QVariantMap &res) const {
+    QString request = QString("SELECT data FROM players WHERE id=%0").arg(id);
+    if (!query->exec(request)) {
+        QuasarAppUtils::Params::verboseLog("request error : " + query->lastError().text());
+        return false;
+    }
+
+    if (!query->next()) {
+        return false;
+    }
+    auto data = query->value(0).toByteArray();
+
+    res["name"] = query->value("name");
+    res["gmail"] = query->value("gmail");
+    res["money"] = query->value("money");
+    res["avgrecord"] = query->value("avgrecord");
+    res["record"] = query->value("record");
+    res["lastOnline"] = query->value("lastOnline");
+    res["onlinetime"] = query->value("onlinetime");
+    res["currentsnake"] = query->value("currentsnake");
+
+    return ClientProtocol::Streamers::read(data, res);
+}
+
+bool SQLDataBase::savePlayer(const QVariantMap &player) const {
+
+    QString request = QString("SINSERT INTO items(name, gmail, money, avgrecord,"
+                              " record, lastOnline, onlinetime, currentsnake) VALUES "
+                              "('%0', '%1', '%2', '%3', '%4', '%5', '%6', '%7')").arg(
+                player.value("name"),
+                player.value("gmail"),
+                player.value("money"),
+                player.value("avgrecord"),
+                player.value("record"),
+                player.value("lastOnline"),
+                player.value("onlinetime"),
+                player.value("currentsnake"));
+
+    query->bindValue( ":bytes", bytes);
+
+    if (!query->exec(request)) {
+        QuasarAppUtils::Params::verboseLog("request error : " + query->lastError().text());
+        return false;
+    }
+
+    return true;
+}
+
+bool SQLDataBase::isValidItem(const QVariantMap &player, int idItem, QByteArray tocken) {
+
+}
+

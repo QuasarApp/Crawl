@@ -25,7 +25,10 @@ public:
     bool getItem(int id, QVariantMap &res) const;
     bool saveItem(const QVariantMap &item) const;
 
-    bool isValidItem(const QVariantMap& player, int idItem, QByteArray tocken);
+    bool getPlayer(int id, QVariantMap &res) const;
+    bool savePlayer(const QVariantMap &player) const;
+
+    bool isValidItem(const QVariantMap& item, int idItem, QByteArray tocken);
     bool isValidPlayer(const QVariantMap& player);
     bool isValidMap(const QVariantMap& map);
 
