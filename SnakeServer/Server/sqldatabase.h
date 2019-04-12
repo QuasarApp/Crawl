@@ -2,8 +2,12 @@
 #define SQLDATABASE_H
 #include <QObject>
 #include <QSqlDatabase>
+#include <QDir>
 
 #define DEFAULT_DB_NAME "SnakeDatabase.db"
+#define DEFAULT_DB_PATH QDir::homePath() + "/SnakeServer"
+
+
 class QSqlQuery;
 class QSqlDatabase;
 class QSqlQuery;
@@ -23,19 +27,19 @@ private:
 
 public:
     SQLDataBase(QObject * ptr = nullptr);
-    bool initDb(const QString &sql = DEFAULT_DB_NAME);
+    bool initDb(const QString &sql = DEFAULT_DB_NAME,
+                const QString &path = DEFAULT_DB_PATH);
     bool isValid() const;
 
     bool getItem(int id, QVariantMap &res) const;
     bool saveItem(const QVariantMap &item);
 
     bool getPlayer(int id, QVariantMap &res) const;
+    bool getPlayer(const QString& gmail, QVariantMap &res) const;
+
     bool savePlayer(const QVariantMap &player);
 
-    bool isValidItem(const QVariantMap& item, int idItem, QByteArray tocken);
-    bool isValidPlayer(const QVariantMap& player);
-    bool isValidMap(const QVariantMap& map);
-
+    friend class testSankeServer;
 };
 
 #endif // SQLDATABASE_H

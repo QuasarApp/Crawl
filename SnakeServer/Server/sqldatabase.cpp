@@ -9,6 +9,7 @@
 #include <QTextStream>
 #include <quasarapp.h>
 #include <QSqlError>
+#include <QDir>
 
 #include <networkclasses.h>
 #include <streamers.h>
@@ -84,14 +85,12 @@ int SQLDataBase::getPlayerId(const QString &gmail) {
     return query->value("id").toInt();
 }
 
-bool SQLDataBase::initDb(const QString& database) {
+bool SQLDataBase::initDb(const QString& database, const QString &databasePath) {
     QStringList drivers = QSqlDatabase::drivers();
     db = new QSqlDatabase();
     *db = QSqlDatabase::addDatabase("QSQLITE", database);
 
-    auto exePath = QuasarAppUtils::Params::getArg("appPath").toString();
-
-    db->setDatabaseName(QFileInfo(exePath).absolutePath() + database);
+    db->setDatabaseName(QFileInfo(databasePath).absolutePath() + database);
     query = new QSqlQuery(*db);
 
     if (!db->open()) {
@@ -154,8 +153,8 @@ bool SQLDataBase::saveItem(const QVariantMap &item) {
     return true;
 }
 
-bool SQLDataBase::getPlayer(int id, QVariantMap &res) const {
-    QString request = QString("SELECT data FROM players WHERE id=%0").arg(id);
+bool SQLDataBase::getPlayer(const QString& gmail, QVariantMap &res) const {
+    QString request = QString("SELECT * FROM players WHERE gmail=%0").arg(gmail);
     if (!query->exec(request)) {
         QuasarAppUtils::Params::verboseLog("request error : " + query->lastError().text());
         return false;
@@ -164,8 +163,6 @@ bool SQLDataBase::getPlayer(int id, QVariantMap &res) const {
     if (!query->next()) {
         return false;
     }
-    auto data = query->value(0).toByteArray();
-
     res["name"] = query->value("name");
     res["gmail"] = query->value("gmail");
     res["money"] = query->value("money");
@@ -175,7 +172,29 @@ bool SQLDataBase::getPlayer(int id, QVariantMap &res) const {
     res["onlinetime"] = query->value("onlinetime");
     res["currentsnake"] = query->value("currentsnake");
 
-    return ClientProtocol::Streamers::read(data, res);
+    return true;
+}
+
+bool SQLDataBase::getPlayer(int id, QVariantMap &res) const {
+    QString request = QString("SELECT * FROM players WHERE id=%0").arg(id);
+    if (!query->exec(request)) {
+        QuasarAppUtils::Params::verboseLog("request error : " + query->lastError().text());
+        return false;
+    }
+
+    if (!query->next()) {
+        return false;
+    }
+    res["name"] = query->value("name");
+    res["gmail"] = query->value("gmail");
+    res["money"] = query->value("money");
+    res["avgrecord"] = query->value("avgrecord");
+    res["record"] = query->value("record");
+    res["lastOnline"] = query->value("lastOnline");
+    res["onlinetime"] = query->value("onlinetime");
+    res["currentsnake"] = query->value("currentsnake");
+
+    return true;
 }
 
 bool SQLDataBase::savePlayer(const QVariantMap &player){
@@ -213,9 +232,5 @@ bool SQLDataBase::savePlayer(const QVariantMap &player){
     }
 
     return true;
-}
-
-bool SQLDataBase::isValidItem(const QVariantMap &player, int idItem, QByteArray tocken) {
-
 }
 

@@ -6,6 +6,7 @@
 #include <QCoreApplication>
 #include <streamers.h>
 #include <QCryptographicHash>
+#include <sqldatabase.h>
 
 #include "factorynetobjects.h"
 
@@ -23,6 +24,8 @@ private:
     void testUserData();
     void testGetItem();
     void testApplyData();
+    void testSql();
+
 
 public:
     testSankeServer();
@@ -36,6 +39,7 @@ private slots:
 
     void testServerProtockol();
     void testClientProtockol();
+
 
 };
 
@@ -188,8 +192,15 @@ void testSankeServer::testApplyData() {
     QVERIFY(cle.savaData(listData));
 }
 
+void testSankeServer::testSql() {
+    SQLDataBase db;
+
+    QVERIFY(db.initDb());
+}
+
 void testSankeServer::testServerProtockol() {
     testPingServerProtockol();
+    testSql();
 }
 
 void testSankeServer::testClientProtockol() {

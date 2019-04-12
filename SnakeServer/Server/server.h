@@ -15,6 +15,9 @@ private:
 
     bool payItem(int player, int idItem);
     bool sellItem(int player, int idItem);
+    bool saveConfiguration();
+    bool loadConfiguration();
+    bool resetDefaultConfiguration();
 
 public:
     Server(QObject *ptr = nullptr);
