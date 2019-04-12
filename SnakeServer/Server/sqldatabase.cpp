@@ -47,6 +47,43 @@ bool SQLDataBase::exec(QSqlQuery *sq,const QString& sqlFile){
     return false;
 }
 
+bool SQLDataBase::ifExistItem(int id) {
+    QString request = QString("SELECT id from items where id='%0'").arg(id);
+
+    if (!query->exec(request)) {
+        QuasarAppUtils::Params::verboseLog("request error : " + query->lastError().text());
+        return false;
+    }
+
+    return query->next();
+}
+
+bool SQLDataBase::existPlayer(int id) {
+    QString request = QString("SELECT id from players where id='%0'").arg(id);
+
+    if (!query->exec(request)) {
+        QuasarAppUtils::Params::verboseLog("request error : " + query->lastError().text());
+        return false;
+    }
+
+    return query->next();
+}
+
+int SQLDataBase::getPlayerId(const QString &gmail) {
+    QString request = QString("SELECT id from players where gmail='%0'").arg(gmail);
+
+    if (!query->exec(request)) {
+        QuasarAppUtils::Params::verboseLog("request error : " + query->lastError().text());
+        return false;
+    }
+
+    if (!query->next()) {
+        return -1;
+    }
+
+    return query->value("id").toInt();
+}
+
 bool SQLDataBase::initDb(const QString& database) {
     QStringList drivers = QSqlDatabase::drivers();
     db = new QSqlDatabase();
@@ -91,7 +128,7 @@ bool SQLDataBase::getItem(int id, QVariantMap &res) const {
     return ClientProtocol::Streamers::read(data, res);
 }
 
-bool SQLDataBase::saveItem(const QVariantMap &item) const {
+bool SQLDataBase::saveItem(const QVariantMap &item) {
     auto type = static_cast<ClientProtocol::NetworkClasses::Type>
             (item.value("command", ClientProtocol::NetworkClasses::Undefined).toInt());
 
@@ -141,21 +178,34 @@ bool SQLDataBase::getPlayer(int id, QVariantMap &res) const {
     return ClientProtocol::Streamers::read(data, res);
 }
 
-bool SQLDataBase::savePlayer(const QVariantMap &player) const {
+bool SQLDataBase::savePlayer(const QVariantMap &player){
+    QString request;
+    int id = getPlayerId(player.value("gmail").toString());
+    if (id < 0) {
+         request = QString("INSERT INTO players(name, gmail, money, avgrecord, record,"
+                                  " lastOnline, onlinetime, currentsnake) VALUES "
+                                  "('%0', '%1', '%2', '%3', '%4', '%5', '%6', '%7')").arg(
+                        player.value("name").toString(),
+                        player.value("money").toString(),
+                        player.value("avgrecord").toString(),
+                        player.value("record").toString(),
+                        player.value("lastOnline").toString(),
+                        player.value("onlinetime").toString(),
+                        player.value("currentsnake").toString());
+    } else {
+        request = QString("UPDATE players SET name='%0', gmail='%1', money='%2',"
+                          " avgrecord='%3', record='%4', lastOnline='%5',"
+                          " onlinetime='%6', currentsnake='%7') WHERE id='%8' ").arg(
+                        player.value("name").toString(),
+                        player.value("money").toString(),
+                        player.value("avgrecord").toString(),
+                        player.value("record").toString(),
+                        player.value("lastOnline").toString(),
+                        player.value("onlinetime").toString(),
+                        player.value("currentsnake").toString(),
+                        QString::number(id));
+    }
 
-    QString request = QString("SINSERT INTO items(name, gmail, money, avgrecord,"
-                              " record, lastOnline, onlinetime, currentsnake) VALUES "
-                              "('%0', '%1', '%2', '%3', '%4', '%5', '%6', '%7')").arg(
-                player.value("name"),
-                player.value("gmail"),
-                player.value("money"),
-                player.value("avgrecord"),
-                player.value("record"),
-                player.value("lastOnline"),
-                player.value("onlinetime"),
-                player.value("currentsnake"));
-
-    query->bindValue( ":bytes", bytes);
 
     if (!query->exec(request)) {
         QuasarAppUtils::Params::verboseLog("request error : " + query->lastError().text());

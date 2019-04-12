@@ -17,16 +17,20 @@ private:
     QSqlDatabase *db = nullptr;
     QSqlQuery *query = nullptr;
 
+    bool ifExistItem(int id);
+    bool existPlayer(int id);
+    int getPlayerId(const QString &id);
+
 public:
     SQLDataBase(QObject * ptr = nullptr);
     bool initDb(const QString &sql = DEFAULT_DB_NAME);
     bool isValid() const;
 
     bool getItem(int id, QVariantMap &res) const;
-    bool saveItem(const QVariantMap &item) const;
+    bool saveItem(const QVariantMap &item);
 
     bool getPlayer(int id, QVariantMap &res) const;
-    bool savePlayer(const QVariantMap &player) const;
+    bool savePlayer(const QVariantMap &player);
 
     bool isValidItem(const QVariantMap& item, int idItem, QByteArray tocken);
     bool isValidPlayer(const QVariantMap& player);
