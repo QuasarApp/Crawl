@@ -19,7 +19,7 @@ SQLDataBase::SQLDataBase(QObject *ptr):
     QObject (ptr) {
 }
 
-bool SQLDataBase::exec(QSqlQuery *sq,const QString& sqlFile){
+bool SQLDataBase::exec(QSqlQuery *sq,const QString& sqlFile) {
     QFile f(sqlFile);
     bool result = true;
     if (f.open(QIODevice::ReadOnly)) {
@@ -143,6 +143,58 @@ int SQLDataBase::generateIdForPalyer() {
     return items.lastKey() + 1;
 }
 
+bool SQLDataBase::checkPlayer(int id) const {
+    QString request = QString("SELECT id from players where id='%0'").arg(id);
+
+    if (!query->exec(request)) {
+        QuasarAppUtils::Params::verboseLog("request error : " + query->lastError().text());
+        return false;
+    }
+
+    if (!query->next()) {
+        return false;
+    }
+
+    return true;
+}
+
+bool SQLDataBase::checkItem(int idItem, int idOwner) const {
+
+    if (idOwner >= 0 ) {
+        if (!checkPlayer(idOwner)) {
+            return false;
+        }
+
+        QString request = QString("SELECT item from ovners where player='%0' and item='%1'").
+                arg(idOwner).arg(idItem);
+
+        if (!query->exec(request)) {
+            QuasarAppUtils::Params::verboseLog("request error : " + query->lastError().text());
+            return false;
+        }
+
+        if (!query->next()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    QString request = QString("SELECT item from items where id='%0'").
+            arg(idItem);
+
+    if (!query->exec(request)) {
+        QuasarAppUtils::Params::verboseLog("request error : " + query->lastError().text());
+        return false;
+    }
+
+    if (!query->next()) {
+        return false;
+    }
+
+    return true;
+}
+
 bool SQLDataBase::initDb(const QString& database, const QString &databasePath) {
     QStringList drivers = QSqlDatabase::drivers();
     db = new QSqlDatabase();
@@ -173,7 +225,7 @@ bool SQLDataBase::isValid() const {
 
 bool SQLDataBase::getItem(int id, QVariantMap &res) const {
 
-    if (!isValid()){
+    if (!isValid()) {
         return false;
     }
 
@@ -193,7 +245,7 @@ bool SQLDataBase::getItem(int id, QVariantMap &res) const {
 
 int SQLDataBase::saveItem(const QVariantMap &item) {
 
-    if (!isValid()){
+    if (!isValid()) {
         return false;
     }
 
@@ -240,7 +292,7 @@ int SQLDataBase::saveItem(const QVariantMap &item) {
 
 bool SQLDataBase::getPlayer(const QString& gmail, QVariantMap &res) const {
 
-    if (!isValid()){
+    if (!isValid()) {
         return false;
     }
 
@@ -267,7 +319,7 @@ bool SQLDataBase::getPlayer(const QString& gmail, QVariantMap &res) const {
 
 bool SQLDataBase::getPlayer(int id, QVariantMap &res) const {
 
-    if (!isValid()){
+    if (!isValid()) {
         return false;
     }
 
@@ -294,7 +346,7 @@ bool SQLDataBase::getPlayer(int id, QVariantMap &res) const {
 
 int SQLDataBase::savePlayer(const QVariantMap &player) {
 
-    if (!isValid()){
+    if (!isValid()) {
         return false;
     }
 
@@ -334,5 +386,52 @@ int SQLDataBase::savePlayer(const QVariantMap &player) {
     }
 
     return true;
+}
+
+bool SQLDataBase::giveAwayItem(int player, int item) const {
+
+    if (!isValid()) {
+        return false;
+    }
+
+    if (!(checkPlayer(player) && checkItem(item))) {
+        return false;
+    }
+
+    QString request = QString("DELETE from owners where player='%0' and item='%1'").
+            arg(player).arg(item);
+
+    if (!query->exec(request)) {
+        QuasarAppUtils::Params::verboseLog("request error : " + query->lastError().text());
+        return false;
+    }
+
+    return false;
+}
+
+bool SQLDataBase::getItem(int player, int item) const {
+
+    if (!isValid()) {
+        return false;
+    }
+
+    if (!(checkPlayer(player) && checkItem(item))) {
+        return false;
+    }
+
+    QString request = QString("INSERT INTO owners (player, item)"
+                              " VALUES(player='%0', item='%1')").
+            arg(player).arg(item);
+
+    if (!query->exec(request)) {
+        QuasarAppUtils::Params::verboseLog("request error : " + query->lastError().text());
+        return false;
+    }
+
+    return true;
+}
+
+bool SQLDataBase::moveItem(int owner, int receiver, int item) const {
+    return giveAwayItem(owner, item) && getItem(receiver, item);
 }
 

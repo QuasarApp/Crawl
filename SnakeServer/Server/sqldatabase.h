@@ -34,6 +34,9 @@ private:
     int generateIdForItem();
     int generateIdForPalyer();
 
+    bool checkPlayer(int id) const;
+    bool checkItem(int idItem, int idOwner = -1) const;
+
 public:
     SQLDataBase(QObject * ptr = nullptr);
     bool initDb(const QString &sql = DEFAULT_DB_NAME,
@@ -48,8 +51,9 @@ public:
 
     int savePlayer(const QVariantMap &player);
 
-    bool giveAwayItem(int player, int item);
-    bool getItem(int player, int item);
+    bool giveAwayItem(int player, int item) const;
+    bool getItem(int player, int item) const;
+    bool moveItem(int owner, int receiver, int item) const;
 
     friend class testSankeServer;
 };
