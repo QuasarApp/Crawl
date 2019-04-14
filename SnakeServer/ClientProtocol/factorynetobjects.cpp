@@ -8,6 +8,7 @@ QVariantMap ClientProtocol::FactoryNetObjects::build(
     QVariantMap res;
 
     res ["command"] = type;
+    res ["id"] = -1;
 
     for (auto &&i: obj.keys()) {
         res[i] = "";

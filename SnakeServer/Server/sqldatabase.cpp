@@ -13,6 +13,7 @@
 
 #include <networkclasses.h>
 #include <streamers.h>
+#include <qdebug.h>
 
 SQLDataBase::SQLDataBase(QObject *ptr):
     QObject (ptr) {
@@ -39,10 +40,19 @@ bool SQLDataBase::exec(QSqlQuery *sq,const QString& sqlFile){
                 if (temp.lastIndexOf(delimiter) >- 1) {
                     temp.remove(delimiter);
                     result = result && sq->exec(temp);
+
+                    if (!result) {
+                        qCritical() << sq->lastError().text();
+                        f.close();
+                        return false;
+                    }
+
                     temp = "";
                 }
             }
         }
+
+        f.close();
         return result;
     }
     return false;
@@ -85,12 +95,60 @@ int SQLDataBase::getPlayerId(const QString &gmail) {
     return query->value("id").toInt();
 }
 
+bool SQLDataBase::initIdItems() {
+    items.clear();
+
+    QString request = QString("SELECT id FROM items");
+    if (!query->exec(request)) {
+        QuasarAppUtils::Params::verboseLog("request error : " + query->lastError().text());
+        return false;
+    }
+
+    while (query->next()) {
+        items.insert(query->value(0).toInt(), nullptr);
+    }
+
+    return true;
+}
+
+bool SQLDataBase::initIdPlayers() {
+    players.clear();
+
+    QString request = QString("SELECT id FROM players");
+    if (!query->exec(request)) {
+        QuasarAppUtils::Params::verboseLog("request error : " + query->lastError().text());
+        return false;
+    }
+
+    while (query->next()) {
+        players.insert(query->value(0).toInt(), nullptr);
+    }
+
+    return true;
+}
+
+int SQLDataBase::generateIdForItem() {
+    if (items.isEmpty()) {
+        return 0;
+    }
+
+    return items.lastKey() + 1;
+}
+
+int SQLDataBase::generateIdForPalyer() {
+    if (items.isEmpty()) {
+        return 0;
+    }
+
+    return items.lastKey() + 1;
+}
+
 bool SQLDataBase::initDb(const QString& database, const QString &databasePath) {
     QStringList drivers = QSqlDatabase::drivers();
     db = new QSqlDatabase();
     *db = QSqlDatabase::addDatabase("QSQLITE", database);
 
-    db->setDatabaseName(QFileInfo(databasePath).absolutePath() + database);
+    db->setDatabaseName(QFileInfo(databasePath).absolutePath() + "/" + database);
     query = new QSqlQuery(*db);
 
     if (!db->open()) {
@@ -101,6 +159,7 @@ bool SQLDataBase::initDb(const QString& database, const QString &databasePath) {
         return false;
     }
 
+    initSuccessful = true;
     return true;
 }
 
@@ -109,10 +168,15 @@ bool SQLDataBase::isValid() const {
         return false;
     }
 
-    return db->isValid() && db->isOpen();
+    return db->isValid() && db->isOpen() && initSuccessful;
 }
 
 bool SQLDataBase::getItem(int id, QVariantMap &res) const {
+
+    if (!isValid()){
+        return false;
+    }
+
     QString request = QString("SELECT data FROM items WHERE id=%0").arg(id);
     if (!query->exec(request)) {
         QuasarAppUtils::Params::verboseLog("request error : " + query->lastError().text());
@@ -127,21 +191,42 @@ bool SQLDataBase::getItem(int id, QVariantMap &res) const {
     return ClientProtocol::Streamers::read(data, res);
 }
 
-bool SQLDataBase::saveItem(const QVariantMap &item) {
+int SQLDataBase::saveItem(const QVariantMap &item) {
+
+    if (!isValid()){
+        return false;
+    }
+
     auto type = static_cast<ClientProtocol::NetworkClasses::Type>
             (item.value("command", ClientProtocol::NetworkClasses::Undefined).toInt());
 
+    int id = item.value("id", -1).toInt();
+
     if (!ClientProtocol::NetworkClasses::isCustomType(type)) {
-        return false;
+        return -1;
     }
 
     QByteArray bytes;
+    QString request;
+
     if (!ClientProtocol::Streamers::write(bytes, item)) {
-        return false;
+        return -1;
     }
 
-    QString request = QString("SINSERT INTO items(type,data) VALUES "
-                              "('%0', :bytes)").arg(static_cast<int>(type));
+    if (id < 0) {
+        id = generateIdForItem();
+
+        request = QString("INSERT INTO items(id,type,data) VALUES "
+                                  "('%0', '%1', ':bytes')").
+                arg(id).
+                arg(static_cast<int>(type));
+    } else {
+
+        request = QString("UPDATE items SET type='%1', data=':bytes' where id = %0").
+                arg(id).
+                arg(static_cast<int>(type));
+    }
+
 
     query->bindValue( ":bytes", bytes);
 
@@ -150,10 +235,15 @@ bool SQLDataBase::saveItem(const QVariantMap &item) {
         return false;
     }
 
-    return true;
+    return id;
 }
 
 bool SQLDataBase::getPlayer(const QString& gmail, QVariantMap &res) const {
+
+    if (!isValid()){
+        return false;
+    }
+
     QString request = QString("SELECT * FROM players WHERE gmail=%0").arg(gmail);
     if (!query->exec(request)) {
         QuasarAppUtils::Params::verboseLog("request error : " + query->lastError().text());
@@ -176,6 +266,11 @@ bool SQLDataBase::getPlayer(const QString& gmail, QVariantMap &res) const {
 }
 
 bool SQLDataBase::getPlayer(int id, QVariantMap &res) const {
+
+    if (!isValid()){
+        return false;
+    }
+
     QString request = QString("SELECT * FROM players WHERE id=%0").arg(id);
     if (!query->exec(request)) {
         QuasarAppUtils::Params::verboseLog("request error : " + query->lastError().text());
@@ -197,13 +292,19 @@ bool SQLDataBase::getPlayer(int id, QVariantMap &res) const {
     return true;
 }
 
-bool SQLDataBase::savePlayer(const QVariantMap &player){
+int SQLDataBase::savePlayer(const QVariantMap &player) {
+
+    if (!isValid()){
+        return false;
+    }
+
     QString request;
-    int id = getPlayerId(player.value("gmail").toString());
+    int id = player.value("id").toInt();
     if (id < 0) {
-         request = QString("INSERT INTO players(name, gmail, money, avgrecord, record,"
+         request = QString("INSERT INTO players(id, name, gmail, money, avgrecord, record,"
                                   " lastOnline, onlinetime, currentsnake) VALUES "
-                                  "('%0', '%1', '%2', '%3', '%4', '%5', '%6', '%7')").arg(
+                                  "('%0', '%1', '%2', '%3', '%4', '%5', '%6', '%7', '%8')").arg(
+                        player.value("id").toString(),
                         player.value("name").toString(),
                         player.value("money").toString(),
                         player.value("avgrecord").toString(),
@@ -212,6 +313,7 @@ bool SQLDataBase::savePlayer(const QVariantMap &player){
                         player.value("onlinetime").toString(),
                         player.value("currentsnake").toString());
     } else {
+        id = generateIdForPalyer();
         request = QString("UPDATE players SET name='%0', gmail='%1', money='%2',"
                           " avgrecord='%3', record='%4', lastOnline='%5',"
                           " onlinetime='%6', currentsnake='%7') WHERE id='%8' ").arg(

@@ -3,6 +3,7 @@
 #include <QObject>
 #include <QSqlDatabase>
 #include <QDir>
+#include <QMap>
 
 #define DEFAULT_DB_NAME "SnakeDatabase.db"
 #define DEFAULT_DB_PATH QDir::homePath() + "/SnakeServer"
@@ -20,10 +21,18 @@ private:
     bool exec(QSqlQuery *sq, const QString &sqlFile);
     QSqlDatabase *db = nullptr;
     QSqlQuery *query = nullptr;
+    bool initSuccessful = false;
+    QMap <int, void*> items;
+    QMap <int, void*> players;
 
     bool ifExistItem(int id);
     bool existPlayer(int id);
     int getPlayerId(const QString &id);
+
+    bool initIdItems();
+    bool initIdPlayers();
+    int generateIdForItem();
+    int generateIdForPalyer();
 
 public:
     SQLDataBase(QObject * ptr = nullptr);
@@ -32,12 +41,15 @@ public:
     bool isValid() const;
 
     bool getItem(int id, QVariantMap &res) const;
-    bool saveItem(const QVariantMap &item);
+    int saveItem(const QVariantMap &item);
 
     bool getPlayer(int id, QVariantMap &res) const;
     bool getPlayer(const QString& gmail, QVariantMap &res) const;
 
-    bool savePlayer(const QVariantMap &player);
+    int savePlayer(const QVariantMap &player);
+
+    bool giveAwayItem(int player, int item);
+    bool getItem(int player, int item);
 
     friend class testSankeServer;
 };

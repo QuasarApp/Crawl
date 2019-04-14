@@ -24,13 +24,11 @@ private:
     void testUserData();
     void testGetItem();
     void testApplyData();
-    void testSql();
 
 
 public:
     testSankeServer();
-
-
+    void testSql();
     ~testSankeServer();
 
 private slots:
@@ -39,6 +37,7 @@ private slots:
 
     void testServerProtockol();
     void testClientProtockol();
+
 
 
 };
@@ -195,12 +194,22 @@ void testSankeServer::testApplyData() {
 void testSankeServer::testSql() {
     SQLDataBase db;
 
-    QVERIFY(db.initDb());
+    bool init = db.initDb("test.db", "./");
+
+    if (!init) {
+        QFile::remove("./test.db");
+    }
+
+    QVERIFY(init);
+
+    auto tempItem = ClientProtocol::FactoryNetObjects::build(
+                ClientProtocol::NetworkClasses::Snake);
+
+    db.saveItem(tempItem);
 }
 
 void testSankeServer::testServerProtockol() {
     testPingServerProtockol();
-    testSql();
 }
 
 void testSankeServer::testClientProtockol() {
@@ -213,6 +222,7 @@ void testSankeServer::testClientProtockol() {
     testGetItem();
     testUserData();
     testApplyData();
+    testSql();
 }
 
 QTEST_APPLESS_MAIN(testSankeServer)

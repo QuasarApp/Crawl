@@ -12,16 +12,22 @@ namespace ClientProtocol {
 NetworkClasses::Type Streamers::baseRead(QDataStream &stream, QVariantMap &map,
                                      const NetworkClasses::Type checkType) {
     unsigned short command;
+    int id;
 
+    stream >> id;
     stream >> command;
+
     map["command"] = command;
+    map["id"] = id;
 
     return static_cast<NetworkClasses::Type>(command & checkType);
 }
 
 NetworkClasses::Type Streamers::baseWrite(QDataStream &stream, const QVariantMap &map) {
     unsigned short command = static_cast<unsigned short>(map.value("command").toUInt());
+    int id = map.value("id").toInt();
 
+    stream << id;
     stream << command;
 
     return static_cast<NetworkClasses::Type>(command & NetworkClasses::CustomType);

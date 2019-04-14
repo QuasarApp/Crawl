@@ -45,8 +45,7 @@ const QHash<NetworkClasses::Type, QMap<QString, NetworkClasses::Type>> networkOb
      }
     },
     {NetworkClasses::Type::GetItem, {
-         {"token", NetworkClasses::SHA256},
-         {"id", NetworkClasses::Int}
+         {"token", NetworkClasses::SHA256}
      }
     }
 };

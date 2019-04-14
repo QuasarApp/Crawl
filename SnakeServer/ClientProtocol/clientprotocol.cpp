@@ -181,8 +181,7 @@ unsigned int getSize(NetworkClasses::Type type, bool isMax) {
     }
 
     if (type & NetworkClasses::CustomType) {
-        constexpr auto baseSize = sizeof (short);
-        size += baseSize;
+        size += sizeof (int) + sizeof (short);
     }
 
     auto listPropertyes = networkObjects.value(type);

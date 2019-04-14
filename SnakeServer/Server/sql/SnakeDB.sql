@@ -1,23 +1,19 @@
 CREATE TABLE IF NOT EXISTS items(
-    id int NOT NULL AUTO_INCREMENT,
-    type int NOT NULL,
-    data BLOB NOT NULL,
-
-    PRIMARY KEY(id)
+    id INTEGER PRIMARY KEY NOT NULL,
+    type INTEGER NOT NULL,
+    data BLOB NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS players(
-    id int NOT NULL AUTO_INCREMENT,
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     name VARCHAR(100) NOT NULL,
-    gmail VARCHAR(64) NOT NLLL UNIQUE,
-    money int NOT NULL DEFAULT 0,
-    avgrecord int NOT NULL DEFAULT 0,
-    record int NOT NULL DEFAULT 0,
+    gmail VARCHAR(64) NOT NULL UNIQUE,
+    money INTEGER NOT NULL DEFAULT 0,
+    avgrecord INTEGER NOT NULL DEFAULT 0,
+    record INTEGER NOT NULL DEFAULT 0,
     lastOnline date not null DEFAULT 0,
-    onlinetime int not null DEFAULT 0,
-    currentsnake int not null DEFAULT 0,
-
-    PRIMARY KEY(id),
+    onlinetime INTEGER not null DEFAULT 0,
+    currentsnake INTEGER not null DEFAULT 0,
 
     FOREIGN KEY(currentsnake) REFERENCES items(id)
         ON UPDATE CASCADE
@@ -26,8 +22,8 @@ CREATE TABLE IF NOT EXISTS players(
 );
 
 CREATE TABLE IF NOT EXISTS ovners(
-    player int DEFAULT NULL,
-    item int NOT NULL
+    player INTEGER DEFAULT NULL,
+    item INTEGER NOT NULL,
 
     FOREIGN KEY(player) REFERENCES players(id)
         ON UPDATE CASCADE
