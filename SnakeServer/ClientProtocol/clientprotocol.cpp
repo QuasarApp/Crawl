@@ -215,4 +215,24 @@ bool isValidSize(NetworkClasses::Type type, unsigned int size) {
 
 }
 
+bool isValidMap(const QVariantMap &map) {
+    auto command = static_cast<NetworkClasses::Type>(
+                map.value("command", NetworkClasses::Undefined).toInt());
+
+
+    if (!ClientProtocol::NetworkClasses::isCustomType(command)) {
+        return false;
+    }
+
+    auto keys = ClientProtocol::networkObjects.value(command).keys();
+
+    for (auto &key :keys)
+    {
+        if (!map.contains(key)) {
+            return false;
+        }
+    }
+    return true;
+}
+
 }

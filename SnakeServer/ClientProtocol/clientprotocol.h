@@ -30,7 +30,7 @@ enum Type: unsigned char {
 unsigned int getSize(NetworkClasses::Type type, bool isMax = false);
 bool isStaticObject(NetworkClasses::Type type, unsigned int &max, unsigned int &min);
 bool isValidSize(NetworkClasses::Type type, unsigned int size);
-
+bool isValidMap(const QVariantMap &map);
 
 /**
  * @brief The Header struct 8 byte

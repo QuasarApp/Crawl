@@ -7,53 +7,72 @@
 
 #define DEFAULT_DB_NAME "SnakeDatabase.db"
 #define DEFAULT_DB_PATH QDir::homePath() + "/SnakeServer"
-
+#define DEFAULT_UPDATE_INTERVAL 3600000 // 1 hour
 
 class QSqlQuery;
 class QSqlDatabase;
 class QSqlQuery;
 
-class SQLDataBase : public QObject
-{
-    Q_OBJECT
+class SQLDataBase {
+
 private:
+
+    qint64 lastUpdateTime = 0;
 
     bool exec(QSqlQuery *sq, const QString &sqlFile);
     QSqlDatabase *db = nullptr;
     QSqlQuery *query = nullptr;
     bool initSuccessful = false;
-    QMap <int, void*> items;
-    QMap <int, void*> players;
+    QMap <int, QVariantMap> items;
+    QMap <int, QVariantMap> players;
+    QHash <int, QSet<int>>  owners;
 
-    bool ifExistItem(int id);
-    bool existPlayer(int id);
     int getPlayerId(const QString &id);
 
     bool initIdItems();
     bool initIdPlayers();
-    int generateIdForItem();
-    int generateIdForPalyer();
+    int generateIdForItem() const;
+    int generateIdForPalyer() const;
 
     bool checkPlayer(int id) const;
     bool checkItem(int idItem, int idOwner = -1) const;
 
+    int writeUpdatePlayerIntoDB(const QVariantMap &player) const;
+    int writeUpdateItemIntoDB(const QVariantMap &item) const;
+
+    bool getAllItemsOfPalyerFromDB(int player, QSet<int>& items);
+
+    void globalUpdateDataBase(bool force = false);
+
+    /**
+      warning is function is wery cost
+     * @brief itemIsFreeFromCache
+     * @param item
+     * @return
+     */
+    bool itemIsFreeFromCache(int item) const;
+
+    bool UpdateInfoOfOvners(int player, const QSet<int>);
 public:
-    SQLDataBase(QObject * ptr = nullptr);
+    SQLDataBase();
     bool initDb(const QString &sql = DEFAULT_DB_NAME,
                 const QString &path = DEFAULT_DB_PATH);
     bool isValid() const;
 
     bool getItem(int id, QVariantMap &res) const;
-    int saveItem(const QVariantMap &item);
+    int saveItem(QVariantMap &item);
 
     bool getPlayer(int id, QVariantMap &res) const;
     bool getPlayer(const QString& gmail, QVariantMap &res) const;
 
-    int savePlayer(const QVariantMap &player);
+    int savePlayer(QVariantMap &player);
 
-    bool giveAwayItem(int player, int item) const;
-    bool getItem(int player, int item) const;
-    bool moveItem(int owner, int receiver, int item) const;
+    bool giveAwayItem(int player, int item);
+    bool getItem(int player, int item, bool check = true);
+    bool moveItem(int owner, int receiver, int item);
+
+    bool getAllItemsOfPalyer(int player, QSet<int>& items);
+    ~SQLDataBase();
 
     friend class testSankeServer;
 };
