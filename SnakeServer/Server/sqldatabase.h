@@ -13,8 +13,9 @@ class QSqlQuery;
 class QSqlDatabase;
 class QSqlQuery;
 
-class SQLDataBase {
+class SQLDataBase : public QObject{
 
+    Q_OBJECT
 private:
 
     qint64 lastUpdateTime = 0;
@@ -26,6 +27,7 @@ private:
     QMap <int, QVariantMap> items;
     QMap <int, QVariantMap> players;
     QHash <int, QSet<int>>  owners;
+    QThread *dbThread = nullptr;
 
     int getPlayerId(const QString &id);
 
@@ -42,6 +44,7 @@ private:
 
     bool getAllItemsOfPalyerFromDB(int player, QSet<int>& items);
 
+    void globalUpdateDataBasePrivate(qint64 currentTime);
     void globalUpdateDataBase(bool force = false);
 
     /**
@@ -53,8 +56,9 @@ private:
     bool itemIsFreeFromCache(int item) const;
 
     bool UpdateInfoOfOvners(int player, const QSet<int>);
+
 public:
-    SQLDataBase();
+    explicit SQLDataBase(QObject * ptr = nullptr);
     bool initDb(const QString &sql = DEFAULT_DB_NAME,
                 const QString &path = DEFAULT_DB_PATH);
     bool isValid() const;

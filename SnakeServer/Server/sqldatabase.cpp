@@ -16,8 +16,10 @@
 #include <streamers.h>
 #include <qdebug.h>
 #include <QDateTime>
+#include <QThread>
+#include <QFuture>
+#include <qtconcurrentrun.h>
 
-SQLDataBase::SQLDataBase() = default;
 
 bool SQLDataBase::exec(QSqlQuery *sq,const QString& sqlFile) {
     QFile f(sqlFile);
@@ -279,40 +281,46 @@ bool SQLDataBase::getAllItemsOfPalyerFromDB(int player, QSet<int> &items) {
     return true;
 }
 
+void SQLDataBase::globalUpdateDataBasePrivate(qint64 currentTime)
+{
+    QList<int> removeIds;
+    for (auto item = items.begin(); item != items.end(); ++item) {
+        if (writeUpdateItemIntoDB(item.value()) < 0) {
+            removeIds.push_back(item.key());
+            qCritical() << "writeUpdateItemIntoDB failed when"
+                           " work globalUpdateDataRelease!!! id=" << item.key();
+        }
+    }
+
+    for (int id : removeIds) {
+        items.remove(id);
+    }
+
+    for (auto player = players.begin(); player != players.end(); ++player) {
+        if (writeUpdatePlayerIntoDB(player.value()) < 0) {
+            removeIds.push_back(player.key());
+            qCritical() << "writeUpdatePlayerIntoDB failed when"
+                           " work globalUpdateDataRelease!!! id=" << player.key();
+        }
+    }
+
+    for (auto owner = owners.begin(); owner != owners.end(); ++owner) {
+        if (UpdateInfoOfOvners(owner.key(), owner.value())) {
+            qCritical() << "UpdateInfoOfOvners failed when"
+                           " work globalUpdateDataRelease!!! id=" << owner.key();
+        }
+    }
+
+    lastUpdateTime = currentTime;
+}
+
 void SQLDataBase::globalUpdateDataBase(bool force) {
     qint64 currentTime = QDateTime::currentMSecsSinceEpoch();
 
     if (currentTime - lastUpdateTime > DEFAULT_UPDATE_INTERVAL || force) {
-
-        QList<int> removeIds;
-        for (auto item = items.begin(); item != items.end(); ++item) {
-            if (writeUpdateItemIntoDB(item.value()) < 0) {
-                removeIds.push_back(item.key());
-                qCritical() << "writeUpdateItemIntoDB failed when"
-                               " work globalUpdateDataRelease!!! id=" << item.key();
-            }
-        }
-
-        for (int id : removeIds) {
-            items.remove(id);
-        }
-
-        for (auto player = players.begin(); player != players.end(); ++player) {
-            if (writeUpdatePlayerIntoDB(player.value()) < 0) {
-                removeIds.push_back(player.key());
-                qCritical() << "writeUpdatePlayerIntoDB failed when"
-                               " work globalUpdateDataRelease!!! id=" << player.key();
-            }
-        }
-
-        for (auto owner = owners.begin(); owner != owners.end(); ++owner) {
-            if (UpdateInfoOfOvners(owner.key(), owner.value())) {
-                qCritical() << "UpdateInfoOfOvners failed when"
-                               " work globalUpdateDataRelease!!! id=" << owner.key();
-            }
-        }
-
-        lastUpdateTime = currentTime;
+        QtConcurrent::run([currentTime, this](){
+            globalUpdateDataBasePrivate(currentTime);
+        });
     }
 }
 
@@ -326,7 +334,6 @@ bool SQLDataBase::itemIsFreeFromCache(int item) const{
     return true;
 }
 
-/** TODO */
 bool SQLDataBase::UpdateInfoOfOvners(int player, const QSet<int> items) {
 
     QString request = QString("DELETE from owners where player='%0' ").
@@ -347,6 +354,12 @@ bool SQLDataBase::UpdateInfoOfOvners(int player, const QSet<int> items) {
         QuasarAppUtils::Params::verboseLog("request error : " + query->lastError().text());
         return false;
     }
+
+    return true;
+}
+
+SQLDataBase::SQLDataBase(QObject *ptr): QObject (ptr) {
+    dbThread = new QThread();
 }
 
 bool SQLDataBase::initDb(const QString& database, const QString &databasePath) {
@@ -365,8 +378,8 @@ bool SQLDataBase::initDb(const QString& database, const QString &databasePath) {
         return false;
     }
 
-    initSuccessful = true;
-    return true;
+    initSuccessful = initIdItems() && initIdPlayers();
+    return initSuccessful;
 }
 
 bool SQLDataBase::isValid() const {
@@ -559,6 +572,9 @@ bool SQLDataBase::getAllItemsOfPalyer(int player, QSet<int> &items) {
 }
 
 SQLDataBase::~SQLDataBase() {
+
+    globalUpdateDataBase();
+
     if (db) {
         delete db;
     }

@@ -5,7 +5,7 @@
 #-------------------------------------------------
 
 QT       -= gui
-QT       += network sql
+QT       += network sql concurrent
 
 TARGET = Server
 TEMPLATE = lib
