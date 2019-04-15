@@ -193,6 +193,7 @@ void testSankeServer::testApplyData() {
 
 void testSankeServer::testSql() {
     SQLDataBase db;
+    QFile::remove("./test.db");
 
     bool init = db.initDb("test.db", "./");
 
@@ -205,7 +206,18 @@ void testSankeServer::testSql() {
     auto tempItem = ClientProtocol::FactoryNetObjects::build(
                 ClientProtocol::NetworkClasses::Snake);
 
-    db.saveItem(tempItem);
+    QVariantMap resItem;
+
+    int id = db.saveItem(tempItem);
+
+    QVERIFY(id == 0);
+    QVERIFY(db.getItem(id, resItem));
+    QVERIFY(tempItem.size() == resItem.size());
+
+    for (auto &key :tempItem.keys()) {
+        QVERIFY(tempItem.value(key).toString() == resItem.value(key).toString());
+    }
+
 }
 
 void testSankeServer::testServerProtockol() {
