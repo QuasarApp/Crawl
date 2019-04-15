@@ -305,11 +305,10 @@ void SQLDataBase::globalUpdateDataBase(bool force) {
             }
         }
 
-        // todo added method for slave data of owners to database;
-        for (auto player = owners.begin(); player != owners.end(); ++player) {
-            if (writeUpdatePlayerIntoDB(owners.value()) < 0) {
-                qCritical() << "writeUpdatePlayerIntoDB failed when"
-                               " work globalUpdateDataRelease!!! id=" << player.key();
+        for (auto owner = owners.begin(); owner != owners.end(); ++owner) {
+            if (UpdateInfoOfOvners(owner.key(), owner.value())) {
+                qCritical() << "UpdateInfoOfOvners failed when"
+                               " work globalUpdateDataRelease!!! id=" << owner.key();
             }
         }
 
