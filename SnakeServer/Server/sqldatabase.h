@@ -9,6 +9,11 @@
 #define DEFAULT_DB_PATH QDir::homePath() + "/SnakeServer"
 #define DEFAULT_UPDATE_INTERVAL 3600000 // 1 hour
 
+
+//TO DO
+// sprit SQLDataBase to 2 elements sqlDBCashe and sqlDBWriter
+// sqlDBWriter work only with sql database
+// sqlDBCache work with RAM and sending request to sqlDBWriter if need it
 class QSqlQuery;
 class QSqlDatabase;
 class QSqlQuery;
