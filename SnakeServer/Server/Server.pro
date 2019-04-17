@@ -25,7 +25,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         server.cpp \
-    sqldatabase.cpp \
     sqldbcashe.cpp \
     sqldbwriter.cpp
 
@@ -41,7 +40,6 @@ CONFIG(release, debug|release): {
 HEADERS += \
         server.h \
         server_global.h \
-        sqldatabase.h \
         sqldbcashe.h \
         sqldbwriter.h
 

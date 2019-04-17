@@ -19,30 +19,31 @@ private:
     int generateIdForItem() const;
     int generateIdForPalyer() const;
 
-    bool checkPlayer(int id) const;
-    bool checkItem(int idItem, int idOwner = -1) const;
+    bool checkPlayer(int id) override;
+    bool checkItem(int idItem, int idOwner = -1) override;
 
     void globalUpdateDataBasePrivate(qint64 currentTime);
     void globalUpdateDataBase(bool force = false);
 
-    bool itemIsFreeFromCache(int item) const;
+    bool itemIsFreeFrom(int item) const override ;
 
 public:
     SqlDBCashe();
+    ~SqlDBCashe() override;
 
-    bool getItem(int id, QVariantMap &res) const;
-    int saveItem(QVariantMap &item);
+    bool initDb(const QString &sql = DEFAULT_DB_NAME,
+                const QString &path = DEFAULT_DB_PATH) override;
 
-    bool getPlayer(int id, QVariantMap &res) const;
-    bool getPlayer(const QString& gmail, QVariantMap &res) const;
-
-    int savePlayer(QVariantMap &player);
+    bool getItem(int id, QVariantMap &res) override;
+    int saveItem(QVariantMap &item) override;
+    bool getPlayer(int id, QVariantMap &res) override;
+    int savePlayer(QVariantMap &player) override;
 
     bool giveAwayItem(int player, int item);
     bool getItem(int player, int item, bool check = true);
     bool moveItem(int owner, int receiver, int item);
 
-    bool getAllItemsOfPalyer(int player, QSet<int>& items);
+    bool getAllItemsOfPalyer(int player, QSet<int>& items) override;
 };
 
 #endif // SQLDBCASHE_H

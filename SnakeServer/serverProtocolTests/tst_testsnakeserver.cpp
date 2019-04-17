@@ -6,7 +6,7 @@
 #include <QCoreApplication>
 #include <streamers.h>
 #include <QCryptographicHash>
-#include <sqldatabase.h>
+#include <sqldbwriter.h>
 
 #include "factorynetobjects.h"
 
@@ -192,7 +192,7 @@ void testSankeServer::testApplyData() {
 }
 
 void testSankeServer::testSql() {
-    SQLDataBase db;
+    SqlDBWriter db;
     QFile::remove("./test.db");
 
     bool init = db.initDb("test.db", "./");

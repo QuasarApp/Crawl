@@ -28,13 +28,19 @@ protected:
 
     int getPlayerId(const QString &gmail);
 
-    virtual bool checkPlayer(int id) const;
-    virtual bool checkItem(int idItem, int idOwner = -1) const;
+    virtual bool checkPlayer(int id);
+    virtual bool checkItem(int idItem, int idOwner = -1);
 
-    int writeUpdatePlayerIntoDB(const QVariantMap &player) const;
-    int writeUpdateItemIntoDB(const QVariantMap &item) const;
-    bool getAllItemsOfPalyerFromDB(int player, QSet<int>& items);
-    bool UpdateInfoOfOvners(int player, const QSet<int>);
+    virtual int savePlayer(QVariantMap &player);
+    virtual int saveItem(QVariantMap &item);
+    virtual bool saveOvners(int player, const QSet<int>);
+
+    virtual bool getAllItemsOfPalyer(int player, QSet<int>& items);
+
+    virtual bool getPlayer(int id, QVariantMap &res);
+    virtual bool getItem(int id, QVariantMap &res);
+
+    virtual bool itemIsFreeFrom(int item) const;
 
 public:
     SqlDBWriter();
@@ -42,9 +48,11 @@ public:
     virtual bool initDb(const QString &sql = DEFAULT_DB_NAME,
                 const QString &path = DEFAULT_DB_PATH);
 
-    bool isValid() const;
+    virtual bool isValid() const;
 
     virtual ~SqlDBWriter();
+
+    friend class testSankeServer;
 
 };
 

@@ -49,28 +49,36 @@ bool SqlDBWriter::exec(QSqlQuery *sq,const QString& sqlFile) {
 }
 
 int SqlDBWriter::getLastIdItems() {
+    if (!isValid()) {
+        return -1;
+    }
+
     QString request = QString("SELECT MAX(id) FROM items");
     if (!query->exec(request)) {
         QuasarAppUtils::Params::verboseLog("request error : " + query->lastError().text());
-        return false;
+        return -1;
     }
 
     if (!query->next()) {
-        return false;
+        return -1;
     }
 
     return query->value(0).toInt();
 }
 
 int SqlDBWriter::getLastIdPlayers() {
+    if (!isValid()) {
+        return -1;
+    }
+
     QString request = QString("SELECT MAX(id) FROM players");
     if (!query->exec(request)) {
         QuasarAppUtils::Params::verboseLog("request error : " + query->lastError().text());
-        return false;
+        return -1;
     }
 
     if (!query->next()) {
-        return false;
+        return -1;
     }
 
     return query->value(0).toInt();
@@ -78,11 +86,15 @@ int SqlDBWriter::getLastIdPlayers() {
 
 int SqlDBWriter::getPlayerId(const QString &gmail) {
 
+    if (!isValid()) {
+        return -1;
+    }
+
     QString request = QString("SELECT id from players where gmail='%0'").arg(gmail);
 
     if (!query->exec(request)) {
         QuasarAppUtils::Params::verboseLog("request error : " + query->lastError().text());
-        return false;
+        return -1;
     }
 
     if (!query->next()) {
@@ -92,7 +104,7 @@ int SqlDBWriter::getPlayerId(const QString &gmail) {
     return query->value("id").toInt();
 }
 
-bool SqlDBWriter::checkPlayer(int id) const {
+bool SqlDBWriter::checkPlayer(int id) {
 
     QString request = QString("SELECT id from players where id='%0'").arg(id);
 
@@ -108,7 +120,8 @@ bool SqlDBWriter::checkPlayer(int id) const {
     return true;
 }
 
-bool SqlDBWriter::checkItem(int idItem, int idOwner) const {
+bool SqlDBWriter::checkItem(int idItem, int idOwner) {
+
 
     if (idOwner >= 0 ) {
         if (!checkPlayer(idOwner)) {
@@ -145,7 +158,11 @@ bool SqlDBWriter::checkItem(int idItem, int idOwner) const {
     return true;
 }
 
-int SqlDBWriter::writeUpdatePlayerIntoDB(const QVariantMap &player) const {
+int SqlDBWriter::savePlayer(QVariantMap &player) {
+    if (!isValid()) {
+        return -1;
+    }
+
     QString request;
     int id = player.value("id").toInt();
 
@@ -191,7 +208,11 @@ int SqlDBWriter::writeUpdatePlayerIntoDB(const QVariantMap &player) const {
     return true;
 }
 
-int SqlDBWriter::writeUpdateItemIntoDB(const QVariantMap &item) const {
+int SqlDBWriter::saveItem(QVariantMap &item) {
+    if (!isValid()) {
+        return -1;
+    }
+
     auto type = static_cast<ClientProtocol::NetworkClasses::Type>
             (item.value("command", ClientProtocol::NetworkClasses::Undefined).toInt());
 
@@ -230,7 +251,11 @@ int SqlDBWriter::writeUpdateItemIntoDB(const QVariantMap &item) const {
     return id;
 }
 
-bool SqlDBWriter::getAllItemsOfPalyerFromDB(int player, QSet<int> &items) {
+bool SqlDBWriter::getAllItemsOfPalyer(int player, QSet<int> &items) {
+    if (!isValid()) {
+        return false;
+    }
+
     QString request = QString("SELECT item from owners where player='%0'").arg(player);
 
     if (!query->exec(request)) {
@@ -245,7 +270,11 @@ bool SqlDBWriter::getAllItemsOfPalyerFromDB(int player, QSet<int> &items) {
     return true;
 }
 
-bool SqlDBWriter::UpdateInfoOfOvners(int player, const QSet<int> items) {
+bool SqlDBWriter::saveOvners(int player, const QSet<int> items) {
+
+    if (!isValid()) {
+        return false;
+    }
 
     QString request = QString("DELETE from owners where player='%0' ").
             arg(player).arg(player);
@@ -267,6 +296,67 @@ bool SqlDBWriter::UpdateInfoOfOvners(int player, const QSet<int> items) {
     }
 
     return true;
+}
+
+bool SqlDBWriter::getPlayer(int id, QVariantMap &res) {
+
+    if (!isValid()) {
+        return false;
+    }
+
+    QString request = QString("SELECT * FROM players WHERE id=%0").arg(id);
+    if (!query->exec(request)) {
+        QuasarAppUtils::Params::verboseLog("request error : " + query->lastError().text());
+        return false;
+    }
+
+    if (!query->next()) {
+        return false;
+    }
+    res["name"] = query->value("name");
+    res["gmail"] = query->value("gmail");
+    res["money"] = query->value("money");
+    res["avgrecord"] = query->value("avgrecord");
+    res["record"] = query->value("record");
+    res["lastOnline"] = query->value("lastOnline");
+    res["onlinetime"] = query->value("onlinetime");
+    res["currentsnake"] = query->value("currentsnake");
+
+    return true;
+}
+
+bool SqlDBWriter::getItem(int id, QVariantMap &res) {
+
+    if (!isValid()) {
+        return false;
+    }
+
+    QString request = QString("SELECT data FROM items WHERE id=%0").arg(id);
+    if (!query->exec(request)) {
+        QuasarAppUtils::Params::verboseLog("request error : " + query->lastError().text());
+        return false;
+    }
+
+    if (!query->next()) {
+        return false;
+    }
+    auto data = query->value(0).toByteArray();
+
+    return ClientProtocol::Streamers::read(data, res);
+}
+
+bool SqlDBWriter::itemIsFreeFrom(int item) const {
+    if (!isValid()) {
+        return false;
+    }
+
+    QString request = QString("SELECT player FROM owners WHERE id=%0").arg(item);
+    if (!query->exec(request)) {
+        QuasarAppUtils::Params::verboseLog("request error : " + query->lastError().text());
+        return false;
+    }
+
+    return !query->next();
 }
 
 SqlDBWriter::SqlDBWriter() {
