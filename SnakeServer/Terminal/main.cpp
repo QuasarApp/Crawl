@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
-    QuasarAppUtils::Params::parseParams(argc, argv);
+    QuasarAppUtils::Params::parseParams(argc, const_cast<const char**>(argv));
 
     ServerProtocol::Client cli;
 

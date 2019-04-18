@@ -122,13 +122,21 @@ void SqlDBCashe::globalUpdateDataBasePrivate(qint64 currentTime) {
     lastUpdateTime = currentTime;
 }
 
-void SqlDBCashe::globalUpdateDataBase(bool force) {
+void SqlDBCashe::globalUpdateDataBase(SqlDBCasheWriteMode mode) {
     qint64 currentTime = QDateTime::currentMSecsSinceEpoch();
 
-    if (currentTime - lastUpdateTime > DEFAULT_UPDATE_INTERVAL || force) {
-        QtConcurrent::run([currentTime, this](){
+    if (currentTime - lastUpdateTime > DEFAULT_UPDATE_INTERVAL ||
+            static_cast<bool>(mode & SqlDBCasheWriteMode::Force)) {
+
+        if (static_cast<bool>(mode & SqlDBCasheWriteMode::On_New_Thread)) {
+
+            QtConcurrent::run([currentTime, this](){
+                globalUpdateDataBasePrivate(currentTime);
+            });
+
+        } else {
             globalUpdateDataBasePrivate(currentTime);
-        });
+        }
     }
 }
 
@@ -140,8 +148,7 @@ SqlDBCashe::SqlDBCashe() {
 }
 
 SqlDBCashe::~SqlDBCashe() {
-    globalUpdateDataBase(true);
-
+    globalUpdateDataBase(SqlDBCasheWriteMode::Force);
 }
 
 bool SqlDBCashe::initDb(const QString &sql, const QString &path) {
@@ -191,7 +198,7 @@ int SqlDBCashe::saveItem(QVariantMap &item) {
 
     items.insert(id, item);
 
-    globalUpdateDataBase();
+    globalUpdateDataBase(SqlDBCasheWriteMode::On_New_Thread);
 
     return id;
 }
@@ -225,7 +232,7 @@ int SqlDBCashe::savePlayer(QVariantMap &player) {
 
     players.insert(id, player);
 
-    globalUpdateDataBase();
+    globalUpdateDataBase(SqlDBCasheWriteMode::On_New_Thread);
 
     return id;
 }
@@ -242,6 +249,9 @@ bool SqlDBCashe::giveAwayItem(int player, int item) {
     if (owners.contains(player)) {
         auto &owner = owners[player];
         owner.remove(item);
+
+        globalUpdateDataBase(SqlDBCasheWriteMode::On_New_Thread);
+
         return true;
     }
 
@@ -264,6 +274,9 @@ bool SqlDBCashe::getItem(int player, int item, bool check) {
     if (owners.contains(player)) {
         auto &owner = owners[player];
         owner.insert(item);
+
+        globalUpdateDataBase(SqlDBCasheWriteMode::On_New_Thread);
+
         return true;
     }
 
@@ -275,6 +288,9 @@ bool SqlDBCashe::getItem(int player, int item, bool check) {
     if (owners.contains(player)) {
         auto &owner = owners[player];
         owner.insert(item);
+
+        globalUpdateDataBase(SqlDBCasheWriteMode::On_New_Thread);
+
         return true;
     }
 

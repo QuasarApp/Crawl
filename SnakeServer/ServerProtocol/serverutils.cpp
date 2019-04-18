@@ -34,7 +34,7 @@ bool ServerUtils::runDaemon() {
 }
 
 bool ServerUtils::parseParams(int argc, char *argv[]) {
-    if ( !QuasarAppUtils::Params::parseParams(argc, argv)) {
+    if ( !QuasarAppUtils::Params::parseParams(argc, const_cast<const char**>(argv))) {
         return false;
     }
 

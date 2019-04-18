@@ -7,6 +7,12 @@
 #include <QSet>
 #include <QVariantMap>
 
+enum class SqlDBCasheWriteMode: int {
+    Default = 0x0,
+    On_New_Thread = 0x1,
+    Force = 0x2,
+} ;
+
 class SqlDBCashe : private SqlDBWriter
 {
 private:
@@ -23,7 +29,7 @@ private:
     bool checkItem(int idItem, int idOwner = -1) override;
 
     void globalUpdateDataBasePrivate(qint64 currentTime);
-    void globalUpdateDataBase(bool force = false);
+    void globalUpdateDataBase(SqlDBCasheWriteMode mode = SqlDBCasheWriteMode::Default);
 
     bool itemIsFreeFrom(int item) const override ;
 
