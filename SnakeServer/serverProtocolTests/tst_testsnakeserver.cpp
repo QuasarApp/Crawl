@@ -208,6 +208,8 @@ void testSankeServer::testSql() {
 
     QVariantMap resItem;
 
+    QVERIFY(db.saveItem(tempItem) < 0);
+    tempItem["id"] = 0;
     int id = db.saveItem(tempItem);
 
     QVERIFY(id == 0);

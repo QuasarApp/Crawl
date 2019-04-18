@@ -143,7 +143,7 @@ bool SqlDBWriter::checkItem(int idItem, int idOwner) {
         return true;
     }
 
-    QString request = QString("SELECT item from items where id='%0'").
+    QString request = QString("SELECT id from items where id='%0'").
             arg(idItem);
 
     if (!query->exec(request)) {
