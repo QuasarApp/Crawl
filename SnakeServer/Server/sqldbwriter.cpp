@@ -230,22 +230,26 @@ int SqlDBWriter::saveItem(QVariantMap &item) {
     }
 
     if (checkItem(id)) {
-        request = QString("UPDATE items SET type='%1', data=':bytes' where id = %0").
+        request = QString("UPDATE items SET type='%1', data = :bytes where id = %0").
                 arg(id).
                 arg(static_cast<int>(type));
     } else {
-        request = QString("INSERT INTO items(id,type,data) VALUES "
-                                  "('%0', '%1', ':bytes')").
+        request = QString("INSERT INTO items(id, type, data) VALUES"
+                                  "('%0', '%1', :bytes)").
                 arg(id).
                 arg(static_cast<int>(type));
     }
 
-
-    query->bindValue( ":bytes", bytes);
-
-    if (!query->exec(request)) {
+    if (!query->prepare(request)) {
         QuasarAppUtils::Params::verboseLog("request error : " + query->lastError().text());
-        return false;
+        return -1;
+    }
+
+    query->bindValue(":bytes", bytes);
+
+    if (!query->exec()) {
+        QuasarAppUtils::Params::verboseLog("request error : " + query->lastError().text());
+        return -1;
     }
 
     return id;
