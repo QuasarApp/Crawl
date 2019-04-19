@@ -68,9 +68,9 @@ bool Streamers::read(QDataStream &stream, QVariantMap &map, const NetworkClasses
 
         }
         else if (NetworkClasses::isArray(typeItem)) {
-            NetworkClasses::Type arrayType = static_cast<NetworkClasses::Type>(type & ~NetworkClasses::Array);
+            NetworkClasses::Type arrayType = static_cast<NetworkClasses::Type>(typeItem & ~NetworkClasses::Array);
 
-            if (arrayType & NetworkClasses::String) {
+            if (NetworkClasses::isString(arrayType)) {
                 QStringList list;
                 stream >> list;
                 map.insert(property, list);
@@ -85,8 +85,7 @@ bool Streamers::read(QDataStream &stream, QVariantMap &map, const NetworkClasses
                 for (int i = 0; i < array.size(); i+= size) {
                     varList.push_back(QVariant::fromValue(array.mid(i, size)));
                 }
-
-                break;
+                map.insert(property, varList);
             }
         }
     }
@@ -128,7 +127,7 @@ bool Streamers::write(QDataStream &stream, const QVariantMap &map) {
         else if (NetworkClasses::isArray(typeItem)) {
             NetworkClasses::Type arrayType = static_cast<NetworkClasses::Type>(typeItem & ~NetworkClasses::Array);
 
-            if (arrayType & NetworkClasses::String) {
+            if (NetworkClasses::isString(arrayType)) {
                 stream << value.toStringList();
             } else {
 
@@ -136,17 +135,15 @@ bool Streamers::write(QDataStream &stream, const QVariantMap &map) {
                 auto varList = value.toList();
                 for (auto &&i : varList) {
                     auto temp = i.toByteArray();
-
-                    if (static_cast<quint32>(temp.size())
-                            != NetworkClasses::getSizeType(arrayType)) {
+                    int typeSize = static_cast<int>(NetworkClasses::getSizeType(arrayType));
+                    if (temp.size() > typeSize) {
 
                         return false;
                     }
-
+                    temp.resize(typeSize);
                     array.push_back(temp);
                 }
                 stream << array;
-                break;
             }
         }
     }
