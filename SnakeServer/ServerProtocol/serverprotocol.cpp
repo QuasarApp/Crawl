@@ -1,5 +1,9 @@
 #include "serverprotocol.h"
 
+#include <QDataStream>
+#include <QByteArray>
+#include <QVariantMap>
+
 
 ServerProtocol::Header::Header() {
     reset();
@@ -7,26 +11,20 @@ ServerProtocol::Header::Header() {
 
 bool ServerProtocol::Header::isValid() const {
 
-    if (sizeof (*this) != 1) {
+    if (sizeof (*this) != 2) {
         return false;
     }
 
-    switch (command) {
-    case ping: {
-
-        if (type > 1 || size > 0)
-            return false;
-
-        return true;
+    if (type == Type::Request) {
+        return size < 256;
     }
 
-    default: return false;
-    }
+    return size >= 5;
 }
 
 void ServerProtocol::Header::reset() {
     size = 0;
-    command = undefined;
+    command = Undefined;
     type = Responke;
 }
 
@@ -47,20 +45,13 @@ QVariantMap ServerProtocol::Package::parse() const {
         return QVariantMap();
 
     QVariantMap res;
+    QDataStream stream(data);
 
-    switch (hdr.command) {
-    case ping: {
-        if (hdr.type == Responke) {
-            res["res"] = "Pong";
-        } else {
-            res["value"] = "Ping";
-        }
-        break;
-    }
+    res["command"] = hdr.command;
+    res["type"] = hdr.type;
 
-    default:
-        return res;
-
+    if (hdr.type == Responke) {
+        stream >> res;
     }
 
     return res;
@@ -78,5 +69,20 @@ QByteArray ServerProtocol::Package::toBytes() const {
 void ServerProtocol::Package::reset() {
     hdr.reset();
     data.clear();
+}
+
+bool ServerProtocol::Package::fromMap(const QVariantMap &map) {
+    QDataStream stream(&data, QIODevice::ReadWrite);
+
+    stream << map;
+
+    if (data.size() > 1024) {
+        return false;
+    }
+
+    hdr.size =  static_cast<unsigned short>(data.size());
+
+    return true;
+
 }
 

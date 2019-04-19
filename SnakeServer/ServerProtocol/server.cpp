@@ -3,9 +3,12 @@
 #include <quasarapp.h>
 #include <cstring>
 #include <QFile>
+#include <QDataStream>
+#include <QVariantMap>
 
 #include "serverutils.h"
 #include "serverprotocol.h"
+#include "server.h"
 
 
 
@@ -18,26 +21,58 @@ void Server::parsePackage(const Package& pkg) {
 
 
     switch (pkg.hdr.command) {
-    case ping: {
+    case Ping: {
 
-        if (pkg.hdr.type != Responke) {
+        if (pkg.hdr.type != Request) {
             return;
         }
 
         Package resp;
-        resp.hdr.command = ping;
+        resp.hdr.command = Ping;
+        resp.hdr.type = Responke;
 
-        auto bytes = resp.toBytes();
+        QVariantMap data;
+        data["res"] = "Pong";
+        resp.fromMap(data);
 
-        if (bytes.size() != _client->write(bytes)) {
+        if (!sendPackage(resp)) {
             QuasarAppUtils::Params::verboseLog("!responce not sendet!");
         }
+
         break;
     }
 
-    default: return;
+    default: {
+        QVariantMap res;
+        res["command"] = pkg.hdr.command;
+        QDataStream stream(pkg.data);
+        stream >> res;
+        emit incomingRequest(res);
+    };
     }
 }
+
+bool Server::sendPackage(Package &pkg) {
+    if (!pkg.isValid()) {
+        return false;
+    }
+
+    if (!_client->isValid()) {
+        qCritical() << "destination server not valid!";
+        return false;
+    }
+
+    if (!_client->waitForConnected()) {
+        qCritical() << "no connected to server! " << _client->errorString();
+        return false;
+    }
+
+    auto bytes = pkg.toBytes();
+    bool sendet = bytes.size() == _client->write(bytes);
+
+    return sendet;
+}
+
 
 void Server::avelableBytes() {
     auto array = _client->readAll();
@@ -93,5 +128,22 @@ bool Server::run(const QString &name) {
     }
 
     return true;
+}
+
+bool Server::sendResponce(QVariantMap res, Command command) {
+
+    Package pck;
+
+    pck.hdr.type = ServerProtocol::Responke;
+    pck.hdr.command = static_cast<unsigned char>(command);
+
+    if (res.isEmpty()) {
+        res["responce"] = "error: command not supported!";
+    }
+
+    pck.fromMap(res);
+    pck.hdr.size = static_cast<unsigned short>(pck.data.size());
+
+    return sendPackage(pck);
 }
 }

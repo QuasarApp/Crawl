@@ -15,18 +15,22 @@ enum Type: unsigned char {
 };
 
 enum Command: unsigned char {
-    undefined = 0x00,
-    ping = 0x01,
+    Undefined = 0x00,
+    Ping = 0x01,
+    State = 0x02,
+    Restart = 0x03,
+    Unban = 0x04,
+    Ban = 0x05
 };
 
 /**
- * @brief The Header struct 1 byte
+ * @brief The Header struct 2 byte
  */
 struct Header {
     /**
      * @brief size - size of package data (not header)
      */
-    unsigned char size: 4;
+    unsigned short size: 10;
     /**
      * @brief type of package see Type
      */
@@ -34,7 +38,7 @@ struct Header {
     /**
      * @brief command of pacage see Command
      */
-    unsigned char command: 3;
+    unsigned char command: 5;
 
     /**
      * @brief Header default constructor
@@ -91,6 +95,8 @@ struct Package {
      * @brief reset - reset all data and set for package invalid status
      */
     void reset();
+
+    bool fromMap(const QVariantMap& map);
 
 };
 

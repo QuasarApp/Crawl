@@ -8,13 +8,13 @@ namespace ClientProtocol {
 bool Server::parsePackage(const Package &pkg, QTcpSocket* sender) {
     if (!pkg.isValid()) {
         QuasarAppUtils::Params::verboseLog("incomming package is not valid!");
-        changeKarma(sender->peerAddress(), CRITICAL_ERROOR);
+        changeKarma(qHash(sender->peerAddress()), CRITICAL_ERROOR);
         return false;
     }
 
     if (!sender->isValid()) {
         QuasarAppUtils::Params::verboseLog("incomming package is not valid!");
-        changeKarma(sender->peerAddress(), LOGICK_ERROOR);
+        changeKarma(qHash(sender->peerAddress()), LOGICK_ERROOR);
         return false;
     }
 
@@ -41,7 +41,7 @@ bool Server::parsePackage(const Package &pkg, QTcpSocket* sender) {
     default: {
         QVariantMap data;
         pkg.parse(data);
-        emit incomingReques(data, sender->peerAddress());
+        emit incomingReques(data, qHash(sender->peerAddress()));
     }
     }
 
@@ -53,7 +53,7 @@ bool Server::sendPackage(Package &pkg, QTcpSocket * target) {
         return false;
     }
 
-    if (!target->isValid()) {
+    if (!target || !target->isValid()) {
         qCritical() << "destination server not valid!";
         return false;
     }
@@ -69,23 +69,28 @@ bool Server::sendPackage(Package &pkg, QTcpSocket * target) {
     return sendet;
 }
 
-void Server::ban(const QHostAddress& target) {
-    karma.insert(target, BANED_KARMA);
+void Server::ban(quint32 target) {
+    _connections[target].karma = BANED_KARMA;
 }
 
-void Server::unBan(const QHostAddress& target) {
-    karma.insert(target, RESTORE_KARMA);
+void Server::unBan(quint32 target) {
+    _connections[target].karma = RESTORE_KARMA;
 }
 
-void Server::registerSocket(const QTcpSocket *socket) {
-    if (!karma.contains(socket->peerAddress())) {
-        karma.insert(socket->peerAddress(), DEFAULT_KARMA);
+void Server::registerSocket(QTcpSocket *socket) {
+    auto address = qHash(socket->peerAddress());
+
+    if (!_connections[address].sct) {
+
+        _connections[address].karma = DEFAULT_KARMA;
+        _connections[address].sct = socket;
+
         connect(socket, &QTcpSocket::readyRead, this,  &Server::avelableBytes);
     }
 }
 
-bool Server::changeKarma(const QHostAddress &addresss, int diff) {
-    int objKarma = karma.value(addresss, NOT_VALID_CARMA);
+bool Server::changeKarma(quint32 addresss, int diff) {
+    auto objKarma = _connections.value(addresss).karma;
 
     if (objKarma >= NOT_VALID_CARMA) {
         return false;
@@ -95,12 +100,20 @@ bool Server::changeKarma(const QHostAddress &addresss, int diff) {
         return false;
     }
 
-    karma.insert(addresss, objKarma + diff);
+    _connections[addresss].karma += diff;
     return true;
 }
 
 bool Server::isBaned(const QTcpSocket * adr) const {
-    return karma.value(adr->peerAddress(), NOT_VALID_CARMA) < 1;
+    return _connections.value(qHash(adr->peerAddress())).karma < 1;
+}
+
+void Server::saveKarma() const {
+
+}
+
+bool Server::loadKarma() {
+    return false;
 }
 
 void Server::avelableBytes() {
@@ -158,6 +171,71 @@ bool Server::run(const QString &ip, unsigned short port) {
     }
 
     return true;
+}
+
+void Server::stop(bool reset) {
+    close();
+
+    if (reset) {
+        _connections.clear();
+    }
+}
+
+void Server::badRequest(quint32 address) {
+    auto client = _connections.value(address);
+
+    if (!changeKarma(address, REQUEST_ERROR)) {
+        return;
+    }
+
+    auto map = FactoryNetObjects::build(NetworkClasses::BadRequest);
+
+    Package pcg;
+    if (!pcg.create(map, Request)) {
+        return;
+    };
+
+    if (!sendPackage(pcg, client.sct)) {
+        return;
+    }
+}
+
+QString Server::getWorkState() const {
+    if (isListening()) {
+        if (hasPendingConnections())
+            return "Work";
+        else {
+            return "overload";
+        }
+    }
+
+    return "Not running";
+}
+
+QString Server::connectionState() const {
+    return QString("%0 / %1").arg(_connections.size()).arg(maxPendingConnections());
+}
+
+QStringList Server::baned() const {
+    QStringList list = {};
+    for (auto i : _connections) {
+        if (i.karma <= 0) {
+            list.push_back(i.sct->peerAddress().toString());
+        }
+    }
+
+    return list;
+}
+
+Connectioninfo::Connectioninfo(QTcpSocket *tcp, int kar) {
+    sct = tcp;
+    karma = kar;
+}
+
+Connectioninfo::~Connectioninfo() {
+    if (sct) {
+        sct->deleteLater();
+    }
 }
 
 }

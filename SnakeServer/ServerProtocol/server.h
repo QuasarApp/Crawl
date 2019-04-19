@@ -25,6 +25,11 @@ public:
     explicit Server(QObject * ptr = nullptr);
     ~Server() override;
     bool run(const QString& name);
+    bool sendResponce(QVariantMap res, Command command);
+
+    bool sendPackage(Package &pkg);
+signals:
+    void incomingRequest(QVariantMap data);
 };
 }
 #endif // SERVER_SP_H

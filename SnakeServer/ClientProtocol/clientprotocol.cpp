@@ -25,58 +25,6 @@ bool Header::isValid() const {
     }
 
     return isValidSize(static_cast<NetworkClasses::Type>(command) , size);
-
-//    switch (command) {
-//    case Ping: {
-
-//        if (type > 1 || size > 0)
-//            return false;
-
-//        return true;
-//    }
-
-//    case Item: {
-
-//        switch (type) {
-//        case Request: return size == 36; // key sha256 (32byte) + id item 4
-//        case Responke: return true;
-//        }
-
-//        return false;
-//    }
-
-//    case Login: {
-
-//        switch (type) {
-//        case Request: return size > 36; // key sha256 (32byte) + 4 size array + maxsize of name of gmail (64)
-//        case Responke: return isValidSize(NetworkClasses::Player, size);
-//        }
-
-//        return false;
-//    }
-
-//    case PlayerData: {
-
-//        switch (type) {
-//        case Request: return size == 36; // key sha256 (32byte + size of array)
-//        case Responke: return isValidSize(NetworkClasses::Player, size);
-//        }
-
-//        return false;
-//    }
-
-//    case SaveData: {
-
-//        switch (type) {
-//        case Request: return isValidSize(NetworkClasses::Game, size);; // key sha256 (32byte) + maxsize of name of gmail (64)
-//        case Responke: return isValidSize(NetworkClasses::Player, size);
-//        }
-
-//        return false;
-//    }
-
-//    default: return false;
-//    }
 }
 
 void Header::reset() {

@@ -57,4 +57,75 @@ bool Client::sendPackage(const Package &pkg) {
 
     return bytes.size() == _destination->write(bytes);
 }
+
+bool Client::ping() {
+    ServerProtocol::Package pkg;
+    pkg.hdr.command = ServerProtocol::Ping;
+    pkg.hdr.type = ServerProtocol::Request;
+
+    return sendPackage(pkg);
+}
+
+bool Client::getState() {
+
+    ServerProtocol::Package pkg;
+    pkg.hdr.command = ServerProtocol::State;
+    pkg.hdr.type = ServerProtocol::Request;
+
+    return sendPackage(pkg);
+}
+
+bool Client::ban(const QHostAddress &address) {
+
+    ServerProtocol::Package pkg;
+    pkg.hdr.command = ServerProtocol::Ban;
+    pkg.hdr.type = ServerProtocol::Request;
+
+    if (address.isNull())
+        return false;
+
+    QVariantMap map;
+    map["address"] = qHash(address);
+
+    pkg.fromMap(map);
+
+    return sendPackage(pkg);
+}
+
+bool Client::unBan(const QHostAddress &address) {
+
+    if (address.isNull())
+        return false;
+
+    ServerProtocol::Package pkg;
+    pkg.hdr.command = ServerProtocol::Unban;
+    pkg.hdr.type = ServerProtocol::Request;
+
+    QVariantMap map;
+    map["address"] = qHash(address);
+
+    pkg.fromMap(map);
+
+    return sendPackage(pkg);
+}
+
+bool Client::restart(const QString &address, unsigned short port) {
+
+    QHostAddress test(address);
+
+    if (test.isNull() || port == 0) {
+        return false;
+    }
+
+    ServerProtocol::Package pkg;
+    pkg.hdr.command = ServerProtocol::Restart;
+    pkg.hdr.type = ServerProtocol::Request;
+
+    QVariantMap map;
+    map["address"] = address;
+    map["port"] = port;
+    pkg.fromMap(map);
+
+    return sendPackage(pkg);
+}
 }

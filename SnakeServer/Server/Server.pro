@@ -24,7 +24,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-        server.cpp \
+    mainserver.cpp \
     sqldbcashe.cpp \
     sqldbwriter.cpp
 
@@ -38,10 +38,10 @@ CONFIG(release, debug|release): {
 }
 
 HEADERS += \
-        server.h \
-        server_global.h \
+        mainserver.h \
+        server_global.h \ 
         sqldbcashe.h \
-        sqldbwriter.h
+        sqldbwriter.h.h
 
 include($$PWD/../../QuasarAppLib/QuasarLib.pri)
 include($$PWD/../ServerProtocol/ServerProtocol.pri)

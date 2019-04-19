@@ -16,8 +16,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-        main.cpp \
-    sarverdaemon.cpp
+        main.cpp
 
 TARGET = SnakeServer-daemon
 
@@ -28,9 +27,10 @@ CONFIG(release, debug|release): {
     DESTDIR = $$PWD/build/debug
 }
 
-HEADERS += \
-    sarverdaemon.h
+HEADERS +=
 
 include($$PWD/../../QuasarAppLib/QuasarLib.pri)
 include($$PWD/../ServerProtocol/ServerProtocol.pri)
+include($$PWD/../ClientProtocol/ClientProtocol.pri)
+include($$PWD/../../SnakeUtils/SnakeUtils.pri)
 include($$PWD/../Server/Server.pri)
