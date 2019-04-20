@@ -228,6 +228,8 @@ void testSankeServer::testApplyData() {
     QList<int> listData = {1};
 
     QVERIFY(cle.savaData(listData));
+
+
 }
 
 void testSankeServer::testSql() {
@@ -242,8 +244,10 @@ void testSankeServer::testSql() {
 
     QVERIFY(init);
 
-    auto tempItem = ClientProtocol::FactoryNetObjects::build(
-                ClientProtocol::NetworkClasses::Snake);
+    QVariantMap tempItem;
+
+    QVERIFY(ClientProtocol::FactoryNetObjects::build(
+                ClientProtocol::NetworkClasses::Snake, tempItem));
 
     QVariantMap resItem;
 

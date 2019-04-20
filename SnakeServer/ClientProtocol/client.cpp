@@ -117,8 +117,8 @@ bool Client::ping() {
 
     Package pcg;
 
-    auto map = FactoryNetObjects::build(NetworkClasses::Ping);
-    if (!pcg.create(map, Request)) {
+    QVariantMap map;
+    if (!(FactoryNetObjects::build(NetworkClasses::Ping, map) && pcg.create(map, Request))) {
         return false;
     };
 
@@ -141,7 +141,11 @@ bool Client::login(const QString &gmail, const QByteArray &pass) {
 
     Package pcg;
 
-    auto map = FactoryNetObjects::build(NetworkClasses::Login);
+    QVariantMap map;
+    if (!FactoryNetObjects::build(NetworkClasses::Login, map)) {
+        return false;
+    };
+
     map["gmail"] = gmail;
     map["hashPass"] = pass;
 
@@ -165,7 +169,11 @@ bool Client::updateData() {
 
     Package pcg;
 
-    auto map = FactoryNetObjects::build(NetworkClasses::UpdatePlayerData);
+    QVariantMap map;
+    if (!FactoryNetObjects::build(NetworkClasses::UpdatePlayerData, map)) {
+        return false;
+    }
+
     map["token"] = _token;
 
     if (!pcg.create(map, Request)) {
@@ -187,7 +195,11 @@ bool Client::savaData(const QList<int>& gameData) {
 
     Package pcg;
 
-    auto map = FactoryNetObjects::build(NetworkClasses::Game);
+    QVariantMap map;
+    if (!FactoryNetObjects::build(NetworkClasses::Game, map)) {
+        return false;
+    }
+
     map["token"] = _token;
     map["time"] = FactoryNetObjects::buildArray(gameData);
 
@@ -214,7 +226,11 @@ bool Client::getItem(int id) {
 
     Package pcg;
 
-    auto map = FactoryNetObjects::build(NetworkClasses::GetItem);
+    QVariantMap map;
+    if (!FactoryNetObjects::build(NetworkClasses::GetItem, map)) {
+        return false;
+    }
+
     map["token"] = _token;
     map["id"] = id;
 

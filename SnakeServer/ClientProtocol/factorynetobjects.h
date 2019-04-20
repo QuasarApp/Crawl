@@ -9,7 +9,9 @@ class CLIENTPROTOCOLSHARED_EXPORT FactoryNetObjects {
 public:
     FactoryNetObjects() = delete;
 
-    static QVariantMap build(NetworkClasses::Type type);
+    static bool build(NetworkClasses::Type type, QVariantMap&);
+
+    static bool fillRandomData(QVariantMap &item);
 
     template <typename T>
     static QVariantList buildArray(const T& array) {

@@ -27,8 +27,8 @@ bool Server::parsePackage(const Package &pkg, QTcpSocket* sender) {
 
         Package pcg;
 
-        auto map = FactoryNetObjects::build(NetworkClasses::Ping);
-        if (!pcg.create(map, Responke)) {
+        QVariantMap map;
+        if (!(FactoryNetObjects::build(NetworkClasses::Ping, map) && pcg.create(map, Responke))) {
             return false;
         };
 
@@ -188,10 +188,10 @@ void Server::badRequest(quint32 address) {
         return;
     }
 
-    auto map = FactoryNetObjects::build(NetworkClasses::BadRequest);
+    QVariantMap map;
 
     Package pcg;
-    if (!pcg.create(map, Request)) {
+    if (!(FactoryNetObjects::build(NetworkClasses::BadRequest, map) && pcg.create(map, Request))) {
         return;
     };
 
