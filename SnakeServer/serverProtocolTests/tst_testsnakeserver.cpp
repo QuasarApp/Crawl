@@ -249,6 +249,8 @@ void testSankeServer::testSql() {
     QVERIFY(ClientProtocol::FactoryNetObjects::build(
                 ClientProtocol::NetworkClasses::Snake, tempItem));
 
+    QVERIFY(ClientProtocol::FactoryNetObjects::fillRandomData(tempItem));
+
     QVariantMap resItem;
 
     QVERIFY(db.saveItem(tempItem) < 0);

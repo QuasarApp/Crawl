@@ -55,7 +55,7 @@ bool FactoryNetObjects::fillRandomData(QVariantMap &item) {
             if (NetworkClasses::isReal(i.value())) {
                 item[i.key()] = static_cast<double>((rand() % 1000) / 100.0);
             } else if (NetworkClasses::isInteger(i.value())) {
-                item[i.key()] = static_cast<int>((rand() % 1000));
+                item[i.key()] = static_cast<int>((rand() % 100));
             } else if (NetworkClasses::isString(i.value())) {
                 item[i.key()] = QString("Random&0").arg(rand() % 1000);
             } else if (NetworkClasses::isArray(i.value())) {

@@ -114,10 +114,10 @@ bool Streamers::write(QDataStream &stream, const QVariantMap &map) {
 
         if (NetworkClasses::isNumber(typeItem)) {
 
-            auto val = value.toByteArray();
+            auto val = value.data();
             auto size = static_cast<int>(NetworkClasses::getSizeType(typeItem));
 
-            if (size != stream.writeRawData(val.data(), size)) {
+            if (size != stream.writeRawData(static_cast<char*>(val), size)) {
                 return false;
             }
         }
