@@ -251,6 +251,8 @@ void testSankeServer::testSql() {
 
     QVERIFY(ClientProtocol::FactoryNetObjects::fillRandomData(tempItem));
 
+    // TEST ITEM
+
     QVariantMap resItem;
 
     QVERIFY(db.saveItem(tempItem) < 0);
@@ -264,6 +266,67 @@ void testSankeServer::testSql() {
     for (auto &key :tempItem.keys()) {
         QVERIFY(tempItem.value(key).toString() == resItem.value(key).toString());
     }
+
+    auto list = tempItem["skillet"].toList();
+    list[1] = 100;
+    tempItem["skillet"] = list;
+
+    QVERIFY(db.saveItem(tempItem) == 0);
+    QVERIFY(db.getItem(id, resItem));
+
+    QVERIFY(resItem["skillet"].toList()[1] == 100);
+
+    QVERIFY(tempItem.size() == resItem.size());
+
+    for (auto &key :tempItem.keys()) {
+        QVERIFY(tempItem.value(key).toString() == resItem.value(key).toString());
+    }
+    QSet<int> items;
+    QVERIFY(!db.getAllItemsOfPalyer(0, items));
+
+
+    // TEST PLAYER
+
+    QVariantMap tempPlayer;
+
+    QVERIFY(ClientProtocol::FactoryNetObjects::build(
+                ClientProtocol::NetworkClasses::Player, tempPlayer));
+
+    QVERIFY(ClientProtocol::FactoryNetObjects::fillRandomData(tempPlayer));
+
+    QVariantMap resPlayer;
+
+    QVERIFY(db.saveItem(tempPlayer) < 0);
+    tempPlayer["id"] = 0;
+    QVERIFY(db.saveItem(tempPlayer) < 0);
+
+    tempPlayer["items"] = QVariantList() << 0;
+    tempPlayer["currentSnake"] = 0;
+
+    id = db.savePlayer(tempPlayer);
+
+    QVERIFY(id == 0);
+    QVERIFY(db.getPlayer(id, resPlayer));
+    QVERIFY(tempPlayer.size() == resPlayer.size());
+
+    for (auto &key :tempPlayer.keys()) {
+        QVERIFY(tempPlayer.value(key).toString() == resPlayer.value(key).toString());
+    }
+
+//    list = tempPlayer["skillet"].toList();
+//    list[1] = 100;
+//    tempItem["skillet"] = list;
+
+//    QVERIFY(db.saveItem(tempItem) == 0);
+//    QVERIFY(db.getItem(id, resItem));
+
+//    QVERIFY(resItem["skillet"].toList()[1] == 100);
+
+//    QVERIFY(tempItem.size() == resItem.size());
+
+//    for (auto &key :tempItem.keys()) {
+//        QVERIFY(tempItem.value(key).toString() == resItem.value(key).toString());
+//    }
 
 }
 

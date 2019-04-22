@@ -124,4 +124,31 @@ bool FactoryNetObjects::fillRandomData(QVariantMap &item) {
     return true;
 }
 
+bool FactoryNetObjects::isValid(const QVariantMap &item, NetworkClasses::Type type) {
+
+    auto cmd = static_cast<ClientProtocol::NetworkClasses::Type>
+            (item.value("command", ClientProtocol::NetworkClasses::Undefined).toInt());
+
+    if (cmd != type) {
+        return false;
+    }
+
+    if (item.value("id", -1).toInt() < 0) {
+        return false;
+    }
+
+    if (NetworkClasses::isCustomType(type)) {
+        auto keys = networkObjects.value(type);
+
+        for (auto i = keys.begin(); i != keys.end(); ++i) {
+            if (!item.contains(i.key())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    return false;
+}
+
 }

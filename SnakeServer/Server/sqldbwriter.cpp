@@ -8,6 +8,7 @@
 #include <quasarapp.h>
 #include <clientprotocol.h>
 #include <streamers.h>
+#include <factorynetobjects.h>
 
 bool SqlDBWriter::exec(QSqlQuery *sq,const QString& sqlFile) {
     QFile f(sqlFile);
@@ -163,6 +164,11 @@ int SqlDBWriter::savePlayer(QVariantMap &player) {
         return -1;
     }
 
+    if (!ClientProtocol::FactoryNetObjects::isValid(player,
+            ClientProtocol::NetworkClasses::Player)) {
+        return -1;
+    }
+
     QString request;
     int id = player.value("id").toInt();
 
@@ -170,11 +176,12 @@ int SqlDBWriter::savePlayer(QVariantMap &player) {
         return -1;
     }
 
-    if (checkItem(id)) {
+    if (checkPlayer(id)) {
         request = QString("UPDATE players SET name='%0', gmail='%1', money='%2',"
                           " avgrecord='%3', record='%4', lastOnline='%5',"
                           " onlinetime='%6', currentsnake='%7') WHERE id='%8' ").arg(
                         player.value("name").toString(),
+                        player.value("gmail").toString(),
                         player.value("money").toString(),
                         player.value("avgrecord").toString(),
                         player.value("record").toString(),
@@ -189,6 +196,7 @@ int SqlDBWriter::savePlayer(QVariantMap &player) {
                                  "('%0', '%1', '%2', '%3', '%4', '%5', '%6', '%7', '%8')").arg(
                        player.value("id").toString(),
                        player.value("name").toString(),
+                       player.value("gmail").toString(),
                        player.value("money").toString(),
                        player.value("avgrecord").toString(),
                        player.value("record").toString(),
@@ -205,11 +213,16 @@ int SqlDBWriter::savePlayer(QVariantMap &player) {
         return false;
     }
 
-    return true;
+    return id;
 }
 
 int SqlDBWriter::saveItem(QVariantMap &item) {
     if (!isValid()) {
+        return -1;
+    }
+
+    if (ClientProtocol::FactoryNetObjects::isValid(item,
+            ClientProtocol::NetworkClasses::Player)) {
         return -1;
     }
 

@@ -83,7 +83,7 @@ bool Streamers::read(QDataStream &stream, QVariantMap &map, const NetworkClasses
 
                 auto size = static_cast<int>(NetworkClasses::getSizeType(arrayType));
                 for (int i = 0; i < array.size(); i+= size) {
-                    varList.push_back(QVariant::fromValue(array.mid(i, size)));
+                    varList.push_back(NetworkClasses::fromByteArray(arrayType, array.mid(i, size)));
                 }
                 map.insert(property, varList);
             }
@@ -134,7 +134,7 @@ bool Streamers::write(QDataStream &stream, const QVariantMap &map) {
                 QByteArray array;
                 auto varList = value.toList();
                 for (auto &&i : varList) {
-                    auto temp = i.toByteArray();
+                    auto temp = NetworkClasses::toByteArray(arrayType, i);
                     int typeSize = static_cast<int>(NetworkClasses::getSizeType(arrayType));
                     if (temp.size() > typeSize) {
 
