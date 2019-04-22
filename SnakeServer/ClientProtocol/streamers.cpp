@@ -58,7 +58,7 @@ bool Streamers::read(QDataStream &stream, QVariantMap &map, const NetworkClasses
                 return false;
             }
 
-            map.insert(property, QVariant::fromValue(QByteArray(data, size)));
+            map.insert(property, NetworkClasses::fromByteArray(typeItem, QByteArray(data, size)));
 
         }
         else if (NetworkClasses::isString(typeItem)) {
@@ -114,10 +114,10 @@ bool Streamers::write(QDataStream &stream, const QVariantMap &map) {
 
         if (NetworkClasses::isNumber(typeItem)) {
 
-            auto val = value.data();
+            auto val = NetworkClasses::toByteArray(typeItem, value);
             auto size = static_cast<int>(NetworkClasses::getSizeType(typeItem));
 
-            if (size != stream.writeRawData(static_cast<char*>(val), size)) {
+            if (size != stream.writeRawData(static_cast<char*>(val.data()), size)) {
                 return false;
             }
         }

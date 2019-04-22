@@ -2,6 +2,8 @@
 #define NETWORKCLASSES_H
 #include "clientprotocol_global.h"
 
+#include <qvariant.h>
+
 namespace ClientProtocol {
 
 #define BEGIN_CUSTOM_TYPE
@@ -23,12 +25,10 @@ public:
         Int =       0x05,
         UInt =      0x06,
         Float =     0x07,
-        UFloat =    0x08,
-        Double =    0x09,
-        UDouble =   0x0a,
-        String =    0x0b,
-        Variant =   0x0c,
-        SHA256 =    0x0d,
+        Double =    0x08,
+        String =    0x09,
+        Variant =   0x0a,
+        SHA256 =    0x0b,
 
         // baseArray
         Array =     0x80,
@@ -40,9 +40,7 @@ public:
         ArrayInt =      Array | Int,
         ArrayUInt =     Array | UInt,
         ArrayFloat =    Array | Float,
-        ArrayUfloat =   Array | UFloat,
         ArrayDouble =   Array | Double,
-        ArrayUDouble =  Array | UDouble,
         ArrayString =   Array | String,
         ArrayVariant =  Array | Variant,
 
@@ -78,6 +76,9 @@ public:
     static bool isCustomType(Type type);
 
     static unsigned int getSizeType(Type);
+    static QByteArray toByteArray(NetworkClasses::Type type, const QVariant &item);
+    static QVariant fromByteArray(NetworkClasses::Type type, const QByteArray &arr);
+
     NetworkClasses();
 };
 }
