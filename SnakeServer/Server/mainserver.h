@@ -10,6 +10,7 @@ namespace ServerProtocol {
 
 namespace ClientProtocol {
     class Server;
+    class BaseNetworkObject;
 }
 
 class SERVERSHARED_EXPORT MainServer: public QObject
@@ -25,7 +26,8 @@ private:
     bool restartSrver(const QString& ip, unsigned short port);
 
 private slots:
-    void handleRequest(QVariantMap obj, const quint32& addres);
+    void handleRequest(ClientProtocol::BaseNetworkObject *obj,
+                       const quint32& addres);
     void handleTerminalRequest(QVariantMap obj);
 
 public:

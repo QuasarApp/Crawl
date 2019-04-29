@@ -1,3 +1,4 @@
+#include "playerdbdata.h"
 #include "sqldbwriter.h"
 
 #include <QRegularExpression>
@@ -7,7 +8,6 @@
 #include <QSqlError>
 #include <quasarapp.h>
 #include <clientprotocol.h>
-#include <streamers.h>
 #include <factorynetobjects.h>
 
 bool SqlDBWriter::exec(QSqlQuery *sq,const QString& sqlFile) {
@@ -159,51 +159,45 @@ bool SqlDBWriter::checkItem(int idItem, int idOwner) {
     return true;
 }
 
-int SqlDBWriter::savePlayer(QVariantMap &player) {
+int SqlDBWriter::savePlayer(PlayerDBData *player) {
     if (!isValid()) {
         return -1;
     }
 
-    if (!ClientProtocol::FactoryNetObjects::isValid(player,
-            ClientProtocol::NetworkClasses::Player)) {
+    if (!player->isValid()) {
         return -1;
     }
 
     QString request;
-    int id = player.value("id").toInt();
-
-    if (id < 0) {
-        return -1;
-    }
+    int id = player->id();
 
     if (checkPlayer(id)) {
         request = QString("UPDATE players SET name='%0', gmail='%1', money='%2',"
                           " avgrecord='%3', record='%4', lastOnline='%5',"
                           " onlinetime='%6', currentsnake='%7') WHERE id='%8' ").arg(
-                        player.value("name").toString(),
-                        player.value("gmail").toString(),
-                        player.value("money").toString(),
-                        player.value("avgrecord").toString(),
-                        player.value("record").toString(),
-                        player.value("lastOnline").toString(),
-                        player.value("onlinetime").toString(),
-                        player.value("currentsnake").toString(),
+                        player->getName()).arg(
+                        player->getGmail()).arg(
+                        player->getMany()).arg(
+                        player->getAvgRecord()).arg(
+                        player->getRecord()).arg(
+                        player->getLastOnline()).arg(
+                        player->getOnlineTime()).arg(
+                        player->getCureentSnake()).arg(
                         QString::number(id));
 
     } else {
         request = QString("INSERT INTO players(id, name, gmail, money, avgrecord, record,"
                                  " lastOnline, onlinetime, currentsnake) VALUES "
                                  "('%0', '%1', '%2', '%3', '%4', '%5', '%6', '%7', '%8')").arg(
-                       player.value("id").toString(),
-                       player.value("name").toString(),
-                       player.value("gmail").toString(),
-                       player.value("money").toString(),
-                       player.value("avgrecord").toString(),
-                       player.value("record").toString(),
-                       player.value("lastOnline").toString(),
-                       player.value("onlinetime").toString(),
-                       player.value("currentsnake").toString());
-
+                       id).arg(
+                    player->getName()).arg(
+                    player->getGmail()).arg(
+                    player->getMany()).arg(
+                    player->getAvgRecord()).arg(
+                    player->getRecord()).arg(
+                    player->getLastOnline()).arg(
+                    player->getOnlineTime()).arg(
+                    player->getCureentSnake());
 
     }
 
@@ -216,31 +210,23 @@ int SqlDBWriter::savePlayer(QVariantMap &player) {
     return id;
 }
 
-int SqlDBWriter::saveItem(QVariantMap &item) {
+int SqlDBWriter::saveItem(ClientProtocol::BaseNetworkObject *item) {
     if (!isValid()) {
         return -1;
     }
 
-    if (ClientProtocol::FactoryNetObjects::isValid(item,
-            ClientProtocol::NetworkClasses::Player)) {
+    if (item->isValid()) {
         return -1;
     }
 
-    auto type = static_cast<ClientProtocol::NetworkClasses::Type>
-            (item.value("command", ClientProtocol::NetworkClasses::Undefined).toInt());
+    auto type = item->getClass();
 
-    int id = item.value("id", -1).toInt();
-
-    if (id < 0) {
-        return -1;
-    }
+    int id = item->id();
 
     QByteArray bytes;
     QString request;
 
-    if (!ClientProtocol::Streamers::write(bytes, item)) {
-        return -1;
-    }
+    item->toBytes(bytes);
 
     if (checkItem(id)) {
         request = QString("UPDATE items SET type='%1', data = :bytes where id = %0").
@@ -315,51 +301,64 @@ bool SqlDBWriter::saveOvners(int player, const QSet<int> items) {
     return true;
 }
 
-bool SqlDBWriter::getPlayer(int id, QVariantMap &res) {
+PlayerDBData * SqlDBWriter::getPlayer(int id) {
 
     if (!isValid()) {
-        return false;
+        return nullptr;
     }
 
     QString request = QString("SELECT * FROM players WHERE id=%0").arg(id);
     if (!query->exec(request)) {
         QuasarAppUtils::Params::verboseLog("request error : " + query->lastError().text());
-        return false;
+        return nullptr;
     }
 
     if (!query->next()) {
-        return false;
+        return nullptr;
     }
-    res["name"] = query->value("name");
-    res["gmail"] = query->value("gmail");
-    res["money"] = query->value("money");
-    res["avgrecord"] = query->value("avgrecord");
-    res["record"] = query->value("record");
-    res["lastOnline"] = query->value("lastOnline");
-    res["onlinetime"] = query->value("onlinetime");
-    res["currentsnake"] = query->value("currentsnake");
 
-    return true;
+    auto player = new PlayerDBData();
+
+
+    player->setName(query->value("name").toString());
+    player->setGmail(query->value("gmail").toString());
+    player->setMany(query->value("money").toUInt());
+    player->setAvgRecord(query->value("avgrecord").toUInt());
+    player->setRecord(query->value("record").toUInt());
+    player->setLastOnline(query->value("lastOnline").toInt());
+    player->setOnlineTime(query->value("onlinetime").toInt());
+    player->setCureentSnake(query->value("currentsnake").toInt());
+
+    return player;
 }
 
-bool SqlDBWriter::getItem(int id, QVariantMap &res) {
+ClientProtocol::BaseNetworkObject *SqlDBWriter::getItem(int id) {
 
     if (!isValid()) {
-        return false;
+        return nullptr;
     }
 
-    QString request = QString("SELECT data FROM items WHERE id=%0").arg(id);
+    QString request = QString("SELECT type, data FROM items WHERE id=%0").arg(id);
     if (!query->exec(request)) {
         QuasarAppUtils::Params::verboseLog("request error : " + query->lastError().text());
-        return false;
+        return nullptr;
     }
 
     if (!query->next()) {
-        return false;
+        return nullptr;
     }
-    auto data = query->value(0).toByteArray();
 
-    return ClientProtocol::Streamers::read(data, res);
+    auto type = static_cast<quint8>(query->value(1).toUInt());
+    auto data = query->value(1).toByteArray();
+
+    auto obj = ClientProtocol::FactoryNetObjects::build(type);
+
+    if (!obj)
+        return nullptr;
+
+    obj->fromBytes(data);
+
+    return obj;
 }
 
 bool SqlDBWriter::itemIsFreeFrom(int item) const {

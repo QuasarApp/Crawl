@@ -6,49 +6,51 @@
 #include <QVariantMap>
 #include <snakeutils.h>
 #include "config.h"
-#include "networkclasses.h"
 
 namespace ClientProtocol {
 
-enum Type: unsigned char {
+class BaseNetworkObject;
+
+enum class Type: quint8 {
     Undefined = 0x00,
     Responke = 0x01,
     Request = 0x02,
     Stream = 0x03,
 };
 
-//enum class Command: unsigned char {
-//    Undefined = 0x00,
-//    Ping = 0x01,
-//    Item = 0x02,
-//    Login = 0x03,
-//    PlayerData = 0x04,
-//    SaveData = 0x05
+enum class Command: quint8 {
+    Undefined = 0x00,
+    Ping = 0x01,
+    BadRequest = 0x02,
+    Login = 0x03,
+    UpdatePlayerData = 0x04,
+    GameData = 0x05,
+    GetItem = 0x06,
+    Player = 0x07
 
-//};
+};
 
-unsigned int getSize(NetworkClasses::Type type, bool isMax = false);
-bool isStaticObject(NetworkClasses::Type type, unsigned int &max, unsigned int &min);
-bool isValidSize(NetworkClasses::Type type, unsigned int size);
-bool isValidMap(const QVariantMap &map);
+bool isValidSize(quint8 type, unsigned int size);
+
+bool initClientProtockol();
 
 /**
- * @brief The Header struct 8 byte
+ * @brief The Header struct 4 byte
  */
 #pragma pack(push, 1)
 struct CLIENTPROTOCOLSHARED_EXPORT Header {
     /**
      * @brief size - size of package data (not header)
      */
-    unsigned int size: 32;
+    unsigned short size: 16;
     /**
      * @brief type of package see Type
      */
-    unsigned char type: 8;
+    quint8 type: 2;
     /**
      * @brief command of pacage see Command
      */
-    unsigned short command: 16;
+    quint8 command: 6;
 
     /**
      * @brief sig
@@ -101,14 +103,22 @@ struct CLIENTPROTOCOLSHARED_EXPORT Package {
      * @brief parse
      * @return Qmap of package (default key if "value")
      */
-    bool parse(QVariantMap &res) const;
+    BaseNetworkObject * parse() const;
 
     /**
      * @brief create - fill package
      * @param data - data of filled
      * @return true if all done
      */
-    bool create(const QVariantMap &data, Type type);
+    bool create(const BaseNetworkObject *data, Type type);
+
+    /**
+     * @brief create
+     * @param cmd command of package
+     * @param type type
+     * @return
+     */
+    bool create(Command cmd, Type type);
 
     /**
      * @brief toBytes

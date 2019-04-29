@@ -2,6 +2,7 @@
 #include <spserver.h>
 #include <cpserver.h>
 #include <quasarapp.h>
+#include <basenetworkobject.h>
 
 bool MainServer::restartSrver(const QString &ip, unsigned short port) {
     if (_serverDaemon->isListening()) {
@@ -15,27 +16,28 @@ bool MainServer::restartSrver(const QString &ip, unsigned short port) {
     return true;
 }
 
-void MainServer::handleRequest(QVariantMap obj, const quint32 &addres) {
+void MainServer::handleRequest(ClientProtocol::BaseNetworkObject *obj,
+                               const quint32 &addres) {
 
     Q_UNUSED(addres);
 
-    auto command = static_cast<ClientProtocol::NetworkClasses::Type>
-            (obj.value("command").toInt());
+    auto command = static_cast<ClientProtocol::Command>
+            (obj->getClass());
 
     switch (command) {
-    case ClientProtocol::NetworkClasses::Login: {
+    case ClientProtocol::Command::Login: {
         break;
     }
 
-    case ClientProtocol::NetworkClasses::Game: {
+    case ClientProtocol::Command::GameData: {
         break;
     }
 
-    case ClientProtocol::NetworkClasses::UpdatePlayerData: {
+    case ClientProtocol::Command::UpdatePlayerData: {
         break;
     }
 
-    case ClientProtocol::NetworkClasses::GetItem: {
+    case ClientProtocol::Command::GetItem: {
         break;
     }
 
