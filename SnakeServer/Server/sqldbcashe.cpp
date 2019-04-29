@@ -1,9 +1,11 @@
 #include "sqldbcashe.h"
 #include "quasarapp.h"
+#include "playerdbdata.h"
 #include <qtconcurrentrun.h>
 #include <clientprotocol.h>
 
 #include <QDateTime>
+#include <basenetworkobject.h>
 
 int SqlDBCashe::generateIdForItem() const {
     if (items.isEmpty()) {
@@ -28,8 +30,7 @@ bool SqlDBCashe::checkPlayer(int id) {
 
     if (SqlDBWriter::checkPlayer(id)) {
 
-        QVariantMap player;
-        getPlayer(id, player);
+        PlayerDBData *player = getPlayer(id);
         if (savePlayer(player) < 0) {
             QuasarAppUtils::Params::verboseLog("not saved data into cache "
                                                " SqlDBCashe::checkPlayer");
@@ -72,8 +73,7 @@ bool SqlDBCashe::checkItem(int idItem, int idOwner) {
 
     if (SqlDBWriter::checkItem(idItem)) {
 
-        QVariantMap item;
-        getItem(idItem, item);
+        ClientProtocol::BaseNetworkObject *item = getItem(idItem);
         if (saveItem(item) < 0) {
             QuasarAppUtils::Params::verboseLog("not saved data into cache "
                                                " SqlDBCashe::checkItem");
@@ -156,81 +156,82 @@ bool SqlDBCashe::initDb(const QString &sql, const QString &path) {
         return false;
     }
 
-    QVariantMap temp;
-    if (int id = getLastIdItems()) {
-        getItem(id, temp);
+    int id = getLastIdItems();
+    if (!getItem(id)) {
+        return false;
     }
 
-    if (int id = getLastIdPlayers()) {
-        getPlayer(id, temp);
+    id = getLastIdPlayers();
+    if (!getPlayer(id)) {
+        return false;
     }
 
     return true;
 }
 
-bool SqlDBCashe::getItem(int id, QVariantMap &res) {
-    auto item = items.value(id, QVariantMap{{"id", "-1"}});
-    if (item.value("id") != "-1") {
-        res = item;
-        return true;
+ClientProtocol::BaseNetworkObject * SqlDBCashe::getItem(int id) {
+    auto item = items.value(id, nullptr);
+
+    if (item && item->isValid()) {
+        return item;
     }
 
-    if (SqlDBWriter::getItem(id, res)) {
-        items.insert(id, res);
-        return true;
+    if ((item = SqlDBWriter::getItem(id))) {
+        items.insert(id, item);
+        return item;
     }
 
-    return false;
+    return nullptr;
 }
 
-int SqlDBCashe::saveItem(QVariantMap &item) {
+int SqlDBCashe::saveItem(ClientProtocol::BaseNetworkObject *res) {
 
-    if (!ClientProtocol::isValidMap(item)) {
-        return -1;
-    }
-
-    int id = item.value("id", -1).toInt();
+    int id = res->id();
 
     if (id < 0) {
         id = generateIdForItem();
-        item.insert("id", id);
+        res->setId(id);
     }
 
-    items.insert(id, item);
+    if (!res->isValid()) {
+        return -1;
+    }
+    items.insert(id, res);
 
     globalUpdateDataBase(SqlDBCasheWriteMode::On_New_Thread);
 
     return id;
 }
 
-bool SqlDBCashe::getPlayer(int id, QVariantMap &res) {
-    auto player = players.value(id, QVariantMap{{"id", "-1"}});
-    if (player.value("id") != "-1") {
-        res = player;
-        return true;
+PlayerDBData* SqlDBCashe::getPlayer(int id) {
+
+    auto player = players.value(id, nullptr);
+
+    if (player && player->isValid()) {
+        return player;
     }
 
-    if (SqlDBWriter::getPlayer(id, res)) {
-        players.insert(id, res);
-        return true;
+    if ((player = SqlDBWriter::getPlayer(id))) {
+        items.insert(id, player);
+        return player;
     }
 
-    return false;
+    return nullptr;
 }
 
-int SqlDBCashe::savePlayer(QVariantMap &player) {
-    if (!ClientProtocol::isValidMap(player)) {
+int SqlDBCashe::savePlayer(PlayerDBData *res) {
+    if (!res->isValid()) {
         return -1;
     }
 
-    int id = player.value("id", -1).toInt();
+    int id = res->id();
 
     if (id < 0) {
         id = generateIdForItem();
-        player.insert("id", id);
+        res->setId(id);
     }
 
-    players.insert(id, player);
+    players.insert(id, res);
 
     globalUpdateDataBase(SqlDBCasheWriteMode::On_New_Thread);
 
