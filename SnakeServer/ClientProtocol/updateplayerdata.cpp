@@ -1,10 +1,11 @@
 #include "updateplayerdata.h"
 #include "config.h"
-
+#include "clientprotocol.h"
 
 namespace ClientProtocol {
 
 UpdatePlayerData::UpdatePlayerData() {
+    _class = static_cast<quint8>(Command::UpdatePlayerData);
 
 }
 

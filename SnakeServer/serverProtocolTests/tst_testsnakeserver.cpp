@@ -184,7 +184,10 @@ void testSankeServer::testPingClientProtockol() {
 void testSankeServer::testLogin() {
     ClientProtocol::Client cle;
 
-    auto pass = QCryptographicHash::hash("testpass", QCryptographicHash::Sha256);
+    auto pass = QCryptographicHash::hash("testpass", QCryptographicHash::Sha512);
+    QVERIFY(!cle.login("Test@gmail.com", pass));
+
+    pass = QCryptographicHash::hash("testpass", QCryptographicHash::Sha256);
     QVERIFY(cle.login("Test@gmail.com", pass));
 
 }

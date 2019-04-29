@@ -1,12 +1,13 @@
 #include "gamedata.h"
 #include "config.h"
+#include "clientprotocol.h"
 
 
 namespace ClientProtocol {
 
 GameData::GameData()
 {
-
+    _class = static_cast<quint8>(Command::GameData);
 }
 
 QList<int> GameData::getTimeClick() const {

@@ -43,8 +43,8 @@ class BaseNetworkObject
 {
 private:
     int _id = -1;
-    qint8 _class = -1;
 protected:
+    qint8 _class = -1;
 
     BaseNetworkObject();
 

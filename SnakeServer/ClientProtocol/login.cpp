@@ -1,10 +1,11 @@
 #include "login.h"
 #include "config.h"
+#include "clientprotocol.h"
 
 namespace ClientProtocol {
 
 Login::Login() {
-
+    _class = static_cast<quint8>(Command::Login);
 }
 
 BaseNetworkObject *Login::create() const {

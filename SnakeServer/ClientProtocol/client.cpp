@@ -150,6 +150,11 @@ bool Client::login(const QString &gmail, const QByteArray &pass) {
     Login login;
     login.setHashPass(pass);
     login.setGmail(gmail);
+    login.setId(0);
+
+    if (!login.isValid()) {
+        return false;
+    }
 
     if (!pcg.create(&login, Type::Request)) {
         return false;
@@ -173,6 +178,11 @@ bool Client::updateData() {
 
     UpdatePlayerData rec;
     rec.setToken(_token);
+    rec.setId(0);
+
+    if (!rec.isValid()) {
+        return false;
+    }
 
     if (!pcg.create(&rec, Type::Request)) {
         return false;
@@ -195,6 +205,11 @@ bool Client::savaData(const QList<int>& gameData) {
     GameData rec;
     rec.setToken(_token);
     rec.setTimeClick(gameData);
+    rec.setId(0);
+
+    if (!rec.isValid()) {
+        return false;
+    }
 
     if (!pcg.create(&rec, Type::Request)) {
         return false;
@@ -222,6 +237,10 @@ bool Client::getItem(int id) {
     GetItem rec;
     rec.setToken(_token);
     rec.setId(id);
+
+    if (!rec.isValid()) {
+        return false;
+    }
 
     if (!pcg.create(&rec, Type::Request)) {
         return false;

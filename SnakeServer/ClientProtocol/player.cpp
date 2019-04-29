@@ -1,5 +1,6 @@
 #include "player.h"
 #include "config.h"
+#include <clientprotocol.h>
 
 namespace ClientProtocol {
 
@@ -64,6 +65,7 @@ void Player::setAvgRecord(unsigned int value) {
 
 Player::Player()
 {
+    _class = static_cast<quint8>(Command::Player);
 
 }
 
