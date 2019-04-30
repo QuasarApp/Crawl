@@ -6,6 +6,7 @@
 #include <QCoreApplication>
 #include <QCryptographicHash>
 #include <sqldbwriter.h>
+#include <snake.h>
 
 #include "factorynetobjects.h"
 
@@ -236,56 +237,49 @@ void testSankeServer::testApplyData() {
 }
 
 void testSankeServer::testSql() {
-//    SqlDBWriter db;
-//    QFile::remove("./test.db");
+    SqlDBWriter db;
+    QFile::remove("./test.db");
 
-//    bool init = db.initDb("test.db", "./");
+    bool init = db.initDb("test.db", "./");
 
-//    if (!init) {
-//        QFile::remove("./test.db");
-//    }
+    if (!init) {
+        QFile::remove("./test.db");
+    }
 
-//    QVERIFY(init);
+    QVERIFY(init);
 
-//    QVariantMap tempItem;
+    ClientProtocol::Snake snake;
+    snake.setSpeed(10);
+    snake.setSkillet(QList<float>() << 1);
+    snake.setSnakeClass(0);
 
-//    QVERIFY(ClientProtocol::FactoryNetObjects::build(
-//                ClientProtocol::NetworkClasses::Snake, tempItem));
 
-//    QVERIFY(ClientProtocol::FactoryNetObjects::fillRandomData(tempItem));
+    // TEST ITEM
 
-//    // TEST ITEM
+    ClientProtocol::Snake *resSnake;
 
-//    QVariantMap resItem;
+    QVERIFY(db.saveItem(&snake) < 0);
+    snake.setId(0);
+    int id = db.saveItem(&snake);
 
-//    QVERIFY(db.saveItem(tempItem) < 0);
-//    tempItem["id"] = 0;
-//    int id = db.saveItem(tempItem);
+    QVERIFY(id == 0);
+    resSnake = static_cast<decltype (resSnake)>(db.getItem(id));
+    QVERIFY(resSnake);
+    QVERIFY(snake.getSpeed() == resSnake->getSpeed());
+    QVERIFY(snake.getSkillet() == resSnake->getSkillet());
+    QVERIFY(snake.getSnakeClass() == resSnake->getSnakeClass());
+    QVERIFY(snake.getClass() == resSnake->getClass());
+    QVERIFY(snake.id() == resSnake->id());
 
-//    QVERIFY(id == 0);
-//    QVERIFY(db.getItem(id, resItem));
-//    QVERIFY(tempItem.size() == resItem.size());
+    resSnake->setSnakeClass(10);
+    QVERIFY(id == db.saveItem(resSnake));
 
-//    for (auto &key :tempItem.keys()) {
-//        QVERIFY(tempItem.value(key).toString() == resItem.value(key).toString());
-//    }
+    auto temp = static_cast<decltype (resSnake)>(db.getItem(id));
 
-//    auto list = tempItem["skillet"].toList();
-//    list[1] = 100;
-//    tempItem["skillet"] = list;
+    QVERIFY(temp->getSnakeClass() == 10);
 
-//    QVERIFY(db.saveItem(tempItem) == 0);
-//    QVERIFY(db.getItem(id, resItem));
-
-//    QVERIFY(resItem["skillet"].toList()[1] == 100);
-
-//    QVERIFY(tempItem.size() == resItem.size());
-
-//    for (auto &key :tempItem.keys()) {
-//        QVERIFY(tempItem.value(key).toString() == resItem.value(key).toString());
-//    }
-//    QSet<int> items;
-//    QVERIFY(!db.getAllItemsOfPalyer(0, items));
+    delete temp;
+    delete resSnake;
 
 
 //    // TEST PLAYER

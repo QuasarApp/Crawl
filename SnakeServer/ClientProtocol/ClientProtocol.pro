@@ -42,35 +42,42 @@ include($$PWD/../../SnakeUtils/SnakeUtils.pri)
 
 
 SOURCES += \
-        basenetworkobject.cpp \
+        Objects/basenetworkobject.cpp \
+        Objects/map.cpp \
+        Objects/objdata.cpp \
+        Objects/snake.cpp \
         clientprotocol.cpp \
         client.cpp \
-        gamedata.cpp \
-        getitem.cpp \
-        login.cpp \
+        Objects/gamedata.cpp \
+        Objects/getitem.cpp \
+        Objects/login.cpp \
         networkclasssize.cpp \
-        player.cpp \
+        Objects/player.cpp \
         server.cpp \
         factorynetobjects.cpp \
         connectioninfo.cpp \
-        updateplayerdata.cpp
+        Objects/updateplayerdata.cpp
 
 
 HEADERS += \
-        basenetworkobject.h \
+        Objects/basenetworkobject.h \
+        Objects/map.h \
+        Objects/objdata.h \
+        Objects/snake.h \
         clientprotocol.h \
         clientprotocol_global.h \
-        gamedata.h \
-        getitem.h \
-        login.h \
+        Objects/gamedata.h \
+        Objects/getitem.h \
+        Objects/login.h \
         networkclasssize.h \
         client.h \
-        player.h \
+        Objects/player.h \
         server.h \
         cp.h \
         config.h \
         factorynetobjects.h \
         connectioninfo.h \
         cpserver.h \
-        updateplayerdata.h
+        Objects/updateplayerdata.h
 
+include($$PWD/ClientProtocolIncludes.pri)

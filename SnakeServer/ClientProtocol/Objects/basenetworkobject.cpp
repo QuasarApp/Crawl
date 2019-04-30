@@ -13,12 +13,13 @@ void BaseNetworkObject::setId(int id) {
 }
 
 qint8 BaseNetworkObject::getClass() const {
+    assert(_class != 0);
+
     return _class;
 
 }
 
 BaseNetworkObject::BaseNetworkObject() {
-
 }
 
 BaseNetworkObject *BaseNetworkObject::create() const {

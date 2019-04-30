@@ -14,6 +14,17 @@ BaseNetworkObject *FactoryNetObjects::build(quint8 type) {
     return map.value(type)->create();
 }
 
+BaseNetworkObject *FactoryNetObjects::build(quint8 type, const QByteArray &array) {
+    auto temp = build(type);
+
+    if (!temp) {
+        return temp;
+    }
+
+    temp->fromBytes(array);
+    return temp;
+}
+
 NetworkClassSize FactoryNetObjects::getSize(quint8 type) {
     return types_sizes.value(type, 0);
 }

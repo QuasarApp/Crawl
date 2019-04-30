@@ -215,7 +215,7 @@ int SqlDBWriter::saveItem(ClientProtocol::BaseNetworkObject *item) {
         return -1;
     }
 
-    if (item->isValid()) {
+    if (!item->isValid()) {
         return -1;
     }
 
@@ -348,7 +348,7 @@ ClientProtocol::BaseNetworkObject *SqlDBWriter::getItem(int id) {
         return nullptr;
     }
 
-    auto type = static_cast<quint8>(query->value(1).toUInt());
+    auto type = static_cast<quint8>(query->value(0).toUInt());
     auto data = query->value(1).toByteArray();
 
     auto obj = ClientProtocol::FactoryNetObjects::build(type);

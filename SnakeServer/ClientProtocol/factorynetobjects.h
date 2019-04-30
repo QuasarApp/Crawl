@@ -16,6 +16,8 @@ public:
     FactoryNetObjects() = delete;
 
     static BaseNetworkObject *build(quint8 type);
+    static BaseNetworkObject *build(quint8 type, const QByteArray& array);
+
     static NetworkClassSize getSize(quint8 type);
     static bool isRegisteredType(quint8 type);
     static bool isInited();

@@ -8,6 +8,8 @@
 #include <QDataStream>
 #include <QVariantMap>
 #include <factorynetobjects.h>
+#include <map.h>
+#include <snake.h>
 
 #define DEFAULT_GAME_PORT 7777
 
@@ -160,6 +162,16 @@ bool initClientProtockol() {
 
     if (!FactoryNetObjects::regType<Player>(
                 static_cast<quint8>(Command::Player))) {
+        return false;
+    }
+
+    if (!FactoryNetObjects::regType<Snake>(
+                static_cast<quint8>(Command::Snake))) {
+        return false;
+    }
+
+    if (!FactoryNetObjects::regType<Map>(
+                static_cast<quint8>(Command::Map))) {
         return false;
     }
     return true;

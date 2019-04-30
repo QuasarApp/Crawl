@@ -8,6 +8,7 @@
 #include <QVector>
 #include <typeinfo>
 #include "config.h"
+#include <type_traits>
 
 namespace ClientProtocol {
 
@@ -24,6 +25,10 @@ NetworkClassSize getTypeSize(const T& type = {}) {
     } else if (hash == typeid(QList<int>).hash_code()) {
 
         return { sizeof (int), sizeof (int) * MAX_SIZE};
+
+    } else if (hash == typeid(QList<float>).hash_code()) {
+
+        return { sizeof (float), sizeof (float) * MAX_SIZE};
 
     } else if (hash == typeid(QStringList).hash_code()) {
 
@@ -58,10 +63,17 @@ public:
     virtual bool isValid() const;
     void toBytes(QByteArray& array) const;
     void fromBytes(const QByteArray& array);
+    auto cast();
     int id() const;
     void setId(int id);
     qint8 getClass() const;
 };
+
+template<class T>
+auto cast(const BaseNetworkObject* obj) {
+    static_assert (!std::is_pointer<T>(), "Cast working only with pointers!");
+    return static_cast<T>(obj);
+}
 
 }
 #endif // BASENETWORKOBJECT_H

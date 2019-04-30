@@ -26,8 +26,9 @@ enum class Command: quint8 {
     UpdatePlayerData = 0x04,
     GameData = 0x05,
     GetItem = 0x06,
-    Player = 0x07
-
+    Player = 0x07,
+    Snake = 0x08,
+    Map = 0x08
 };
 
 bool isValidSize(quint8 type, unsigned int size);
