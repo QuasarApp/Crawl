@@ -1,3 +1,5 @@
+PRAGMA foreign_keys = ON;
+
 CREATE TABLE IF NOT EXISTS items(
     id INTEGER PRIMARY KEY NOT NULL,
     type INTEGER NOT NULL,
@@ -13,16 +15,16 @@ CREATE TABLE IF NOT EXISTS players(
     record INTEGER NOT NULL DEFAULT 0,
     lastOnline date not null DEFAULT 0,
     onlinetime INTEGER not null DEFAULT 0,
-    currentsnake INTEGER not null DEFAULT 0,
+    currentsnake INTEGER DEFAULT NULL,
 
     FOREIGN KEY(currentsnake) REFERENCES items(id)
         ON UPDATE CASCADE
-        ON DELETE CASCADE
+        ON DELETE SET NULL
 
 );
 
 CREATE TABLE IF NOT EXISTS owners(
-    player INTEGER DEFAULT NULL,
+    player INTEGER NOT NULL,
     item INTEGER NOT NULL,
 
     FOREIGN KEY(player) REFERENCES players(id)

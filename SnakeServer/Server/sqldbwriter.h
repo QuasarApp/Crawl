@@ -23,6 +23,9 @@ private:
     QSqlQuery *query = nullptr;
     bool initSuccessful = false;
 
+    bool enableFK() const;
+    bool disableFK() const;
+
 protected:
     int getLastIdItems();
     int getLastIdPlayers();

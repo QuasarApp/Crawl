@@ -287,11 +287,6 @@ void testSankeServer::testSql() {
 
     PlayerDBData *player = new PlayerDBData();
 
-    QVERIFY(!db.saveowners(id, QSet<int>() << 1));
-
-
-    QVERIFY(db.saveowners(id, QSet<int>() << 0));
-
     player->setMany(10);
     player->setLastOnline(1000);
     player->setOnlineTime(1001);
@@ -302,9 +297,18 @@ void testSankeServer::testSql() {
 
     QVERIFY(db.savePlayer(player) < 0);
     player->setId(0);
+
+    QVERIFY(db.savePlayer(player) < 0);
+    player->setCureentSnake(-1);
+    id = db.savePlayer(player);
+    QVERIFY(id == 0);
+
+    QVERIFY(!db.saveowners(id, QSet<int>() << 1));
+    QVERIFY(db.saveowners(id, QSet<int>() << 0));
+
+    player->setCureentSnake(0);
     id = db.savePlayer(player);
 
-    QVERIFY(id == 0);
     auto resPlayer = static_cast<decltype (player)>(db.getPlayer(id));
     QVERIFY(resPlayer);
     QVERIFY(player->getLastOnline() == resPlayer->getLastOnline());

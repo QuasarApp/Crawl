@@ -10,13 +10,13 @@ namespace ClientProtocol {
 class Player: public UpdatePlayerData
 {
 private:
-    QString name;
-    QString gmail;
-    unsigned int many;
-    unsigned int record;
-    unsigned int avgRecord;
+    QString name = "user";
+    QString gmail = "";
+    unsigned int many = 0;
+    unsigned int record = 0;
+    unsigned int avgRecord = 0;
     QList<int> items;
-    int cureentSnake;
+    int cureentSnake = -1;
 
 public:
     Player();

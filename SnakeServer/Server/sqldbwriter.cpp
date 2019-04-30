@@ -49,6 +49,30 @@ bool SqlDBWriter::exec(QSqlQuery *sq,const QString& sqlFile) {
     return false;
 }
 
+bool SqlDBWriter::enableFK() const {
+
+    QString request = QString("PRAGMA foreign_keys = ON");
+    if (!query->exec(request)) {
+        QuasarAppUtils::Params::verboseLog("request error : " + query->lastError().text());
+        return false;
+    }
+
+    return true;
+}
+
+bool SqlDBWriter::disableFK() const {
+
+
+    QString request = QString("PRAGMA foreign_keys = OFF");
+    if (!query->exec(request)) {
+        QuasarAppUtils::Params::verboseLog("request error : " + query->lastError().text());
+        return false;
+    }
+
+    return true;
+
+}
+
 int SqlDBWriter::getLastIdItems() {
     if (!isValid()) {
         return -1;
@@ -171,29 +195,17 @@ int SqlDBWriter::savePlayer(PlayerDBData *player) {
     QString request;
     int id = player->id();
 
-    if (!checkItem(player->getCureentSnake(), id)) {
+    int curSnake = player->getCureentSnake();
+
+    if (curSnake >= 0 && !checkItem(curSnake, id)) {
         return -1;
     }
+
 
     if (checkPlayer(id)) {
         request = QString("UPDATE players SET name='%0', gmail='%1', money='%2',"
                           " avgrecord='%3', record='%4', lastOnline='%5',"
-                          " onlinetime='%6', currentsnake='%7') WHERE id='%8' ").arg(
-                        player->getName()).arg(
-                        player->getGmail()).arg(
-                        player->getMany()).arg(
-                        player->getAvgRecord()).arg(
-                        player->getRecord()).arg(
-                        player->getLastOnline()).arg(
-                        player->getOnlineTime()).arg(
-                        player->getCureentSnake()).arg(
-                        QString::number(id));
-
-    } else {
-        request = QString("INSERT INTO players(id, name, gmail, money, avgrecord, record,"
-                                 " lastOnline, onlinetime, currentsnake) VALUES "
-                                 "('%0', '%1', '%2', '%3', '%4', '%5', '%6', '%7', '%8')").arg(
-                       id).arg(
+                          " onlinetime='%6', currentsnake='%7' WHERE id='%8' ").arg(
                     player->getName()).arg(
                     player->getGmail()).arg(
                     player->getMany()).arg(
@@ -201,14 +213,38 @@ int SqlDBWriter::savePlayer(PlayerDBData *player) {
                     player->getRecord()).arg(
                     player->getLastOnline()).arg(
                     player->getOnlineTime()).arg(
-                    player->getCureentSnake());
+                    (curSnake >= 0)? QString::number(curSnake) : "NULL").arg(
+                    id);
 
+    } else {
+        request = QString("INSERT INTO players(id, name, gmail, money, avgrecord, record,"
+                          " lastOnline, onlinetime, currentsnake) VALUES "
+                          "('%0', '%1', '%2', '%3', '%4', '%5', '%6', '%7', '%8')").arg(
+                    id).arg(
+                    player->getName()).arg(
+                    player->getGmail()).arg(
+                    player->getMany()).arg(
+                    player->getAvgRecord()).arg(
+                    player->getRecord()).arg(
+                    player->getLastOnline()).arg(
+                    player->getOnlineTime()).arg(
+                    (curSnake >= 0)? QString::number(curSnake) : "NULL");
+
+    }
+
+
+    if (curSnake < 0 && !disableFK()) {
+        return false;
     }
 
 
     if (!query->exec(request)) {
         QuasarAppUtils::Params::verboseLog("request error : " + query->lastError().text());
-        return false;
+        return -1;
+    }
+
+    if (curSnake < 0 && !enableFK()) {
+        return -1;
     }
 
     return id;
@@ -238,7 +274,7 @@ int SqlDBWriter::saveItem(ClientProtocol::BaseNetworkObject *item) {
                 arg(static_cast<int>(type));
     } else {
         request = QString("INSERT INTO items(id, type, data) VALUES"
-                                  "('%0', '%1', :bytes)").
+                          "('%0', '%1', :bytes)").
                 arg(id).
                 arg(static_cast<int>(type));
     }
@@ -291,11 +327,10 @@ bool SqlDBWriter::saveowners(int player, const QSet<int> items) {
         return false;
     }
 
-    request = QString("INSERT INTO owners(player, item) VALUES(");
+    request = QString("INSERT INTO owners(player, item) VALUES ");
     for (int item: items) {
         request.push_back("(" + QString::number(player) + "," + QString::number(item) + ")");
     }
-    request += ")";
 
     if (!query->exec(request)) {
         QuasarAppUtils::Params::verboseLog(request);
