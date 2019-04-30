@@ -129,7 +129,7 @@ bool SqlDBWriter::checkItem(int idItem, int idOwner) {
             return false;
         }
 
-        QString request = QString("SELECT item from ovners where player='%0' and item='%1'").
+        QString request = QString("SELECT item from owners where player='%0' and item='%1'").
                 arg(idOwner).arg(idItem);
 
         if (!query->exec(request)) {
@@ -170,6 +170,10 @@ int SqlDBWriter::savePlayer(PlayerDBData *player) {
 
     QString request;
     int id = player->id();
+
+    if (!checkItem(player->getCureentSnake(), id)) {
+        return -1;
+    }
 
     if (checkPlayer(id)) {
         request = QString("UPDATE players SET name='%0', gmail='%1', money='%2',"
@@ -273,7 +277,7 @@ bool SqlDBWriter::getAllItemsOfPalyer(int player, QSet<int> &items) {
     return true;
 }
 
-bool SqlDBWriter::saveOvners(int player, const QSet<int> items) {
+bool SqlDBWriter::saveowners(int player, const QSet<int> items) {
 
     if (!isValid()) {
         return false;
@@ -287,10 +291,11 @@ bool SqlDBWriter::saveOvners(int player, const QSet<int> items) {
         return false;
     }
 
-    request = QString("INSERT INTO owners(player, items) VALUES(");
+    request = QString("INSERT INTO owners(player, item) VALUES(");
     for (int item: items) {
         request.push_back("(" + QString::number(player) + "," + QString::number(item) + ")");
     }
+    request += ")";
 
     if (!query->exec(request)) {
         QuasarAppUtils::Params::verboseLog(request);

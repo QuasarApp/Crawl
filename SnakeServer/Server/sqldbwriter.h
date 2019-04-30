@@ -34,7 +34,7 @@ protected:
 
     virtual int savePlayer(PlayerDBData *player);
     virtual int saveItem(ClientProtocol::BaseNetworkObject *item);
-    virtual bool saveOvners(int player, const QSet<int>);
+    virtual bool saveowners(int player, const QSet<int>);
 
     virtual bool getAllItemsOfPalyer(int player, QSet<int>& items);
 

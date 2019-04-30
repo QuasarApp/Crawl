@@ -7,6 +7,7 @@
 #include <QCryptographicHash>
 #include <sqldbwriter.h>
 #include <snake.h>
+#include <playerdbdata.h>
 
 #include "factorynetobjects.h"
 
@@ -282,33 +283,50 @@ void testSankeServer::testSql() {
     delete resSnake;
 
 
-//    // TEST PLAYER
+    // TEST PLAYER
 
-//    QVariantMap tempPlayer;
+    PlayerDBData *player = new PlayerDBData();
 
-//    QVERIFY(ClientProtocol::FactoryNetObjects::build(
-//                ClientProtocol::NetworkClasses::Player, tempPlayer));
+    QVERIFY(!db.saveowners(id, QSet<int>() << 1));
 
-//    QVERIFY(ClientProtocol::FactoryNetObjects::fillRandomData(tempPlayer));
 
-//    QVariantMap resPlayer;
+    QVERIFY(db.saveowners(id, QSet<int>() << 0));
 
-//    QVERIFY(db.saveItem(tempPlayer) < 0);
-//    tempPlayer["id"] = 0;
-//    QVERIFY(db.saveItem(tempPlayer) < 0);
+    player->setMany(10);
+    player->setLastOnline(1000);
+    player->setOnlineTime(1001);
+    player->setName("test");
+    player->setGmail("test@gmail.com");
+    player->setCureentSnake(0);
+    player->setToken(QCryptographicHash::hash("1", QCryptographicHash::Sha256));
 
-//    tempPlayer["items"] = QVariantList() << 0;
-//    tempPlayer["currentSnake"] = 0;
+    QVERIFY(db.savePlayer(player) < 0);
+    player->setId(0);
+    id = db.savePlayer(player);
 
-//    id = db.savePlayer(tempPlayer);
+    QVERIFY(id == 0);
+    auto resPlayer = static_cast<decltype (player)>(db.getPlayer(id));
+    QVERIFY(resPlayer);
+    QVERIFY(player->getLastOnline() == resPlayer->getLastOnline());
+    QVERIFY(player->getMany() == resPlayer->getMany());
+    QVERIFY(player->getOnlineTime() == resPlayer->getOnlineTime());
+    QVERIFY(player->getName() == resPlayer->getName());
+    QVERIFY(player->getCureentSnake() == resPlayer->getCureentSnake());
 
-//    QVERIFY(id == 0);
-//    QVERIFY(db.getPlayer(id, resPlayer));
-//    QVERIFY(tempPlayer.size() == resPlayer.size());
 
-//    for (auto &key :tempPlayer.keys()) {
-//        QVERIFY(tempPlayer.value(key).toString() == resPlayer.value(key).toString());
-//    }
+    player->setCureentSnake(3);
+
+    QVERIFY(db.savePlayer(player) < 0);
+    player->setCureentSnake(0);
+    player->setName("new");
+    QVERIFY(db.savePlayer(player) == id);
+
+    auto tempPlayer = static_cast<decltype (player)>(db.getPlayer(id));
+
+    QVERIFY(tempPlayer->getName() == "new");
+
+    delete tempPlayer;
+    delete player;
 
 ////    list = tempPlayer["skillet"].toList();
 ////    list[1] = 100;

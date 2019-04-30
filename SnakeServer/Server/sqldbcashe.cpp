@@ -54,7 +54,7 @@ bool SqlDBCashe::checkItem(int idItem, int idOwner) {
         if (SqlDBWriter::checkItem(idItem)) {
             QSet<int> items;
             if (!SqlDBWriter::getAllItemsOfPalyer(idOwner, items)) {
-                QuasarAppUtils::Params::verboseLog("not loaded ovners data from cache "
+                QuasarAppUtils::Params::verboseLog("not loaded owners data from cache "
                                                    " SqlDBCashe::checkItem");
             }
 
@@ -112,8 +112,8 @@ void SqlDBCashe::globalUpdateDataBasePrivate(qint64 currentTime) {
     }
 
     for (auto owner = owners.begin(); owner != owners.end(); ++owner) {
-        if (saveOvners(owner.key(), owner.value())) {
-            QuasarAppUtils::Params::verboseLog("UpdateInfoOfOvners failed when"
+        if (saveowners(owner.key(), owner.value())) {
+            QuasarAppUtils::Params::verboseLog("UpdateInfoOfowners failed when"
                                                " work globalUpdateDataRelease!!! id=" +
                                                 QString::number(owner.key()));
         }

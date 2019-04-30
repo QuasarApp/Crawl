@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS players(
 
 );
 
-CREATE TABLE IF NOT EXISTS ovners(
+CREATE TABLE IF NOT EXISTS owners(
     player INTEGER DEFAULT NULL,
     item INTEGER NOT NULL,
 
@@ -34,4 +34,4 @@ CREATE TABLE IF NOT EXISTS ovners(
         ON DELETE CASCADE
 );
 
-CREATE UNIQUE INDEX IF NOT EXISTS iovners ON ovners(player,item);
+CREATE UNIQUE INDEX IF NOT EXISTS iowners ON owners(player,item);
