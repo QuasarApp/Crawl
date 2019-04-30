@@ -23,11 +23,11 @@ void Player::setGmail(const QString &value) {
 
 unsigned int Player::getMany() const
 {
-    return many;
+    return money;
 }
 
 void Player::setMany(unsigned int value) {
-    many = value;
+    money = value;
 }
 
 unsigned int Player::getRecord() const {
@@ -78,7 +78,7 @@ NetworkClassSize Player::classSize() const {
     return UpdatePlayerData::classSize()
             + getTypeSize(name)
             + getTypeSize(gmail)
-            + getTypeSize(many)
+            + getTypeSize(money)
             + getTypeSize(record)
             + getTypeSize(avgRecord)
             + getTypeSize(items)
@@ -89,7 +89,7 @@ QDataStream &Player::writeToStream(QDataStream &stream) const {
     UpdatePlayerData::writeToStream(stream);
     stream << name;
     stream << gmail;
-    stream << many;
+    stream << money;
     stream << record;
     stream << avgRecord;
     stream << items;
@@ -102,7 +102,7 @@ QDataStream &Player::readFromStream(QDataStream &stream) {
     UpdatePlayerData::readFromStream(stream);
     stream >> name;
     stream >> gmail;
-    stream >> many;
+    stream >> money;
     stream >> record;
     stream >> avgRecord;
     stream >> items;

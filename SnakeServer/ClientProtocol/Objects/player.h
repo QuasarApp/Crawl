@@ -12,7 +12,7 @@ class Player: public UpdatePlayerData
 private:
     QString name = "user";
     QString gmail = "";
-    unsigned int many = 0;
+    unsigned int money = 0;
     unsigned int record = 0;
     unsigned int avgRecord = 0;
     QList<int> items;

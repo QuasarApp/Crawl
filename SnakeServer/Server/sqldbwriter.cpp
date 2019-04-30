@@ -406,7 +406,7 @@ bool SqlDBWriter::itemIsFreeFrom(int item) const {
         return false;
     }
 
-    QString request = QString("SELECT player FROM owners WHERE id=%0").arg(item);
+    QString request = QString("SELECT player FROM owners WHERE player=%0").arg(item);
     if (!query->exec(request)) {
         QuasarAppUtils::Params::verboseLog("request error : " + query->lastError().text());
         return false;

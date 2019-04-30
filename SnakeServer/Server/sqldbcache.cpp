@@ -1,4 +1,4 @@
-#include "sqldbcashe.h"
+#include "sqldbcache.h"
 #include "quasarapp.h"
 #include "playerdbdata.h"
 #include <qtconcurrentrun.h>
@@ -7,7 +7,7 @@
 #include <QDateTime>
 #include <basenetworkobject.h>
 
-int SqlDBCashe::generateIdForItem() const {
+int SqlDBCache::generateIdForItem() const {
     if (items.isEmpty()) {
         return 0;
     }
@@ -15,7 +15,7 @@ int SqlDBCashe::generateIdForItem() const {
     return items.lastKey() + 1;
 }
 
-int SqlDBCashe::generateIdForPalyer() const {
+int SqlDBCache::generateIdForPalyer() const {
     if (players.isEmpty()) {
         return 0;
     }
@@ -23,7 +23,7 @@ int SqlDBCashe::generateIdForPalyer() const {
     return players.lastKey() + 1;
 }
 
-bool SqlDBCashe::checkPlayer(int id) {
+bool SqlDBCache::checkPlayer(int id) {
     if (players.contains(id)) {
         return true;
     }
@@ -42,7 +42,7 @@ bool SqlDBCashe::checkPlayer(int id) {
     return false;
 }
 
-bool SqlDBCashe::checkItem(int idItem, int idOwner) {
+bool SqlDBCache::checkItem(int idItem, int idOwner) {
 
     if (idOwner >= 0 ) {
 
@@ -85,7 +85,7 @@ bool SqlDBCashe::checkItem(int idItem, int idOwner) {
     return false;
 }
 
-void SqlDBCashe::globalUpdateDataBasePrivate(qint64 currentTime) {
+void SqlDBCache::globalUpdateDataBasePrivate(qint64 currentTime) {
     QList<int> removeIds;
     for (auto item = items.begin(); item != items.end(); ++item) {
         if (SqlDBWriter::saveItem(item.value()) < 0) {
@@ -102,7 +102,7 @@ void SqlDBCashe::globalUpdateDataBasePrivate(qint64 currentTime) {
     }
 
     for (auto player = players.begin(); player != players.end(); ++player) {
-        if (savePlayer(player.value()) < 0) {
+        if (SqlDBWriter::savePlayer(player.value()) < 0) {
             removeIds.push_back(player.key());
             QuasarAppUtils::Params::verboseLog("writeUpdatePlayerIntoDB failed when"
                                                " work globalUpdateDataRelease!!! id=" +
@@ -112,7 +112,7 @@ void SqlDBCashe::globalUpdateDataBasePrivate(qint64 currentTime) {
     }
 
     for (auto owner = owners.begin(); owner != owners.end(); ++owner) {
-        if (saveowners(owner.key(), owner.value())) {
+        if (!SqlDBWriter::saveowners(owner.key(), owner.value())) {
             QuasarAppUtils::Params::verboseLog("UpdateInfoOfowners failed when"
                                                " work globalUpdateDataRelease!!! id=" +
                                                 QString::number(owner.key()));
@@ -122,10 +122,10 @@ void SqlDBCashe::globalUpdateDataBasePrivate(qint64 currentTime) {
     lastUpdateTime = currentTime;
 }
 
-void SqlDBCashe::globalUpdateDataBase(SqlDBCasheWriteMode mode) {
+void SqlDBCache::globalUpdateDataBase(SqlDBCasheWriteMode mode) {
     qint64 currentTime = QDateTime::currentMSecsSinceEpoch();
 
-    if (currentTime - lastUpdateTime > DEFAULT_UPDATE_INTERVAL ||
+    if (currentTime - lastUpdateTime > updateInterval ||
             static_cast<bool>(mode & SqlDBCasheWriteMode::Force)) {
 
         if (static_cast<bool>(mode & SqlDBCasheWriteMode::On_New_Thread)) {
@@ -140,36 +140,35 @@ void SqlDBCashe::globalUpdateDataBase(SqlDBCasheWriteMode mode) {
     }
 }
 
-bool SqlDBCashe::itemIsFreeFrom(int item) const {
+bool SqlDBCache::itemIsFreeFrom(int item) const {
     return SqlDBWriter::itemIsFreeFrom(item);
 }
 
-SqlDBCashe::SqlDBCashe() {
+SqlDBCache::SqlDBCache(qint64 updateInterval) {
+    lastUpdateTime = QDateTime::currentMSecsSinceEpoch();
+    this->updateInterval = updateInterval;
 }
 
-SqlDBCashe::~SqlDBCashe() {
+SqlDBCache::~SqlDBCache() {
     globalUpdateDataBase(SqlDBCasheWriteMode::Force);
 }
 
-bool SqlDBCashe::initDb(const QString &sql, const QString &path) {
+bool SqlDBCache::initDb(const QString &sql, const QString &path) {
     if (!SqlDBWriter::initDb(sql, path)) {
         return false;
     }
 
-    int id = getLastIdItems();
-    if (!getItem(id)) {
-        return false;
-    }
-
-    id = getLastIdPlayers();
-    if (!getPlayer(id)) {
-        return false;
-    }
+    getItem(getLastIdItems());
+    getPlayer(getLastIdPlayers());
 
     return true;
 }
 
-ClientProtocol::BaseNetworkObject * SqlDBCashe::getItem(int id) {
+ClientProtocol::BaseNetworkObject * SqlDBCache::getItem(int id) {
+    if (!isValid()) {
+        return nullptr;
+    }
+
     auto item = items.value(id, nullptr);
 
     if (item && item->isValid()) {
@@ -184,7 +183,10 @@ ClientProtocol::BaseNetworkObject * SqlDBCashe::getItem(int id) {
     return nullptr;
 }
 
-int SqlDBCashe::saveItem(ClientProtocol::BaseNetworkObject *res) {
+int SqlDBCache::saveItem(ClientProtocol::BaseNetworkObject *res) {
+    if (!isValid()) {
+        return -1;
+    }
 
     int id = res->id();
 
@@ -203,7 +205,10 @@ int SqlDBCashe::saveItem(ClientProtocol::BaseNetworkObject *res) {
     return id;
 }
 
-PlayerDBData* SqlDBCashe::getPlayer(int id) {
+PlayerDBData* SqlDBCache::getPlayer(int id) {
+    if (!isValid()) {
+        return nullptr;
+    }
 
     auto player = players.value(id, nullptr);
 
@@ -219,26 +224,36 @@ PlayerDBData* SqlDBCashe::getPlayer(int id) {
     return nullptr;
 }
 
-int SqlDBCashe::savePlayer(PlayerDBData *res) {
-    if (!res->isValid()) {
+int SqlDBCache::savePlayer(PlayerDBData *player) {
+    if (!isValid()) {
         return -1;
     }
 
-    int id = res->id();
+    int id = player->id();
 
     if (id < 0) {
-        id = generateIdForItem();
-        res->setId(id);
+        id = generateIdForPalyer();
+        player->setId(id);
     }
 
-    players.insert(id, res);
+    if (!player->isValid()) {
+        return -1;
+    }
+
+    int curSnake = player->getCureentSnake();
+
+    if (curSnake >= 0 && !checkItem(curSnake, id)) {
+        return -1;
+    }
+
+    players.insert(id, player);
 
     globalUpdateDataBase(SqlDBCasheWriteMode::On_New_Thread);
 
     return id;
 }
 
-bool SqlDBCashe::giveAwayItem(int player, int item) {
+bool SqlDBCache::giveAwayItem(int player, int item) {
     if (!isValid()) {
         return false;
     }
@@ -259,7 +274,7 @@ bool SqlDBCashe::giveAwayItem(int player, int item) {
     return false;
 }
 
-bool SqlDBCashe::getItem(int player, int item, bool check) {
+bool SqlDBCache::getItem(int player, int item, bool check) {
     if (!isValid()) {
         return false;
     }
@@ -298,11 +313,11 @@ bool SqlDBCashe::getItem(int player, int item, bool check) {
     return false;
 }
 
-bool SqlDBCashe::moveItem(int owner, int receiver, int item) {
+bool SqlDBCache::moveItem(int owner, int receiver, int item) {
     return giveAwayItem(owner, item) && getItem(receiver, item, false);
 }
 
-bool SqlDBCashe::getAllItemsOfPalyer(int player, QSet<int> &items) {
+bool SqlDBCache::getAllItemsOfPalyer(int player, QSet<int> &items) {
     if (owners.contains(player)) {
         items = owners[player];
         return true;

@@ -6,6 +6,8 @@
 #include <QCoreApplication>
 #include <QCryptographicHash>
 #include <sqldbwriter.h>
+#include <sqldbcache.h>
+
 #include <snake.h>
 #include <playerdbdata.h>
 
@@ -30,10 +32,12 @@ private:
     void testGetItem();
     void testApplyData();
 
+    void testBaseSql();
+    void testSqlCache();
 
 public:
     testSankeServer();
-    void testSql();
+
     ~testSankeServer();
 
 private slots:
@@ -42,7 +46,7 @@ private slots:
 
     void testServerProtockol();
     void testClientProtockol();
-
+    void testSql();
 
 
 };
@@ -237,7 +241,7 @@ void testSankeServer::testApplyData() {
 
 }
 
-void testSankeServer::testSql() {
+void testSankeServer::testBaseSql() {
     SqlDBWriter db;
     QFile::remove("./test.db");
 
@@ -306,6 +310,12 @@ void testSankeServer::testSql() {
     QVERIFY(!db.saveowners(id, QSet<int>() << 1));
     QVERIFY(db.saveowners(id, QSet<int>() << 0));
 
+    QSet<int> items;
+    QVERIFY(db.getAllItemsOfPalyer(id, items));
+    QVERIFY(items.contains(0));
+    QVERIFY(items.size() == 1);
+
+
     player->setCureentSnake(0);
     id = db.savePlayer(player);
 
@@ -332,21 +342,123 @@ void testSankeServer::testSql() {
     delete tempPlayer;
     delete player;
 
-////    list = tempPlayer["skillet"].toList();
-////    list[1] = 100;
-////    tempItem["skillet"] = list;
+}
 
-////    QVERIFY(db.saveItem(tempItem) == 0);
-////    QVERIFY(db.getItem(id, resItem));
+void testSankeServer::testSqlCache() {
+    SqlDBCache db;
 
-////    QVERIFY(resItem["skillet"].toList()[1] == 100);
+    QFile::remove("./test.db");
 
-////    QVERIFY(tempItem.size() == resItem.size());
+    bool init = db.initDb("test.db", "./");
 
-////    for (auto &key :tempItem.keys()) {
-////        QVERIFY(tempItem.value(key).toString() == resItem.value(key).toString());
-////    }
+    if (!init) {
+        QFile::remove("./test.db");
+    }
 
+    QVERIFY(init);
+
+
+    ClientProtocol::Snake snake;
+    snake.setSpeed(10);
+    snake.setSkillet(QList<float>() << 1);
+    snake.setSnakeClass(0);
+
+
+    // TEST ITEM
+
+    ClientProtocol::Snake *resSnake;
+    int id = db.saveItem(&snake);
+    QVERIFY(id == 0);
+
+    resSnake = static_cast<decltype (resSnake)>(db.getItem(id));
+    QVERIFY(resSnake);
+    QVERIFY(snake.getSpeed() == resSnake->getSpeed());
+    QVERIFY(snake.getSkillet() == resSnake->getSkillet());
+    QVERIFY(snake.getSnakeClass() == resSnake->getSnakeClass());
+    QVERIFY(snake.getClass() == resSnake->getClass());
+    QVERIFY(snake.id() == resSnake->id());
+
+    resSnake->setSnakeClass(10);
+    QVERIFY(id == db.saveItem(resSnake));
+
+    auto temp = static_cast<decltype (resSnake)>(db.getItem(id));
+
+    QVERIFY(temp->getSnakeClass() == 10);
+
+
+    // TEST PLAYER
+
+    PlayerDBData *player = new PlayerDBData();
+
+    player->setMany(10);
+    player->setLastOnline(1000);
+    player->setOnlineTime(1001);
+    player->setName("test");
+    player->setGmail("test@gmail.com");
+    player->setCureentSnake(0);
+    player->setToken(QCryptographicHash::hash("1", QCryptographicHash::Sha256));
+
+    QVERIFY(db.savePlayer(player) < 0);
+    player->setCureentSnake(-1);
+    id = db.savePlayer(player);
+    QVERIFY(id == 0);
+
+    QVERIFY(!db.getItem(id, 1));
+    QVERIFY(db.getItem(id, 0));
+
+    player->setCureentSnake(0);
+    QVERIFY(db.savePlayer(player) == id);
+
+    auto resPlayer = static_cast<decltype (player)>(db.getPlayer(id));
+    QVERIFY(resPlayer);
+    QVERIFY(player->getLastOnline() == resPlayer->getLastOnline());
+    QVERIFY(player->getMany() == resPlayer->getMany());
+    QVERIFY(player->getOnlineTime() == resPlayer->getOnlineTime());
+    QVERIFY(player->getName() == resPlayer->getName());
+    QVERIFY(player->getCureentSnake() == resPlayer->getCureentSnake());
+
+
+    player->setCureentSnake(3);
+
+    QVERIFY(db.savePlayer(player) < 0);
+    player->setCureentSnake(0);
+    player->setName("new");
+    QVERIFY(db.savePlayer(player) == id);
+
+    auto tempPlayer = static_cast<decltype (player)>(db.getPlayer(id));
+
+    QVERIFY(tempPlayer->getName() == "new");
+
+
+    PlayerDBData *second_player = new PlayerDBData();
+
+    second_player->setMany(10);
+    second_player->setLastOnline(1000);
+    second_player->setOnlineTime(1001);
+    second_player->setName("test2");
+    second_player->setGmail("test2@gmail.com");
+    second_player->setCureentSnake(-1);
+    second_player->setId(-1);
+    second_player->setToken(QCryptographicHash::hash("1", QCryptographicHash::Sha256));
+
+    QVERIFY(db.savePlayer(second_player) == 1);
+
+    QVERIFY(db.moveItem(0, 1, 0));
+
+    QSet<int> items;
+    QVERIFY(db.getAllItemsOfPalyer(1, items));
+    QVERIFY(items.contains(0));
+    QVERIFY(items.size() == 1);
+
+    db.updateInterval = 0;
+
+    db.globalUpdateDataBasePrivate(0);
+
+}
+
+void testSankeServer::testSql() {
+    testBaseSql();
+    testSqlCache();
 }
 
 void testSankeServer::testServerProtockol() {

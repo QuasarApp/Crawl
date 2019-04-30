@@ -18,10 +18,11 @@ namespace ClientProtocol {
     class BaseNetworkObject;
 }
 
-class SqlDBCashe : private SqlDBWriter
+class SqlDBCache : private SqlDBWriter
 {
 private:
     qint64 lastUpdateTime = 0;
+    qint64 updateInterval = DEFAULT_UPDATE_INTERVAL;
 
     QMap <int, ClientProtocol::BaseNetworkObject*> items;
     QMap <int, PlayerDBData*> players;
@@ -39,8 +40,8 @@ private:
     bool itemIsFreeFrom(int item) const override ;
 
 public:
-    SqlDBCashe();
-    ~SqlDBCashe() override;
+    SqlDBCache(qint64 updateInterval = DEFAULT_UPDATE_INTERVAL);
+    ~SqlDBCache() override;
 
     bool initDb(const QString &sql = DEFAULT_DB_NAME,
                 const QString &path = DEFAULT_DB_PATH) override;
@@ -48,13 +49,15 @@ public:
     ClientProtocol::BaseNetworkObject * getItem(int id) override;
     int saveItem(ClientProtocol::BaseNetworkObject *res) override;
     PlayerDBData* getPlayer(int id) override;
-    int savePlayer(PlayerDBData *res) override;
+    int savePlayer(PlayerDBData *player) override;
 
     bool giveAwayItem(int player, int item);
     bool getItem(int player, int item, bool check = true);
     bool moveItem(int owner, int receiver, int item);
 
     bool getAllItemsOfPalyer(int player, QSet<int>& items) override;
+
+    friend class testSankeServer;
 };
 
 #endif // SQLDBCASHE_H

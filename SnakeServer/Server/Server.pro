@@ -26,7 +26,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     mainserver.cpp \
     playerdbdata.cpp \
-    sqldbcashe.cpp \
+    sqldbcache.cpp \
     sqldbwriter.cpp
 
 TARGET = Server
@@ -41,8 +41,8 @@ CONFIG(release, debug|release): {
 HEADERS += \
         mainserver.h \
         playerdbdata.h \
-        server_global.h \ 
-        sqldbcashe.h \
+        server_global.h \  \
+        sqldbcache.h
         sqldbwriter.h
 
 include($$PWD/../../QuasarAppLib/QuasarLib.pri)
