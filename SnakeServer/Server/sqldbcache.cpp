@@ -31,7 +31,7 @@ bool SqlDBCache::checkPlayer(int id) {
     if (SqlDBWriter::checkPlayer(id)) {
 
         PlayerDBData *player = getPlayer(id);
-        if (savePlayer(player) < 0) {
+        if (savePlayer(*player) < 0) {
             QuasarAppUtils::Params::verboseLog("not saved data into cache "
                                                " SqlDBCashe::checkPlayer");
         }
@@ -183,22 +183,22 @@ ClientProtocol::BaseNetworkObject * SqlDBCache::getItem(int id) {
     return nullptr;
 }
 
-int SqlDBCache::saveItem(ClientProtocol::BaseNetworkObject *res) {
+int SqlDBCache::saveItem(const Item &item) {
     if (!isValid()) {
         return -1;
     }
 
-    int id = res->id();
+    int id = item->id();
 
     if (id < 0) {
         id = generateIdForItem();
-        res->setId(id);
+        item->setId(id);
     }
 
-    if (!res->isValid()) {
+    if (!item->isValid()) {
         return -1;
     }
-    items.insert(id, res);
+    items.insert(id, item);
 
     globalUpdateDataBase(SqlDBCasheWriteMode::On_New_Thread);
 
@@ -224,7 +224,7 @@ PlayerDBData* SqlDBCache::getPlayer(int id) {
     return nullptr;
 }
 
-int SqlDBCache::savePlayer(PlayerDBData *player) {
+int SqlDBCache::savePlayer(const PlayerDBData &player) {
     if (!isValid()) {
         return -1;
     }

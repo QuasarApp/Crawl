@@ -183,19 +183,19 @@ bool SqlDBWriter::checkItem(int idItem, int idOwner) {
     return true;
 }
 
-int SqlDBWriter::savePlayer(PlayerDBData *player) {
+int SqlDBWriter::savePlayer(const PlayerDBData &player) {
     if (!isValid()) {
         return -1;
     }
 
-    if (!player->isValid()) {
+    if (!player.isValid()) {
         return -1;
     }
 
     QString request;
-    int id = player->id();
+    int id = player.id();
 
-    int curSnake = player->getCureentSnake();
+    int curSnake = player.getCureentSnake();
 
     if (curSnake >= 0 && !checkItem(curSnake, id)) {
         return -1;
@@ -206,13 +206,13 @@ int SqlDBWriter::savePlayer(PlayerDBData *player) {
         request = QString("UPDATE players SET name='%0', gmail='%1', money='%2',"
                           " avgrecord='%3', record='%4', lastOnline='%5',"
                           " onlinetime='%6', currentsnake='%7' WHERE id='%8' ").arg(
-                    player->getName()).arg(
-                    player->getGmail()).arg(
-                    player->getMany()).arg(
-                    player->getAvgRecord()).arg(
-                    player->getRecord()).arg(
-                    player->getLastOnline()).arg(
-                    player->getOnlineTime()).arg(
+                    player.getName()).arg(
+                    player.getGmail()).arg(
+                    player.getMany()).arg(
+                    player.getAvgRecord()).arg(
+                    player.getRecord()).arg(
+                    player.getLastOnline()).arg(
+                    player.getOnlineTime()).arg(
                     (curSnake >= 0)? QString::number(curSnake) : "NULL").arg(
                     id);
 
@@ -221,13 +221,13 @@ int SqlDBWriter::savePlayer(PlayerDBData *player) {
                           " lastOnline, onlinetime, currentsnake) VALUES "
                           "('%0', '%1', '%2', '%3', '%4', '%5', '%6', '%7', '%8')").arg(
                     id).arg(
-                    player->getName()).arg(
-                    player->getGmail()).arg(
-                    player->getMany()).arg(
-                    player->getAvgRecord()).arg(
-                    player->getRecord()).arg(
-                    player->getLastOnline()).arg(
-                    player->getOnlineTime()).arg(
+                    player.getName()).arg(
+                    player.getGmail()).arg(
+                    player.getMany()).arg(
+                    player.getAvgRecord()).arg(
+                    player.getRecord()).arg(
+                    player.getLastOnline()).arg(
+                    player.getOnlineTime()).arg(
                     (curSnake >= 0)? QString::number(curSnake) : "NULL");
 
     }
@@ -250,23 +250,20 @@ int SqlDBWriter::savePlayer(PlayerDBData *player) {
     return id;
 }
 
-int SqlDBWriter::saveItem(ClientProtocol::BaseNetworkObject *item) {
+int SqlDBWriter::saveItem(const Item &item) {
     if (!isValid()) {
         return -1;
     }
 
-    if (!item->isValid()) {
+    if (!item.isValid()) {
         return -1;
     }
 
-    auto type = item->getClass();
+    auto type = item.cmd();
+    int id = item.getId();
 
-    int id = item->id();
-
-    QByteArray bytes;
+    QByteArray bytes = item.dataArray();
     QString request;
-
-    item->toBytes(bytes);
 
     if (checkItem(id)) {
         request = QString("UPDATE items SET type='%1', data = :bytes where id = %0").

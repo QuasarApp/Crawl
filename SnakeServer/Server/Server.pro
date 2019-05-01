@@ -24,6 +24,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    item.cpp \
     mainserver.cpp \
     playerdbdata.cpp \
     sqldbcache.cpp \
@@ -39,6 +40,7 @@ CONFIG(release, debug|release): {
 }
 
 HEADERS += \
+        item.h \
         mainserver.h \
         playerdbdata.h \
         server_global.h \  \

@@ -1,5 +1,7 @@
 #ifndef SQLDBWRITER_H
 #define SQLDBWRITER_H
+#include "item.h"
+
 #include <QObject>
 #include <QSqlDatabase>
 #include <QDir>
@@ -35,8 +37,8 @@ protected:
     virtual bool checkPlayer(int id);
     virtual bool checkItem(int idItem, int idOwner = -1);
 
-    virtual int savePlayer(PlayerDBData *player);
-    virtual int saveItem(ClientProtocol::BaseNetworkObject *item);
+    virtual int savePlayer(const PlayerDBData& player);
+    virtual int saveItem(const Item &item);
     virtual bool saveowners(int player, const QSet<int>);
 
     virtual bool getAllItemsOfPalyer(int player, QSet<int>& items);

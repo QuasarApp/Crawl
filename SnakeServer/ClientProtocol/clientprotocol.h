@@ -28,13 +28,13 @@ enum class Command: quint8 {
     GetItem = 0x06,
     Player = 0x07,
     Snake = 0x08,
-    Map = 0x08
+    Map = 0x09
 };
 
 bool isValidSize(quint8 type, unsigned int size);
 
 bool initClientProtockol();
-
+auto cast(const BaseNetworkObject *obj);
 /**
  * @brief The Header struct 4 byte
  */
@@ -98,7 +98,7 @@ struct CLIENTPROTOCOLSHARED_EXPORT Package {
      * @brief isValid
      * @return true if package is valid
      */
-    bool isValid() const;
+    virtual bool isValid() const;
 
     /**
      * @brief parse
@@ -131,6 +131,8 @@ struct CLIENTPROTOCOLSHARED_EXPORT Package {
      * @brief reset - reset all data and set for package invalid status
      */
     void reset();
+
+    virtual ~Package() = default;
 
 };
 

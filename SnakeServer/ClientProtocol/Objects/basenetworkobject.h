@@ -51,9 +51,8 @@ private:
 protected:
     qint8 _class = -1;
 
-    BaseNetworkObject();
-
 public:
+    BaseNetworkObject();
     virtual BaseNetworkObject* create() const;
     virtual ~BaseNetworkObject();
 
@@ -63,7 +62,6 @@ public:
     virtual bool isValid() const;
     void toBytes(QByteArray& array) const;
     void fromBytes(const QByteArray& array);
-    auto cast();
     int id() const;
     void setId(int id);
     qint8 getClass() const;
