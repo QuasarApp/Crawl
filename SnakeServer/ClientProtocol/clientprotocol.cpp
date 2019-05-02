@@ -98,6 +98,15 @@ bool Package::create(const BaseNetworkObject *obj, Type type) {
     return isValid();
 }
 
+bool Package::create(Command cmd, Type type, const QByteArray &data) {
+    hdr.command = static_cast<quint8>(cmd);
+    hdr.type = static_cast<quint8>(type);
+    hdr.size = static_cast<unsigned short>(data.size());
+    this->data = data;
+
+    return isValid();
+}
+
 bool Package::create(Command cmd, Type type) {
 
 

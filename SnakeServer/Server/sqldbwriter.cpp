@@ -338,64 +338,57 @@ bool SqlDBWriter::saveowners(int player, const QSet<int> items) {
     return true;
 }
 
-PlayerDBData * SqlDBWriter::getPlayer(int id) {
+PlayerDBData SqlDBWriter::getPlayer(int id) {
 
     if (!isValid()) {
-        return nullptr;
+        return PlayerDBData();
     }
 
     QString request = QString("SELECT * FROM players WHERE id=%0").arg(id);
     if (!query->exec(request)) {
         QuasarAppUtils::Params::verboseLog("request error : " + query->lastError().text());
-        return nullptr;
+        return PlayerDBData();
     }
 
     if (!query->next()) {
-        return nullptr;
+        return PlayerDBData();
     }
 
-    auto player = new PlayerDBData();
+    auto player = PlayerDBData();
 
 
-    player->setName(query->value("name").toString());
-    player->setGmail(query->value("gmail").toString());
-    player->setMany(query->value("money").toUInt());
-    player->setAvgRecord(query->value("avgrecord").toUInt());
-    player->setRecord(query->value("record").toUInt());
-    player->setLastOnline(query->value("lastOnline").toInt());
-    player->setOnlineTime(query->value("onlinetime").toInt());
-    player->setCureentSnake(query->value("currentsnake").toInt());
+    player.setName(query->value("name").toString());
+    player.setGmail(query->value("gmail").toString());
+    player.setMany(query->value("money").toUInt());
+    player.setAvgRecord(query->value("avgrecord").toUInt());
+    player.setRecord(query->value("record").toUInt());
+    player.setLastOnline(query->value("lastOnline").toInt());
+    player.setOnlineTime(query->value("onlinetime").toInt());
+    player.setCureentSnake(query->value("currentsnake").toInt());
 
     return player;
 }
 
-ClientProtocol::BaseNetworkObject *SqlDBWriter::getItem(int id) {
+Item SqlDBWriter::getItem(int id) {
 
     if (!isValid()) {
-        return nullptr;
+        return Item();
     }
 
     QString request = QString("SELECT type, data FROM items WHERE id=%0").arg(id);
     if (!query->exec(request)) {
         QuasarAppUtils::Params::verboseLog("request error : " + query->lastError().text());
-        return nullptr;
+        return Item();
     }
 
     if (!query->next()) {
-        return nullptr;
+        return Item();
     }
 
-    auto type = static_cast<quint8>(query->value(0).toUInt());
+    auto type = static_cast<ClientProtocol::Command>(query->value(0).toUInt());
     auto data = query->value(1).toByteArray();
 
-    auto obj = ClientProtocol::FactoryNetObjects::build(type);
-
-    if (!obj)
-        return nullptr;
-
-    obj->fromBytes(data);
-
-    return obj;
+    return Item(type, data);
 }
 
 bool SqlDBWriter::itemIsFreeFrom(int item) const {

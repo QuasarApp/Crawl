@@ -1,6 +1,6 @@
 #include "item.h"
 #include "factorynetobjects.h"
-
+#include <exception>
 
 int Item::getId() const {
     return id;
@@ -8,6 +8,10 @@ int Item::getId() const {
 
 void Item::setId(int value) {
     id = value;
+}
+
+Item::Item() {
+
 }
 
 Item::Item(const ClientProtocol::Package &other) {
@@ -24,6 +28,20 @@ Item::Item(const ClientProtocol::BaseNetworkObject *obj) {
     }
 
     id = obj->id();
+}
+
+Item::Item(ClientProtocol::Command cmd, const QByteArray &data) {
+    if (!create(cmd, ClientProtocol::Type::Stream, data)) {
+        throw std::runtime_error("Error create Item from BaseNetworkObject!");
+    }
+
+    ClientProtocol::BaseNetworkObject base;
+    base.fromBytes(data);
+    id = base.id();
+}
+
+Item::~Item() {
+
 }
 
 ClientProtocol::Command Item::cmd() const {

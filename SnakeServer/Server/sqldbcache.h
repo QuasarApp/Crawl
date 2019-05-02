@@ -7,6 +7,7 @@
 #include <QSet>
 #include <QVariantMap>
 #include <player.h>
+#include "item.h"
 #include <clientprotocol.h>
 
 enum class SqlDBCasheWriteMode: int {
@@ -25,8 +26,8 @@ private:
     qint64 lastUpdateTime = 0;
     qint64 updateInterval = DEFAULT_UPDATE_INTERVAL;
 
-    QMap <int, ClientProtocol::Package> items;
-    QMap <int, PlayerDBData*> players;
+    QMap <int, Item> items;
+    QMap <int, PlayerDBData> players;
     QHash <int, QSet<int>>  owners;
 
     int generateIdForItem() const;
@@ -47,9 +48,9 @@ public:
     bool initDb(const QString &sql = DEFAULT_DB_NAME,
                 const QString &path = DEFAULT_DB_PATH) override;
 
-    ClientProtocol::BaseNetworkObject * getItem(int id) override;
-    int saveItem(const Item& item) override;
-    PlayerDBData* getPlayer(int id) override;
+    Item getItem(int id) override;
+    int saveItem(const Item& saveData) override;
+    PlayerDBData getPlayer(int id) override;
     int savePlayer(const PlayerDBData &player) override;
 
     bool giveAwayItem(int player, int item);

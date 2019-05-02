@@ -30,8 +30,7 @@ bool SqlDBCache::checkPlayer(int id) {
 
     if (SqlDBWriter::checkPlayer(id)) {
 
-        PlayerDBData *player = getPlayer(id);
-        if (savePlayer(*player) < 0) {
+        if (savePlayer(getPlayer(id)) < 0) {
             QuasarAppUtils::Params::verboseLog("not saved data into cache "
                                                " SqlDBCashe::checkPlayer");
         }
@@ -73,7 +72,7 @@ bool SqlDBCache::checkItem(int idItem, int idOwner) {
 
     if (SqlDBWriter::checkItem(idItem)) {
 
-        ClientProtocol::BaseNetworkObject *item = getItem(idItem);
+        auto item = getItem(idItem);
         if (saveItem(item) < 0) {
             QuasarAppUtils::Params::verboseLog("not saved data into cache "
                                                " SqlDBCashe::checkItem");
@@ -164,18 +163,19 @@ bool SqlDBCache::initDb(const QString &sql, const QString &path) {
     return true;
 }
 
-ClientProtocol::BaseNetworkObject * SqlDBCache::getItem(int id) {
+Item SqlDBCache::getItem(int id) {
     if (!isValid()) {
         return nullptr;
     }
 
-    auto item = items.value(id, nullptr);
+    auto item = items.value(id);
 
-    if (item && item->isValid()) {
+    if (item.isValid()) {
         return item;
     }
 
-    if ((item = SqlDBWriter::getItem(id))) {
+    item = SqlDBWriter::getItem(id);
+    if (item.isValid()) {
         items.insert(id, item);
         return item;
     }
@@ -183,19 +183,20 @@ ClientProtocol::BaseNetworkObject * SqlDBCache::getItem(int id) {
     return nullptr;
 }
 
-int SqlDBCache::saveItem(const Item &item) {
+int SqlDBCache::saveItem(const Item &saveData) {
     if (!isValid()) {
         return -1;
     }
+    auto item = saveData;
 
-    int id = item->id();
+    int id = item.getId();
 
     if (id < 0) {
         id = generateIdForItem();
-        item->setId(id);
+        item.setId(id);
     }
 
-    if (!item->isValid()) {
+    if (!item.isValid()) {
         return -1;
     }
     items.insert(id, item);
@@ -205,42 +206,45 @@ int SqlDBCache::saveItem(const Item &item) {
     return id;
 }
 
-PlayerDBData* SqlDBCache::getPlayer(int id) {
+PlayerDBData SqlDBCache::getPlayer(int id) {
     if (!isValid()) {
-        return nullptr;
+        return PlayerDBData();
     }
 
-    auto player = players.value(id, nullptr);
+    auto player = players.value(id);
 
-    if (player && player->isValid()) {
+    if (player.isValid()) {
         return player;
     }
 
-    if ((player = SqlDBWriter::getPlayer(id))) {
-        items.insert(id, player);
+    player = SqlDBWriter::getPlayer(id);
+    if (player.isValid()) {
+        players.insert(id, player);
         return player;
     }
 
-    return nullptr;
+    return PlayerDBData();
 }
 
-int SqlDBCache::savePlayer(const PlayerDBData &player) {
+int SqlDBCache::savePlayer(const PlayerDBData &saveData) {
     if (!isValid()) {
         return -1;
     }
 
-    int id = player->id();
+    auto player = saveData;
+
+    int id = player.id();
 
     if (id < 0) {
         id = generateIdForPalyer();
-        player->setId(id);
+        player.setId(id);
     }
 
-    if (!player->isValid()) {
+    if (!player.isValid()) {
         return -1;
     }
 
-    int curSnake = player->getCureentSnake();
+    int curSnake = player.getCureentSnake();
 
     if (curSnake >= 0 && !checkItem(curSnake, id)) {
         return -1;

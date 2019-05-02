@@ -106,12 +106,34 @@ struct CLIENTPROTOCOLSHARED_EXPORT Package {
      */
     BaseNetworkObject * parse() const;
 
+    template<class T>
+    bool parse(T& res) {
+        auto obj = static_cast<T*>(parse());
+
+        if (!obj)
+            return false;
+
+        res = *obj;
+        return true;
+    }
+
     /**
      * @brief create - fill package
      * @param data - data of filled
      * @return true if all done
      */
     bool create(const BaseNetworkObject *data, Type type);
+
+    /**
+     * @brief create
+     * @param cmd command of package
+     * @param type type
+     * @param data - data of filled
+     * @return
+     */
+    bool create(Command cmd, Type type, const QByteArray& data);
+
+
 
     /**
      * @brief create

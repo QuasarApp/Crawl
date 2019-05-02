@@ -43,8 +43,8 @@ HEADERS += \
         item.h \
         mainserver.h \
         playerdbdata.h \
-        server_global.h \  \
-        sqldbcache.h
+        server_global.h \
+        sqldbcache.h \
         sqldbwriter.h
 
 include($$PWD/../../QuasarAppLib/QuasarLib.pri)
