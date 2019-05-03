@@ -1,33 +1,31 @@
-CREATE TABLE IF NOT EXISTS items(
-    id int NOT NULL AUTO_INCREMENT,
-    type int NOT NULL,
-	data BLOB NOT NULL,
-    PRIMARY KEY(id)
+PRAGMA foreign_keys = ON;
 
+CREATE TABLE IF NOT EXISTS items(
+    id INTEGER PRIMARY KEY NOT NULL,
+    type INTEGER NOT NULL,
+    data BLOB NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS players(
-    id int NOT NULL AUTO_INCREMENT,
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     name VARCHAR(100) NOT NULL,
-	gmail VARCHAR(64) NOT NLLL,
-	money int NOT NULL DEFAULT 0,
-	avgrecord int NOT NULL DEFAULT 0,
-	record int NOT NULL DEFAULT 0,
-	lastOnline date not null DEFAULT 0,
-	onlinetime int not null DEFAULT 0,
-	currentsnake int not null DEFAULT 0,
-
-    PRIMARY KEY(id),
+    gmail VARCHAR(64) NOT NULL UNIQUE,
+    money INTEGER NOT NULL DEFAULT 0,
+    avgrecord INTEGER NOT NULL DEFAULT 0,
+    record INTEGER NOT NULL DEFAULT 0,
+    lastOnline date not null DEFAULT 0,
+    onlinetime INTEGER not null DEFAULT 0,
+    currentsnake INTEGER DEFAULT NULL,
 
     FOREIGN KEY(currentsnake) REFERENCES items(id)
         ON UPDATE CASCADE
-        ON DELETE CASCADE
+        ON DELETE SET NULL
 
 );
 
-CREATE TABLE IF NOT EXISTS ovners(
-	player int NOT NULL,
-	item int NOT NULL
+CREATE TABLE IF NOT EXISTS owners(
+    player INTEGER NOT NULL,
+    item INTEGER NOT NULL,
 
     FOREIGN KEY(player) REFERENCES players(id)
         ON UPDATE CASCADE
@@ -38,4 +36,4 @@ CREATE TABLE IF NOT EXISTS ovners(
         ON DELETE CASCADE
 );
 
-CREATE UNIQUE INDEX IF NOT EXISTS iovners ON ovners(player,item);
+CREATE UNIQUE INDEX IF NOT EXISTS iowners ON owners(player,item);

@@ -1,9 +1,15 @@
 #include "clientprotocol.h"
+#include "gamedata.h"
+#include "getitem.h"
+#include "login.h"
+#include "player.h"
+#include "updateplayerdata.h"
 
 #include <QDataStream>
 #include <QVariantMap>
-#include <networkobjects.h>
-#include <streamers.h>
+#include <factorynetobjects.h>
+#include <map.h>
+#include <snake.h>
 
 #define DEFAULT_GAME_PORT 7777
 
@@ -16,21 +22,25 @@ Header::Header() {
 
 bool Header::isValid() const {
 
-    if (sizeof (*this) != 8) {
+    if (sizeof (*this) != 4) {
         return false;
     }
 
-    if (!NetworkClasses::isCustomType(static_cast<NetworkClasses::Type>(command))) {
+    if (static_cast<Command>(command) == Command::Undefined) {
         return false;
     }
 
-    return isValidSize(static_cast<NetworkClasses::Type>(command) , size);
+    if (static_cast<Type>(type) == Type::Undefined) {
+        return false;
+    }
+
+    return isValidSize(command, size);
 }
 
 void Header::reset() {
     size = 0;
-    command = Undefined;
-    type = Responke;
+    command = static_cast<quint8>(Command::Undefined);
+    type = static_cast<quint8>(Type::Responke);
 }
 
 Package::Package() {
@@ -42,45 +52,71 @@ bool Package::isValid() const {
         return false;
     }
 
-    return hdr.size == static_cast<unsigned int> (data.size());
-}
-
-bool Package::parse(QVariantMap& res) const {
-    if (!isValid())
-        return false;
-
-    res["command"] = hdr.command;
-    res["type"] = hdr.type;
-    res["sig"] = hdr.sig;
-
-    QDataStream stream(data);
-
-    if (!Streamers::read(stream, res, static_cast<NetworkClasses::Type>(hdr.command))) {
+    if (data.size() && hdr.command != data.at(0)) {
         return false;
     }
 
-    return true;
+    return hdr.size == static_cast<unsigned int> (data.size());
+}
+
+BaseNetworkObject* Package::parse() const {
+    if (!isValid())
+        return nullptr;
+
+    auto obj = FactoryNetObjects::build(hdr.command);
+
+    if (!obj) {
+        return nullptr;
+    }
+
+    QDataStream stream(data);
+    obj->readFromStream(stream);
+
+    return obj;
 }
 
 
-bool Package::create(const QVariantMap &map, Type type) {
+bool Package::create(const BaseNetworkObject *obj, Type type) {
 
-    auto command = static_cast<NetworkClasses::Type>(
-                map.value("command", NetworkClasses::Undefined).toInt());
+    if (!obj) {
+        return false;
+    }
 
-    if (!(command & NetworkClasses::CustomType) || type == Type::Undefined) {
+    auto command = obj->getClass();
+
+    if (command < 0) {
         return false;
     }
 
     QDataStream stream(&data, QIODevice::ReadWrite);
+    obj->writeToStream(stream);
 
-    if (!Streamers::write(stream, map)) {
+    hdr.command = static_cast<quint8>(command);
+    hdr.type = static_cast<quint8>(type);
+    hdr.size = static_cast<unsigned short>(data.size());
+
+    return isValid();
+}
+
+bool Package::create(Command cmd, Type type, const QByteArray &data) {
+    hdr.command = static_cast<quint8>(cmd);
+    hdr.type = static_cast<quint8>(type);
+    hdr.size = static_cast<unsigned short>(data.size());
+    this->data = data;
+
+    return isValid();
+}
+
+bool Package::create(Command cmd, Type type) {
+
+
+    if (cmd == Command::Undefined) {
         return false;
     }
 
-    hdr.command = command;
-    hdr.type = type;
-    hdr.size = static_cast<unsigned int>(data.size());
+    hdr.command = static_cast<quint8>(cmd);
+    hdr.type = static_cast<quint8>(type);
+    hdr.size = static_cast<unsigned short>(data.size());
 
     return isValid();
 }
@@ -99,69 +135,55 @@ void Package::reset() {
     data.clear();
 }
 
-unsigned int getSize(NetworkClasses::Type type, bool isMax) {
-    auto size = NetworkClasses::getSizeType(type);
-    if (size) {
-        return size;
-    }
+bool isValidSize(quint8 type, unsigned int size) {
 
-    if (type == NetworkClasses::String) {
-        return (isMax)? 255: 5;
-    } else if (type == NetworkClasses::Variant) {
-        return (isMax)? 16 : 6;
-    }
-
-    if (NetworkClasses::isArray(type)) {
-        NetworkClasses::Type arrayType = static_cast<NetworkClasses::Type>(type & ~NetworkClasses::Array);
-
-        auto sizeItem = NetworkClasses::getSizeType(arrayType);
-
-        if (arrayType == NetworkClasses::String) {
-            sizeItem = (isMax)? 255: 5;
-        } else if (arrayType == NetworkClasses::Variant) {
-            sizeItem = (isMax)? 16 : 6;
-        }
-
-        constexpr int description = sizeof(int);
-
-        size += description + sizeItem * ((isMax)? MAX_SIZE: MIN_SIZE);
-        return size;
-    }
-
-    if (type & NetworkClasses::CustomType) {
-        constexpr auto baseSize = sizeof (short);
-        size += baseSize;
-    }
-
-    auto listPropertyes = networkObjects.value(type);
-    for (auto &&i : listPropertyes) {
-        size += getSize(i, isMax);
-    }
-
-    return size;
-}
-
-bool isStaticObject(NetworkClasses::Type type, unsigned int &max, unsigned int &min) {
-    max = getSize(type, true);
-    min = getSize(type);
-
-    return max == min;
-}
-
-bool isValidSize(NetworkClasses::Type type, unsigned int size) {
-
-    if (type == NetworkClasses::Undefined) {
+    if (!FactoryNetObjects::isInited()) {
         return false;
     }
 
-    unsigned int max;
-    unsigned int min;
-    if (isStaticObject(type, max, min)) {
-        return size == max;
+    if (!FactoryNetObjects::isRegisteredType(type)) {
+        return size == 0;
     }
 
-    return size <= max && size >= min;
+    return FactoryNetObjects::getSize(type).isValid(size);
+}
 
+bool initClientProtockol() {
+    if (!FactoryNetObjects::regType<Login>(
+                static_cast<quint8>(Command::Login))) {
+        return false;
+    }
+
+    if (!FactoryNetObjects::regType<UpdatePlayerData>(
+                static_cast<quint8>(Command::UpdatePlayerData))) {
+        return false;
+    }
+
+    if (!FactoryNetObjects::regType<GameData>(
+                static_cast<quint8>(Command::GameData))) {
+        return false;
+    }
+
+    if (!FactoryNetObjects::regType<GetItem>(
+                static_cast<quint8>(Command::GetItem))) {
+        return false;
+    }
+
+    if (!FactoryNetObjects::regType<Player>(
+                static_cast<quint8>(Command::Player))) {
+        return false;
+    }
+
+    if (!FactoryNetObjects::regType<Snake>(
+                static_cast<quint8>(Command::Snake))) {
+        return false;
+    }
+
+    if (!FactoryNetObjects::regType<Map>(
+                static_cast<quint8>(Command::Map))) {
+        return false;
+    }
+    return true;
 }
 
 }

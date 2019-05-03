@@ -2,6 +2,7 @@
 #include "quasarapp.h"
 #include <QTcpSocket>
 #include <factorynetobjects.h>
+#include "clientprotocol.h"
 
 namespace ClientProtocol {
 
@@ -18,19 +19,20 @@ bool Server::parsePackage(const Package &pkg, QTcpSocket* sender) {
         return false;
     }
 
-    switch (pkg.hdr.command) {
-    case NetworkClasses::Ping: {
+    switch (static_cast<Command>(pkg.hdr.command)) {
+    case Command::Ping: {
 
-        if (pkg.hdr.type != Request) {
+        if (static_cast<Type>(pkg.hdr.type) != Type::Request) {
             return false;
         }
 
         Package pcg;
 
-        auto map = FactoryNetObjects::build(NetworkClasses::Ping);
-        if (!pcg.create(map, Responke)) {
+        if (!(pcg.create(Command::Ping, Type::Responke))) {
             return false;
         };
+
+        pcg.hdr.sig = pkg.hdr.sig;
 
         if (!sendPackage(pcg, sender)) {
             QuasarAppUtils::Params::verboseLog("!responce not sendet!");
@@ -39,9 +41,11 @@ bool Server::parsePackage(const Package &pkg, QTcpSocket* sender) {
     }
 
     default: {
-        QVariantMap data;
-        pkg.parse(data);
-        emit incomingReques(data, qHash(sender->peerAddress()));
+
+        BaseNetworkObject *obj = pkg.parse();
+
+        emit incomingReques(obj, qHash(sender->peerAddress()));
+        delete obj;
     }
     }
 
@@ -188,11 +192,8 @@ void Server::badRequest(quint32 address) {
         return;
     }
 
-    auto map = FactoryNetObjects::build(NetworkClasses::BadRequest);
-
     Package pcg;
-    if (!pcg.create(map, Request)) {
-        return;
+    if (!(pcg.create(Command::BadRequest, Type::Responke))) {
     };
 
     if (!sendPackage(pcg, client.sct)) {

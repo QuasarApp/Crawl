@@ -5,7 +5,7 @@
 #-------------------------------------------------
 
 QT       -= gui
-QT       += network sql
+QT       += network sql concurrent
 
 TARGET = Server
 TEMPLATE = lib
@@ -24,8 +24,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    sqldatabase.cpp \
-    mainserver.cpp
+    item.cpp \
+    mainserver.cpp \
+    playerdbdata.cpp \
+    sqldbcache.cpp \
+    sqldbwriter.cpp
 
 TARGET = Server
 
@@ -37,9 +40,12 @@ CONFIG(release, debug|release): {
 }
 
 HEADERS += \
-        server_global.h \ 
-    sqldatabase.h \
-    mainserver.h
+        item.h \
+        mainserver.h \
+        playerdbdata.h \
+        server_global.h \
+        sqldbcache.h \
+        sqldbwriter.h
 
 include($$PWD/../../QuasarAppLib/QuasarLib.pri)
 include($$PWD/../ServerProtocol/ServerProtocol.pri)

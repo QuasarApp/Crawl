@@ -24,7 +24,7 @@ private:
     int currentIndex = 0;
     QHash<unsigned char, QVariantMap> _requestsMap;
 
-    bool receiveData(QVariantMap map);
+    bool receiveData(const QByteArray &obj, Header hdr);
     void setOnline(bool newStatus);
     bool sendPackage(Package &pkg);
     inline unsigned char nextIndex();
@@ -76,7 +76,7 @@ public:
     friend class ::testSankeServer;
 
 signals:
-    void sigIncommingData(const QVariantMap& map);
+    void sigIncommingData(Command cmd, const QByteArray& obj);
     void onlineChanged(bool);
 };
 

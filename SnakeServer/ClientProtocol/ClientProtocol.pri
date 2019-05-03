@@ -17,7 +17,7 @@ CONFIG(release, debug|release): {
 
 LIBS += -L$$CLIENTPROTOCOL_LIB_OUTPUT_DIR -lClientProtocol
 
-INCLUDEPATH += "$$PWD/"
+include($$PWD/ClientProtocolIncludes.pri)
 
 
 

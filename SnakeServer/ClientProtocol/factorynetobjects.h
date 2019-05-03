@@ -1,27 +1,38 @@
 #ifndef FACTORYNETOBJECTS_H
 #define FACTORYNETOBJECTS_H
 #include "clientprotocol_global.h"
-#include "networkobjects.h"
-
+#include "basenetworkobject.h"
+#include <QMap>
+#include <typeinfo>
 namespace ClientProtocol {
 
+extern QMap<quint8, BaseNetworkObject*> map;
+extern QMap<quint8, NetworkClassSize> types_sizes;
+
 class CLIENTPROTOCOLSHARED_EXPORT FactoryNetObjects {
+private:
+
 public:
     FactoryNetObjects() = delete;
 
-    static QVariantMap build(NetworkClasses::Type type);
+    static BaseNetworkObject *build(quint8 type);
+    static BaseNetworkObject *build(quint8 type, const QByteArray& array);
 
-    template <typename T>
-    static QVariantList buildArray(const T& array) {
+    static NetworkClassSize getSize(quint8 type);
+    static bool isRegisteredType(quint8 type);
+    static bool isInited();
 
-        QVariantList res;
-        for (auto &&i : array) {
-            res.push_back(i);
+    template<typename T>
+    static bool regType(quint8 id) {
+        if (map.contains(id)) {
+            return false;
         }
 
-        return res;
+        auto tempObj = new T();
+        map.insert(id, tempObj);
+        types_sizes.insert(id, tempObj->classSize());
+        return true;
     }
-
 };
 }
 
