@@ -286,172 +286,173 @@ void testSankeServer::testBaseSql() {
     QVERIFY(temp.getSnakeClass() == 10);
 
 
-//    // TEST PLAYER
+    // TEST PLAYER
 
-//    PlayerDBData *player = new PlayerDBData();
+    PlayerDBData player = PlayerDBData();
 
-//    player->setMany(10);
-//    player->setLastOnline(1000);
-//    player->setOnlineTime(1001);
-//    player->setName("test");
-//    player->setGmail("test@gmail.com");
-//    player->setCureentSnake(0);
-//    player->setToken(QCryptographicHash::hash("1", QCryptographicHash::Sha256));
+    player.setMany(10);
+    player.setLastOnline(1000);
+    player.setOnlineTime(1001);
+    player.setName("test");
+    player.setGmail("test@gmail.com");
+    player.setCureentSnake(0);
 
-//    QVERIFY(db.savePlayer(player) < 0);
-//    player->setId(0);
+    QVERIFY(db.savePlayer(player) < 0);
+    player.setId(0);
 
-//    QVERIFY(db.savePlayer(player) < 0);
-//    player->setCureentSnake(-1);
-//    id = db.savePlayer(player);
-//    QVERIFY(id == 0);
+    QVERIFY(db.savePlayer(player) < 0);
+    player.setCureentSnake(-1);
+    id = db.savePlayer(player);
+    QVERIFY(id == 0);
 
-//    QVERIFY(!db.saveowners(id, QSet<int>() << 1));
-//    QVERIFY(db.saveowners(id, QSet<int>() << 0));
+    QVERIFY(!db.saveowners(id, QSet<int>() << 1));
+    QVERIFY(db.saveowners(id, QSet<int>() << 0));
 
-//    QSet<int> items;
-//    QVERIFY(db.getAllItemsOfPalyer(id, items));
-//    QVERIFY(items.contains(0));
-//    QVERIFY(items.size() == 1);
-
-
-//    player->setCureentSnake(0);
-//    id = db.savePlayer(player);
-
-//    auto resPlayer = static_cast<decltype (player)>(db.getPlayer(id));
-//    QVERIFY(resPlayer);
-//    QVERIFY(player->getLastOnline() == resPlayer->getLastOnline());
-//    QVERIFY(player->getMany() == resPlayer->getMany());
-//    QVERIFY(player->getOnlineTime() == resPlayer->getOnlineTime());
-//    QVERIFY(player->getName() == resPlayer->getName());
-//    QVERIFY(player->getCureentSnake() == resPlayer->getCureentSnake());
+    QSet<int> items;
+    QVERIFY(db.getAllItemsOfPalyer(id, items));
+    QVERIFY(items.contains(0));
+    QVERIFY(items.size() == 1);
 
 
-//    player->setCureentSnake(3);
+    player.setCureentSnake(0);
+    id = db.savePlayer(player);
 
-//    QVERIFY(db.savePlayer(player) < 0);
-//    player->setCureentSnake(0);
-//    player->setName("new");
-//    QVERIFY(db.savePlayer(player) == id);
+    auto resPlayer = db.getPlayer(id);
+    QVERIFY(resPlayer.isValid());
+    QVERIFY(player.getLastOnline() == resPlayer.getLastOnline());
+    QVERIFY(player.getMany() == resPlayer.getMany());
+    QVERIFY(player.getOnlineTime() == resPlayer.getOnlineTime());
+    QVERIFY(player.getName() == resPlayer.getName());
+    QVERIFY(player.getCureentSnake() == resPlayer.getCureentSnake());
 
-//    auto tempPlayer = static_cast<decltype (player)>(db.getPlayer(id));
 
-//    QVERIFY(tempPlayer->getName() == "new");
+    player.setCureentSnake(3);
 
-//    delete tempPlayer;
-//    delete player;
+    QVERIFY(db.savePlayer(player) < 0);
+    player.setCureentSnake(0);
+    player.setName("new");
+    QVERIFY(db.savePlayer(player) == id);
+
+    resPlayer = db.getPlayer(id);
+
+    QVERIFY(resPlayer.getName() == "new");
 
 }
 
 void testSankeServer::testSqlCache() {
-//    SqlDBCache db;
+    SqlDBCache db;
 
-//    QFile::remove("./test.db");
+    QFile::remove("./test2.db");
 
-//    bool init = db.initDb("test.db", "./");
+    bool init = db.initDb("test2.db", "./");
 
-//    if (!init) {
-//        QFile::remove("./test.db");
-//    }
+    if (!init) {
+        QFile::remove("./test2.db");
+    }
 
-//    QVERIFY(init);
-
-
-//    ClientProtocol::Snake snake;
-//    snake.setSpeed(10);
-//    snake.setSkillet(QList<float>() << 1);
-//    snake.setSnakeClass(0);
+    QVERIFY(init);
 
 
-//    // TEST ITEM
-
-//    ClientProtocol::Snake *resSnake;
-//    int id = db.saveItem(&snake);
-//    QVERIFY(id == 0);
-
-//    resSnake = static_cast<decltype (resSnake)>(db.getItem(id));
-//    QVERIFY(resSnake);
-//    QVERIFY(snake.getSpeed() == resSnake->getSpeed());
-//    QVERIFY(snake.getSkillet() == resSnake->getSkillet());
-//    QVERIFY(snake.getSnakeClass() == resSnake->getSnakeClass());
-//    QVERIFY(snake.getClass() == resSnake->getClass());
-//    QVERIFY(snake.id() == resSnake->id());
-
-//    resSnake->setSnakeClass(10);
-//    QVERIFY(id == db.saveItem(resSnake));
-
-//    auto temp = static_cast<decltype (resSnake)>(db.getItem(id));
-
-//    QVERIFY(temp->getSnakeClass() == 10);
+    ClientProtocol::Snake snake;
+    snake.setSpeed(10);
+    snake.setSkillet(QList<float>() << 1);
+    snake.setSnakeClass(0);
 
 
-//    // TEST PLAYER
+    // TEST ITEM
 
-//    PlayerDBData *player = new PlayerDBData();
+    ClientProtocol::Snake resSnake;
 
-//    player->setMany(10);
-//    player->setLastOnline(1000);
-//    player->setOnlineTime(1001);
-//    player->setName("test");
-//    player->setGmail("test@gmail.com");
-//    player->setCureentSnake(0);
-//    player->setToken(QCryptographicHash::hash("1", QCryptographicHash::Sha256));
+    int id = db.saveItem(&snake);
 
-//    QVERIFY(db.savePlayer(player) < 0);
-//    player->setCureentSnake(-1);
-//    id = db.savePlayer(player);
-//    QVERIFY(id == 0);
+    QVERIFY(id == 0);
+    snake.setId(id);
 
-//    QVERIFY(!db.getItem(id, 1));
-//    QVERIFY(db.getItem(id, 0));
+    QVERIFY(db.getItem(id).parse(resSnake));
 
-//    player->setCureentSnake(0);
-//    QVERIFY(db.savePlayer(player) == id);
+    QVERIFY(snake.getSpeed() == resSnake.getSpeed());
+    QVERIFY(snake.getSkillet() == resSnake.getSkillet());
+    QVERIFY(snake.getSnakeClass() == resSnake.getSnakeClass());
+    QVERIFY(snake.getClass() == resSnake.getClass());
+    QVERIFY(snake.id() == resSnake.id());
 
-//    auto resPlayer = static_cast<decltype (player)>(db.getPlayer(id));
-//    QVERIFY(resPlayer);
-//    QVERIFY(player->getLastOnline() == resPlayer->getLastOnline());
-//    QVERIFY(player->getMany() == resPlayer->getMany());
-//    QVERIFY(player->getOnlineTime() == resPlayer->getOnlineTime());
-//    QVERIFY(player->getName() == resPlayer->getName());
-//    QVERIFY(player->getCureentSnake() == resPlayer->getCureentSnake());
+    resSnake.setSnakeClass(10);
+    QVERIFY(id == db.saveItem(Item(&resSnake)));
+
+    ClientProtocol::Snake temp;
+    QVERIFY(db.getItem(id).parse(temp));
+
+    QVERIFY(temp.getSnakeClass() == 10);
 
 
-//    player->setCureentSnake(3);
+    // TEST PLAYER
 
-//    QVERIFY(db.savePlayer(player) < 0);
-//    player->setCureentSnake(0);
-//    player->setName("new");
-//    QVERIFY(db.savePlayer(player) == id);
+    PlayerDBData player = PlayerDBData();
 
-//    auto tempPlayer = static_cast<decltype (player)>(db.getPlayer(id));
+    player.setMany(10);
+    player.setLastOnline(1000);
+    player.setOnlineTime(1001);
+    player.setName("test");
+    player.setGmail("test@gmail.com");
+    player.setCureentSnake(0);
 
-//    QVERIFY(tempPlayer->getName() == "new");
+    QVERIFY(db.savePlayer(player) < 0);
+    player.setId(0);
+
+    QVERIFY(db.savePlayer(player) < 0);
+    player.setCureentSnake(-1);
+    id = db.savePlayer(player);
+    QVERIFY(id == 0);
+
+    QVERIFY(!db.getItem(id, 1));
+    QVERIFY(db.getItem(id, 0));
+
+    player.setCureentSnake(0);
+    QVERIFY(db.savePlayer(player) == id);
+
+    auto resPlayer = db.getPlayer(id);
+    QVERIFY(resPlayer.isValid());
+    QVERIFY(player.getLastOnline() == resPlayer.getLastOnline());
+    QVERIFY(player.getMany() == resPlayer.getMany());
+    QVERIFY(player.getOnlineTime() == resPlayer.getOnlineTime());
+    QVERIFY(player.getName() == resPlayer.getName());
+    QVERIFY(player.getCureentSnake() == resPlayer.getCureentSnake());
 
 
-//    PlayerDBData *second_player = new PlayerDBData();
+    player.setCureentSnake(3);
 
-//    second_player->setMany(10);
-//    second_player->setLastOnline(1000);
-//    second_player->setOnlineTime(1001);
-//    second_player->setName("test2");
-//    second_player->setGmail("test2@gmail.com");
-//    second_player->setCureentSnake(-1);
-//    second_player->setId(-1);
-//    second_player->setToken(QCryptographicHash::hash("1", QCryptographicHash::Sha256));
+    QVERIFY(db.savePlayer(player) < 0);
+    player.setCureentSnake(0);
+    player.setName("new");
+    QVERIFY(db.savePlayer(player) == id);
 
-//    QVERIFY(db.savePlayer(second_player) == 1);
+    resPlayer = db.getPlayer(id);
 
-//    QVERIFY(db.moveItem(0, 1, 0));
+    QVERIFY(resPlayer.getName() == "new");
 
-//    QSet<int> items;
-//    QVERIFY(db.getAllItemsOfPalyer(1, items));
-//    QVERIFY(items.contains(0));
-//    QVERIFY(items.size() == 1);
 
-//    db.updateInterval = 0;
+    PlayerDBData second_player = PlayerDBData();
 
-//    db.globalUpdateDataBasePrivate(0);
+    second_player.setMany(10);
+    second_player.setLastOnline(1000);
+    second_player.setOnlineTime(1001);
+    second_player.setName("test2");
+    second_player.setGmail("test2@gmail.com");
+    second_player.setCureentSnake(-1);
+    second_player.setId(-1);
+
+    QVERIFY(db.savePlayer(second_player) == 1);
+
+    QVERIFY(db.moveItem(0, 1, 0));
+
+    QSet<int> items;
+    QVERIFY(db.getAllItemsOfPalyer(1, items));
+    QVERIFY(items.contains(0));
+    QVERIFY(items.size() == 1);
+
+    db.updateInterval = 0;
+
+    db.globalUpdateDataBasePrivate(0);
 
 }
 
@@ -481,7 +482,6 @@ void testSankeServer::testClientProtockol() {
     testGetItem();
     testUserData();
     testApplyData();
-    testSql();
 }
 
 QTEST_APPLESS_MAIN(testSankeServer)

@@ -1,13 +1,25 @@
 #include "item.h"
 #include "factorynetobjects.h"
 #include <exception>
+#include <quasarapp.h>
 
 int Item::getId() const {
     return id;
 }
 
-void Item::setId(int value) {
+bool Item::setId(int value) {
     id = value;
+
+    if (data.size() < static_cast<int>(sizeof (id) + sizeof (ClientProtocol::Command))) {
+        return false;
+    }
+
+    int oldSize = data.size();
+
+    data.replace(sizeof (ClientProtocol::Command), sizeof (id),
+                 reinterpret_cast<char*>(&id), sizeof (id));
+
+    return data.size() == oldSize;
 }
 
 Item::Item() {
@@ -24,7 +36,8 @@ Item::Item(const ClientProtocol::Package &other) {
 
 Item::Item(const ClientProtocol::BaseNetworkObject *obj) {
     if (!create(obj, ClientProtocol::Type::Stream)) {
-        throw "Error create Item from BaseNetworkObject!";
+        QuasarAppUtils::Params::verboseLog("Error create Item from BaseNetworkObject",
+                                           QuasarAppUtils::VerboseLvl::Error);
     }
 
     id = obj->id();
@@ -32,7 +45,8 @@ Item::Item(const ClientProtocol::BaseNetworkObject *obj) {
 
 Item::Item(ClientProtocol::Command cmd, const QByteArray &data) {
     if (!create(cmd, ClientProtocol::Type::Stream, data)) {
-        throw std::runtime_error("Error create Item from BaseNetworkObject!");
+        QuasarAppUtils::Params::verboseLog("Error create Item from QByteArray",
+                                           QuasarAppUtils::VerboseLvl::Error);
     }
 
     ClientProtocol::BaseNetworkObject base;

@@ -74,7 +74,7 @@ bool SqlDBWriter::disableFK() const {
 }
 
 int SqlDBWriter::getLastIdItems() {
-    if (!isValid()) {
+    if (!SqlDBWriter::isValid()) {
         return -1;
     }
 
@@ -88,11 +88,12 @@ int SqlDBWriter::getLastIdItems() {
         return -1;
     }
 
-    return query->value(0).toInt();
+    auto res = query->value(0).toInt();
+    return res;
 }
 
 int SqlDBWriter::getLastIdPlayers() {
-    if (!isValid()) {
+    if (!SqlDBWriter::isValid()) {
         return -1;
     }
 
@@ -111,7 +112,7 @@ int SqlDBWriter::getLastIdPlayers() {
 
 int SqlDBWriter::getPlayerId(const QString &gmail) {
 
-    if (!isValid()) {
+    if (!SqlDBWriter::isValid()) {
         return -1;
     }
 
@@ -149,7 +150,7 @@ bool SqlDBWriter::checkItem(int idItem, int idOwner) {
 
 
     if (idOwner >= 0 ) {
-        if (!checkPlayer(idOwner)) {
+        if (!SqlDBWriter::checkPlayer(idOwner)) {
             return false;
         }
 
@@ -184,7 +185,7 @@ bool SqlDBWriter::checkItem(int idItem, int idOwner) {
 }
 
 int SqlDBWriter::savePlayer(const PlayerDBData &player) {
-    if (!isValid()) {
+    if (!SqlDBWriter::isValid()) {
         return -1;
     }
 
@@ -197,12 +198,12 @@ int SqlDBWriter::savePlayer(const PlayerDBData &player) {
 
     int curSnake = player.getCureentSnake();
 
-    if (curSnake >= 0 && !checkItem(curSnake, id)) {
+    if (curSnake >= 0 && !SqlDBWriter::checkItem(curSnake, id)) {
         return -1;
     }
 
 
-    if (checkPlayer(id)) {
+    if (SqlDBWriter::checkPlayer(id)) {
         request = QString("UPDATE players SET name='%0', gmail='%1', money='%2',"
                           " avgrecord='%3', record='%4', lastOnline='%5',"
                           " onlinetime='%6', currentsnake='%7' WHERE id='%8' ").arg(
@@ -251,7 +252,7 @@ int SqlDBWriter::savePlayer(const PlayerDBData &player) {
 }
 
 int SqlDBWriter::saveItem(const Item &item) {
-    if (!isValid()) {
+    if (!SqlDBWriter::isValid()) {
         return -1;
     }
 
@@ -265,7 +266,7 @@ int SqlDBWriter::saveItem(const Item &item) {
     QByteArray bytes = item.dataArray();
     QString request;
 
-    if (checkItem(id)) {
+    if (SqlDBWriter::checkItem(id)) {
         request = QString("UPDATE items SET type='%1', data = :bytes where id = %0").
                 arg(id).
                 arg(static_cast<int>(type));
@@ -292,7 +293,7 @@ int SqlDBWriter::saveItem(const Item &item) {
 }
 
 bool SqlDBWriter::getAllItemsOfPalyer(int player, QSet<int> &items) {
-    if (!isValid()) {
+    if (!SqlDBWriter::isValid()) {
         return false;
     }
 
@@ -312,16 +313,20 @@ bool SqlDBWriter::getAllItemsOfPalyer(int player, QSet<int> &items) {
 
 bool SqlDBWriter::saveowners(int player, const QSet<int> items) {
 
-    if (!isValid()) {
+    if (!SqlDBWriter::isValid()) {
         return false;
     }
 
     QString request = QString("DELETE from owners where player='%0' ").
-            arg(player).arg(player);
+            arg(player);
 
     if (!query->exec(request)) {
         QuasarAppUtils::Params::verboseLog("request error : " + query->lastError().text());
         return false;
+    }
+
+    if (items.isEmpty()) {
+        return true;
     }
 
     request = QString("INSERT INTO owners(player, item) VALUES ");
@@ -340,7 +345,7 @@ bool SqlDBWriter::saveowners(int player, const QSet<int> items) {
 
 PlayerDBData SqlDBWriter::getPlayer(int id) {
 
-    if (!isValid()) {
+    if (!SqlDBWriter::isValid()) {
         return PlayerDBData();
     }
 
@@ -356,7 +361,7 @@ PlayerDBData SqlDBWriter::getPlayer(int id) {
 
     auto player = PlayerDBData();
 
-
+    player.setId(id);
     player.setName(query->value("name").toString());
     player.setGmail(query->value("gmail").toString());
     player.setMany(query->value("money").toUInt());
@@ -371,7 +376,7 @@ PlayerDBData SqlDBWriter::getPlayer(int id) {
 
 Item SqlDBWriter::getItem(int id) {
 
-    if (!isValid()) {
+    if (!SqlDBWriter::isValid()) {
         return Item();
     }
 
@@ -392,7 +397,7 @@ Item SqlDBWriter::getItem(int id) {
 }
 
 bool SqlDBWriter::itemIsFreeFrom(int item) const {
-    if (!isValid()) {
+    if (!SqlDBWriter::isValid()) {
         return false;
     }
 

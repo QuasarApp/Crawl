@@ -20,7 +20,7 @@ public:
     const QByteArray& dataArray() const;
     bool isValid() const override;
     int getId() const;
-    void setId(int value);
+    bool setId(int value);
     template<class T>
     bool parse(T& res) {
         return ClientProtocol::Package::parse(res);

@@ -85,27 +85,21 @@ bool SqlDBCache::checkItem(int idItem, int idOwner) {
 }
 
 void SqlDBCache::globalUpdateDataBasePrivate(qint64 currentTime) {
-    QList<int> removeIds;
     for (auto item = items.begin(); item != items.end(); ++item) {
         if (SqlDBWriter::saveItem(item.value()) < 0) {
-            removeIds.push_back(item.key());
-
             QuasarAppUtils::Params::verboseLog("writeUpdateItemIntoDB failed when"
                                                " work globalUpdateDataRelease!!! id=" +
-                                                QString::number(item.key()));
+                                                QString::number(item.key()),
+                                               QuasarAppUtils::VerboseLvl::Error);
         }
-    }
-
-    for (int id : removeIds) {
-        items.remove(id);
     }
 
     for (auto player = players.begin(); player != players.end(); ++player) {
         if (SqlDBWriter::savePlayer(player.value()) < 0) {
-            removeIds.push_back(player.key());
             QuasarAppUtils::Params::verboseLog("writeUpdatePlayerIntoDB failed when"
                                                " work globalUpdateDataRelease!!! id=" +
-                                                QString::number(player.key()));
+                                                QString::number(player.key()),
+                                               QuasarAppUtils::VerboseLvl::Error);
 
         }
     }
@@ -114,7 +108,8 @@ void SqlDBCache::globalUpdateDataBasePrivate(qint64 currentTime) {
         if (!SqlDBWriter::saveowners(owner.key(), owner.value())) {
             QuasarAppUtils::Params::verboseLog("UpdateInfoOfowners failed when"
                                                " work globalUpdateDataRelease!!! id=" +
-                                                QString::number(owner.key()));
+                                                QString::number(owner.key()),
+                                               QuasarAppUtils::VerboseLvl::Error);
         }
     }
 
@@ -165,7 +160,7 @@ bool SqlDBCache::initDb(const QString &sql, const QString &path) {
 
 Item SqlDBCache::getItem(int id) {
     if (!isValid()) {
-        return nullptr;
+        return Item();
     }
 
     auto item = items.value(id);
@@ -180,7 +175,7 @@ Item SqlDBCache::getItem(int id) {
         return item;
     }
 
-    return nullptr;
+    return Item();
 }
 
 int SqlDBCache::saveItem(const Item &saveData) {
@@ -193,7 +188,9 @@ int SqlDBCache::saveItem(const Item &saveData) {
 
     if (id < 0) {
         id = generateIdForItem();
-        item.setId(id);
+        if (!item.setId(id)) {
+            return -1;
+        }
     }
 
     if (!item.isValid()) {
@@ -269,6 +266,12 @@ bool SqlDBCache::giveAwayItem(int player, int item) {
     if (owners.contains(player)) {
         auto &owner = owners[player];
         owner.remove(item);
+
+        auto &p = players[player];
+
+        if (p.getCureentSnake() == item) {
+            p.setCureentSnake(-1);
+        }
 
         globalUpdateDataBase(SqlDBCasheWriteMode::On_New_Thread);
 

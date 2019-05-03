@@ -112,6 +112,6 @@ QDataStream &Player::readFromStream(QDataStream &stream) {
 
 bool Player::isValid() const {
     return !name.isNull() && gmail.size() > 5 &&
-            UpdatePlayerData::isValid();
+            BaseNetworkObject::isValid();
 }
 }
