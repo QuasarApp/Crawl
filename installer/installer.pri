@@ -101,7 +101,7 @@ BASE_DEPLOY_FLAGS_SNAKE = $$BASE_DEPLOY_FLAGS -targetDir $$PWD/packages/Snake/da
 
 deploy_dep.commands += $$DEPLOYER -bin $$DEPLOY_TARGET -qmlDir $$QML_DIR $$BASE_DEPLOY_FLAGS_SNAKE
 
-mkpath( $$PWD/../OUT)
+mkpath( $$PWD/../Distro)
 
 deploy.commands = $$EXEC \
                        -c $$PWD/config/config.xml \
