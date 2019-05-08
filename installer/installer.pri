@@ -106,7 +106,7 @@ mkpath( $$PWD/../OUT)
 deploy.commands = $$EXEC \
                        -c $$PWD/config/config.xml \
                        -p $$PWD/packages \
-                       $$PWD/../OUT/$$OUT_FILE
+                       $$PWD/../Distro/$$OUT_FILE
 
 deploy.depends = deploy_dep
 
@@ -115,7 +115,7 @@ ONLINE_REPO_DIR = $$ONLINE
 create_repo.commands = $$REPOGEN \
                         --update-new-components \
                         -p $$PWD/packages \
-                        $$ONLINE_REPO_DIR
+                        $$ONLINE_REPO_DIR/Snake
 
 message( ONLINE_REPO_DIR $$ONLINE_REPO_DIR)
 !isEmpty( ONLINE_REPO_DIR ) {
@@ -128,7 +128,7 @@ message( ONLINE_REPO_DIR $$ONLINE_REPO_DIR)
                            --online-only \
                            -c $$PWD/config/config.xml \
                            -p $$PWD/packages \
-                           $$PWD/../OUT/$$OUT_FILE
+                           $$PWD/../Distro/$$OUT_FILE
 }
 
 OTHER_FILES += \
