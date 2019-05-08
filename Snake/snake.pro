@@ -43,7 +43,6 @@ QML_IMPORT_PATH =
 # Additional import path used to resolve QML modules just for Qt Quick Designer
 QML_DESIGNER_IMPORT_PATH =
 
-include($$PWD/../QuasarAppLib/Etalons/qmake/install_prefix.pri)
 include($$PWD/../QuasarAppLib/QuasarLib.pri)
 include($$PWD/../SnakeUtils/SnakeUtils.pri)
 

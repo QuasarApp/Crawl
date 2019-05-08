@@ -18,4 +18,10 @@
     <Banner>banner.png</Banner>
     <Logo>logo.png</Logo>
     <RunProgram>@TargetDir@/snake.exe</RunProgram>
+
+    <RemoteRepositories>
+        <Repository>
+            <Url>http://178.124.160.6:3030/Snake</Url>
+        </Repository>
+    </RemoteRepositories>
 </Installer>

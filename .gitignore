@@ -73,3 +73,5 @@ SnakeServer/serverProtocolTests/target_wrapper\.sh
 SnakeServer/serverProtocolTests/serverProtocolTests
 
 deployTests/
+
+installer/SnakeInstaller
