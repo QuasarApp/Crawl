@@ -1,6 +1,7 @@
 QT_DIR = $$dirname(QMAKE_QMAKE)
 QML_DIR = $$PWD/../Snake/
 DEPLOY_TARGET = $$PWD/../Snake/build/release
+DEPLOY_SERVER = $$PWD/../Snake/SnakeServer/Daemon/build/release,$$PWD/../Snake/SnakeServer/Terminal/build/release
 
 
 win32:LUPDATE = $$QT_DIR/lupdate.exe
@@ -44,6 +45,8 @@ win32:REPOGEN=$$first(REPO_LIST).exe
 
 contains(QMAKE_HOST.os, Linux):{
     unix:EXEC=$$first(BINARY_LIST)
+    win32:EXEC=wine $$first(BINARY_LIST).exe
+
     REPOGEN=$$first(REPO_LIST)
 }
 
@@ -90,14 +93,22 @@ for(command, commands) {
     system($$command)|error("Failed to run: $$command")
 }
 
-BASE_DEPLOY_FLAGS = clear -qmake $$QMAKE_QMAKE -targetDir $$PWD/packages/Snake/data -libDir $$PWD/../ -recursiveDepth 5
+INSTALL_SERVER_DIR = ~/SnakeServer
 
-deploy.commands += $$DEPLOYER -bin $$DEPLOY_TARGET -qmlDir $$QML_DIR $$BASE_DEPLOY_FLAGS
+BASE_DEPLOY_FLAGS = clear -qmake $$QMAKE_QMAKE -libDir $$PWD/../ -recursiveDepth 5
+BASE_DEPLOY_FLAGS_SERVER = $$BASE_DEPLOY_FLAGS -targetDir $$INSTALL_SERVER_DIR
+BASE_DEPLOY_FLAGS_SNAKE = $$BASE_DEPLOY_FLAGS -targetDir $$PWD/packages/Snake/data
 
-release.commands = $$EXEC \
+deploy_dep.commands += $$DEPLOYER -bin $$DEPLOY_TARGET -qmlDir $$QML_DIR $$BASE_DEPLOY_FLAGS_SNAKE
+
+mkpath( $$PWD/../OUT)
+
+deploy.commands = $$EXEC \
                        -c $$PWD/config/config.xml \
                        -p $$PWD/packages \
-                       $$PWD/$$OUT_FILE
+                       $$PWD/../OUT/$$OUT_FILE
+
+deploy.depends = deploy_dep
 
 ONLINE_REPO_DIR = $$ONLINE
 
@@ -113,11 +124,11 @@ message( ONLINE_REPO_DIR $$ONLINE_REPO_DIR)
 
     release.depends = create_repo
 
-    release.commands = $$EXEC \
+    deploy.commands = $$EXEC \
                            --online-only \
                            -c $$PWD/config/config.xml \
                            -p $$PWD/packages \
-                           $$PWD/$$OUT_FILE
+                           $$PWD/../OUT/$$OUT_FILE
 }
 
 OTHER_FILES += \
@@ -129,10 +140,25 @@ OTHER_FILES += \
     $$PWD/packages/Installer/data/app.check \
     $$PWD/packages/Snake/meta/* \
 
+installSnake.commands = $$DEPLOYER -bin $$DEPLOY_SERVER $$BASE_DEPLOY_FLAGS_SERVER
+
+createLinks.commands = ln -s $$INSTALL_SERVER_DIR/Terminal.sh ~/.local/bin/snake-term && \
+                       ln -s $$INSTALL_SERVER_DIR/SnakeServer-daemon.sh ~/.local/bin/snake-d
+
+
+runServer.commands = snake-d daemon
 
 release.depends += deploy
+release.depends += installSnake
+release.depends += createLinks
+release.depends += runServer
+
 
 QMAKE_EXTRA_TARGETS += \
+    installSnake \
+    createLinks \
+    runServer \
+    deploy_dep \
     deploy \
     create_repo \
     release \
