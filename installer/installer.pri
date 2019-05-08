@@ -1,7 +1,7 @@
 QT_DIR = $$dirname(QMAKE_QMAKE)
 QML_DIR = $$PWD/../Snake/
 DEPLOY_TARGET = $$PWD/../Snake/build/release
-DEPLOY_SERVER = $$PWD/../Snake/SnakeServer/Daemon/build/release,$$PWD/../Snake/SnakeServer/Terminal/build/release
+DEPLOY_SERVER = $$PWD/../SnakeServer/Daemon/build/release,$$PWD/../SnakeServer/Terminal/build/release
 
 
 win32:LUPDATE = $$QT_DIR/lupdate.exe
@@ -148,7 +148,6 @@ createLinks.commands = ln -s $$INSTALL_SERVER_DIR/Terminal.sh ~/.local/bin/snake
 
 runServer.commands = snake-d daemon
 
-release.depends += deploy
 release.depends += installSnake
 release.depends += createLinks
 release.depends += runServer
