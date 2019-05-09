@@ -150,7 +150,7 @@ createLinks.commands = ln -sf $$INSTALL_SERVER_DIR/Terminal.sh ~/.local/bin/snak
                        ln -sf $$INSTALL_SERVER_DIR/SnakeServer-daemon.sh ~/.local/bin/snake-d
 
 
-runServer.commands = snake-d daemon
+runServer.commands = snake-d daemon && echo daemon started
 
 release.depends += installSnake
 release.depends += createLinks
