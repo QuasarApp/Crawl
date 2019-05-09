@@ -142,8 +142,8 @@ OTHER_FILES += \
 
 installSnake.commands = $$DEPLOYER -bin $$DEPLOY_SERVER $$BASE_DEPLOY_FLAGS_SERVER
 
-createLinks.commands = ln -s $$INSTALL_SERVER_DIR/Terminal.sh ~/.local/bin/snake-term && \
-                       ln -s $$INSTALL_SERVER_DIR/SnakeServer-daemon.sh ~/.local/bin/snake-d
+createLinks.commands = ln -sf $$INSTALL_SERVER_DIR/Terminal.sh ~/.local/bin/snake-term && \
+                       ln -sf $$INSTALL_SERVER_DIR/SnakeServer-daemon.sh ~/.local/bin/snake-d
 
 
 runServer.commands = snake-d daemon
