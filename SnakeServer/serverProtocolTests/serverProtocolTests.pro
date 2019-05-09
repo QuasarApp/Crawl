@@ -6,6 +6,8 @@ CONFIG -= app_bundle
 
 TEMPLATE = app
 
+TARGET = serverTests
+
 SOURCES += \   
     tst_testsnakeserver.cpp
 
@@ -24,3 +26,12 @@ include($$PWD/../../SnakeServer/Server/Server.pri)
 
 
 HEADERS +=
+
+deployTest.commands = cqtdeployer -bin $$DESTDIR clear -qmake $$QMAKE_QMAKE -targetDir $$PWD/deployTests -libDir $$PWD/../../ -recursiveDepth 5
+
+test.depends = deployTest
+test.commands = $$PWD/deployTests/serverTests.sh
+
+QMAKE_EXTRA_TARGETS += \
+    deployTest \
+    test

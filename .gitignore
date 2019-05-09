@@ -71,3 +71,9 @@ SnakeServer/Daemon/build/*/Daemon
 SnakeServer/serverProtocolTests/target_wrapper\.sh
 
 SnakeServer/serverProtocolTests/serverProtocolTests
+
+deployTests/
+
+installer/SnakeInstaller
+
+Distro/

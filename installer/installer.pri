@@ -1,46 +1,57 @@
 QT_DIR = $$dirname(QMAKE_QMAKE)
 QML_DIR = $$PWD/../Snake/
-DEPLOY_TARGET_ALL = $$PWD/../Snake/build/release,$$PWD/../SnakeServer/Daemon/build/release,$$PWD/../SnakeServer/Terminal/build/release
-DEPLOY_TARGET_SNAKE = $$PWD/../Snake/build/release
-DEPLOY_TARGET_SERVER = $$PWD/../SnakeServer/Daemon/build/release,SnakeServer/Terminal/build/release
+DEPLOY_TARGET = $$PWD/../Snake/build/release
+DEPLOY_SERVER = $$PWD/../SnakeServer/Daemon/build/release,$$PWD/../SnakeServer/Terminal/build/release
 
-LUPDATE = $$QT_DIR/lupdate
-LRELEASE = $$QT_DIR/lrelease
 
-win32:DEPLOYER = $$PWD/../CQtDeployerBinaries/Windows/cqtdeployer.exe
-unix:DEPLOYER = $$PWD/../CQtDeployerBinaries/Linux/cqtdeployer.sh
+win32:LUPDATE = $$QT_DIR/lupdate.exe
+win32:LRELEASE = $$QT_DIR/lrelease.exe
 
-OUT_FILE = installer
+win32:DEPLOYER = cqtdeployer.exe
 
-CONFIG(serverbuild): {
-    EXEC = binarycreator
-} else: {
+win32:OUT_FILE = SnakeInstaller.exe
 
-    BINARY_LIST
-    exists( $$QT_DIR/../../../Tools/QtInstallerFramework/3.0/bin/ ) {
-          message( "QtInstallerFramework v3.0: yes" )
-          BINARY_LIST += $$QT_DIR/../../../Tools/QtInstallerFramework/3.0/bin/binarycreator
-    }
-    exists( $$QT_DIR/../../../Tools/QtInstallerFramework/2.0/bin/ ) {
-          message( "QtInstallerFramework v2.0: yes" )
-          BINARY_LIST += $$QT_DIR/../../../Tools/QtInstallerFramework/2.0/bin/binarycreator
-    }
+contains(QMAKE_HOST.os, Linux):{
+    LUPDATE = $$QT_DIR/lupdate
+    LRELEASE = $$QT_DIR/lrelease
 
-    isEmpty (BINARY_LIST) {
-          error( "QtInstallerFramework not found!" )
-    }
+    DEPLOYER = cqtdeployer
 
-    EXEC=$$first(BINARY_LIST)
-    message( selected $$EXEC  )
+    OUT_FILE = SnakeInstaller
 
 }
 
-win32 {
-    LUPDATE = $${LUPDATE}.exe
-    LRELEASE = $${LRELEASE}.exe
-    EXEC = $${EXEC}.exe
-    OUT_FILE = $${OUT_FILE}.exe
+BINARY_LIST
+REPO_LIST
+exists( $$QT_DIR/../../../Tools/QtInstallerFramework/3.0/bin/ ) {
+      message( "QtInstallerFramework v3.0: yes" )
+      BINARY_LIST += $$QT_DIR/../../../Tools/QtInstallerFramework/3.0/bin/binarycreator
+      REPO_LIST += $$QT_DIR/../../../Tools/QtInstallerFramework/3.0/bin/repogen
+
 }
+exists( $$QT_DIR/../../../Tools/QtInstallerFramework/2.0/bin/ ) {
+      message( "QtInstallerFramework v2.0: yes" )
+      BINARY_LIST += $$QT_DIR/../../../Tools/QtInstallerFramework/2.0/bin/binarycreator
+      REPO_LIST += $$QT_DIR/../../../Tools/QtInstallerFramework/2.0/bin/repogen
+}
+
+isEmpty (BINARY_LIST) {
+      error( "QtInstallerFramework not found!" )
+}
+
+win32:EXEC=$$first(BINARY_LIST).exe
+
+win32:REPOGEN=$$first(REPO_LIST).exe
+
+contains(QMAKE_HOST.os, Linux):{
+    unix:EXEC=$$first(BINARY_LIST)
+    win32:EXEC=wine $$first(BINARY_LIST).exe
+
+    REPOGEN=$$first(REPO_LIST)
+}
+
+message( selected $$EXEC and $$REPOGEN)
+
 
 SUPPORT_LANGS = ru
 
@@ -82,56 +93,75 @@ for(command, commands) {
     system($$command)|error("Failed to run: $$command")
 }
 
-BASE_DEPLOY_FLAGS = clear -qmake $$QMAKE_QMAKE -targetDir $$PWD/packages/Snake/data -libDir $$PWD/../ -recursiveDepth 5
+INSTALL_SERVER_DIR = ~/SnakeServer
 
-deploy_depends_all.commands += $$DEPLOYER -bin $$DEPLOY_TARGET_ALL -qmlDir $$QML_DIR $$BASE_DEPLOY_FLAGS
-deploy_depends_server.commands += $$DEPLOYER -bin $$DEPLOY_TARGET_SERVER $$BASE_DEPLOY_FLAGS
-deploy_depends_snake.commands += $$DEPLOYER -bin $$DEPLOY_TARGET_SNAKE -qmlDir $$QML_DIR $$BASE_DEPLOY_FLAGS
+BASE_DEPLOY_FLAGS = clear -qmake $$QMAKE_QMAKE -libDir $$PWD/../ -recursiveDepth 5
+BASE_DEPLOY_FLAGS_SERVER = $$BASE_DEPLOY_FLAGS -targetDir $$INSTALL_SERVER_DIR
+BASE_DEPLOY_FLAGS_SNAKE = $$BASE_DEPLOY_FLAGS -targetDir $$PWD/packages/Snake/data
 
-create_installer.commands = $$EXEC \
-                               -c $$PWD/config/config.xml \
-                               -p $$PWD/packages \
-                               $$PWD/$$OUT_FILE
+deploy_dep.commands += $$DEPLOYER -bin $$DEPLOY_TARGET -qmlDir $$QML_DIR $$BASE_DEPLOY_FLAGS_SNAKE
 
-create_installer_all.commands = $$EXEC \
-                               -c $$PWD/config/config.xml \
-                               -p $$PWD/packages \
-                               $$PWD/$$OUT_FILE
+mkpath( $$PWD/../Distro)
 
-create_installer_snake.commands = $$EXEC \
-                               -c $$PWD/config/config.xml \
-                               -p $$PWD/packages \
-                               $$PWD/$$OUT_FILE
+win32:CONFIG_FILE = $$PWD/config/configWin.xml
+unix:CONFIG_FILE = $$PWD/config/configLinux.xml
 
-create_installer_server.commands = $$EXEC \
-                               -c $$PWD/config/config.xml \
-                               -p $$PWD/packages \
-                               $$PWD/$$OUT_FILE
+deploy.commands = $$EXEC \
+                       -c $$CONFIG_FILE \
+                       -p $$PWD/packages \
+                       $$PWD/../Distro/$$OUT_FILE
+
+deploy.depends = deploy_dep
+
+win32:ONLINE_REPO_DIR = $$ONLINE/Snake/Windows
+unix:ONLINE_REPO_DIR = $$ONLINE/Snake/Linux
+
+create_repo.commands = $$REPOGEN \
+                        --update-new-components \
+                        -p $$PWD/packages \
+                        $$ONLINE_REPO_DIR
+
+message( ONLINE_REPO_DIR $$ONLINE_REPO_DIR)
+!isEmpty( ONLINE ) {
+
+    message(online)
+
+    release.depends = create_repo
+
+    deploy.commands = $$EXEC \
+                           --online-only \
+                           -c $$CONFIG_FILE \
+                           -p $$PWD/packages \
+                           $$PWD/../Distro/$$OUT_FILE
+}
 
 OTHER_FILES += \
-    $$PWD/config/config.xml \
-    $$PWD/config/controlScript.js \
-    $$PWD/config/ru.ts \
-    $$PWD/config/style.css \
-    $$PWD/packages/Installer/meta/installscript.js \
-    $$PWD/config/config.xml \
-    $$PWD/packages/Installer/meta/package.xml \
+    $$PWD/config/*.xml \
+    $$PWD/config/*.js \
+    $$PWD/config/*.ts \
+    $$PWD/config/*.css \
+    $$PWD/packages/Installer/meta/* \
     $$PWD/packages/Installer/data/app.check \
-    $$PWD/packages/Installer/meta/ru.ts \
-    $$PWD/linuxQtDeploy.py \
-    $$PWD/packages/Installer/meta/targetwidget.ui \
-    $$PWD/packages/Snake/meta/package.xml \
-    $$PWD/packages/Snake/meta/installscript.js \
-    $$PWD/packages/Snake/meta/ru.ts
+    $$PWD/packages/Snake/meta/* \
 
-create_installer_all.depends = deploy_depends_all
-create_installer_snake.depends = deploy_depends_snake
-create_installer_server.depends = deploy_depends_server
+installSnake.commands = $$DEPLOYER -bin $$DEPLOY_SERVER $$BASE_DEPLOY_FLAGS_SERVER
+
+createLinks.commands = ln -sf $$INSTALL_SERVER_DIR/Terminal.sh ~/.local/bin/snake-term && \
+                       ln -sf $$INSTALL_SERVER_DIR/SnakeServer-daemon.sh ~/.local/bin/snake-d
+
+
+runServer.commands = snake-d daemon
+
+release.depends += installSnake
+release.depends += createLinks
+release.depends += runServer
+
 
 QMAKE_EXTRA_TARGETS += \
-    deploy_depends_all \
-    deploy_depends_snake \
-    deploy_depends_server \
-    create_installer_all \
-    create_installer_snake \
-    create_installer_server
+    installSnake \
+    createLinks \
+    runServer \
+    deploy_dep \
+    deploy \
+    create_repo \
+    release \

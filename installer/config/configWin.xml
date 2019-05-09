@@ -18,4 +18,12 @@
     <Banner>banner.png</Banner>
     <Logo>logo.png</Logo>
     <RunProgram>@TargetDir@/snake.exe</RunProgram>
+
+    <RemoteRepositories>
+        <Repository>
+            <Url>http://178.124.160.6:3030/Snake/Windows</Url>
+            <Enabled>1</Enabled>
+            <DisplayName>QuasarApp</DisplayName>
+        </Repository>
+    </RemoteRepositories>
 </Installer>
