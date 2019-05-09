@@ -103,22 +103,26 @@ deploy_dep.commands += $$DEPLOYER -bin $$DEPLOY_TARGET -qmlDir $$QML_DIR $$BASE_
 
 mkpath( $$PWD/../Distro)
 
+win32:CONFIG_FILE = $$PWD/config/configWin.xml
+unix:CONFIG_FILE = $$PWD/config/configLinux.xml
+
 deploy.commands = $$EXEC \
-                       -c $$PWD/config/config.xml \
+                       -c $$CONFIG_FILE \
                        -p $$PWD/packages \
                        $$PWD/../Distro/$$OUT_FILE
 
 deploy.depends = deploy_dep
 
-ONLINE_REPO_DIR = $$ONLINE
+win32:ONLINE_REPO_DIR = $$ONLINE/Snake/Windows
+unix:ONLINE_REPO_DIR = $$ONLINE/Snake/Linux
 
 create_repo.commands = $$REPOGEN \
                         --update-new-components \
                         -p $$PWD/packages \
-                        $$ONLINE_REPO_DIR/Snake
+                        $$ONLINE_REPO_DIR
 
 message( ONLINE_REPO_DIR $$ONLINE_REPO_DIR)
-!isEmpty( ONLINE_REPO_DIR ) {
+!isEmpty( ONLINE ) {
 
     message(online)
 
@@ -126,7 +130,7 @@ message( ONLINE_REPO_DIR $$ONLINE_REPO_DIR)
 
     deploy.commands = $$EXEC \
                            --online-only \
-                           -c $$PWD/config/config.xml \
+                           -c $$CONFIG_FILE \
                            -p $$PWD/packages \
                            $$PWD/../Distro/$$OUT_FILE
 }
