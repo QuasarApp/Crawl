@@ -150,17 +150,16 @@ createLinks.commands = ln -sf $$INSTALL_SERVER_DIR/Terminal.sh ~/.local/bin/snak
                        ln -sf $$INSTALL_SERVER_DIR/SnakeServer-daemon.sh ~/.local/bin/snake-d
 
 
-runServer.commands = snake-d daemon && echo daemon started
+runDaemon.commands = snake-d daemon
 
-release.depends += installSnake
-release.depends += createLinks
-release.depends += runServer
+unix:release.depends += installSnake
+unix:release.depends += createLinks
 
 
 QMAKE_EXTRA_TARGETS += \
     installSnake \
     createLinks \
-    runServer \
+    runDaemon \
     deploy_dep \
     deploy \
     create_repo \
