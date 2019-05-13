@@ -4,6 +4,7 @@
 #include <QLocalSocket>
 #include <quasarapp.h>
 #include <cstring>
+#include <QProcess>
 
 namespace ServerProtocol {
 
@@ -124,6 +125,43 @@ bool Client::restart(const QString &address, unsigned short port) {
     QVariantMap map;
     map["address"] = address;
     map["port"] = port;
+    pkg.fromMap(map);
+
+    return sendPackage(pkg);
+}
+
+bool Client::start(const QString &address, unsigned short port) {
+    QHostAddress test(address);
+
+    QStringList params = {"daemon"};
+
+    if (!test.isNull()) {
+        params.push_back("-address");
+        params.push_back(address);
+
+    }
+
+    if (port > 0) {
+        params.push_back("-port");
+        params.push_back(QString::number(port));
+    }
+
+    QProcess p;
+    QProcessEnvironment env;
+
+    p.setProcessEnvironment(env);
+    p.start("snake-d", params);
+
+    return p.waitForFinished(1000);
+}
+
+bool Client::stop() {
+
+    ServerProtocol::Package pkg;
+    pkg.hdr.command = ServerProtocol::Stop;
+    pkg.hdr.type = ServerProtocol::Request;
+
+    QVariantMap map;
     pkg.fromMap(map);
 
     return sendPackage(pkg);

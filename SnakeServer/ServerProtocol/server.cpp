@@ -42,6 +42,27 @@ void Server::parsePackage(const Package& pkg) {
         break;
     }
 
+    case Stop: {
+
+        if (pkg.hdr.type != Request) {
+            return;
+        }
+
+        Package resp;
+        resp.hdr.command = Stop;
+        resp.hdr.type = Responke;
+
+        QVariantMap data;
+        data["res"] = "Server is stoped";
+        resp.fromMap(data);
+
+        if (!sendPackage(resp)) {
+            QuasarAppUtils::Params::verboseLog("!responce not sendet!");
+        }
+
+        exit(0);
+    }
+
     default: {
         QVariantMap res;
         res["command"] = pkg.hdr.command;

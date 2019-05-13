@@ -110,13 +110,14 @@ MainServer::MainServer(QObject *ptr):
 
 }
 
-bool MainServer::run() {
+bool MainServer::run(const QString &ip, unsigned short port) {
 
     if (!_terminalPort->run(DEFAULT_SERVER)) {
         return false;
     }
 
-    if (!restartSrver(DEFAULT_SNAKE_SERVER, DEFAULT_SNAKE_PORT)) {
+    if (!restartSrver(ip.isEmpty()? DEFAULT_SNAKE_SERVER: ip,
+                      port ? port : DEFAULT_SNAKE_PORT)) {
         return false;
     }
 

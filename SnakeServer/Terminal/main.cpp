@@ -68,6 +68,13 @@ int main(int argc, char *argv[])
             qCritical() << "command not sendet!";
             return 1;
         }
+    } else if (QuasarAppUtils::Params::isEndable("stop")) {
+
+        QStringList address = QuasarAppUtils::Params::getStrArg("restart").split(":");
+        if (!cli.restart(address[0], static_cast<quint16>(address[1].toShort()))) {
+            qCritical() << "command not sendet!";
+            return 1;
+        }
     }
     else {
         ServerUtils::helpClient();

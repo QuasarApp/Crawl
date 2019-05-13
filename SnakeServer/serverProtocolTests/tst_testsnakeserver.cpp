@@ -51,28 +51,23 @@ private slots:
 
 };
 
-testSankeServer::testSankeServer()
-{
+testSankeServer::testSankeServer() {
 
 }
 
-testSankeServer::~testSankeServer()
-{
+testSankeServer::~testSankeServer() {
 
 }
 
-void testSankeServer::initTestCase()
-{
+void testSankeServer::initTestCase() {
     ClientProtocol::initClientProtockol();
 }
 
-void testSankeServer::cleanupTestCase()
-{
+void testSankeServer::cleanupTestCase() {
 
 }
 
-void testSankeServer::testPingServerProtockol()
-{
+void testSankeServer::testPingServerProtockol() {
     QuasarAppUtils::Params::setEnable("verbose", true);
 
     int argc =0;
@@ -110,14 +105,12 @@ void testSankeServer::testPingServerProtockol()
 
 }
 
-void testSankeServer::testStateServerProtockol()
-{
+void testSankeServer::testStateServerProtockol() {
     ServerProtocol::Client cle;
     QVERIFY(cle.getState());
 }
 
-void testSankeServer::testBanServerProtockol()
-{
+void testSankeServer::testBanServerProtockol() {
     ServerProtocol::Client cle;
     QVERIFY(!cle.ban(QHostAddress()));
 
@@ -132,8 +125,7 @@ void testSankeServer::testUnBanServerProtockol()
     QVERIFY(cle.unBan(QHostAddress("192.192.192.192")));
 }
 
-void testSankeServer::testRestartServerProtockol()
-{
+void testSankeServer::testRestartServerProtockol() {
     ServerProtocol::Client cle;
     QVERIFY(!cle.restart("lolo", 0));
 

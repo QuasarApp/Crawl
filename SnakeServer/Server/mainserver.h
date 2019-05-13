@@ -32,7 +32,7 @@ private slots:
 
 public:
     MainServer(QObject *ptr = nullptr);
-    bool run();
+    bool run(const QString& ip = "", unsigned short port = 0);
     virtual ~MainServer();
 };
 

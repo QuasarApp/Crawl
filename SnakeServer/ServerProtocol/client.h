@@ -28,6 +28,9 @@ public:
     bool ban(const QHostAddress& address);
     bool unBan(const QHostAddress& address);
     bool restart(const QString &address, unsigned short port);
+    bool start(const QString &address, unsigned short port);
+    bool stop();
+
 
 signals:
     void sigIncommingData(const QVariantMap& map);
