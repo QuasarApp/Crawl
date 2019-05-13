@@ -28,6 +28,10 @@ int main(int argc, char *argv[])
         port = QuasarAppUtils::Params::getStrArg("port").toUShort();
     }
 
+    if(ServerUtils::runDaemon()) {
+        return 0;
+    }
+
     QCoreApplication a(argc, argv);
 
     MainServer mainServer;
@@ -35,10 +39,6 @@ int main(int argc, char *argv[])
         QuasarAppUtils::Params::verboseLog("server is not run!");
         ServerUtils::helpDaemon();
         return 1;
-    }
-
-    if(ServerUtils::runDaemon()) {
-        return 0;
     }
 
     return a.exec();
