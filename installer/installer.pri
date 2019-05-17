@@ -23,16 +23,15 @@ contains(QMAKE_HOST.os, Linux):{
 
 BINARY_LIST
 REPO_LIST
-exists( $$QT_DIR/../../../Tools/QtInstallerFramework/3.0/bin/ ) {
-      message( "QtInstallerFramework v3.0: yes" )
-      BINARY_LIST += $$QT_DIR/../../../Tools/QtInstallerFramework/3.0/bin/binarycreator
-      REPO_LIST += $$QT_DIR/../../../Tools/QtInstallerFramework/3.0/bin/repogen
 
-}
-exists( $$QT_DIR/../../../Tools/QtInstallerFramework/2.0/bin/ ) {
-      message( "QtInstallerFramework v2.0: yes" )
-      BINARY_LIST += $$QT_DIR/../../../Tools/QtInstallerFramework/2.0/bin/binarycreator
-      REPO_LIST += $$QT_DIR/../../../Tools/QtInstallerFramework/2.0/bin/repogen
+sopprted_versions = 3.1 3.0 2.0
+for(val, sopprted_versions) {
+
+    exists( $$QT_DIR/../../../Tools/QtInstallerFramework/$$val/bin/ ) {
+          message( "QtInstallerFramework v$$val: yes" )
+          BINARY_LIST += $$QT_DIR/../../../Tools/QtInstallerFramework/$$val/bin/binarycreator
+          REPO_LIST += $$QT_DIR/../../../Tools/QtInstallerFramework/$$val/bin/repogen
+    }
 }
 
 isEmpty (BINARY_LIST) {
@@ -95,7 +94,7 @@ for(command, commands) {
 
 INSTALL_SERVER_DIR = ~/SnakeServer
 
-BASE_DEPLOY_FLAGS = clear -qmake $$QMAKE_QMAKE -libDir $$PWD/../ -recursiveDepth 5
+BASE_DEPLOY_FLAGS = clear -qmake $$QMAKE_QMAKE -libDir $$PWD/../ -recursiveDepth 5 -ignore Snake/data
 BASE_DEPLOY_FLAGS_SERVER = $$BASE_DEPLOY_FLAGS -targetDir $$INSTALL_SERVER_DIR
 BASE_DEPLOY_FLAGS_SNAKE = $$BASE_DEPLOY_FLAGS -targetDir $$PWD/packages/Snake/data
 
