@@ -45,8 +45,7 @@ public:
     SqlDBCache(qint64 updateInterval = DEFAULT_UPDATE_INTERVAL);
     ~SqlDBCache() override;
 
-    bool initDb(const QString &sql = DEFAULT_DB_NAME,
-                const QString &path = DEFAULT_DB_PATH) override;
+    bool initDb(const QString &pdbath = DEFAULT_DB_PATH) override;
 
     Item getItem(int id) override;
     int saveItem(const Item& saveData) override;

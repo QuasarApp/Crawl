@@ -17,6 +17,7 @@ void ServerUtils::helpDaemon() {
     qInfo() << "   daemon / d               : start like daemon.";
     qInfo() << "   -port (port)             : start with custom port.";
     qInfo() << "   -address (address)       : start with custom address.";
+    qInfo() << "   -db (path/to/db.file)    : start with custom db";
 
     qInfo() << "   verbose                  : show debug log";
 

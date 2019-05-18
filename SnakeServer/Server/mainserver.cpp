@@ -1,8 +1,10 @@
 #include "mainserver.h"
+#include "sqldbcache.h"
 #include <spserver.h>
 #include <cpserver.h>
 #include <quasarapp.h>
 #include <basenetworkobject.h>
+#include <login.h>
 
 bool MainServer::restartSrver(const QString &ip, unsigned short port) {
     if (_serverDaemon->isListening()) {
@@ -16,16 +18,27 @@ bool MainServer::restartSrver(const QString &ip, unsigned short port) {
     return true;
 }
 
-void MainServer::handleRequest(ClientProtocol::BaseNetworkObject *obj,
+void MainServer::handleRequest(ClientProtocol::Command cmd,
+                               const QByteArray& data,
                                const quint32 &addres) {
 
     Q_UNUSED(addres);
 
-    auto command = static_cast<ClientProtocol::Command>
-            (obj->getClass());
 
-    switch (command) {
+    switch (cmd) {
     case ClientProtocol::Command::Login: {
+
+        ClientProtocol::Login loginData;
+        loginData.fromBytes(data);
+
+
+        if (!loginData.isValid()) {
+            _serverDaemon->badRequest(addres);
+            return ;
+        }
+
+// TODO
+
         break;
     }
 
@@ -102,6 +115,8 @@ MainServer::MainServer(QObject *ptr):
     _serverDaemon = new  ClientProtocol::Server(this);
     _terminalPort = new  ServerProtocol::Server(this);
 
+    _db = new SqlDBCache();
+
     connect(_serverDaemon, &ClientProtocol::Server::incomingReques,
             this, &MainServer::handleRequest);
 
@@ -110,14 +125,21 @@ MainServer::MainServer(QObject *ptr):
 
 }
 
-bool MainServer::run(const QString &ip, unsigned short port) {
+bool MainServer::run(const QString &ip, unsigned short port, const QString& db) {
+
+    if (!_db->initDb((db.size())? db: DEFAULT_DB_PATH)) {
+        QuasarAppUtils::Params::verboseLog("init db fail!", QuasarAppUtils::Error);
+        return false;
+    }
 
     if (!_terminalPort->run(DEFAULT_SERVER)) {
+        QuasarAppUtils::Params::verboseLog("run termonal fail!", QuasarAppUtils::Error);
         return false;
     }
 
     if (!restartSrver(ip.isEmpty()? DEFAULT_SNAKE_SERVER: ip,
                       port ? port : DEFAULT_SNAKE_PORT)) {
+        QuasarAppUtils::Params::verboseLog("restart server fail", QuasarAppUtils::Error);
         return false;
     }
 

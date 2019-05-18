@@ -72,7 +72,7 @@ public:
 
     QStringList baned() const;
 signals:
-    void incomingReques(BaseNetworkObject *map, const quint32 &sender);
+    void incomingReques(Command cmd, const QByteArray &data, const quint32 &sender);
 };
 
 }

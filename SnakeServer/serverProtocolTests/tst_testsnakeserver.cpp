@@ -237,7 +237,7 @@ void testSankeServer::testBaseSql() {
     SqlDBWriter db;
     QFile::remove("./test.db");
 
-    bool init = db.initDb("test.db", "./");
+    bool init = db.initDb("./test.db");
 
     if (!init) {
         QFile::remove("./test.db");
@@ -336,7 +336,7 @@ void testSankeServer::testSqlCache() {
 
     QFile::remove("./test2.db");
 
-    bool init = db.initDb("test2.db", "./");
+    bool init = db.initDb("./test2.db");
 
     if (!init) {
         QFile::remove("./test2.db");

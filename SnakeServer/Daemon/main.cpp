@@ -19,14 +19,19 @@ int main(int argc, char *argv[])
 
     QString address = "";
     unsigned short port = 0;
-
+    QString db = "";
     if(QuasarAppUtils::Params::isEndable("address")) {
         address = QuasarAppUtils::Params::getStrArg("address");
     }
 
     if(QuasarAppUtils::Params::isEndable("port")) {
-        port = QuasarAppUtils::Params::getStrArg("port").toUShort();
+        port = static_cast<unsigned short>(QuasarAppUtils::Params::getArg("port").toUInt());
     }
+
+    if(QuasarAppUtils::Params::isEndable("db")) {
+        db = QuasarAppUtils::Params::getStrArg("db");
+    }
+
 
     if(ServerUtils::runDaemon()) {
         return 0;

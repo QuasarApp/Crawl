@@ -42,10 +42,8 @@ bool Server::parsePackage(const Package &pkg, QTcpSocket* sender) {
 
     default: {
 
-        BaseNetworkObject *obj = pkg.parse();
-
-        emit incomingReques(obj, qHash(sender->peerAddress()));
-        delete obj;
+        emit incomingReques(static_cast<Command>(pkg.hdr.command),
+                            pkg.data, qHash(sender->peerAddress()));
     }
     }
 
@@ -194,6 +192,8 @@ void Server::badRequest(quint32 address) {
 
     Package pcg;
     if (!(pcg.create(Command::BadRequest, Type::Responke))) {
+        QuasarAppUtils::Params::verboseLog("Bad request detected, bud responce command nor received!",
+                                           QuasarAppUtils::Error);
     };
 
     if (!sendPackage(pcg, client.sct)) {

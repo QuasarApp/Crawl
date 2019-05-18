@@ -147,8 +147,8 @@ SqlDBCache::~SqlDBCache() {
     globalUpdateDataBase(SqlDBCasheWriteMode::Force);
 }
 
-bool SqlDBCache::initDb(const QString &sql, const QString &path) {
-    if (!SqlDBWriter::initDb(sql, path)) {
+bool SqlDBCache::initDb(const QString &pdbath) {
+    if (!SqlDBWriter::initDb(pdbath)) {
         return false;
     }
 
