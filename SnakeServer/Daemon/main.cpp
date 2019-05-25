@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
     QCoreApplication a(argc, argv);
 
     MainServer mainServer;
-    if (!mainServer.run(address, port)) {
+    if (!mainServer.run(address, port, db)) {
         QuasarAppUtils::Params::verboseLog("server is not run!");
         ServerUtils::helpDaemon();
         return 1;

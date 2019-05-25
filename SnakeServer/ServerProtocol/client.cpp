@@ -152,7 +152,7 @@ bool Client::start(const QString &address, unsigned short port) {
     p.setProcessEnvironment(env);
     p.start("snake-d", params);
 
-    return p.waitForFinished(1000);
+    return p.waitForFinished(1000) && p.exitCode() == 0;
 }
 
 bool Client::stop() {

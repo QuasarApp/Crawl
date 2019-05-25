@@ -64,14 +64,21 @@ int main(int argc, char *argv[])
     } else if (QuasarAppUtils::Params::isEndable("restart")) {
 
         QStringList address = QuasarAppUtils::Params::getStrArg("restart").split(":");
-        if (!cli.restart(address[0], static_cast<quint16>(address[1].toShort()))) {
+        if (!cli.restart(address.value(0), address.value(1).toUShort())) {
             qCritical() << "command not sendet!";
             return 1;
         }
     } else if (QuasarAppUtils::Params::isEndable("stop")) {
 
-        QStringList address = QuasarAppUtils::Params::getStrArg("restart").split(":");
-        if (!cli.restart(address[0], static_cast<quint16>(address[1].toShort()))) {
+        if (!cli.stop()) {
+            qCritical() << "command not sendet!";
+            return 1;
+        }
+    } else if (QuasarAppUtils::Params::isEndable("start")) {
+
+        QStringList params = QuasarAppUtils::Params::getStrArg("restart").split(":");
+
+        if (!cli.start(params.value(0), params.value(1).toUShort())) {
             qCritical() << "command not sendet!";
             return 1;
         }
