@@ -11,7 +11,6 @@
 #include "server.h"
 
 
-
 namespace ServerProtocol {
 
 void Server::parsePackage(const Package& pkg) {
@@ -40,27 +39,6 @@ void Server::parsePackage(const Package& pkg) {
         }
 
         break;
-    }
-
-    case Stop: {
-
-        if (pkg.hdr.type != Request) {
-            return;
-        }
-
-        Package resp;
-        resp.hdr.command = Stop;
-        resp.hdr.type = Responke;
-
-        QVariantMap data;
-        data["res"] = "Server is stoped";
-        resp.fromMap(data);
-
-        if (!sendPackage(resp)) {
-            QuasarAppUtils::Params::verboseLog("!responce not sendet!");
-        }
-
-        exit(0);
     }
 
     default: {
@@ -143,7 +121,7 @@ Server::~Server() {
 
 bool Server::run(const QString &name) {
 
-    if (!listen(name) && !(QFile::remove("/tmp/" + name) && listen(name))) {
+    if (!listen(name)) {
         QuasarAppUtils::Params::verboseLog("listing fail " + this->errorString());
         return false;
     }

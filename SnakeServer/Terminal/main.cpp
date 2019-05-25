@@ -79,9 +79,11 @@ int main(int argc, char *argv[])
         QStringList params = QuasarAppUtils::Params::getStrArg("restart").split(":");
 
         if (!cli.start(params.value(0), params.value(1).toUShort())) {
-            qCritical() << "command not sendet!";
+            qCritical() << "Server not started!";
             return 1;
         }
+
+        return 0;
     }
     else {
         ServerUtils::helpClient();

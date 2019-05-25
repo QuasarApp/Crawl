@@ -98,7 +98,22 @@ void MainServer::handleTerminalRequest(QVariantMap obj) {
             QuasarAppUtils::Params::verboseLog("server restart fail!");
         }
 
+        res ["Work State"] = _serverDaemon->getWorkState();
+        res ["Address"] = QString("%0:%1").
+                arg(_serverDaemon->serverAddress().toString()).
+                arg(_serverDaemon->serverPort());
+
+
         break;
+    }
+
+    case ServerProtocol::Stop: {
+
+        res ["Res"] = "Server stoped!";
+        _terminalPort->sendResponce(res, command);
+        emit sigPowerOff();
+        return;
+
     }
 
     default:
