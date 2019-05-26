@@ -571,7 +571,7 @@ void testSankeServer::testServerProtockol() {
     QCoreApplication app(argc, argv);
 
     auto serv = new MainServer(this);
-    QVERIFY(serv->run("", 0 , "", TEST_LOCAL_SERVER, true));
+    QVERIFY(serv->run(TEST_SERVER_ADDRESS, TEST_SERVER_PORT , "", TEST_LOCAL_SERVER, true));
     ServerProtocol::Client cle(TEST_LOCAL_SERVER);
 
     QTimer::singleShot(0, [this, &app, &cle]() {
