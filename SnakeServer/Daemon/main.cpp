@@ -4,10 +4,6 @@
 #include <serverutils.h>
 #include <mainserver.h>
 
-void handleResponcke() {
-    QCoreApplication::exit(0);
-}
-
 int main(int argc, char *argv[])
 {
     if (!ServerUtils::parseParams(argc, argv)) {
@@ -46,7 +42,9 @@ int main(int argc, char *argv[])
     MainServer mainServer;
 
     QObject::connect(&mainServer, &MainServer::sigPowerOff,
-                     &handleResponcke);
+                     [](){
+        QCoreApplication::exit(0);
+    });
 
     if (!mainServer.run(address, port, db)) {
         QuasarAppUtils::Params::verboseLog("server is not run!");

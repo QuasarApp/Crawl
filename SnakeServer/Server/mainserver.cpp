@@ -118,6 +118,7 @@ void MainServer::handleTerminalRequest(QVariantMap obj) {
 
     default:
         QuasarAppUtils::Params::verboseLog("server get undefined command!");
+        res ["Res"] = "Server get undefined command!";
         break;
     }
 
