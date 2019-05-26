@@ -15,6 +15,10 @@
 
 // add necessary includes here
 
+#define TEST_LOCAL_SERVER QString(DEFAULT_SERVER) + "Test"
+#define TEST_SERVER_ADDRESS  LOCAL_SNAKE_SERVER
+#define TEST_SERVER_PORT 27777
+
 class testSankeServer : public QObject
 {
     Q_OBJECT
@@ -77,9 +81,9 @@ void testSankeServer::testPingServerProtockol() {
 
     auto serv = new ServerProtocol::Server(this);
 
-    QVERIFY(serv->run(DEFAULT_SERVER));
+    QVERIFY(serv->run(TEST_LOCAL_SERVER));
 
-    auto client = new ServerProtocol::Client(this);
+    auto client = new ServerProtocol::Client(TEST_LOCAL_SERVER, this);
 
     bool isWork = false;
     QObject::connect(client, &ServerProtocol::Client::sigIncommingData,
@@ -106,12 +110,12 @@ void testSankeServer::testPingServerProtockol() {
 }
 
 void testSankeServer::testStateServerProtockol() {
-    ServerProtocol::Client cle;
+    ServerProtocol::Client cle(TEST_LOCAL_SERVER);
     QVERIFY(cle.getState());
 }
 
 void testSankeServer::testBanServerProtockol() {
-    ServerProtocol::Client cle;
+    ServerProtocol::Client cle(TEST_LOCAL_SERVER);
     QVERIFY(!cle.ban(QHostAddress()));
 
     QVERIFY(cle.ban(QHostAddress("192.192.192.192")));
@@ -119,14 +123,14 @@ void testSankeServer::testBanServerProtockol() {
 
 void testSankeServer::testUnBanServerProtockol()
 {
-    ServerProtocol::Client cle;
+    ServerProtocol::Client cle(TEST_LOCAL_SERVER);
     QVERIFY(!cle.unBan(QHostAddress()));
 
     QVERIFY(cle.unBan(QHostAddress("192.192.192.192")));
 }
 
 void testSankeServer::testRestartServerProtockol() {
-    ServerProtocol::Client cle;
+    ServerProtocol::Client cle(TEST_LOCAL_SERVER);
     QVERIFY(!cle.restart("lolo", 0));
 
     QVERIFY(!cle.restart("192.168.1.999", 0));
@@ -151,9 +155,11 @@ void testSankeServer::testPingClientProtockol() {
 
     auto serv = new ClientProtocol::Server(this);
 
-    QVERIFY(serv->run(LOCAL_SNAKE_SERVER, DEFAULT_SNAKE_PORT));
+    QVERIFY(serv->run(TEST_SERVER_ADDRESS, TEST_SERVER_PORT));
 
-    auto client = new ClientProtocol::Client(this);
+    auto client = new ClientProtocol::Client(TEST_SERVER_ADDRESS,
+                                             TEST_SERVER_PORT,
+                                             this);
 
     bool isWork = false;
     QObject::connect(client, &ClientProtocol::Client::sigIncommingData,
@@ -180,7 +186,7 @@ void testSankeServer::testPingClientProtockol() {
 }
 
 void testSankeServer::testLogin() {
-    ClientProtocol::Client cle;
+    ClientProtocol::Client cle(TEST_SERVER_ADDRESS, TEST_SERVER_PORT);
 
     auto pass = QCryptographicHash::hash("testpass", QCryptographicHash::Sha512);
     QVERIFY(!cle.login("Test@gmail.com", pass));
@@ -191,7 +197,7 @@ void testSankeServer::testLogin() {
 }
 
 void testSankeServer::testUserData() {
-    ClientProtocol::Client cle;
+    ClientProtocol::Client cle(TEST_SERVER_ADDRESS, TEST_SERVER_PORT);
 
     QVERIFY(!cle.updateData());
 
@@ -204,7 +210,7 @@ void testSankeServer::testUserData() {
 
 void testSankeServer::testGetItem() {
 
-    ClientProtocol::Client cle;
+    ClientProtocol::Client cle(TEST_SERVER_ADDRESS, TEST_SERVER_PORT);
 
     QVERIFY(!cle.updateData());
 
@@ -217,7 +223,7 @@ void testSankeServer::testGetItem() {
 
 void testSankeServer::testApplyData() {
 
-    ClientProtocol::Client cle;
+    ClientProtocol::Client cle(TEST_SERVER_ADDRESS, TEST_SERVER_PORT);
 
 
     auto token = QCryptographicHash::hash("testtoken", QCryptographicHash::Sha256);
@@ -457,7 +463,7 @@ void testSankeServer::testServerProtockol() {
     testPingServerProtockol();
 
     auto serv = new ServerProtocol::Server(this);
-    QVERIFY(serv->run(DEFAULT_SERVER));
+    QVERIFY(serv->run(TEST_LOCAL_SERVER));
     testStateServerProtockol();
     testBanServerProtockol();
     testUnBanServerProtockol();
@@ -468,7 +474,7 @@ void testSankeServer::testClientProtockol() {
     testPingClientProtockol();
 
     auto serv = new ClientProtocol::Server(this);
-    QVERIFY(serv->run(LOCAL_SNAKE_SERVER, DEFAULT_SNAKE_PORT));
+    QVERIFY(serv->run(TEST_SERVER_ADDRESS, TEST_SERVER_PORT));
 
     testLogin();
     testGetItem();

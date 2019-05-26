@@ -152,7 +152,7 @@ bool MainServer::run(const QString &ip, unsigned short port, const QString& db) 
         return false;
     }
 
-    if (!restartSrver(ip.isEmpty()? DEFAULT_SNAKE_SERVER: ip,
+    if (!restartSrver(ip.isEmpty()? LOCAL_SNAKE_SERVER: ip,
                       port ? port : DEFAULT_SNAKE_PORT)) {
         QuasarAppUtils::Params::verboseLog("restart server fail", QuasarAppUtils::Error);
         return false;

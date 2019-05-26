@@ -36,7 +36,9 @@ private slots:
     void incommingData();
 
 public:
-    explicit Client(QObject * ptr = nullptr);
+    explicit Client(const QString& addrress = LOCAL_SNAKE_SERVER,
+                    unsigned short port = DEFAULT_SNAKE_PORT,
+                    QObject * ptr = nullptr);
 
 
     /**

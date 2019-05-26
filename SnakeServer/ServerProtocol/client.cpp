@@ -27,12 +27,12 @@ void Client::incommingData() {
     }
 }
 
-Client::Client(QObject *ptr):
+Client::Client(const QString& server, QObject *ptr):
     QObject (ptr) {
 
     _destination = new QLocalSocket(this);
 
-    _destination->connectToServer(DEFAULT_SERVER);
+    _destination->connectToServer(server);
 
     connect(_destination, &QLocalSocket::readyRead,
             this, &Client::incommingData);

@@ -22,7 +22,7 @@ private slots:
     void incommingData();
 
 public:
-    explicit Client(QObject * ptr = nullptr);
+    explicit Client(const QString &server = DEFAULT_SERVER, QObject * ptr = nullptr);
     bool ping();
     bool getState();
     bool ban(const QHostAddress& address);

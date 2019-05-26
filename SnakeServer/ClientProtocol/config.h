@@ -1,7 +1,6 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-#define DEFAULT_SNAKE_SERVER    "127.0.0.1"
 #define LOCAL_SNAKE_SERVER    "127.0.0.1"
 
 #define DEFAULT_SNAKE_PORT      7777
