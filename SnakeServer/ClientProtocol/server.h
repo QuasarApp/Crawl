@@ -43,6 +43,8 @@ private:
     void saveKarma() const;
     bool loadKarma();
 
+    int connectionsCount() const;
+
 private slots:
     void avelableBytes();
     void handleIncommingConnection();

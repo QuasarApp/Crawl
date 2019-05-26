@@ -118,7 +118,8 @@ void MainServer::handleTerminalRequest(QVariantMap obj) {
         res ["Res"] = "Server stoped!";
         _terminalPort->sendResponce(res, command);
         _serverDaemon->stop();
-        QCoreApplication::exit(0);
+        QCoreApplication::processEvents();
+        QCoreApplication::quit();
         return;
 
     }

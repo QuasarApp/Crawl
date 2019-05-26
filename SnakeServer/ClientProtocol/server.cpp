@@ -116,6 +116,20 @@ bool Server::loadKarma() {
     return false;
 }
 
+int Server::connectionsCount() const {
+    int count = 0;
+    for (auto i : _connections) {
+        if (i.sct) {
+            if (!i.sct->isValid()) {
+                // log about warning
+            }
+
+            count++;
+        }
+    }
+    return count;
+}
+
 void Server::avelableBytes() {
     auto client = dynamic_cast<QTcpSocket*>(sender());
 
@@ -201,9 +215,9 @@ void Server::badRequest(quint32 address) {
 QString Server::getWorkState() const {
     if (isListening()) {
         if (hasPendingConnections())
-            return "Work";
-        else {
             return "overload";
+        else {
+            return "Work";
         }
     }
 
@@ -211,14 +225,14 @@ QString Server::getWorkState() const {
 }
 
 QString Server::connectionState() const {
-    return QString("%0 / %1").arg(_connections.size()).arg(maxPendingConnections());
+    return QString("%0 / %1").arg(connectionsCount()).arg(maxPendingConnections());
 }
 
 QStringList Server::baned() const {
     QStringList list = {};
-    for (auto i : _connections) {
-        if (i.karma <= 0 && i.sct) {
-            list.push_back(i.sct->peerAddress().toString());
+    for (auto i = _connections.begin(); i != _connections.end(); ++i) {
+        if (i.value().karma <= 0) {
+            list.push_back(QHostAddress(i.key()).toString());
         }
     }
 
