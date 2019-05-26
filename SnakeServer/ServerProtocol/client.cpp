@@ -89,7 +89,7 @@ bool Client::ban(const QHostAddress &address) {
         return false;
 
     QVariantMap map;
-    map["address"] = qHash(address);
+    map["address"] = address.toIPv4Address();
 
     pkg.fromMap(map);
 
@@ -106,7 +106,7 @@ bool Client::unBan(const QHostAddress &address) {
     pkg.hdr.type = ServerProtocol::Request;
 
     QVariantMap map;
-    map["address"] = qHash(address);
+    map["address"] = address.toIPv4Address();
 
     pkg.fromMap(map);
 

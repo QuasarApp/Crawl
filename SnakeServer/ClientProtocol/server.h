@@ -47,6 +47,7 @@ private:
 
 private slots:
     void avelableBytes();
+    void handleDisconected();
     void handleIncommingConnection();
 
 public:

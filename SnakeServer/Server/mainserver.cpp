@@ -78,7 +78,7 @@ void MainServer::handleTerminalRequest(QVariantMap obj) {
         break;
     }
     case ServerProtocol::Ban: {
-        auto address = static_cast<quint32>(obj.value("address").toInt());
+        auto address = obj.value("address").toUInt();
 
         _serverDaemon->ban(address);
         auto banedList = _serverDaemon->baned();
@@ -88,7 +88,7 @@ void MainServer::handleTerminalRequest(QVariantMap obj) {
     }
 
     case ServerProtocol::Unban: {
-        auto address = static_cast<quint32>(obj.value("address").toInt());
+        auto address = obj.value("address").toUInt();
         _serverDaemon->unBan(address);
         auto banedList = _serverDaemon->baned();
 
