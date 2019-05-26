@@ -5,6 +5,7 @@
 #include <quasarapp.h>
 #include <basenetworkobject.h>
 #include <login.h>
+#include <QCoreApplication>
 
 bool MainServer::restartSrver(const QString &ip, unsigned short port) {
     if (_serverDaemon->isListening()) {
@@ -80,13 +81,18 @@ void MainServer::handleTerminalRequest(QVariantMap obj) {
         auto address = static_cast<quint32>(obj.value("address").toInt());
 
         _serverDaemon->ban(address);
+        auto banedList = _serverDaemon->baned();
+        res ["Baned List"] = banedList;
+
         break;
     }
 
     case ServerProtocol::Unban: {
         auto address = static_cast<quint32>(obj.value("address").toInt());
-
         _serverDaemon->unBan(address);
+        auto banedList = _serverDaemon->baned();
+
+        res ["Baned List"] = banedList;
         break;
     }
 
@@ -111,14 +117,14 @@ void MainServer::handleTerminalRequest(QVariantMap obj) {
 
         res ["Res"] = "Server stoped!";
         _terminalPort->sendResponce(res, command);
-        emit sigPowerOff();
+        QCoreApplication::exit(0);
         return;
 
     }
 
     default:
         QuasarAppUtils::Params::verboseLog("server get undefined command!");
-        res ["Res"] = "Server get undefined command!";
+        res ["Error"] = "Server get undefined command!";
         break;
     }
 
@@ -141,14 +147,16 @@ MainServer::MainServer(QObject *ptr):
 
 }
 
-bool MainServer::run(const QString &ip, unsigned short port, const QString& db) {
+bool MainServer::run(const QString &ip, unsigned short port, const QString& db,
+                     const QString& terminalServer, bool terminalForce) {
 
     if (!_db->initDb((db.size())? db: DEFAULT_DB_PATH)) {
         QuasarAppUtils::Params::verboseLog("init db fail!", QuasarAppUtils::Error);
         return false;
     }
 
-    if (!_terminalPort->run(DEFAULT_SERVER)) {
+    if (!_terminalPort->run((terminalServer.isEmpty())? DEFAULT_SERVER : terminalServer,
+                            terminalForce)) {
         QuasarAppUtils::Params::verboseLog("run termonal fail!", QuasarAppUtils::Error);
         return false;
     }

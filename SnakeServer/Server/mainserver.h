@@ -37,11 +37,10 @@ private slots:
 
 public:
     MainServer(QObject *ptr = nullptr);
-    bool run(const QString& ip = "", unsigned short port = 0, const QString &db = "");
+    bool run(const QString& ip = "", unsigned short port = 0, const QString &db = "",
+             const QString &terminalServer = "", bool terminalForce = false);
     virtual ~MainServer();
 
-signals:
-    void sigPowerOff();
 };
 
 #endif // SERVER_H

@@ -43,9 +43,9 @@ void Server::parsePackage(const Package& pkg) {
 
     default: {
         QVariantMap res;
-        res["command"] = pkg.hdr.command;
         QDataStream stream(pkg.data);
         stream >> res;
+        res["command"] = pkg.hdr.command;
         emit incomingRequest(res);
     };
     }
@@ -119,7 +119,11 @@ Server::~Server() {
     close();
 }
 
-bool Server::run(const QString &name) {
+bool Server::run(const QString &name, bool force) {
+
+    if (force) {
+        QFile::remove("/tmp/" + name);
+    }
 
     if (!listen(name)) {
         QuasarAppUtils::Params::verboseLog("listing fail " + this->errorString());
@@ -137,7 +141,7 @@ bool Server::sendResponce(QVariantMap res, Command command) {
     pck.hdr.command = static_cast<unsigned char>(command);
 
     if (res.isEmpty()) {
-        res["responce"] = "error: command not supported!";
+        res["Error"] = "command not supported!";
     }
 
     pck.fromMap(res);

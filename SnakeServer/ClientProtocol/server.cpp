@@ -82,13 +82,11 @@ void Server::unBan(quint32 target) {
 void Server::registerSocket(QTcpSocket *socket) {
     auto address = qHash(socket->peerAddress());
 
-    if (!_connections[address].sct) {
+    _connections[address].karma = DEFAULT_KARMA;
+    _connections[address].sct = socket;
 
-        _connections[address].karma = DEFAULT_KARMA;
-        _connections[address].sct = socket;
+    connect(socket, &QTcpSocket::readyRead, this,  &Server::avelableBytes);
 
-        connect(socket, &QTcpSocket::readyRead, this,  &Server::avelableBytes);
-    }
 }
 
 bool Server::changeKarma(quint32 addresss, int diff) {
@@ -220,7 +218,7 @@ QString Server::connectionState() const {
 QStringList Server::baned() const {
     QStringList list = {};
     for (auto i : _connections) {
-        if (i.karma <= 0) {
+        if (i.karma <= 0 && i.sct) {
             list.push_back(i.sct->peerAddress().toString());
         }
     }

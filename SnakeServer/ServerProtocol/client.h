@@ -15,6 +15,7 @@ class SERVERPROTOCOLSHARED_EXPORT Client : public QObject
 private:
     QLocalSocket *_destination;
     Package _downloadPackage;
+    bool _waitData = false;
 
     bool sendPackage(const Package& pkg);
 
@@ -30,6 +31,7 @@ public:
     bool restart(const QString &address, unsigned short port);
     bool start(const QString &address, unsigned short port);
     bool stop();
+    bool wait(int msec = 10000);
 
 
 signals:

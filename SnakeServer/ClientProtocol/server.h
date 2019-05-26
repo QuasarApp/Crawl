@@ -18,7 +18,7 @@ namespace ClientProtocol {
 
 struct Connectioninfo {
 
-    QTcpSocket *sct;
+    QTcpSocket *sct = nullptr;
     int karma;
 
     Connectioninfo(QTcpSocket * tcp = nullptr,

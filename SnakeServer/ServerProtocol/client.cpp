@@ -5,6 +5,8 @@
 #include <quasarapp.h>
 #include <cstring>
 #include <QProcess>
+#include <QDateTime>
+#include <QCoreApplication>
 
 namespace ServerProtocol {
 
@@ -23,6 +25,7 @@ void Client::incommingData() {
     if (_downloadPackage.isValid()) {
         emit sigIncommingData(_downloadPackage.parse());
         _downloadPackage.reset();
+        _waitData = false;
         return;
     }
 }
@@ -171,5 +174,15 @@ bool Client::stop() {
     pkg.fromMap(map);
 
     return sendPackage(pkg);
+}
+
+bool Client::wait(int msec) {
+    _waitData = true;
+    auto curmsec = QDateTime::currentMSecsSinceEpoch() + msec;
+    while (curmsec > QDateTime::currentMSecsSinceEpoch() && _waitData) {
+        QCoreApplication::processEvents();
+    }
+    QCoreApplication::processEvents();
+    return !_waitData;
 }
 }

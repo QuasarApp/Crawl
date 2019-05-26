@@ -10,6 +10,7 @@
 
 #include <snake.h>
 #include <playerdbdata.h>
+#include <mainserver.h>
 
 #include "factorynetobjects.h"
 
@@ -24,11 +25,12 @@ class testSankeServer : public QObject
     Q_OBJECT
 
 private:
-    void testPingServerProtockol();
-    void testStateServerProtockol();
-    void testBanServerProtockol();
-    void testUnBanServerProtockol();
-    void testRestartServerProtockol();
+    void testPingServerProtockol(ServerProtocol::Client &cle);
+    void testStateServerProtockol(ServerProtocol::Client &cle);
+    void testBanServerProtockol(ServerProtocol::Client& cle);
+    void testUnBanServerProtockol(ServerProtocol::Client& cle);
+    void testRestartServerProtockol(ServerProtocol::Client& cle);
+    void testStopServerProtockol(ServerProtocol::Client& cle);
 
     void testPingClientProtockol();
     void testLogin();
@@ -71,66 +73,121 @@ void testSankeServer::cleanupTestCase() {
 
 }
 
-void testSankeServer::testPingServerProtockol() {
+void testSankeServer::testPingServerProtockol(ServerProtocol::Client &cle) {
     QuasarAppUtils::Params::setEnable("verbose", true);
 
-    int argc =0;
-    char * argv[] = {nullptr};
-
-    QCoreApplication app(argc, argv);
-
-    auto serv = new ServerProtocol::Server(this);
-
-    QVERIFY(serv->run(TEST_LOCAL_SERVER));
-
-    auto client = new ServerProtocol::Client(TEST_LOCAL_SERVER, this);
 
     bool isWork = false;
-    QObject::connect(client, &ServerProtocol::Client::sigIncommingData,
-                     [&isWork, &app] (const QVariantMap& map) {
+    QMetaObject::Connection m_connection;
+
+    m_connection = QObject::connect(&cle, &ServerProtocol::Client::sigIncommingData,
+                     [&isWork, &m_connection] (const QVariantMap& map) {
 
         isWork = map["res"].toString() == "Pong";
-        app.exit(0);
+        disconnect(m_connection);
 
     });
 
-    QVERIFY(client->ping());
+    QVERIFY(cle.ping());
 
-    QTimer::singleShot(1000, [&app](){
-        app.exit(0);
-    });
-
-    app.exec();
+    QVERIFY(cle.wait(1000));
 
     QVERIFY(isWork);
 
-    delete serv;
-    delete client;
-
 }
 
-void testSankeServer::testStateServerProtockol() {
-    ServerProtocol::Client cle(TEST_LOCAL_SERVER);
+void testSankeServer::testStateServerProtockol(ServerProtocol::Client& cle) {
+
+    bool isWork = false;
+    QMetaObject::Connection m_connection;
+
+    m_connection = QObject::connect(&cle, &ServerProtocol::Client::sigIncommingData,
+                     [&isWork, &m_connection] (const QVariantMap& map) {
+
+        isWork = !map.contains("Error");
+        disconnect(m_connection);
+
+    });
+
+
     QVERIFY(cle.getState());
+    QVERIFY(cle.wait(1000));
+    QVERIFY(isWork);
+
+
 }
 
-void testSankeServer::testBanServerProtockol() {
-    ServerProtocol::Client cle(TEST_LOCAL_SERVER);
+void testSankeServer::testBanServerProtockol(ServerProtocol::Client& cle) {
+
+    bool isWork = false;
+
+    QMetaObject::Connection m_connection;
+
+    m_connection = QObject::connect(&cle, &ServerProtocol::Client::sigIncommingData,
+                     [&isWork, &m_connection] (const QVariantMap& map) {
+
+        isWork = !map.contains("Error");
+        disconnect(m_connection);
+    });
+
     QVERIFY(!cle.ban(QHostAddress()));
 
     QVERIFY(cle.ban(QHostAddress("192.192.192.192")));
+    QVERIFY(cle.wait(1000));
+
+    QVERIFY(isWork);
+
 }
 
-void testSankeServer::testUnBanServerProtockol()
+void testSankeServer::testUnBanServerProtockol(ServerProtocol::Client& cle)
 {
-    ServerProtocol::Client cle(TEST_LOCAL_SERVER);
+
+    bool isWork = false;
+    QMetaObject::Connection m_connection;
+
+    m_connection = QObject::connect(&cle, &ServerProtocol::Client::sigIncommingData,
+                     [&isWork, &m_connection] (const QVariantMap& map) {
+
+        isWork = !map.contains("Error");
+        disconnect(m_connection);
+
+    });
+
     QVERIFY(!cle.unBan(QHostAddress()));
 
     QVERIFY(cle.unBan(QHostAddress("192.192.192.192")));
+    QVERIFY(cle.wait(1000));
+
+    QVERIFY(isWork);
+
 }
 
-void testSankeServer::testRestartServerProtockol() {
-    ServerProtocol::Client cle(TEST_LOCAL_SERVER);
+void testSankeServer::testRestartServerProtockol(ServerProtocol::Client& cle) {
+
+    bool isWork = false;
+    QMetaObject::Connection m_connection;
+
+    m_connection = QObject::connect(&cle, &ServerProtocol::Client::sigIncommingData,
+                     [&isWork, &m_connection] (const QVariantMap& map) {
+
+        if (isWork) {
+            isWork = map.value("Address") == QString("%0:%1").arg(TEST_SERVER_ADDRESS).arg(TEST_SERVER_PORT);
+            isWork =  !map.contains("Error");
+            disconnect(m_connection);
+
+        } else {
+            isWork =  !map.contains("Error");
+        }
+
+    });
+
+    QVERIFY(!cle.unBan(QHostAddress()));
+
+    QVERIFY(cle.unBan(QHostAddress("192.192.192.192")));
+    QVERIFY(cle.wait(1000));
+
+    QVERIFY(isWork);
+
     QVERIFY(!cle.restart("lolo", 0));
 
     QVERIFY(!cle.restart("192.168.1.999", 0));
@@ -140,8 +197,35 @@ void testSankeServer::testRestartServerProtockol() {
     QVERIFY(!cle.restart("-1.168.1.999", 77));
     QVERIFY(!cle.restart("192.168.-1.99", 7777));
 
-    QVERIFY(cle.restart("192.168.1.9", 3456));
+    QVERIFY(cle.restart("127.168.1.9", 3456));
 
+    cle.wait(1000);
+
+    QVERIFY(cle.restart(TEST_SERVER_ADDRESS, TEST_SERVER_PORT));
+
+    cle.wait(1000);
+    QVERIFY(isWork);
+
+}
+
+void testSankeServer::testStopServerProtockol(ServerProtocol::Client& cle) {
+
+    bool isWork = false;
+    QMetaObject::Connection m_connection;
+
+    m_connection = QObject::connect(&cle, &ServerProtocol::Client::sigIncommingData,
+                     [&isWork, &m_connection] (const QVariantMap& map) {
+
+        isWork = !map.contains("Error");
+        disconnect(m_connection);
+
+    });
+
+    QVERIFY(cle.stop());
+
+    cle.wait(1000);
+
+    QVERIFY(isWork);
 }
 
 void testSankeServer::testPingClientProtockol() {
@@ -460,14 +544,28 @@ void testSankeServer::testSql() {
 }
 
 void testSankeServer::testServerProtockol() {
-    testPingServerProtockol();
 
-    auto serv = new ServerProtocol::Server(this);
-    QVERIFY(serv->run(TEST_LOCAL_SERVER));
-    testStateServerProtockol();
-    testBanServerProtockol();
-    testUnBanServerProtockol();
-    testRestartServerProtockol();
+    int argc =0;
+    char * argv[] = {nullptr};
+
+    QCoreApplication app(argc, argv);
+
+    auto serv = new MainServer(this);
+    QVERIFY(serv->run("", 0 , "", TEST_LOCAL_SERVER, true));
+    ServerProtocol::Client cle(TEST_LOCAL_SERVER);
+
+    QTimer::singleShot(0, [this, &app, &cle]() {
+        testPingServerProtockol(cle);
+        testStateServerProtockol(cle);
+        testBanServerProtockol(cle);
+        testUnBanServerProtockol(cle);
+        testRestartServerProtockol(cle);
+        testStopServerProtockol(cle);
+        app.exit(0);
+    });
+
+    app.exec();
+
 }
 
 void testSankeServer::testClientProtockol() {

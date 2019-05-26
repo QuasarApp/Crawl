@@ -41,11 +41,6 @@ int main(int argc, char *argv[])
 
     MainServer mainServer;
 
-    QObject::connect(&mainServer, &MainServer::sigPowerOff,
-                     [](){
-        QCoreApplication::exit(0);
-    });
-
     if (!mainServer.run(address, port, db)) {
         QuasarAppUtils::Params::verboseLog("server is not run!");
         ServerUtils::helpDaemon();
