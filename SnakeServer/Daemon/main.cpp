@@ -17,14 +17,31 @@ int main(int argc, char *argv[])
         return 0;
     }
 
+    QString address = "";
+    unsigned short port = 0;
+    QString db = "";
+    if(QuasarAppUtils::Params::isEndable("address")) {
+        address = QuasarAppUtils::Params::getStrArg("address");
+    }
+
+    if(QuasarAppUtils::Params::isEndable("port")) {
+        port = static_cast<unsigned short>(QuasarAppUtils::Params::getArg("port").toUInt());
+    }
+
+    if(QuasarAppUtils::Params::isEndable("db")) {
+        db = QuasarAppUtils::Params::getStrArg("db");
+    }
+
+
     if(ServerUtils::runDaemon()) {
         return 0;
     }
 
     QCoreApplication a(argc, argv);
 
-    MainServer loclaServer;
-    if (!loclaServer.run()) {
+    MainServer mainServer;
+
+    if (!mainServer.run(address, port, db)) {
         QuasarAppUtils::Params::verboseLog("server is not run!");
         ServerUtils::helpDaemon();
         return 1;

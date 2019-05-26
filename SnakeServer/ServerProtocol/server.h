@@ -24,7 +24,7 @@ protected:
 public:
     explicit Server(QObject * ptr = nullptr);
     ~Server() override;
-    bool run(const QString& name);
+    bool run(const QString& name, bool force = false);
     bool sendResponce(QVariantMap res, Command command);
 
     bool sendPackage(Package &pkg);

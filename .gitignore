@@ -77,3 +77,5 @@ deployTests/
 installer/SnakeInstaller
 
 Distro/
+
+*.db

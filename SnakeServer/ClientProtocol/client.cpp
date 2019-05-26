@@ -80,12 +80,12 @@ void Client::incommingData() {
     }
 }
 
-Client::Client(QObject *ptr):
+Client::Client(const QString &addrress, unsigned short port, QObject *ptr):
     QObject (ptr) {
 
     _destination = new QTcpSocket(this);
 
-    _destination->connectToHost(DEFAULT_SNAKE_SERVER, DEFAULT_SNAKE_PORT);
+    _destination->connectToHost(addrress, port);
 
     connect(_destination, &QTcpSocket::readyRead,
             this, &Client::incommingData);

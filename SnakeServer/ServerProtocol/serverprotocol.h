@@ -18,9 +18,10 @@ enum Command: unsigned char {
     Undefined = 0x00,
     Ping = 0x01,
     State = 0x02,
-    Restart = 0x03,
-    Unban = 0x04,
-    Ban = 0x05
+    Stop = 0x03,
+    Restart = 0x04,
+    Unban = 0x05,
+    Ban = 0x06
 };
 
 /**

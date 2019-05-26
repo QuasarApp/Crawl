@@ -8,7 +8,7 @@
 #include <player.h>
 
 #define DEFAULT_DB_NAME "SnakeDatabase.db"
-#define DEFAULT_DB_PATH QDir::homePath() + "/SnakeServer"
+#define DEFAULT_DB_PATH QDir::homePath() + "/SnakeServer/" + DEFAULT_DB_NAME
 #define DEFAULT_UPDATE_INTERVAL 3600000 // 1 hour
 
 class QSqlQuery;
@@ -51,8 +51,7 @@ protected:
 public:
     SqlDBWriter();
 
-    virtual bool initDb(const QString &sql = DEFAULT_DB_NAME,
-                const QString &path = DEFAULT_DB_PATH);
+    virtual bool initDb(const QString &path = DEFAULT_DB_PATH);
 
     virtual bool isValid() const;
 

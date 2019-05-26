@@ -7,7 +7,7 @@ DEPLOY_SERVER = $$PWD/../SnakeServer/Daemon/build/release,$$PWD/../SnakeServer/T
 win32:LUPDATE = $$QT_DIR/lupdate.exe
 win32:LRELEASE = $$QT_DIR/lrelease.exe
 
-win32:DEPLOYER = cqtdeployer.exe
+win32:DEPLOYER = %cqtdeployer%
 
 win32:OUT_FILE = SnakeInstaller.exe
 
@@ -94,7 +94,8 @@ for(command, commands) {
 
 INSTALL_SERVER_DIR = ~/SnakeServer
 
-BASE_DEPLOY_FLAGS = clear -qmake $$QMAKE_QMAKE -libDir $$PWD/../ -recursiveDepth 5 -ignore Snake/data
+IGNORE_ENV=$$PWD/../Distro/,$$PWD/../deployTests,$$PWD/packages/Snake/data/
+BASE_DEPLOY_FLAGS = clear -qmake $$QMAKE_QMAKE -libDir $$PWD/../ -recursiveDepth 5 -ignoreEnv $$IGNORE_ENV
 BASE_DEPLOY_FLAGS_SERVER = $$BASE_DEPLOY_FLAGS -targetDir $$INSTALL_SERVER_DIR
 BASE_DEPLOY_FLAGS_SNAKE = $$BASE_DEPLOY_FLAGS -targetDir $$PWD/packages/Snake/data
 

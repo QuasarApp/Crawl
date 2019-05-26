@@ -31,43 +31,59 @@ int main(int argc, char *argv[])
             return 1;
         }
 
-    } else if (QuasarAppUtils::Params::isEndable("Help") ||
+    } else if (QuasarAppUtils::Params::isEndable("help") ||
                QuasarAppUtils::Params::isEndable("h")) {
 
         ServerUtils::helpClient();
         return 0;
 
-    } else if (QuasarAppUtils::Params::isEndable("State")) {
+    } else if (QuasarAppUtils::Params::isEndable("state")) {
 
         if (!cli.getState()) {
             qCritical() << "command not sendet!";
             return 1;
         };
 
-    } else if (QuasarAppUtils::Params::isEndable("Ban")) {
+    } else if (QuasarAppUtils::Params::isEndable("ban")) {
 
-        auto address = QuasarAppUtils::Params::getStrArg("Ban");
+        auto address = QuasarAppUtils::Params::getStrArg("ban");
 
         if (!cli.ban(QHostAddress(address))) {
             qCritical() << "command not sendet!";
             return 1;
         }
 
-    } else if (QuasarAppUtils::Params::isEndable("Unban")) {
+    } else if (QuasarAppUtils::Params::isEndable("unban")) {
 
-        auto address = QuasarAppUtils::Params::getStrArg("Ban");
+        auto address = QuasarAppUtils::Params::getStrArg("unban");
         if (!cli.unBan(QHostAddress(address))) {
             qCritical() << "command not sendet!";
             return 1;
         }
 
-    } else if (QuasarAppUtils::Params::isEndable("Restart")) {
+    } else if (QuasarAppUtils::Params::isEndable("restart")) {
 
-        QStringList address = QuasarAppUtils::Params::getStrArg("Restart").split(":");
-        if (!cli.restart(address[0], static_cast<quint16>(address[1].toShort()))) {
+        QStringList address = QuasarAppUtils::Params::getStrArg("restart").split(":");
+        if (!cli.restart(address.value(0), address.value(1).toUShort())) {
             qCritical() << "command not sendet!";
             return 1;
         }
+    } else if (QuasarAppUtils::Params::isEndable("stop")) {
+
+        if (!cli.stop()) {
+            qCritical() << "command not sendet!";
+            return 1;
+        }
+    } else if (QuasarAppUtils::Params::isEndable("start")) {
+
+        QStringList params = QuasarAppUtils::Params::getStrArg("restart").split(":");
+
+        if (!cli.start(params.value(0), params.value(1).toUShort())) {
+            qCritical() << "Server not started!";
+            return 1;
+        }
+
+        return 0;
     }
     else {
         ServerUtils::helpClient();

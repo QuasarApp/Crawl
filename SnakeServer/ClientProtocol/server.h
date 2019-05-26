@@ -18,7 +18,7 @@ namespace ClientProtocol {
 
 struct Connectioninfo {
 
-    QTcpSocket *sct;
+    QTcpSocket *sct = nullptr;
     int karma;
 
     Connectioninfo(QTcpSocket * tcp = nullptr,
@@ -43,8 +43,11 @@ private:
     void saveKarma() const;
     bool loadKarma();
 
+    int connectionsCount() const;
+
 private slots:
     void avelableBytes();
+    void handleDisconected();
     void handleIncommingConnection();
 
 public:
@@ -72,7 +75,7 @@ public:
 
     QStringList baned() const;
 signals:
-    void incomingReques(BaseNetworkObject *map, const quint32 &sender);
+    void incomingReques(Command cmd, const QByteArray &data, const quint32 &sender);
 };
 
 }

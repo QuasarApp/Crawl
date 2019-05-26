@@ -414,12 +414,12 @@ SqlDBWriter::SqlDBWriter() {
 
 }
 
-bool SqlDBWriter::initDb(const QString& database, const QString &databasePath) {
+bool SqlDBWriter::initDb(const QString &databasePath) {
     QStringList drivers = QSqlDatabase::drivers();
     db = new QSqlDatabase();
-    *db = QSqlDatabase::addDatabase("QSQLITE", database);
 
-    db->setDatabaseName(QFileInfo(databasePath).absolutePath() + "/" + database);
+    *db = QSqlDatabase::addDatabase("QSQLITE", QFileInfo(databasePath).fileName());
+    db->setDatabaseName(QFileInfo(databasePath).absoluteFilePath());
     query = new QSqlQuery(*db);
 
     if (!db->open()) {
