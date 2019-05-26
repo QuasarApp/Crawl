@@ -161,7 +161,6 @@ Server::Server(QObject *ptr) :
 }
 
 Server::~Server() {
-
 }
 
 bool Server::run(const QString &ip, unsigned short port) {

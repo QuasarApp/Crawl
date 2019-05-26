@@ -98,7 +98,7 @@ void MainServer::handleTerminalRequest(QVariantMap obj) {
 
     case ServerProtocol::Restart: {
         auto address = obj.value("address").toString();
-        auto port = static_cast<quint16>(obj.value("address").toInt());
+        auto port = static_cast<quint16>(obj.value("port").toInt());
 
         if (!restartSrver(address, port)) {
             QuasarAppUtils::Params::verboseLog("server restart fail!");
@@ -117,6 +117,7 @@ void MainServer::handleTerminalRequest(QVariantMap obj) {
 
         res ["Res"] = "Server stoped!";
         _terminalPort->sendResponce(res, command);
+        _serverDaemon->stop();
         QCoreApplication::exit(0);
         return;
 

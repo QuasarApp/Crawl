@@ -25,7 +25,7 @@ void Client::incommingData() {
     if (_downloadPackage.isValid()) {
         emit sigIncommingData(_downloadPackage.parse());
         _downloadPackage.reset();
-        _waitData = false;
+        received = true;
         return;
     }
 }
@@ -176,13 +176,18 @@ bool Client::stop() {
     return sendPackage(pkg);
 }
 
-bool Client::wait(int msec) {
-    _waitData = true;
+bool Client::wait(bool & forWait, int msec) {
     auto curmsec = QDateTime::currentMSecsSinceEpoch() + msec;
-    while (curmsec > QDateTime::currentMSecsSinceEpoch() && _waitData) {
+    while (curmsec > QDateTime::currentMSecsSinceEpoch() && !forWait) {
         QCoreApplication::processEvents();
     }
     QCoreApplication::processEvents();
-    return !_waitData;
+    return forWait;
+}
+
+bool Client::wait(int msec)
+{
+    received = false;
+    return wait(received, msec);
 }
 }
