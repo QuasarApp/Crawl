@@ -1,2 +1,1 @@
 # Snake
-Cool game
