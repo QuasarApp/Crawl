@@ -9,6 +9,7 @@
 #include <QVariantMap>
 #include <factorynetobjects.h>
 #include <map.h>
+#include <pubkey.h>
 #include <snake.h>
 
 #define DEFAULT_GAME_PORT 7777
@@ -183,6 +184,12 @@ bool initClientProtockol() {
                 static_cast<quint8>(Command::Map))) {
         return false;
     }
+
+    if (!FactoryNetObjects::regType<PubKey>(
+                static_cast<quint8>(Command::PubKey))) {
+        return false;
+    }
+
     return true;
 }
 

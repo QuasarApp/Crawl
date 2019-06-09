@@ -2,3 +2,6 @@
 	path = QuasarAppLib
 	url = https://github.com/QuasarApp/QuasarAppLib.git
 
+[submodule "SnakeServer/Qt-Secret"]
+	path = SnakeServer/Qt-Secret
+	url = git@github.com:QuasarApp/Qt-Secret.git

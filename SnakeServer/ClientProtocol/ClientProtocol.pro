@@ -39,12 +39,14 @@ CONFIG(release, debug|release): {
 
 include($$PWD/../../QuasarAppLib/QuasarLib.pri)
 include($$PWD/../../SnakeUtils/SnakeUtils.pri)
+include($$PWD/../Qt-Secret/src/Qt-Secret.pri)
 
 
 SOURCES += \
         Objects/basenetworkobject.cpp \
         Objects/map.cpp \
         Objects/objdata.cpp \
+        Objects/pubkey.cpp \
         Objects/snake.cpp \
         clientprotocol.cpp \
         client.cpp \
@@ -53,6 +55,7 @@ SOURCES += \
         Objects/login.cpp \
         networkclasssize.cpp \
         Objects/player.cpp \
+        rsakeyspool.cpp \
         server.cpp \
         factorynetobjects.cpp \
         connectioninfo.cpp \
@@ -63,6 +66,7 @@ HEADERS += \
         Objects/basenetworkobject.h \
         Objects/map.h \
         Objects/objdata.h \
+        Objects/pubkey.h \
         Objects/snake.h \
         clientprotocol.h \
         clientprotocol_global.h \
@@ -72,6 +76,7 @@ HEADERS += \
         networkclasssize.h \
         client.h \
         Objects/player.h \
+        rsakeyspool.h \
         server.h \
         cp.h \
         config.h \

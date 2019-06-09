@@ -25,6 +25,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     item.cpp \
+    keysreactor.cpp \
     mainserver.cpp \
     playerdbdata.cpp \
     sqldbcache.cpp \
@@ -41,6 +42,7 @@ CONFIG(release, debug|release): {
 
 HEADERS += \
         item.h \
+        keysreactor.h \
         mainserver.h \
         playerdbdata.h \
         server_global.h \

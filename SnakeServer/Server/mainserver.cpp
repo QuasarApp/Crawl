@@ -1,3 +1,4 @@
+#include "keysreactor.h"
 #include "mainserver.h"
 #include "sqldbcache.h"
 #include <spserver.h>
@@ -136,7 +137,10 @@ void MainServer::handleTerminalRequest(QVariantMap obj) {
 
 MainServer::MainServer(QObject *ptr):
     QObject (ptr) {
-    _serverDaemon = new  ClientProtocol::Server(this);
+
+    _keyReactor = new KeysReactor();
+
+    _serverDaemon = new  ClientProtocol::Server(_keyReactor->getPool(), this);
     _terminalPort = new  ServerProtocol::Server(this);
 
     _db = new SqlDBCache();

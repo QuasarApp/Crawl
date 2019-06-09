@@ -2,6 +2,7 @@
 #include "quasarapp.h"
 #include <QTcpSocket>
 #include <factorynetobjects.h>
+#include <pubkey.h>
 #include "clientprotocol.h"
 
 namespace ClientProtocol {
@@ -72,29 +73,45 @@ bool Server::sendPackage(Package &pkg, QTcpSocket * target) {
 }
 
 void Server::ban(quint32 target) {
-    _connections[target].karma = BANED_KARMA;
-    if (_connections[target].sct) {
-        _connections[target].sct->close();
-    }
+    _connections[target].ban();
 }
 
 void Server::unBan(quint32 target) {
-    _connections[target].karma = RESTORE_KARMA;
+    _connections[target].unBan();
 }
 
-void Server::registerSocket(QTcpSocket *socket) {
+bool Server::registerSocket(QTcpSocket *socket) {
     auto address = socket->peerAddress().toIPv4Address();
 
-    _connections[address].karma = DEFAULT_KARMA;
-    _connections[address].sct = socket;
+    if (_pool) {
+        QuasarAppUtils::Params::verboseLog("key pool is not inited", QuasarAppUtils::Error);
+        return false;
+    }
+
+    RSAKeyPair pair;
+
+    if (!_pool->take(QRSAEncryption::RSA_128, pair)) {
+        QuasarAppUtils::Params::verboseLog("key pool is empty", QuasarAppUtils::Error);
+        return false;
+    }
+
+    _connections[address] = Connectioninfo(socket, DEFAULT_KARMA,
+                                           pair);
 
     connect(socket, &QTcpSocket::readyRead, this,  &Server::avelableBytes);
     connect(socket, &QTcpSocket::disconnected, this,  &Server::handleDisconected);
 
+    if (!sendPubKey(socket, pair.pub)) {
+        QuasarAppUtils::Params::verboseLog("not sendet pub key to client"
+                                           "generate new key!", QuasarAppUtils::Error);
+        return false;
+    }
+
+    return true;
 }
 
 bool Server::changeKarma(quint32 addresss, int diff) {
-    auto objKarma = _connections.value(addresss).karma;
+    auto objKarma = _connections.value(addresss).getKarma();
 
     if (objKarma >= NOT_VALID_CARMA) {
         return false;
@@ -104,34 +121,49 @@ bool Server::changeKarma(quint32 addresss, int diff) {
         return false;
     }
 
-    _connections[addresss].karma += diff;
+    _connections[addresss].setKarma(objKarma + diff);
     return true;
 }
 
 bool Server::isBaned(const QTcpSocket * adr) const {
-    return _connections.value(adr->peerAddress().toIPv4Address()).karma < 1;
-}
-
-void Server::saveKarma() const {
-
-}
-
-bool Server::loadKarma() {
-    return false;
+    return _connections.value(adr->peerAddress().toIPv4Address()).isBaned();
 }
 
 int Server::connectionsCount() const {
     int count = 0;
     for (auto i : _connections) {
-        if (i.sct) {
-            if (!i.sct->isValid()) {
-                // log about warning
+        if (i.getSct()) {
+            if (!i.getSct()->isValid()) {
+                QuasarAppUtils::Params::verboseLog("connection count, findet not valid socket",
+                                                   QuasarAppUtils::Warning);
             }
 
             count++;
         }
     }
     return count;
+}
+
+bool Server::sendPubKey(QTcpSocket * target, const QByteArray &pubKey) {
+
+    Package pcg;
+
+    PubKey pubkey;
+
+    pubkey.setKey(pubKey);
+    pubkey.setTypeKey(QRSAEncryption::RSA_128);
+    pubkey.setId(0);
+
+    if (!pubkey.isValid()) {
+        return false;
+    }
+
+    if (!(pcg.create(&pubkey, Type::Responke))) {
+        return false;
+    };
+
+    return sendPackage(pcg, target);
+
 }
 
 void Server::avelableBytes() {
@@ -167,8 +199,7 @@ void Server::handleDisconected() {
 
         unsigned int address = _sender->peerAddress().toIPv4Address();
         if (_connections.contains(address)) {
-            _connections[address].sct = nullptr;
-            _sender->deleteLater();
+            _connections[address].disconnect();
         } else {
             QuasarAppUtils::Params::verboseLog("system error in void Server::handleDisconected()"
                                                " address not valid",
@@ -195,9 +226,10 @@ void Server::handleIncommingConnection() {
     }
 }
 
-Server::Server(QObject *ptr) :
+Server::Server(RSAKeysPool *pool, QObject *ptr) :
     QTcpServer (ptr) {
 
+    _pool = pool;
     connect(this, &Server::newConnection, this, &Server::handleIncommingConnection);
 }
 
@@ -234,7 +266,7 @@ void Server::badRequest(quint32 address) {
                                            QuasarAppUtils::Error);
     };
 
-    if (!sendPackage(pcg, client.sct)) {
+    if (!sendPackage(pcg, client.getSct())) {
         return;
     }
 }
@@ -258,7 +290,7 @@ QString Server::connectionState() const {
 QStringList Server::baned() const {
     QStringList list = {};
     for (auto i = _connections.begin(); i != _connections.end(); ++i) {
-        if (i.value().karma <= 0) {
+        if (i.value().isBaned()) {
             list.push_back(QHostAddress(i.key()).toString());
         }
     }
@@ -266,15 +298,5 @@ QStringList Server::baned() const {
     return list;
 }
 
-Connectioninfo::Connectioninfo(QTcpSocket *tcp, int kar) {
-    sct = tcp;
-    karma = kar;
-}
-
-Connectioninfo::~Connectioninfo() {
-    if (sct) {
-        sct->deleteLater();
-    }
-}
 
 }

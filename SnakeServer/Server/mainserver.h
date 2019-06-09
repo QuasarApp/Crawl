@@ -13,7 +13,7 @@ namespace ClientProtocol {
     class Server;
     class BaseNetworkObject;
 }
-
+class KeysReactor;
 class SqlDBCache;
 
 class SERVERSHARED_EXPORT MainServer: public QObject
@@ -23,7 +23,7 @@ private:
     ServerProtocol::Server *_terminalPort = nullptr;
     ClientProtocol::Server *_serverDaemon= nullptr;
     SqlDBCache* _db = nullptr;
-
+    KeysReactor *_keyReactor = nullptr;
 
     bool payItem(int player, int idItem);
     bool sellItem(int player, int idItem);
