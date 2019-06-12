@@ -13,6 +13,7 @@
 #include <mainserver.h>
 
 #include "factorynetobjects.h"
+#include "testutils.h"
 
 // add necessary includes here
 
@@ -32,11 +33,11 @@ private:
     void testRestartServerProtockol(ServerProtocol::Client& cle);
     void testStopServerProtockol(ServerProtocol::Client& cle);
 
-    void testPingClientProtockol();
-    void testLogin();
-    void testUserData();
-    void testGetItem();
-    void testApplyData();
+    void testPingClientProtockol(ClientProtocol::Client& cle);
+    void testLogin(ClientProtocol::Client& cle);
+    void testUserData(ClientProtocol::Client& cle);
+    void testGetItem(ClientProtocol::Client& cle);
+    void testApplyData(ClientProtocol::Client& cle);
 
     void testBaseSql();
     void testSqlCache();
@@ -50,8 +51,8 @@ private slots:
     void initTestCase();
     void cleanupTestCase();
 
-    void testServerProtockol();
-    void testClientProtockol();
+    void testProtockols();
+//    void testClientProtockol();
     void testSql();
 
 
@@ -250,47 +251,33 @@ void testSankeServer::testStopServerProtockol(ServerProtocol::Client& cle) {
     QVERIFY(!received || isWork);
 }
 
-void testSankeServer::testPingClientProtockol() {
-
-    int argc = 0;
-    char * argv[] = {nullptr};
-
-    QCoreApplication app(argc, argv);
-
-    auto serv = new ClientProtocol::Server(this);
-
-    QVERIFY(serv->run(TEST_SERVER_ADDRESS, TEST_SERVER_PORT));
-
-    auto client = new ClientProtocol::Client(TEST_SERVER_ADDRESS,
-                                             TEST_SERVER_PORT,
-                                             this);
+void testSankeServer::testPingClientProtockol(ClientProtocol::Client &cle) {
 
     bool isWork = false;
-    QObject::connect(client, &ClientProtocol::Client::sigIncommingData,
-                     [&isWork, &app] (const ClientProtocol::Command cmd,
-                     const QByteArray&) {
+    bool received = false;
+
+    QMetaObject::Connection m_connection;
+
+    m_connection = QObject::connect(&cle, &ClientProtocol::Client::sigIncommingData,
+                     [&isWork, &received, &m_connection] (const ClientProtocol::Command cmd,
+                                    const QByteArray&) {
 
         isWork = cmd == ClientProtocol::Command::Ping;
-        app.exit(0);
+        received = true;
+        disconnect(m_connection);
+
 
     });
 
-    QVERIFY(client->ping());
+    QVERIFY(cle.ping());
 
-    QTimer::singleShot(1000, [&app](){
-        app.exit(0);
-    });
-
-    app.exec();
+    QVERIFY(TestUtils::wait(received, 1000));
 
     QVERIFY(isWork);
 
-    delete serv;
-    delete client;
 }
 
-void testSankeServer::testLogin() {
-    ClientProtocol::Client cle(TEST_SERVER_ADDRESS, TEST_SERVER_PORT);
+void testSankeServer::testLogin(ClientProtocol::Client &cle) {
 
     auto pass = QCryptographicHash::hash("testpass", QCryptographicHash::Sha512);
     QVERIFY(!cle.login("Test@gmail.com", pass));
@@ -300,8 +287,7 @@ void testSankeServer::testLogin() {
 
 }
 
-void testSankeServer::testUserData() {
-    ClientProtocol::Client cle(TEST_SERVER_ADDRESS, TEST_SERVER_PORT);
+void testSankeServer::testUserData(ClientProtocol::Client &cle) {
 
     QVERIFY(!cle.updateData());
 
@@ -312,9 +298,7 @@ void testSankeServer::testUserData() {
     QVERIFY(cle.updateData());
 }
 
-void testSankeServer::testGetItem() {
-
-    ClientProtocol::Client cle(TEST_SERVER_ADDRESS, TEST_SERVER_PORT);
+void testSankeServer::testGetItem(ClientProtocol::Client &cle) {
 
     QVERIFY(!cle.updateData());
 
@@ -325,10 +309,7 @@ void testSankeServer::testGetItem() {
     QVERIFY(cle.getItem(1));
 }
 
-void testSankeServer::testApplyData() {
-
-    ClientProtocol::Client cle(TEST_SERVER_ADDRESS, TEST_SERVER_PORT);
-
+void testSankeServer::testApplyData(ClientProtocol::Client &cle) {
 
     auto token = QCryptographicHash::hash("testtoken", QCryptographicHash::Sha256);
     cle._token = token;
@@ -563,7 +544,7 @@ void testSankeServer::testSql() {
     testSqlCache();
 }
 
-void testSankeServer::testServerProtockol() {
+void testSankeServer::testProtockols() {
 
     int argc =0;
     char * argv[] = {nullptr};
@@ -572,15 +553,26 @@ void testSankeServer::testServerProtockol() {
 
     auto serv = new MainServer(this);
     QVERIFY(serv->run(TEST_SERVER_ADDRESS, TEST_SERVER_PORT , "", TEST_LOCAL_SERVER, true));
-    ServerProtocol::Client cle(TEST_LOCAL_SERVER);
+    ServerProtocol::Client cleS(TEST_LOCAL_SERVER);
+    ClientProtocol::Client cleC(TEST_LOCAL_SERVER, TEST_SERVER_PORT);
 
-    QTimer::singleShot(0, [this, &app, &cle]() {
-        testPingServerProtockol(cle);
-        testStateServerProtockol(cle);
-        testBanServerProtockol(cle);
-        testUnBanServerProtockol(cle);
-        testRestartServerProtockol(cle);
-        testStopServerProtockol(cle);
+    QTimer::singleShot(0, [this, &app, &cleS, &cleC]() {
+
+        // test server protockiol
+        testPingServerProtockol(cleS);
+        testStateServerProtockol(cleS);
+        testBanServerProtockol(cleS);
+        testUnBanServerProtockol(cleS);
+        testRestartServerProtockol(cleS);
+        testStopServerProtockol(cleS);
+
+        // test client protockol
+        testPingClientProtockol(cleC);
+
+        testLogin(cleC);
+        testGetItem(cleC);
+        testUserData(cleC);
+        testApplyData(cleC);
         app.exit(0);
     });
 
@@ -588,17 +580,13 @@ void testSankeServer::testServerProtockol() {
 
 }
 
-void testSankeServer::testClientProtockol() {
-    testPingClientProtockol();
+//void testSankeServer::testClientProtockol() {
 
-    auto serv = new ClientProtocol::Server(this);
-    QVERIFY(serv->run(TEST_SERVER_ADDRESS, TEST_SERVER_PORT));
+//    auto serv = new ClientProtocol::Server(this);
+//    QVERIFY(serv->run(TEST_SERVER_ADDRESS, TEST_SERVER_PORT));
 
-    testLogin();
-    testGetItem();
-    testUserData();
-    testApplyData();
-}
+
+//}
 
 QTEST_APPLESS_MAIN(testSankeServer)
 

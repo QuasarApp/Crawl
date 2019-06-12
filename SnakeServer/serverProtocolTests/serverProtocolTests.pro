@@ -8,7 +8,8 @@ TEMPLATE = app
 
 TARGET = serverTests
 
-SOURCES += \   
+SOURCES += \
+    testutils.cpp \
     tst_testsnakeserver.cpp
 
 CONFIG(release, debug|release): {
@@ -25,7 +26,8 @@ include($$PWD/../../SnakeUtils/SnakeUtils.pri)
 include($$PWD/../../SnakeServer/Server/Server.pri)
 
 
-HEADERS +=
+HEADERS += \
+    testutils.h
 
 deployTest.commands = cqtdeployer -bin $$DESTDIR clear -qmake $$QMAKE_QMAKE -targetDir $$PWD/deployTests -libDir $$PWD/../../ -recursiveDepth 5
 
