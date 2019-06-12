@@ -554,17 +554,9 @@ void testSankeServer::testProtockols() {
     auto serv = new MainServer(this);
     QVERIFY(serv->run(TEST_SERVER_ADDRESS, TEST_SERVER_PORT , "", TEST_LOCAL_SERVER, true));
     ServerProtocol::Client cleS(TEST_LOCAL_SERVER);
-    ClientProtocol::Client cleC(TEST_LOCAL_SERVER, TEST_SERVER_PORT);
+    ClientProtocol::Client cleC(TEST_SERVER_ADDRESS, TEST_SERVER_PORT);
 
     QTimer::singleShot(0, [this, &app, &cleS, &cleC]() {
-
-        // test server protockiol
-        testPingServerProtockol(cleS);
-        testStateServerProtockol(cleS);
-        testBanServerProtockol(cleS);
-        testUnBanServerProtockol(cleS);
-        testRestartServerProtockol(cleS);
-        testStopServerProtockol(cleS);
 
         // test client protockol
         testPingClientProtockol(cleC);
@@ -573,6 +565,14 @@ void testSankeServer::testProtockols() {
         testGetItem(cleC);
         testUserData(cleC);
         testApplyData(cleC);
+
+        // test server protockiol
+        testPingServerProtockol(cleS);
+        testStateServerProtockol(cleS);
+        testBanServerProtockol(cleS);
+        testUnBanServerProtockol(cleS);
+        testRestartServerProtockol(cleS);
+        testStopServerProtockol(cleS);
         app.exit(0);
     });
 

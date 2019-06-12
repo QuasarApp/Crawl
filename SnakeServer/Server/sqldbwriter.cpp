@@ -422,6 +422,10 @@ bool SqlDBWriter::initDb(const QString &databasePath) {
     db->setDatabaseName(QFileInfo(databasePath).absoluteFilePath());
     query = new QSqlQuery(*db);
 
+    if (!QDir("").mkpath(QFileInfo(databasePath).absolutePath())) {
+        return false;
+    }
+
     if (!db->open()) {
         return false;
     }
