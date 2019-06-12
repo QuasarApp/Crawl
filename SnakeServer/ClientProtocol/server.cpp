@@ -83,7 +83,7 @@ void Server::unBan(quint32 target) {
 bool Server::registerSocket(QTcpSocket *socket) {
     auto address = socket->peerAddress().toIPv4Address();
 
-    if (_pool) {
+    if (!_pool) {
         QuasarAppUtils::Params::verboseLog("key pool is not inited", QuasarAppUtils::Error);
         return false;
     }
