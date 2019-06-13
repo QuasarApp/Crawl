@@ -551,10 +551,12 @@ void testSankeServer::testProtockols() {
 
     QCoreApplication app(argc, argv);
 
-    auto serv = new MainServer(this);
+    auto serv = new MainServer(true, this);
     QVERIFY(serv->run(TEST_SERVER_ADDRESS, TEST_SERVER_PORT , "", TEST_LOCAL_SERVER, true));
     ServerProtocol::Client cleS(TEST_LOCAL_SERVER);
     ClientProtocol::Client cleC(TEST_SERVER_ADDRESS, TEST_SERVER_PORT);
+
+    QVERIFY(TestUtils::wait(cleC.isOnline(), 1000));
 
     QTimer::singleShot(0, [this, &app, &cleS, &cleC]() {
 

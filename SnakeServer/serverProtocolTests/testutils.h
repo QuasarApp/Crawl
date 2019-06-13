@@ -6,7 +6,7 @@ class TestUtils
 {
 public:
     TestUtils();
-    static bool wait(bool & forWait, int msec);
+    static bool wait(const bool &forWait, int msec);
 };
 
 #endif // TESTUTILS_H

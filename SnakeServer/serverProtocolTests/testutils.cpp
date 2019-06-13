@@ -8,7 +8,7 @@ TestUtils::TestUtils()
 
 }
 
-bool TestUtils::wait(bool &forWait, int msec) {
+bool TestUtils::wait(const bool &forWait, int msec) {
     auto curmsec = QDateTime::currentMSecsSinceEpoch() + msec;
     while (curmsec > QDateTime::currentMSecsSinceEpoch() && !forWait) {
         QCoreApplication::processEvents();

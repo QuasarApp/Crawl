@@ -135,10 +135,10 @@ void MainServer::handleTerminalRequest(QVariantMap obj) {
     return;
 }
 
-MainServer::MainServer(QObject *ptr):
+MainServer::MainServer(bool forceKeys ,QObject *ptr):
     QObject (ptr) {
 
-    _keyReactor = new KeysReactor();
+    _keyReactor = new KeysReactor(forceKeys , this);
 
     _serverDaemon = new  ClientProtocol::Server(_keyReactor->getPool(), this);
     _terminalPort = new  ServerProtocol::Server(this);

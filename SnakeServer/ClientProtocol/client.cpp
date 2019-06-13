@@ -4,6 +4,8 @@
 #include <QVariantMap>
 #include <QDateTime>
 #include <quasarapp.h>
+#include <qrsaencryption.h>
+#include <pubkey.h>
 #include "factorynetobjects.h"
 #include "gamedata.h"
 #include "getitem.h"
@@ -17,6 +19,13 @@ bool Client::receiveData(const QByteArray &obj, Header hdr) {
     auto command = static_cast<Command>(hdr.command);
     auto type = static_cast<Type>(hdr.type);
     int  index = hdr.sig;
+
+    if (command == Command::PubKey && !_rsaKey.size()) {
+        PubKey data;
+        data.fromBytes(obj);
+        return setRSAKey(data.getKey());;
+    }
+
 
     if (index < 0 || index > 255)
         return false;
@@ -40,7 +49,7 @@ bool Client::receiveData(const QByteArray &obj, Header hdr) {
     if (expectedCommand != Command::Undefined &&
             (command == expectedCommand) && type == Type::Responke) {
 
-        setOnline(expectedCommand == Command::Login ||
+        setLoginStatus(expectedCommand == Command::Login ||
                   expectedCommand == Command::GetItem ||
                   expectedCommand == Command::GameData);
     }
@@ -50,11 +59,21 @@ bool Client::receiveData(const QByteArray &obj, Header hdr) {
     return true;
 }
 
-void Client::setOnline(bool newStatus)
-{
+bool Client::setRSAKey(const QByteArray& key) {
+    bool newStatus = QRSAEncryption::isValidRsaKey(key);
     if (newStatus != _online) {
+        _rsaKey = key;
         _online = newStatus;
         emit onlineChanged(_online);
+    }
+
+    return newStatus;
+}
+
+void Client::setLoginStatus(bool newStatus) {
+    if (newStatus != _logined) {
+        _logined = newStatus;
+        emit loginChanged(_logined);
     }
 }
 
@@ -253,9 +272,12 @@ bool Client::getItem(int id) {
     return true;
 }
 
-bool Client::isOnline() const
-{
+const bool& Client::isOnline() const {
     return _online;
+}
+
+const bool& Client::isLogin() const {
+    return _logined;
 }
 
 }

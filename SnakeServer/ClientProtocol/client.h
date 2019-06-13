@@ -20,12 +20,16 @@ private:
     QTcpSocket *_destination;
     Package _downloadPackage;
     bool _online = false;
+    bool _logined = false;
     QByteArray _token;
+    QByteArray _rsaKey;
     int currentIndex = 0;
     QHash<unsigned char, QVariantMap> _requestsMap;
 
     bool receiveData(const QByteArray &obj, Header hdr);
-    void setOnline(bool newStatus);
+    bool setRSAKey(const QByteArray &key);
+    void setLoginStatus(bool newStatus);
+
     bool sendPackage(Package &pkg);
     inline unsigned char nextIndex();
 
@@ -72,14 +76,23 @@ public:
 
     /**
      * @brief isOnline
-     * @return true if player online
+     * @return true if client is connected to server and get rsapub key
      */
-    bool isOnline() const;
+    const bool &isOnline() const;
+
+    /**
+     * @brief isLogin
+     * @return true if player is online
+     */
+    const bool &isLogin() const;
+
     friend class ::testSankeServer;
 
 signals:
     void sigIncommingData(Command cmd, const QByteArray& obj);
     void onlineChanged(bool);
+    void loginChanged(bool);
+
 };
 
 }

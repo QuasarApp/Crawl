@@ -29,7 +29,7 @@ BaseNetworkObject *PubKey::create() const {
 
 NetworkClassSize PubKey::classSize() const {
     return BaseNetworkObject::classSize() +
-            QRSAEncryption::getBytesSize(typeKey) +
+            QRSAEncryption::getKeyBytesSize(typeKey) +
             static_cast<unsigned int>(sizeof (int)) +
             getTypeSize(typeKey);
 }
@@ -51,7 +51,7 @@ QDataStream &PubKey::readFromStream(QDataStream &stream) {
 }
 
 bool PubKey::isValid() const {
-    return static_cast<quint32>(key.size()) == QRSAEncryption::getBytesSize(typeKey)
+    return static_cast<quint32>(key.size()) == QRSAEncryption::getKeyBytesSize(typeKey)
             && BaseNetworkObject::isValid();
 }
 

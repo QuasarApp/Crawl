@@ -15,8 +15,18 @@ void KeysReactor::setPoolSize(int value) {
     }
 }
 
-void KeysReactor::handleGenerateNewKeys() {
+void KeysReactor::generateKeys(QRSAEncryption::Rsa rsa) {
+    QByteArray pub, priv;
 
+    if (_poolSize > _pool.size(rsa)) {
+        _generator.generatePairKey(pub, priv, rsa);
+        _pool.addNewKey(rsa, {pub, priv});
+    }
+
+    return;
+}
+
+void KeysReactor::handleGenerateNewKeys() {
 
     auto generatorFunc = [this] (QRSAEncryption::Rsa rsa) {
 
@@ -43,11 +53,17 @@ void KeysReactor::handleGenerateNewKeys() {
 
 }
 
-KeysReactor::KeysReactor(QObject * ptr):
+KeysReactor::KeysReactor(bool ForceGenerateKey, QObject *ptr):
     QObject (ptr) {
 
     _mutexs[QRSAEncryption::RSA_64] = false;
     _mutexs[QRSAEncryption::RSA_128] = false;
+
+    if (ForceGenerateKey) {
+        generateKeys(QRSAEncryption::RSA_64);
+        generateKeys(QRSAEncryption::RSA_128);
+
+    }
 
     handleGenerateNewKeys();
 
