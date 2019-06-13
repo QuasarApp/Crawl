@@ -35,6 +35,8 @@ private:
 private slots:
     void avelableBytes();
     void handleDisconected();
+    void handleError(QAbstractSocket::SocketError err);
+
     void handleIncommingConnection();
 
 public:

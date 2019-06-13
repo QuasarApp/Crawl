@@ -3,7 +3,8 @@
 
 namespace ClientProtocol {
 
-PubKey::PubKey() {
+PubKey::PubKey():
+    BaseNetworkObject() {
     _class = static_cast<quint8>(Command::PubKey);
 }
 
@@ -29,9 +30,10 @@ BaseNetworkObject *PubKey::create() const {
 
 NetworkClassSize PubKey::classSize() const {
     return BaseNetworkObject::classSize() +
-            QRSAEncryption::getKeyBytesSize(typeKey) +
+            NetworkClassSize(QRSAEncryption::getKeyBytesSize(QRSAEncryption::RSA_64),
+                             QRSAEncryption::getKeyBytesSize(QRSAEncryption::RSA_128)) +
             static_cast<unsigned int>(sizeof (int)) +
-            getTypeSize(typeKey);
+            getTypeSize(int(typeKey));
 }
 
 QDataStream &PubKey::writeToStream(QDataStream &stream) const {

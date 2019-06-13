@@ -26,7 +26,6 @@ bool Client::receiveData(const QByteArray &obj, Header hdr) {
         return setRSAKey(data.getKey());;
     }
 
-
     if (index < 0 || index > 255)
         return false;
 

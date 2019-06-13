@@ -98,8 +98,10 @@ bool Server::registerSocket(QTcpSocket *socket) {
     _connections[address] = Connectioninfo(socket, DEFAULT_KARMA,
                                            pair);
 
-    connect(socket, &QTcpSocket::readyRead, this,  &Server::avelableBytes);
-    connect(socket, &QTcpSocket::disconnected, this,  &Server::handleDisconected);
+    connect(socket, &QTcpSocket::readyRead, this, &Server::avelableBytes);
+    connect(socket, SIGNAL(error(QTcpSocket::error)),
+            this, SLOT(handleError(QTcpSocket::error)));
+    connect(socket, &QTcpSocket::disconnected, this, &Server::handleDisconected);
 
     if (!sendPubKey(socket, pair.pub)) {
         QuasarAppUtils::Params::verboseLog("not sendet pub key to client"
@@ -211,6 +213,10 @@ void Server::handleDisconected() {
     QuasarAppUtils::Params::verboseLog("system error in void Server::handleDisconected()"
                                        "dynamic_cast fail!",
                                        QuasarAppUtils::Error);
+}
+
+void Server::handleError(QAbstractSocket::SocketError err) {
+    qDebug() << err;
 }
 
 void Server::handleIncommingConnection() {
