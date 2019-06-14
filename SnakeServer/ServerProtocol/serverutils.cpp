@@ -46,6 +46,8 @@ void ServerUtils::helpClient() {
 }
 
 bool ServerUtils::runDaemon() {
+
+#ifdef Q_OS_UNIX
     if (QuasarAppUtils::Params::isEndable("daemon") ||
             QuasarAppUtils::Params::isEndable("d")) {
 
@@ -55,6 +57,7 @@ bool ServerUtils::runDaemon() {
         }
     }
 
+#endif
     return false;
 }
 
