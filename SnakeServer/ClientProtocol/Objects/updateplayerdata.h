@@ -5,7 +5,7 @@
 namespace ClientProtocol {
 
 
-class UpdatePlayerData : public BaseNetworkObject
+class CLIENTPROTOCOLSHARED_EXPORT UpdatePlayerData : public BaseNetworkObject
 {
 private:
     SHA256 token;

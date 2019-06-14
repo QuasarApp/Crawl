@@ -9,13 +9,14 @@
 #include <typeinfo>
 #include "config.h"
 #include <type_traits>
+#include "clientprotocol_global.h"
 
 namespace ClientProtocol {
 
 typedef QByteArray SHA256;
 
 template <typename T>
-NetworkClassSize getTypeSize(const T& type = {}) {
+NetworkClassSize CLIENTPROTOCOLSHARED_EXPORT getTypeSize(const T& type = {}) {
     auto hash = typeid(type).hash_code();
 
     if (hash == typeid(QString).hash_code()) {
@@ -44,7 +45,7 @@ NetworkClassSize getTypeSize(const T& type = {}) {
     return sizeof (type);
 }
 
-class BaseNetworkObject
+class CLIENTPROTOCOLSHARED_EXPORT BaseNetworkObject
 {
 private:
     int _id = -1;
@@ -68,7 +69,7 @@ public:
 };
 
 template<class T>
-auto cast(const BaseNetworkObject* obj) {
+auto CLIENTPROTOCOLSHARED_EXPORT cast(const BaseNetworkObject* obj) {
     static_assert (!std::is_pointer<T>(), "Cast working only with pointers!");
     return static_cast<T>(obj);
 }

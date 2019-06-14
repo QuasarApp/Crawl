@@ -1,8 +1,10 @@
 #ifndef NETWORKCLASSSIZE_H
 #define NETWORKCLASSSIZE_H
 
+#include "clientprotocol_global.h"
+
 namespace ClientProtocol {
-struct NetworkClassSize {
+struct CLIENTPROTOCOLSHARED_EXPORT NetworkClassSize {
     unsigned int min = 0;
     unsigned int max = 0;
 

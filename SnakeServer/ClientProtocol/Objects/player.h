@@ -7,7 +7,7 @@
 namespace ClientProtocol {
 
 
-class Player: public UpdatePlayerData
+class CLIENTPROTOCOLSHARED_EXPORT Player: public UpdatePlayerData
 {
 private:
     QString name = "user";

@@ -6,7 +6,7 @@
 
 namespace ClientProtocol {
 
-class PubKey: public BaseNetworkObject
+class CLIENTPROTOCOLSHARED_EXPORT PubKey: public BaseNetworkObject
 {
 private:
     QRSAEncryption::Rsa typeKey;

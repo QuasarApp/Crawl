@@ -4,7 +4,7 @@
 #include "basenetworkobject.h"
 namespace ClientProtocol {
 
-class Login : public BaseNetworkObject
+class CLIENTPROTOCOLSHARED_EXPORT Login : public BaseNetworkObject
 {
 
 private:

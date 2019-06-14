@@ -2,7 +2,7 @@
 #define CONNECTIONINFO_H
 
 #include "rsakeyspool.h"
-
+#include "clientprotocol_global.h"
 
 class QTcpSocket;
 namespace ClientProtocol {
@@ -12,7 +12,7 @@ namespace ClientProtocol {
 #define RESTORE_KARMA   20
 #define BANED_KARMA     0
 
-class Connectioninfo {
+class CLIENTPROTOCOLSHARED_EXPORT Connectioninfo {
 
     QTcpSocket *sct = nullptr;
     int karma = DEFAULT_KARMA;
