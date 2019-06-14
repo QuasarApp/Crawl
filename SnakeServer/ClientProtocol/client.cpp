@@ -21,7 +21,7 @@ bool Client::receiveData(const QByteArray &obj, Header hdr) {
     int  index = hdr.sig;
 
     if (command == Command::PubKey && !_rsaKey.size()) {
-        PubKey data;
+        PubKey data;       
         data.fromBytes(obj);
         return setRSAKey(data.getKey());;
     }
@@ -89,7 +89,7 @@ void Client::incommingData() {
     }
 
     if (_downloadPackage.isValid()) {
-        if (!receiveData(_downloadPackage.toBytes(), _downloadPackage.hdr)) {
+        if (!receiveData(_downloadPackage.data, _downloadPackage.hdr)) {
             // ban
         }
 
@@ -188,7 +188,7 @@ bool Client::login(const QString &gmail, const QByteArray &pass) {
 
 bool Client::updateData() {
 
-    if (!isOnline()) {
+    if (!isLogin()) {
         return false;
     }
 
@@ -214,7 +214,7 @@ bool Client::updateData() {
 }
 
 bool Client::savaData(const QList<int>& gameData) {
-    if (!isOnline()) {
+    if (!isLogin()) {
         return false;
     }
 
@@ -242,7 +242,7 @@ bool Client::savaData(const QList<int>& gameData) {
 
 bool Client::getItem(int id) {
 
-    if (!isOnline()) {
+    if (!isLogin()) {
         return false;
     }
 

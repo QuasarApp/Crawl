@@ -73,11 +73,19 @@ bool Server::sendPackage(Package &pkg, QTcpSocket * target) {
 }
 
 void Server::ban(quint32 target) {
-    _connections[target].ban();
+    if (!_connections[target]) {
+        _connections[target] = new Connectioninfo();
+    }
+
+    _connections[target]->ban();
 }
 
 void Server::unBan(quint32 target) {
-    _connections[target].unBan();
+    if (!_connections.contains(target)) {
+        return;
+    }
+
+    _connections[target]->unBan();
 }
 
 bool Server::registerSocket(QTcpSocket *socket) {
@@ -95,12 +103,10 @@ bool Server::registerSocket(QTcpSocket *socket) {
         return false;
     }
 
-    _connections[address] = Connectioninfo(socket, DEFAULT_KARMA,
+    _connections[address] = new Connectioninfo(socket, DEFAULT_KARMA,
                                            pair);
 
     connect(socket, &QTcpSocket::readyRead, this, &Server::avelableBytes);
-    connect(socket, SIGNAL(error(QTcpSocket::error)),
-            this, SLOT(handleError(QTcpSocket::error)));
     connect(socket, &QTcpSocket::disconnected, this, &Server::handleDisconected);
 
     if (!sendPubKey(socket, pair.pub)) {
@@ -113,7 +119,12 @@ bool Server::registerSocket(QTcpSocket *socket) {
 }
 
 bool Server::changeKarma(quint32 addresss, int diff) {
-    auto objKarma = _connections.value(addresss).getKarma();
+    auto ptr = _connections.value(addresss);
+    if (!ptr) {
+        return false;
+    }
+
+    auto objKarma = ptr->getKarma();
 
     if (objKarma >= NOT_VALID_CARMA) {
         return false;
@@ -123,19 +134,25 @@ bool Server::changeKarma(quint32 addresss, int diff) {
         return false;
     }
 
-    _connections[addresss].setKarma(objKarma + diff);
+    ptr->setKarma(objKarma + diff);
     return true;
 }
 
 bool Server::isBaned(const QTcpSocket * adr) const {
-    return _connections.value(adr->peerAddress().toIPv4Address()).isBaned();
+    auto ptr = _connections.value(adr->peerAddress().toIPv4Address());
+
+    if (!ptr) {
+        return false;
+    }
+
+    return ptr->isBaned();
 }
 
 int Server::connectionsCount() const {
     int count = 0;
     for (auto i : _connections) {
-        if (i.getSct()) {
-            if (!i.getSct()->isValid()) {
+        if (i->getSct()) {
+            if (!i->getSct()->isValid()) {
                 QuasarAppUtils::Params::verboseLog("connection count, findet not valid socket",
                                                    QuasarAppUtils::Warning);
             }
@@ -200,8 +217,9 @@ void Server::handleDisconected() {
         // log error
 
         unsigned int address = _sender->peerAddress().toIPv4Address();
-        if (_connections.contains(address)) {
-            _connections[address].disconnect();
+        auto ptr = _connections.value(address);
+        if (ptr) {
+            ptr->disconnect();
         } else {
             QuasarAppUtils::Params::verboseLog("system error in void Server::handleDisconected()"
                                                " address not valid",
@@ -213,10 +231,6 @@ void Server::handleDisconected() {
     QuasarAppUtils::Params::verboseLog("system error in void Server::handleDisconected()"
                                        "dynamic_cast fail!",
                                        QuasarAppUtils::Error);
-}
-
-void Server::handleError(QAbstractSocket::SocketError err) {
-    qDebug() << err;
 }
 
 void Server::handleIncommingConnection() {
@@ -240,6 +254,7 @@ Server::Server(RSAKeysPool *pool, QObject *ptr) :
 }
 
 Server::~Server() {
+    stop();
 }
 
 bool Server::run(const QString &ip, unsigned short port) {
@@ -255,12 +270,21 @@ void Server::stop(bool reset) {
     close();
 
     if (reset) {
+
+        for (auto &&i : _connections) {
+            i->disconnect();
+        }
+
         _connections.clear();
     }
 }
 
 void Server::badRequest(quint32 address) {
     auto client = _connections.value(address);
+
+    if (!client) {
+        return;
+    }
 
     if (!changeKarma(address, REQUEST_ERROR)) {
         return;
@@ -272,7 +296,7 @@ void Server::badRequest(quint32 address) {
                                            QuasarAppUtils::Error);
     };
 
-    if (!sendPackage(pcg, client.getSct())) {
+    if (!sendPackage(pcg, client->getSct())) {
         return;
     }
 }
@@ -296,7 +320,7 @@ QString Server::connectionState() const {
 QStringList Server::baned() const {
     QStringList list = {};
     for (auto i = _connections.begin(); i != _connections.end(); ++i) {
-        if (i.value().isBaned()) {
+        if (i.value()->isBaned()) {
             list.push_back(QHostAddress(i.key()).toString());
         }
     }

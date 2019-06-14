@@ -284,36 +284,33 @@ void testSankeServer::testLogin(ClientProtocol::Client &cle) {
 
     pass = QCryptographicHash::hash("testpass", QCryptographicHash::Sha256);
     QVERIFY(cle.login("Test@gmail.com", pass));
+    cle._logined = true;
+    cle._online = true;
+    auto token = QCryptographicHash::hash("testtoken", QCryptographicHash::Sha256);
+
 
 }
 
 void testSankeServer::testUserData(ClientProtocol::Client &cle) {
 
+    cle._token = "";
     QVERIFY(!cle.updateData());
 
-    auto token = QCryptographicHash::hash("testtoken", QCryptographicHash::Sha256);
-    cle._token = token;
-    cle._online = true;
-
+    cle._token = QCryptographicHash::hash("testtoken", QCryptographicHash::Sha256);
     QVERIFY(cle.updateData());
 }
 
 void testSankeServer::testGetItem(ClientProtocol::Client &cle) {
+    cle._token = "";
+    QVERIFY(!cle.getItem(1));
 
-    QVERIFY(!cle.updateData());
-
-    auto token = QCryptographicHash::hash("testtoken", QCryptographicHash::Sha256);
-    cle._token = token;
-    cle._online = true;
-
+    cle._token = QCryptographicHash::hash("testtoken", QCryptographicHash::Sha256);
     QVERIFY(cle.getItem(1));
 }
 
 void testSankeServer::testApplyData(ClientProtocol::Client &cle) {
 
-    auto token = QCryptographicHash::hash("testtoken", QCryptographicHash::Sha256);
-    cle._token = token;
-    cle._online = true;
+    cle._token = QCryptographicHash::hash("testtoken", QCryptographicHash::Sha256);
 
     QVERIFY(!cle.savaData(QList<int>()));
 
