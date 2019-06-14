@@ -16,7 +16,7 @@ namespace ClientProtocol {
 typedef QByteArray SHA256;
 
 template <typename T>
-NetworkClassSize CLIENTPROTOCOLSHARED_EXPORT getTypeSize(const T& type = {}) {
+NetworkClassSize getTypeSize(const T& type = {}) {
     auto hash = typeid(type).hash_code();
 
     if (hash == typeid(QString).hash_code()) {
@@ -69,7 +69,7 @@ public:
 };
 
 template<class T>
-auto CLIENTPROTOCOLSHARED_EXPORT cast(const BaseNetworkObject* obj) {
+auto cast(const BaseNetworkObject* obj) {
     static_assert (!std::is_pointer<T>(), "Cast working only with pointers!");
     return static_cast<T>(obj);
 }
