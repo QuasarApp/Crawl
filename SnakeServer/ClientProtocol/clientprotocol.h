@@ -34,7 +34,7 @@ enum class Command: quint8 {
 
 bool isValidSize(quint8 type, unsigned int size);
 
-bool initClientProtockol();
+bool CLIENTPROTOCOLSHARED_EXPORT initClientProtockol();
 auto cast(const BaseNetworkObject *obj);
 /**
  * @brief The Header struct 4 byte
