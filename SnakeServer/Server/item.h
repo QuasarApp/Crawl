@@ -1,9 +1,9 @@
 #ifndef ITEM_H
 #define ITEM_H
 #include <clientprotocol.h>
-#include <clientprotocol_global.h>
+#include "server_global.h"
 
-class Item : protected ClientProtocol::Package
+class SERVERSHARED_EXPORT Item : protected ClientProtocol::Package
 {
 private:
 

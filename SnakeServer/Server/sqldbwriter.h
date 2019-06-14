@@ -16,7 +16,7 @@ class QSqlDatabase;
 class QSqlQuery;
 class PlayerDBData;
 
-class SqlDBWriter
+class SERVERSHARED_EXPORT SqlDBWriter
 {
 private:
     bool exec(QSqlQuery *sq, const QString &sqlFile);

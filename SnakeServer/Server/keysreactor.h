@@ -4,10 +4,11 @@
 #include <qrsaencryption.h>
 #include <QtConcurrent>
 #include <rsakeyspool.h>
+#include "server_global.h"
 
 #define DEFAULT_KEYPOOL_SIZE 10
 
-class KeysReactor: public QObject
+class SERVERSHARED_EXPORT KeysReactor: public QObject
 {
     Q_OBJECT
 private:

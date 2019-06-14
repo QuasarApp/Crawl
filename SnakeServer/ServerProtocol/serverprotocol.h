@@ -27,7 +27,7 @@ enum Command: unsigned char {
 /**
  * @brief The Header struct 2 byte
  */
-struct Header {
+struct SERVERPROTOCOLSHARED_EXPORT Header {
     /**
      * @brief size - size of package data (not header)
      */
@@ -62,7 +62,7 @@ struct Header {
 /**
  * @brief The Package struct
  */
-struct Package {
+struct SERVERPROTOCOLSHARED_EXPORT Package {
     /**
      * @brief hdr - header of package
      */

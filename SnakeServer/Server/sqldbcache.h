@@ -10,7 +10,7 @@
 #include "item.h"
 #include <clientprotocol.h>
 
-enum class SqlDBCasheWriteMode: int {
+enum class SERVERSHARED_EXPORT SqlDBCasheWriteMode: int {
     Default = 0x0,
     On_New_Thread = 0x1,
     Force = 0x2,
@@ -20,7 +20,7 @@ namespace ClientProtocol {
     class BaseNetworkObject;
 }
 
-class SqlDBCache : private SqlDBWriter
+class SERVERSHARED_EXPORT SqlDBCache : private SqlDBWriter
 {
 private:
     qint64 lastUpdateTime = 0;
