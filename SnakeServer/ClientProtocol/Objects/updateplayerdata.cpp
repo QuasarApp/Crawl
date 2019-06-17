@@ -9,11 +9,11 @@ UpdatePlayerData::UpdatePlayerData() {
 
 }
 
-SHA256 UpdatePlayerData::getToken() const {
+QByteArray UpdatePlayerData::getToken() const {
     return token;
 }
 
-void UpdatePlayerData::setToken(const SHA256 &value) {
+void UpdatePlayerData::setToken(const QByteArray &value) {
     token = value;
 }
 

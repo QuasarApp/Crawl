@@ -163,10 +163,17 @@ bool Client::login(const QString &gmail, const QByteArray &pass) {
         return false;
     }
 
+    if (!isOnline()) {
+        return false;
+    }
+
     Package pcg;
 
     Login login;
-    login.setHashPass(pass);
+
+    login.setHashPass(QRSAEncryption::encodeS(
+                          QCryptographicHash::hash(pass, QCryptographicHash::Sha256),
+                          _rsaKey));
     login.setGmail(gmail);
     login.setId(0);
 

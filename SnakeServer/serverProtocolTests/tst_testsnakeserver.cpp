@@ -279,11 +279,7 @@ void testSankeServer::testPingClientProtockol(ClientProtocol::Client &cle) {
 
 void testSankeServer::testLogin(ClientProtocol::Client &cle) {
 
-    auto pass = QCryptographicHash::hash("testpass", QCryptographicHash::Sha512);
-    QVERIFY(!cle.login("Test@gmail.com", pass));
-
-    pass = QCryptographicHash::hash("testpass", QCryptographicHash::Sha256);
-    QVERIFY(cle.login("Test@gmail.com", pass));
+    QVERIFY(cle.login("Test@gmail.com", "testpass"));
     cle._logined = true;
     cle._online = true;
     auto token = QCryptographicHash::hash("testtoken", QCryptographicHash::Sha256);

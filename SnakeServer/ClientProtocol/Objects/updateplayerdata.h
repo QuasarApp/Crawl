@@ -8,12 +8,12 @@ namespace ClientProtocol {
 class CLIENTPROTOCOLSHARED_EXPORT UpdatePlayerData : public BaseNetworkObject
 {
 private:
-    SHA256 token;
+    QByteArray token;
 
 public:
     UpdatePlayerData();
-    SHA256 getToken() const;
-    void setToken(const SHA256 &value);
+    QByteArray getToken() const;
+    void setToken(const QByteArray &value);
 
     BaseNetworkObject *create() const override;
     NetworkClassSize classSize() const override;
