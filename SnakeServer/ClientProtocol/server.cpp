@@ -43,8 +43,8 @@ bool Server::parsePackage(const Package &pkg, QTcpSocket* sender) {
 
     default: {
 
-        emit incomingReques(static_cast<Command>(pkg.hdr.command),
-                            pkg.data, sender->peerAddress().toIPv4Address());
+        emit incomingReques(pkg.hdr, pkg.data,
+                            sender->peerAddress().toIPv4Address());
     }
     }
 
@@ -301,6 +301,28 @@ void Server::badRequest(quint32 address) {
     }
 }
 
+bool Server::sendResponse(const BaseNetworkObject *resp, quint32 address, quint8 sig) {
+
+    auto client = _connections.value(address);
+
+    if (!client) {
+        return false;
+    }
+
+    Package pcg;
+    if (!(pcg.create(resp, Type::Responke))) {
+        QuasarAppUtils::Params::verboseLog("Bad request detected, bud responce command nor received!",
+                                           QuasarAppUtils::Error);
+    };
+
+    pcg.hdr.sig = sig;
+    if (!sendPackage(pcg, client->getSct())) {
+        return false;
+    }
+
+    return false;
+}
+
 QString Server::getWorkState() const {
     if (isListening()) {
         if (hasPendingConnections())
@@ -326,6 +348,16 @@ QStringList Server::baned() const {
     }
 
     return list;
+}
+
+bool Server::getRSA(quint32 key, RSAKeyPair& res) const {
+    auto sct = _connections.value(key);
+    if (sct) {
+        res = sct->getRSAKey();
+        return true;
+    }
+
+    return false;
 }
 
 

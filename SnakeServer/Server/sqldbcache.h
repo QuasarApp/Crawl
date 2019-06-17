@@ -29,6 +29,7 @@ private:
     QMap <int, Item> items;
     QMap <int, PlayerDBData> players;
     QHash <int, QSet<int>>  owners;
+    QHash <QString, int>  playersIds;
 
     int generateIdForItem() const;
     int generateIdForPalyer() const;
@@ -52,9 +53,12 @@ public:
     PlayerDBData getPlayer(int id) override;
     int savePlayer(const PlayerDBData &player) override;
 
+    bool login(const QString& gmail, const QString& pass);
+
     bool giveAwayItem(int player, int item);
     bool getItem(int player, int item, bool check = true);
     bool moveItem(int owner, int receiver, int item);
+    int getPlayerId(const QString &gmail) override;
 
     bool getAllItemsOfPalyer(int player, QSet<int>& items) override;
 

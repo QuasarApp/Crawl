@@ -12,9 +12,12 @@ namespace ServerProtocol {
 namespace ClientProtocol {
     class Server;
     class BaseNetworkObject;
+    class Login;
+    class RSAKeyPair;
 }
 class KeysReactor;
 class SqlDBCache;
+class PlayerDBData;
 
 class SERVERSHARED_EXPORT MainServer: public QObject
 {
@@ -27,11 +30,16 @@ private:
 
     bool payItem(int player, int idItem);
     bool sellItem(int player, int idItem);
+    QByteArray generateTocket(const QString& gmail) const;
+    QByteArray registerPlayer(const ClientProtocol::Login &login,
+                        const ClientProtocol::RSAKeyPair &rsa) const;
+    QByteArray loginPlayer(const ClientProtocol::Login& login,
+                     const ClientProtocol::RSAKeyPair& rsa) const;
 
     bool restartSrver(const QString& ip, unsigned short port);
 
 private slots:
-    void handleRequest(ClientProtocol::Command cmd, const QByteArray &data,
+    void handleRequest(ClientProtocol::Header hdr, const QByteArray &data,
                        const quint32& addres);
     void handleTerminalRequest(QVariantMap obj);
 

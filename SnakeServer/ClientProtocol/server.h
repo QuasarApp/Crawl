@@ -45,6 +45,7 @@ public:
     void stop(bool reset = false);
 
     void badRequest(quint32 address);
+    bool sendResponse(const BaseNetworkObject* resp,  quint32 address, quint8 sig = 0);
 
     void ban(quint32 target);
     void unBan(quint32 target);
@@ -62,8 +63,11 @@ public:
     QString connectionState() const;
 
     QStringList baned() const;
+
+    bool getRSA(quint32, RSAKeyPair & res) const;
+
 signals:
-    void incomingReques(Command cmd, const QByteArray &data, const quint32 &sender);
+    void incomingReques(Header hdr, const QByteArray &data, const quint32 &sender);
 };
 
 }

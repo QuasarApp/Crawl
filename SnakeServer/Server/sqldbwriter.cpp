@@ -204,11 +204,12 @@ int SqlDBWriter::savePlayer(const PlayerDBData &player) {
 
 
     if (SqlDBWriter::checkPlayer(id)) {
-        request = QString("UPDATE players SET name='%0', gmail='%1', money='%2',"
-                          " avgrecord='%3', record='%4', lastOnline='%5',"
-                          " onlinetime='%6', currentsnake='%7' WHERE id='%8' ").arg(
+        request = QString("UPDATE players SET name='%0', gmail='%1', pass='%2', money='%3',"
+                          " avgrecord='%4', record='%5', lastOnline='%6',"
+                          " onlinetime='%7', currentsnake='%8' WHERE id='%9' ").arg(
                     player.getName()).arg(
                     player.getGmail()).arg(
+                    player.getHexPass()).arg(
                     player.getMany()).arg(
                     player.getAvgRecord()).arg(
                     player.getRecord()).arg(
@@ -218,12 +219,13 @@ int SqlDBWriter::savePlayer(const PlayerDBData &player) {
                     id);
 
     } else {
-        request = QString("INSERT INTO players(id, name, gmail, money, avgrecord, record,"
+        request = QString("INSERT INTO players(id, name, gmail, pass, money, avgrecord, record,"
                           " lastOnline, onlinetime, currentsnake) VALUES "
-                          "('%0', '%1', '%2', '%3', '%4', '%5', '%6', '%7', '%8')").arg(
+                          "('%0', '%1', '%2', '%3', '%4', '%5', '%6', '%7', '%8', '%9')").arg(
                     id).arg(
                     player.getName()).arg(
                     player.getGmail()).arg(
+                    player.getHexPass()).arg(
                     player.getMany()).arg(
                     player.getAvgRecord()).arg(
                     player.getRecord()).arg(
@@ -364,6 +366,7 @@ PlayerDBData SqlDBWriter::getPlayer(int id) {
     player.setId(id);
     player.setName(query->value("name").toString());
     player.setGmail(query->value("gmail").toString());
+    player.fromHexPass(query->value("pass").toString());
     player.setMany(query->value("money").toUInt());
     player.setAvgRecord(query->value("avgrecord").toUInt());
     player.setRecord(query->value("record").toUInt());

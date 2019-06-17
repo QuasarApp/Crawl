@@ -1,5 +1,6 @@
 #include "keysreactor.h"
 #include "mainserver.h"
+#include "playerdbdata.h"
 #include "sqldbcache.h"
 #include <spserver.h>
 #include <cpserver.h>
@@ -7,6 +8,62 @@
 #include <basenetworkobject.h>
 #include <login.h>
 #include <QCoreApplication>
+#include <rsakeyspool.h>
+
+QByteArray MainServer::generateTocket(const QString& gmail) const {
+
+    return QCryptographicHash::hash((gmail + QString::number(rand())).toLatin1(),
+                                    QCryptographicHash::Sha256);
+}
+
+QByteArray MainServer::registerPlayer(const ClientProtocol::Login& login,
+                                const ClientProtocol::RSAKeyPair& rsa) const {
+    if (!login.isValid()) {
+        return {};
+    }
+
+    PlayerDBData player;
+    player.setGmail( login.getGmail());
+
+    player.setPass(QRSAEncryption::decodeS(login.getHashPass(), rsa.priv));
+
+    int id = _db->savePlayer(player);
+    if (id < 0) {
+        return {};
+    }
+
+    player = _db->getPlayer(id);
+    player.setToken(generateTocket(login.getGmail()));
+    player.setName(QString("Palyer %0").arg(id));
+
+    if (!player.isValid()) {
+        QuasarAppUtils::Params::verboseLog("register Player fail!",
+                                           QuasarAppUtils::Warning);
+        return {};
+    }
+
+    if (id != _db->savePlayer(player)) {
+        return {};
+    }
+
+    return player.getToken();
+}
+
+QByteArray MainServer::loginPlayer(const ClientProtocol::Login& login,
+                             const ClientProtocol::RSAKeyPair& rsa) const {
+    if (!login.isValid()) {
+        return {};
+    }
+
+    auto pass = QRSAEncryption::decodeS(login.getHashPass(), rsa.priv);
+
+    if (_db->login(login.getGmail(), pass.toHex())) {
+        return generateTocket(login.getGmail());
+
+    }
+
+    return {};
+}
 
 bool MainServer::restartSrver(const QString &ip, unsigned short port) {
     if (_serverDaemon->isListening()) {
@@ -20,26 +77,49 @@ bool MainServer::restartSrver(const QString &ip, unsigned short port) {
     return true;
 }
 
-void MainServer::handleRequest(ClientProtocol::Command cmd,
+void MainServer::handleRequest(ClientProtocol::Header hdr,
                                const QByteArray& data,
                                const quint32 &addres) {
 
     Q_UNUSED(addres);
 
 
-    switch (cmd) {
+    switch (static_cast<ClientProtocol::Command>(hdr.command)) {
     case ClientProtocol::Command::Login: {
 
         ClientProtocol::Login loginData;
         loginData.fromBytes(data);
 
-
-        if (!loginData.isValid()) {
+        ClientProtocol::RSAKeyPair keys;
+        if (!_serverDaemon->getRSA(addres, keys)) {
             _serverDaemon->badRequest(addres);
-            return ;
+            return;
         }
 
-// TODO
+        QByteArray tocken;
+        if (_db->getPlayerId(loginData.getGmail()) < 0) {
+            tocken = registerPlayer(loginData, keys);
+            if (!tocken.size()) {
+                _serverDaemon->badRequest(addres);
+                return;
+            }
+        } else {
+            tocken = loginPlayer(loginData, keys);
+
+            if (!tocken.size()) {
+                _serverDaemon->badRequest(addres);
+                return;
+            }
+        }
+
+        ClientProtocol::UpdatePlayerData tockenObj;
+        tockenObj.setToken(tocken);
+
+        if (!_serverDaemon->sendResponse(&tockenObj, addres, hdr.sig)) {
+            QuasarAppUtils::Params::verboseLog("responce not sendet",
+                                               QuasarAppUtils::Warning);
+            return;
+        }
 
         break;
     }

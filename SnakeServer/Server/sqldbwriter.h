@@ -32,7 +32,7 @@ protected:
     int getLastIdItems();
     int getLastIdPlayers();
 
-    int getPlayerId(const QString &gmail);
+    virtual int getPlayerId(const QString &gmail);
 
     virtual bool checkPlayer(int id);
     virtual bool checkItem(int idItem, int idOwner = -1);

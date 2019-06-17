@@ -63,10 +63,25 @@ void Player::setAvgRecord(unsigned int value) {
     avgRecord = value;
 }
 
-Player::Player()
-{
-    _class = static_cast<quint8>(Command::Player);
+QByteArray Player::getPass() const {
+    return pass;
+}
 
+void Player::setPass(const QByteArray &value) {
+    pass = value;
+}
+
+QString Player::getHexPass() const {
+    return getPass().toHex();
+}
+
+void Player::fromHexPass(const QString &passHex) {
+    setPass(QByteArray::fromHex(passHex.toLatin1()));
+}
+
+Player::Player() {
+    _class = static_cast<quint8>(Command::Player);
+    
 }
 
 BaseNetworkObject *Player::create() const {
@@ -89,6 +104,7 @@ QDataStream &Player::writeToStream(QDataStream &stream) const {
     UpdatePlayerData::writeToStream(stream);
     stream << name;
     stream << gmail;
+    stream << pass;
     stream << money;
     stream << record;
     stream << avgRecord;
@@ -102,6 +118,7 @@ QDataStream &Player::readFromStream(QDataStream &stream) {
     UpdatePlayerData::readFromStream(stream);
     stream >> name;
     stream >> gmail;
+    stream >> pass;
     stream >> money;
     stream >> record;
     stream >> avgRecord;
@@ -112,6 +129,7 @@ QDataStream &Player::readFromStream(QDataStream &stream) {
 
 bool Player::isValid() const {
     return !name.isNull() && gmail.size() > 5 &&
+            !pass.isEmpty() &&
             BaseNetworkObject::isValid();
 }
 }

@@ -12,6 +12,8 @@ class CLIENTPROTOCOLSHARED_EXPORT Player: public UpdatePlayerData
 private:
     QString name = "user";
     QString gmail = "";
+    QByteArray pass = "";
+
     unsigned int money = 0;
     unsigned int record = 0;
     unsigned int avgRecord = 0;
@@ -40,6 +42,11 @@ public:
     void setCureentSnake(int value);
     unsigned int getAvgRecord() const;
     void setAvgRecord(unsigned int value);
+    QByteArray getPass() const;
+    void setPass(const QByteArray &value);
+    QString getHexPass() const;
+    void fromHexPass(const QString& passHex);
+
 };
 
 }

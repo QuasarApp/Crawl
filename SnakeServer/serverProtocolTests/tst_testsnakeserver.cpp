@@ -370,6 +370,7 @@ void testSankeServer::testBaseSql() {
     player.setLastOnline(1000);
     player.setOnlineTime(1001);
     player.setName("test");
+    player.fromHexPass("FF");
     player.setGmail("test@gmail.com");
     player.setCureentSnake(0);
 
@@ -399,6 +400,7 @@ void testSankeServer::testBaseSql() {
     QVERIFY(player.getMany() == resPlayer.getMany());
     QVERIFY(player.getOnlineTime() == resPlayer.getOnlineTime());
     QVERIFY(player.getName() == resPlayer.getName());
+    QVERIFY(player.getPass() == resPlayer.getPass());
     QVERIFY(player.getCureentSnake() == resPlayer.getCureentSnake());
 
 
@@ -469,6 +471,7 @@ void testSankeServer::testSqlCache() {
     player.setLastOnline(1000);
     player.setOnlineTime(1001);
     player.setName("test");
+    player.fromHexPass("FF");
     player.setGmail("test@gmail.com");
     player.setCureentSnake(0);
 
@@ -492,6 +495,7 @@ void testSankeServer::testSqlCache() {
     QVERIFY(player.getMany() == resPlayer.getMany());
     QVERIFY(player.getOnlineTime() == resPlayer.getOnlineTime());
     QVERIFY(player.getName() == resPlayer.getName());
+    QVERIFY(player.getPass() == resPlayer.getPass());
     QVERIFY(player.getCureentSnake() == resPlayer.getCureentSnake());
 
 
@@ -513,6 +517,7 @@ void testSankeServer::testSqlCache() {
     second_player.setLastOnline(1000);
     second_player.setOnlineTime(1001);
     second_player.setName("test2");
+    second_player.setPass("test2");
     second_player.setGmail("test2@gmail.com");
     second_player.setCureentSnake(-1);
     second_player.setId(-1);
