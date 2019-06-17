@@ -54,6 +54,8 @@ public:
      */
     bool login(const QString& gmail, const QByteArray &pass);
 
+    void loginOut();
+
     /**
      * @brief updateData
      * @return  true if refresh seсcessfully completed

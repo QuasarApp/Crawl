@@ -36,7 +36,6 @@ bool Client::receiveData(const QByteArray &obj, Header hdr) {
                                         static_cast<quint8>(Command::Undefined)).toInt());
 
     if (expectedCommand == Command::Undefined ||
-            (command != expectedCommand) ||
             type != Type::Responke) {
 
         QuasarAppUtils::Params::verboseLog("wrong sig of package");
@@ -45,8 +44,8 @@ bool Client::receiveData(const QByteArray &obj, Header hdr) {
 
     _requestsMap[idx]["time"] = QDateTime::currentMSecsSinceEpoch();
 
-    if (expectedCommand != Command::Undefined &&
-            (command == expectedCommand) && type == Type::Responke) {
+    if (expectedCommand != Command::Undefined
+             && type == Type::Responke) {
 
         setLoginStatus(expectedCommand == Command::Login ||
                   expectedCommand == Command::GetItem ||
@@ -191,6 +190,11 @@ bool Client::login(const QString &gmail, const QByteArray &pass) {
     }
 
     return true;
+}
+
+void Client::loginOut() {
+    _token = "";
+    setLoginStatus(false);
 }
 
 bool Client::updateData() {

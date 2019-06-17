@@ -320,7 +320,7 @@ bool Server::sendResponse(const BaseNetworkObject *resp, quint32 address, quint8
         return false;
     }
 
-    return false;
+    return true;
 }
 
 QString Server::getWorkState() const {

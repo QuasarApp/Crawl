@@ -279,11 +279,49 @@ void testSankeServer::testPingClientProtockol(ClientProtocol::Client &cle) {
 
 void testSankeServer::testLogin(ClientProtocol::Client &cle) {
 
-    QVERIFY(cle.login("Test@gmail.com", "testpass"));
-    cle._logined = true;
-    cle._online = true;
-    auto token = QCryptographicHash::hash("testtoken", QCryptographicHash::Sha256);
 
+    bool received = false;
+    QMetaObject::Connection m_connection;
+    m_connection = QObject::connect(&cle, &ClientProtocol::Client::sigIncommingData,
+                     [ &received, &m_connection] (const ClientProtocol::Command,
+                                    const QByteArray&) {
+
+        received = true;
+        disconnect(m_connection);
+
+
+    });
+    QVERIFY(cle.login("Test@gmail.com", "testpass"));
+    QVERIFY(TestUtils::wait(received, 1000));
+    QVERIFY(cle.isLogin());
+
+    cle.loginOut();
+
+    received = false;
+    m_connection = QObject::connect(&cle, &ClientProtocol::Client::sigIncommingData,
+                     [ &received, &m_connection] (const ClientProtocol::Command,
+                                    const QByteArray&) {
+
+        received = true;
+        disconnect(m_connection);
+
+    });
+    QVERIFY(cle.login("Test@gmail.com", "testpass2"));
+    QVERIFY(TestUtils::wait(received, 1000));
+    QVERIFY(!cle.isLogin());
+
+    received = false;
+    m_connection = QObject::connect(&cle, &ClientProtocol::Client::sigIncommingData,
+                     [ &received, &m_connection] (const ClientProtocol::Command,
+                                    const QByteArray&) {
+
+        received = true;
+        disconnect(m_connection);
+
+    });
+    QVERIFY(cle.login("Test@gmail.com", "testpass"));
+    QVERIFY(TestUtils::wait(received, 1000));
+    QVERIFY(cle.isLogin());
 
 }
 
