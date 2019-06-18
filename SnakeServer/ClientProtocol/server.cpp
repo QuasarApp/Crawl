@@ -29,11 +29,9 @@ bool Server::parsePackage(const Package &pkg, QTcpSocket* sender) {
 
         Package pcg;
 
-        if (!(pcg.create(Command::Ping, Type::Responke))) {
+        if (!(pcg.create(Command::Ping, Type::Responke, pkg.hdr))) {
             return false;
         };
-
-        pcg.hdr.sig = pkg.hdr.sig;
 
         if (!sendPackage(pcg, sender)) {
             QuasarAppUtils::Params::verboseLog("!responce not sendet!");
@@ -177,7 +175,7 @@ bool Server::sendPubKey(QTcpSocket * target, const QByteArray &pubKey) {
         return false;
     }
 
-    if (!(pcg.create(&pubkey, Type::Responke))) {
+    if (!(pcg.create(&pubkey, Type::Request))) {
         return false;
     };
 
@@ -279,7 +277,7 @@ void Server::stop(bool reset) {
     }
 }
 
-void Server::badRequest(quint32 address) {
+void Server::badRequest(quint32 address, const Header &req) {
     auto client = _connections.value(address);
 
     if (!client) {
@@ -291,7 +289,7 @@ void Server::badRequest(quint32 address) {
     }
 
     Package pcg;
-    if (!(pcg.create(Command::BadRequest, Type::Responke))) {
+    if (!(pcg.create(Command::BadRequest, Type::Responke, req))) {
         QuasarAppUtils::Params::verboseLog("Bad request detected, bud responce command nor received!",
                                            QuasarAppUtils::Error);
     };
@@ -301,7 +299,7 @@ void Server::badRequest(quint32 address) {
     }
 }
 
-bool Server::sendResponse(const BaseNetworkObject *resp, quint32 address, quint8 sig) {
+bool Server::sendResponse(const BaseNetworkObject *resp, quint32 address, const Header &req) {
 
     auto client = _connections.value(address);
 
@@ -310,12 +308,11 @@ bool Server::sendResponse(const BaseNetworkObject *resp, quint32 address, quint8
     }
 
     Package pcg;
-    if (!(pcg.create(resp, Type::Responke))) {
+    if (!(pcg.create(resp, Type::Responke, req))) {
         QuasarAppUtils::Params::verboseLog("Bad request detected, bud responce command nor received!",
                                            QuasarAppUtils::Error);
     };
 
-    pcg.hdr.sig = sig;
     if (!sendPackage(pcg, client->getSct())) {
         return false;
     }

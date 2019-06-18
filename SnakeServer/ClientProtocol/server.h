@@ -44,8 +44,8 @@ public:
     bool run(const QString& ip, unsigned short port);
     void stop(bool reset = false);
 
-    void badRequest(quint32 address);
-    bool sendResponse(const BaseNetworkObject* resp,  quint32 address, quint8 sig = 0);
+    void badRequest(quint32 address, const Header &req);
+    bool sendResponse(const BaseNetworkObject* resp,  quint32 address, const Header &req);
 
     void ban(quint32 target);
     void unBan(quint32 target);

@@ -248,6 +248,7 @@ int SqlDBCache::savePlayer(const PlayerDBData &saveData) {
     }
 
     players.insert(id, player);
+    playersIds.insert(player.getGmail(), id);
 
     globalUpdateDataBase(SqlDBCasheWriteMode::On_New_Thread);
 

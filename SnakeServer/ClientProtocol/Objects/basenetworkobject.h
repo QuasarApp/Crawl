@@ -101,7 +101,7 @@ class CLIENTPROTOCOLSHARED_EXPORT BaseNetworkObject
 private:
     int _id = -1;
 protected:
-    qint8 _class = -1;
+    quint8 _class = 0;
 
 public:
     BaseNetworkObject();
@@ -116,7 +116,7 @@ public:
     void fromBytes(const QByteArray& array);
     int id() const;
     void setId(int id);
-    qint8 getClass() const;
+    quint8 getClass() const;
 };
 
 template<class T>

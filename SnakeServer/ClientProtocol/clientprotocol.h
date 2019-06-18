@@ -44,7 +44,7 @@ struct CLIENTPROTOCOLSHARED_EXPORT Header {
     /**
      * @brief size - size of package data (not header)
      */
-    unsigned short size: 16;
+    unsigned short size: 12;
     /**
      * @brief type of package see Type
      */
@@ -52,7 +52,13 @@ struct CLIENTPROTOCOLSHARED_EXPORT Header {
     /**
      * @brief command of pacage see Command
      */
-    quint8 command: 6;
+    quint8 command: 5;
+
+    /**
+     * @brief command of pacage see Command (rquest from client)
+     * the server should write to which command it responds
+     */
+    quint8 requestCommand: 5;
 
     /**
      * @brief sig
@@ -121,18 +127,20 @@ struct CLIENTPROTOCOLSHARED_EXPORT Package {
     /**
      * @brief create - fill package
      * @param data - data of filled
+     * @param old header (only for request type)
      * @return true if all done
      */
-    bool create(const BaseNetworkObject *data, Type type);
+    bool create(const BaseNetworkObject *data, Type type, const Header &old = Header());
 
     /**
      * @brief create
      * @param cmd command of package
      * @param type type
      * @param data - data of filled
-     * @return
+     * @param old - header (only for request type)
+     * @return true if all good
      */
-    bool create(Command cmd, Type type, const QByteArray& data);
+    bool create(Command cmd, Type type, const QByteArray& data, const Header& old = Header());
 
 
 
@@ -140,9 +148,10 @@ struct CLIENTPROTOCOLSHARED_EXPORT Package {
      * @brief create
      * @param cmd command of package
      * @param type type
-     * @return
+     * @param old header (only for request type)
+     * @return true if all good
      */
-    bool create(Command cmd, Type type);
+    bool create(Command cmd, Type type, const Header& old = Header());
 
     /**
      * @brief toBytes

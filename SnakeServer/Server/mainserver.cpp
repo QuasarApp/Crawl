@@ -92,7 +92,7 @@ void MainServer::handleRequest(ClientProtocol::Header hdr,
 
         ClientProtocol::RSAKeyPair keys;
         if (!_serverDaemon->getRSA(addres, keys)) {
-            _serverDaemon->badRequest(addres);
+            _serverDaemon->badRequest(addres, hdr);
             return;
         }
 
@@ -100,22 +100,23 @@ void MainServer::handleRequest(ClientProtocol::Header hdr,
         if (_db->getPlayerId(loginData.getGmail()) < 0) {
             tocken = registerPlayer(loginData, keys);
             if (!tocken.size()) {
-                _serverDaemon->badRequest(addres);
+                _serverDaemon->badRequest(addres, hdr);
                 return;
             }
         } else {
             tocken = loginPlayer(loginData, keys);
 
             if (!tocken.size()) {
-                _serverDaemon->badRequest(addres);
+                _serverDaemon->badRequest(addres, hdr);
                 return;
             }
         }
 
         ClientProtocol::UpdatePlayerData tockenObj;
         tockenObj.setToken(tocken);
+        tockenObj.setId(_db->getPlayerId(loginData.getGmail()));
 
-        if (!_serverDaemon->sendResponse(&tockenObj, addres, hdr.sig)) {
+        if (!_serverDaemon->sendResponse(&tockenObj, addres, hdr)) {
             QuasarAppUtils::Params::verboseLog("responce not sendet",
                                                QuasarAppUtils::Warning);
             return;
@@ -137,7 +138,7 @@ void MainServer::handleRequest(ClientProtocol::Header hdr,
     }
 
     default:
-        _serverDaemon->badRequest(addres);
+        _serverDaemon->badRequest(addres, hdr);
         break;
     }
 }

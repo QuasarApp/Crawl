@@ -12,11 +12,8 @@ void BaseNetworkObject::setId(int id) {
     _id = id;
 }
 
-qint8 BaseNetworkObject::getClass() const {
-    assert(_class != 0);
-
+quint8 BaseNetworkObject::getClass() const {
     return _class;
-
 }
 
 BaseNetworkObject::BaseNetworkObject() {
