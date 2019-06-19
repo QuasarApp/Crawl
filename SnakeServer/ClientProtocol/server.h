@@ -19,7 +19,7 @@ class CLIENTPROTOCOLSHARED_EXPORT Server : public QTcpServer
     Q_OBJECT
 private:
     Package _downloadPackage;
-    QHash<quint32, Connectioninfo> _connections;
+    QHash<quint32, Connectioninfo*> _connections;
 
     RSAKeysPool * _pool = nullptr;
     bool parsePackage(const Package &pkg, QTcpSocket * sender);
@@ -35,7 +35,6 @@ private:
 private slots:
     void avelableBytes();
     void handleDisconected();
-    void handleError(QAbstractSocket::SocketError err);
 
     void handleIncommingConnection();
 
@@ -45,7 +44,8 @@ public:
     bool run(const QString& ip, unsigned short port);
     void stop(bool reset = false);
 
-    void badRequest(quint32 address);
+    void badRequest(quint32 address, const Header &req);
+    bool sendResponse(const BaseNetworkObject* resp,  quint32 address, const Header &req);
 
     void ban(quint32 target);
     void unBan(quint32 target);
@@ -63,8 +63,11 @@ public:
     QString connectionState() const;
 
     QStringList baned() const;
+
+    bool getRSA(quint32, RSAKeyPair & res) const;
+
 signals:
-    void incomingReques(Command cmd, const QByteArray &data, const quint32 &sender);
+    void incomingReques(Header hdr, const QByteArray &data, const quint32 &sender);
 };
 
 }

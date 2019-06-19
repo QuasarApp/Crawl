@@ -279,41 +279,72 @@ void testSankeServer::testPingClientProtockol(ClientProtocol::Client &cle) {
 
 void testSankeServer::testLogin(ClientProtocol::Client &cle) {
 
-    auto pass = QCryptographicHash::hash("testpass", QCryptographicHash::Sha512);
-    QVERIFY(!cle.login("Test@gmail.com", pass));
 
-    pass = QCryptographicHash::hash("testpass", QCryptographicHash::Sha256);
-    QVERIFY(cle.login("Test@gmail.com", pass));
+    bool received = false;
+    QMetaObject::Connection m_connection;
+    m_connection = QObject::connect(&cle, &ClientProtocol::Client::sigIncommingData,
+                     [ &received, &m_connection] (const ClientProtocol::Command,
+                                    const QByteArray&) {
+
+        received = true;
+        disconnect(m_connection);
+
+
+    });
+    QVERIFY(cle.login("Test@gmail.com", "testpass"));
+    QVERIFY(TestUtils::wait(received, 1000));
+    QVERIFY(cle.isLogin());
+
+    cle.loginOut();
+
+    received = false;
+    m_connection = QObject::connect(&cle, &ClientProtocol::Client::sigIncommingData,
+                     [ &received, &m_connection] (const ClientProtocol::Command,
+                                    const QByteArray&) {
+
+        received = true;
+        disconnect(m_connection);
+
+    });
+    QVERIFY(cle.login("Test@gmail.com", "testpass2"));
+    QVERIFY(TestUtils::wait(received, 1000));
+    QVERIFY(!cle.isLogin());
+
+    received = false;
+    m_connection = QObject::connect(&cle, &ClientProtocol::Client::sigIncommingData,
+                     [ &received, &m_connection] (const ClientProtocol::Command,
+                                    const QByteArray&) {
+
+        received = true;
+        disconnect(m_connection);
+
+    });
+    QVERIFY(cle.login("Test@gmail.com", "testpass"));
+    QVERIFY(TestUtils::wait(received, 1000));
+    QVERIFY(cle.isLogin());
 
 }
 
 void testSankeServer::testUserData(ClientProtocol::Client &cle) {
 
+    cle._token = "";
     QVERIFY(!cle.updateData());
 
-    auto token = QCryptographicHash::hash("testtoken", QCryptographicHash::Sha256);
-    cle._token = token;
-    cle._online = true;
-
+    cle._token = QCryptographicHash::hash("testtoken", QCryptographicHash::Sha256);
     QVERIFY(cle.updateData());
 }
 
 void testSankeServer::testGetItem(ClientProtocol::Client &cle) {
+    cle._token = "";
+    QVERIFY(!cle.getItem(1));
 
-    QVERIFY(!cle.updateData());
-
-    auto token = QCryptographicHash::hash("testtoken", QCryptographicHash::Sha256);
-    cle._token = token;
-    cle._online = true;
-
+    cle._token = QCryptographicHash::hash("testtoken", QCryptographicHash::Sha256);
     QVERIFY(cle.getItem(1));
 }
 
 void testSankeServer::testApplyData(ClientProtocol::Client &cle) {
 
-    auto token = QCryptographicHash::hash("testtoken", QCryptographicHash::Sha256);
-    cle._token = token;
-    cle._online = true;
+    cle._token = QCryptographicHash::hash("testtoken", QCryptographicHash::Sha256);
 
     QVERIFY(!cle.savaData(QList<int>()));
 
@@ -377,6 +408,7 @@ void testSankeServer::testBaseSql() {
     player.setLastOnline(1000);
     player.setOnlineTime(1001);
     player.setName("test");
+    player.fromHexPass("FF");
     player.setGmail("test@gmail.com");
     player.setCureentSnake(0);
 
@@ -406,6 +438,7 @@ void testSankeServer::testBaseSql() {
     QVERIFY(player.getMany() == resPlayer.getMany());
     QVERIFY(player.getOnlineTime() == resPlayer.getOnlineTime());
     QVERIFY(player.getName() == resPlayer.getName());
+    QVERIFY(player.getPass() == resPlayer.getPass());
     QVERIFY(player.getCureentSnake() == resPlayer.getCureentSnake());
 
 
@@ -476,6 +509,7 @@ void testSankeServer::testSqlCache() {
     player.setLastOnline(1000);
     player.setOnlineTime(1001);
     player.setName("test");
+    player.fromHexPass("FF");
     player.setGmail("test@gmail.com");
     player.setCureentSnake(0);
 
@@ -499,6 +533,7 @@ void testSankeServer::testSqlCache() {
     QVERIFY(player.getMany() == resPlayer.getMany());
     QVERIFY(player.getOnlineTime() == resPlayer.getOnlineTime());
     QVERIFY(player.getName() == resPlayer.getName());
+    QVERIFY(player.getPass() == resPlayer.getPass());
     QVERIFY(player.getCureentSnake() == resPlayer.getCureentSnake());
 
 
@@ -520,6 +555,7 @@ void testSankeServer::testSqlCache() {
     second_player.setLastOnline(1000);
     second_player.setOnlineTime(1001);
     second_player.setName("test2");
+    second_player.setPass("test2");
     second_player.setGmail("test2@gmail.com");
     second_player.setCureentSnake(-1);
     second_player.setId(-1);

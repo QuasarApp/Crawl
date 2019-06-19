@@ -5,7 +5,7 @@
 
 namespace ClientProtocol {
 
-class Map : public BaseNetworkObject
+class CLIENTPROTOCOLSHARED_EXPORT Map : public BaseNetworkObject
 {
 private:
     quint8 lvl;

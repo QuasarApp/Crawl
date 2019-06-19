@@ -6,7 +6,7 @@
 
 namespace ClientProtocol {
 
-class Snake: public BaseNetworkObject
+class CLIENTPROTOCOLSHARED_EXPORT Snake: public BaseNetworkObject
 {
 private:
     quint8 speed;

@@ -30,9 +30,7 @@ BaseNetworkObject *PubKey::create() const {
 
 NetworkClassSize PubKey::classSize() const {
     return BaseNetworkObject::classSize() +
-            NetworkClassSize(QRSAEncryption::getKeyBytesSize(QRSAEncryption::RSA_64),
-                             QRSAEncryption::getKeyBytesSize(QRSAEncryption::RSA_128)) +
-            static_cast<unsigned int>(sizeof (int)) +
+            getTypeSize(key, cryptoAlghoritms::RSA128 | cryptoAlghoritms::Key) +
             getTypeSize(int(typeKey));
 }
 

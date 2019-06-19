@@ -248,10 +248,30 @@ int SqlDBCache::savePlayer(const PlayerDBData &saveData) {
     }
 
     players.insert(id, player);
+    playersIds.insert(player.getGmail(), id);
 
     globalUpdateDataBase(SqlDBCasheWriteMode::On_New_Thread);
 
     return id;
+}
+
+bool SqlDBCache::login(const QString &gmail, const QString &pass) {
+    if (!isValid()) {
+        return false;
+    }
+
+    int id = getPlayerId(gmail);
+    if (id < 0) {
+        return false;
+    }
+
+    auto player = getPlayer(id);
+
+    if (!player.isValid()) {
+        return false;
+    }
+
+    return player.getHexPass() == pass;
 }
 
 bool SqlDBCache::giveAwayItem(int player, int item) {
@@ -322,6 +342,20 @@ bool SqlDBCache::getItem(int player, int item, bool check) {
 
 bool SqlDBCache::moveItem(int owner, int receiver, int item) {
     return giveAwayItem(owner, item) && getItem(receiver, item, false);
+}
+
+int SqlDBCache::getPlayerId(const QString &gmail) {
+    int id = playersIds.value(gmail, -1);
+    if (id < 0) {
+        id = SqlDBWriter::getPlayerId(gmail);
+
+        if (id >= 0) {
+            playersIds[gmail] = id;
+        }
+        return id;
+    }
+
+    return id;
 }
 
 bool SqlDBCache::getAllItemsOfPalyer(int player, QSet<int> &items) {

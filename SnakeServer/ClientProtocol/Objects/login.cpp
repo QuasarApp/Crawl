@@ -14,26 +14,27 @@ BaseNetworkObject *Login::create() const {
 
 NetworkClassSize Login::classSize() const {
     auto size = BaseNetworkObject::classSize();
-    return size + getTypeSize(hashPass) + getTypeSize(gmail);
+    return size + getTypeSize(hashRsaPass) + getTypeSize(gmail);
 }
 
 QDataStream &Login::writeToStream(QDataStream &stream) const {
     BaseNetworkObject::writeToStream(stream);
     stream << gmail;
-    stream << hashPass;
+    stream << hashRsaPass;
     return stream;
 }
 
 QDataStream &Login::readFromStream(QDataStream &stream) {
     BaseNetworkObject::readFromStream(stream);
     stream >> gmail;
-    stream >> hashPass;
+    stream >> hashRsaPass;
     return stream;
 }
 
 bool Login::isValid() const {
     return  gmail.size() > 5 &&
-            hashPass.size() == 32 &&
+            hashRsaPass.size() >= 32 &&
+            hashRsaPass.size() <= 64 &&
             BaseNetworkObject::isValid();
 }
 
@@ -45,11 +46,11 @@ void Login::setGmail(const QString &value) {
     gmail = value;
 }
 
-SHA256 Login::getHashPass() const {
-    return hashPass;
+QByteArray Login::getHashPass() const {
+    return hashRsaPass;
 }
 
-void Login::setHashPass(const SHA256 &value) {
-    hashPass = value;
+void Login::setHashPass(const QByteArray &value) {
+    hashRsaPass = value;
 }
 }

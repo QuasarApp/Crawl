@@ -6,7 +6,7 @@
 namespace ClientProtocol {
 
 
-class GetItem : public UpdatePlayerData
+class CLIENTPROTOCOLSHARED_EXPORT GetItem : public UpdatePlayerData
 
 {
 public:

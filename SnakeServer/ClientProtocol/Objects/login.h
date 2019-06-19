@@ -4,11 +4,11 @@
 #include "basenetworkobject.h"
 namespace ClientProtocol {
 
-class Login : public BaseNetworkObject
+class CLIENTPROTOCOLSHARED_EXPORT Login : public BaseNetworkObject
 {
 
 private:
-    SHA256 hashPass;
+    QByteArray hashRsaPass;
     QString gmail;
 
 public:
@@ -21,8 +21,8 @@ public:
     bool isValid() const override;
     QString getGmail() const;
     void setGmail(const QString &value);
-    SHA256 getHashPass() const;
-    void setHashPass(const SHA256 &value);
+    QByteArray getHashPass() const;
+    void setHashPass(const QByteArray &value);
 };
 }
 #endif // LOGIN_H

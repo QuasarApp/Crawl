@@ -2,8 +2,9 @@
 #define PLAYERDBDATA_H
 
 #include <player.h>
+#include "server_global.h"
 
-class PlayerDBData: public ClientProtocol::Player
+class SERVERSHARED_EXPORT PlayerDBData: public ClientProtocol::Player
 {
 private:
     int lastOnline = 0;

@@ -14,44 +14,66 @@
 
 namespace ClientProtocol {
 
+// TODO
+Command Client::checkCommand(int sig, Command reqCmd, Type type) {
+
+#define idx static_cast<quint8>(sig)
+
+    auto expCmd = static_cast<Command>(
+                _requestsMap[idx].value("expected",
+                                        static_cast<quint8>(Command::Undefined)).toInt());
+
+    if (expCmd == Command::Undefined ||
+            expCmd != reqCmd ||
+            type != Type::Responke) {
+
+        return Command::Undefined;
+    }
+
+    _requestsMap[idx]["time"] = QDateTime::currentMSecsSinceEpoch();
+    return expCmd;
+}
+
+void Client::updateStatuses(Command extCmd, Command cmd, Type type, const QByteArray& obj)
+{
+    setOnlineStatus(extCmd != Command::Undefined && type == Type::Responke);
+
+    if (extCmd == Command::Login
+             && type == Type::Responke) {
+
+        UpdatePlayerData data;
+        data.fromBytes(obj);
+        bool validData = data.isValid();
+        if (validData) {
+            _token = data.getToken();
+
+        }
+
+        setLoginStatus(cmd == Command::UpdatePlayerData && validData);
+    }
+}
+
 bool Client::receiveData(const QByteArray &obj, Header hdr) {
 
     auto command = static_cast<Command>(hdr.command);
+    auto requesCommand = static_cast<Command>(hdr.requestCommand);
+
     auto type = static_cast<Type>(hdr.type);
-    int  index = hdr.sig;
 
     if (command == Command::PubKey && !_rsaKey.size()) {
-        PubKey data;
+        PubKey data;       
         data.fromBytes(obj);
         return setRSAKey(data.getKey());;
     }
 
-    if (index < 0 || index > 255)
-        return false;
+    auto expectedCommand = checkCommand(hdr.sig, requesCommand, type);
 
-#define idx static_cast<quint8>(index)
-
-    auto expectedCommand = static_cast<Command>(
-                _requestsMap[idx].value("expected",
-                                        static_cast<quint8>(Command::Undefined)).toInt());
-
-    if (expectedCommand == Command::Undefined ||
-            (command != expectedCommand) ||
-            type != Type::Responke) {
-
+    if (expectedCommand == Command::Undefined) {
         QuasarAppUtils::Params::verboseLog("wrong sig of package");
         return false;
     }
 
-    _requestsMap[idx]["time"] = QDateTime::currentMSecsSinceEpoch();
-
-    if (expectedCommand != Command::Undefined &&
-            (command == expectedCommand) && type == Type::Responke) {
-
-        setLoginStatus(expectedCommand == Command::Login ||
-                  expectedCommand == Command::GetItem ||
-                  expectedCommand == Command::GameData);
-    }
+    updateStatuses(expectedCommand, command, type, obj);
 
     emit sigIncommingData(static_cast<Command>(hdr.command), obj);
 
@@ -60,10 +82,10 @@ bool Client::receiveData(const QByteArray &obj, Header hdr) {
 
 bool Client::setRSAKey(const QByteArray& key) {
     bool newStatus = QRSAEncryption::isValidRsaKey(key);
-    if (newStatus != _online) {
+    setOnlineStatus(newStatus);
+
+    if (newStatus) {
         _rsaKey = key;
-        _online = newStatus;
-        emit onlineChanged(_online);
     }
 
     return newStatus;
@@ -73,6 +95,17 @@ void Client::setLoginStatus(bool newStatus) {
     if (newStatus != _logined) {
         _logined = newStatus;
         emit loginChanged(_logined);
+    }
+}
+
+void Client::setOnlineStatus(bool newOnline) {
+    if (newOnline != _online) {
+        _online = newOnline;
+        emit onlineChanged(_online);
+        if (!_online) {
+            _rsaKey = "";
+            setLoginStatus(false);
+        }
     }
 }
 
@@ -89,13 +122,17 @@ void Client::incommingData() {
     }
 
     if (_downloadPackage.isValid()) {
-        if (!receiveData(_downloadPackage.toBytes(), _downloadPackage.hdr)) {
+        if (!receiveData(_downloadPackage.data, _downloadPackage.hdr)) {
             // ban
         }
 
         _downloadPackage.reset();
         return;
     }
+}
+
+void Client::handleDisconnected() {
+    setOnlineStatus(false);
 }
 
 Client::Client(const QString &addrress, unsigned short port, QObject *ptr):
@@ -107,6 +144,9 @@ Client::Client(const QString &addrress, unsigned short port, QObject *ptr):
 
     connect(_destination, &QTcpSocket::readyRead,
             this, &Client::incommingData);
+
+    connect(_destination, &QTcpSocket::disconnected,
+            this, &Client::handleDisconnected);
 }
 
 bool Client::sendPackage(Package &pkg) {
@@ -163,10 +203,17 @@ bool Client::login(const QString &gmail, const QByteArray &pass) {
         return false;
     }
 
+    if (!isOnline()) {
+        return false;
+    }
+
     Package pcg;
 
     Login login;
-    login.setHashPass(pass);
+
+    login.setHashPass(QRSAEncryption::encodeS(
+                          QCryptographicHash::hash(pass, QCryptographicHash::Sha256),
+                          _rsaKey));
     login.setGmail(gmail);
     login.setId(0);
 
@@ -186,9 +233,14 @@ bool Client::login(const QString &gmail, const QByteArray &pass) {
     return true;
 }
 
+void Client::loginOut() {
+    _token = "";
+    setLoginStatus(false);
+}
+
 bool Client::updateData() {
 
-    if (!isOnline()) {
+    if (!isLogin()) {
         return false;
     }
 
@@ -214,7 +266,7 @@ bool Client::updateData() {
 }
 
 bool Client::savaData(const QList<int>& gameData) {
-    if (!isOnline()) {
+    if (!isLogin()) {
         return false;
     }
 
@@ -242,7 +294,7 @@ bool Client::savaData(const QList<int>& gameData) {
 
 bool Client::getItem(int id) {
 
-    if (!isOnline()) {
+    if (!isLogin()) {
         return false;
     }
 

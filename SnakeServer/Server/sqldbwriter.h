@@ -16,7 +16,7 @@ class QSqlDatabase;
 class QSqlQuery;
 class PlayerDBData;
 
-class SqlDBWriter
+class SERVERSHARED_EXPORT SqlDBWriter
 {
 private:
     bool exec(QSqlQuery *sq, const QString &sqlFile);
@@ -32,7 +32,7 @@ protected:
     int getLastIdItems();
     int getLastIdPlayers();
 
-    int getPlayerId(const QString &gmail);
+    virtual int getPlayerId(const QString &gmail);
 
     virtual bool checkPlayer(int id);
     virtual bool checkItem(int idItem, int idOwner = -1);

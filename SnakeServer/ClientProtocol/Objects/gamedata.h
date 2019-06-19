@@ -6,7 +6,7 @@
 namespace ClientProtocol {
 
 
-class GameData: public UpdatePlayerData
+class CLIENTPROTOCOLSHARED_EXPORT GameData: public UpdatePlayerData
 {
 private:
     QList<int> timeClick;

@@ -35,6 +35,10 @@ bool Header::isValid() const {
         return false;
     }
 
+    if (static_cast<Type>(type) == Type::Responke) {
+        return static_cast<Command>(command) != Command::Undefined;
+    }
+
     return isValidSize(command, size);
 }
 
@@ -77,38 +81,30 @@ BaseNetworkObject* Package::parse() const {
 }
 
 
-bool Package::create(const BaseNetworkObject *obj, Type type) {
+bool Package::create(const BaseNetworkObject *obj, Type type, const Header& old) {
 
     if (!obj) {
         return false;
     }
 
-    auto command = obj->getClass();
+    auto command = static_cast<Command>(obj->getClass());
 
-    if (command < 0) {
+    if (command == Command::Undefined) {
         return false;
     }
 
     QDataStream stream(&data, QIODevice::ReadWrite);
     obj->writeToStream(stream);
 
-    hdr.command = static_cast<quint8>(command);
-    hdr.type = static_cast<quint8>(type);
-    hdr.size = static_cast<unsigned short>(data.size());
-
-    return isValid();
+    return create(command, type, old);
 }
 
-bool Package::create(Command cmd, Type type, const QByteArray &data) {
-    hdr.command = static_cast<quint8>(cmd);
-    hdr.type = static_cast<quint8>(type);
-    hdr.size = static_cast<unsigned short>(data.size());
+bool Package::create(Command cmd, Type type, const QByteArray &data, const Header& old) {
     this->data = data;
-
-    return isValid();
+    return create(cmd, type, old);
 }
 
-bool Package::create(Command cmd, Type type) {
+bool Package::create(Command cmd, Type type, const Header &old) {
 
 
     if (cmd == Command::Undefined) {
@@ -118,6 +114,16 @@ bool Package::create(Command cmd, Type type) {
     hdr.command = static_cast<quint8>(cmd);
     hdr.type = static_cast<quint8>(type);
     hdr.size = static_cast<unsigned short>(data.size());
+
+    if (type == Type::Responke) {
+
+        if (!old.isValid()) {
+            return false;
+        }
+
+        hdr.sig = old.sig;
+        hdr.requestCommand = old.command;
+    }
 
     return isValid();
 }
