@@ -12,7 +12,9 @@
 #include "login.h"
 #include "updateplayerdata.h"
 
+#define SOLT "SNAKE"
 namespace ClientProtocol {
+
 
 // TODO
 Command Client::checkCommand(int sig, Command reqCmd, Type type) {
@@ -194,6 +196,13 @@ bool Client::ping() {
     return true;
 }
 
+///  Do not change the order of this function,
+///  as this may lead to the loss of user accounts.
+QByteArray Client::generateHash(const QByteArray& pass) const {
+    auto passHash = QCryptographicHash::hash(pass, QCryptographicHash::Sha256);
+    return QCryptographicHash::hash(SOLT + passHash, QCryptographicHash::Sha256);
+}
+
 bool Client::login(const QString &gmail, const QByteArray &pass) {
     if (!pass.size()) {
         return false;
@@ -211,9 +220,7 @@ bool Client::login(const QString &gmail, const QByteArray &pass) {
 
     Login login;
 
-    login.setHashPass(QRSAEncryption::encodeS(
-                          QCryptographicHash::hash(pass, QCryptographicHash::Sha256),
-                          _rsaKey));
+    login.setHashPass(QRSAEncryption::encodeS(generateHash(pass), _rsaKey));
     login.setGmail(gmail);
     login.setId(0);
 
