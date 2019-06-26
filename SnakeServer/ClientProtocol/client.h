@@ -49,6 +49,7 @@ private:
 
     bool ping();
 
+    QByteArray generateHash(const QByteArray &pass) const;
 
     void updateStatuses(Command extCmd, Command cmd, Type type, const QByteArray &obj);
 
