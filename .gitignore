@@ -78,4 +78,6 @@ installer/SnakeInstaller
 
 Distro/
 
+android-build/
+
 *.db
