@@ -3,6 +3,7 @@ QML_DIR = $$PWD/../Snake/
 DEPLOY_TARGET = $$PWD/../Snake/build/release
 DEPLOY_SERVER = $$PWD/../SnakeServer/Daemon/build/release,$$PWD/../SnakeServer/Terminal/build/release
 
+ANDROID_BUILD_DIR = $$PWD/android-build
 
 win32:LUPDATE = $$QT_DIR/lupdate.exe
 win32:LRELEASE = $$QT_DIR/lrelease.exe
@@ -19,6 +20,10 @@ contains(QMAKE_HOST.os, Linux):{
 
     OUT_FILE = SnakeInstaller
 
+}
+
+android {
+    DEPLOYER = $$QT_DIR/androiddeployqt
 }
 
 BINARY_LIST
@@ -101,6 +106,21 @@ BASE_DEPLOY_FLAGS_SNAKE = $$BASE_DEPLOY_FLAGS -targetDir $$PWD/packages/Snake/da
 
 deploy_dep.commands += $$DEPLOYER -bin $$DEPLOY_TARGET -qmlDir $$QML_DIR $$BASE_DEPLOY_FLAGS_SNAKE
 
+install_dep.commands = make INSTALL_ROOT=$$ANDROID_BUILD_DIR install
+
+android {
+
+    INPUT_ANDROID = --input $$PWD/../Snake/android-libsnake.so-deployment-settings.json
+    OUTPUT_ANDROID = --output $$ANDROID_BUILD_DIR
+    A_PL = --android-platform android-29
+    JDK = --jdk /usr
+
+    GRADLE = --gradle
+
+    deploy_dep.commands = $$DEPLOYER $$INPUT_ANDROID $$OUTPUT_ANDROID $$A_PL $$JDK $$GRADLE
+    deploy_dep.depends = install_dep
+}
+
 mkpath( $$PWD/../Distro)
 
 win32:CONFIG_FILE = $$PWD/config/configWin.xml
@@ -161,6 +181,7 @@ QMAKE_EXTRA_TARGETS += \
     createLinks \
     runDaemon \
     deploy_dep \
+    install_dep \
     deploy \
     create_repo \
     release \
