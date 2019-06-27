@@ -181,8 +181,8 @@ createLinks.commands = ln -sf $$INSTALL_SERVER_DIR/Terminal.sh ~/.local/bin/snak
 
 runDaemon.commands = snake-d daemon
 
-unix:!Android:release.depends += installSnake
-unix:!Android:release.depends += createLinks
+unix:!android:release.depends += installSnake
+unix:!android:release.depends += createLinks
 
 
 QMAKE_EXTRA_TARGETS += \
