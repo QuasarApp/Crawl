@@ -1,5 +1,8 @@
 QT_DIR = $$QMAKESPEC/../../bin
 
+QMAKE_BIN = $$QT_DIR/qmake
+win32:QMAKE_BIN = $$QT_DIR/qmake.exe
+
 message(QT_DIR = $$QT_DIR)
 
 QML_DIR = $$PWD/../Snake/
@@ -103,7 +106,7 @@ for(command, commands) {
 INSTALL_SERVER_DIR = ~/SnakeServer
 
 IGNORE_ENV=$$PWD/../Distro/,$$PWD/../deployTests,$$PWD/packages/Snake/data/
-BASE_DEPLOY_FLAGS = clear -qmake $$QMAKE_QMAKE -libDir $$PWD/../ -recursiveDepth 5 -ignoreEnv $$IGNORE_ENV
+BASE_DEPLOY_FLAGS = clear -qmake $$QMAKE_BIN -libDir $$PWD/../ -recursiveDepth 5 -ignoreEnv $$IGNORE_ENV
 BASE_DEPLOY_FLAGS_SERVER = $$BASE_DEPLOY_FLAGS -targetDir $$INSTALL_SERVER_DIR
 BASE_DEPLOY_FLAGS_SNAKE = $$BASE_DEPLOY_FLAGS -targetDir $$PWD/packages/Snake/data
 
