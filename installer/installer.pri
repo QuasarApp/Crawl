@@ -21,6 +21,7 @@ win32:OUT_FILE = SnakeInstaller.exe
 contains(QMAKE_HOST.os, Linux):{
     LUPDATE = $$QT_DIR/lupdate
     LRELEASE = $$QT_DIR/lrelease
+    QMAKE_BIN = $$QT_DIR/qmake
 
     DEPLOYER = cqtdeployer
 
@@ -180,8 +181,8 @@ createLinks.commands = ln -sf $$INSTALL_SERVER_DIR/Terminal.sh ~/.local/bin/snak
 
 runDaemon.commands = snake-d daemon
 
-unix:release.depends += installSnake
-unix:release.depends += createLinks
+unix:!Android:release.depends += installSnake
+unix:!Android:release.depends += createLinks
 
 
 QMAKE_EXTRA_TARGETS += \
