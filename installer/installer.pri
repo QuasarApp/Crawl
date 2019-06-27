@@ -1,4 +1,4 @@
-QT_DIR = $$QMAKESPEC/../../bin
+QT_DIR = $$[QT_HOST_BINS]
 
 QMAKE_BIN = $$QT_DIR/qmake
 win32:QMAKE_BIN = $$QT_DIR/qmake.exe

@@ -1,6 +1,6 @@
 unix:exec = $$PWD/SnakeServer/serverProtocolTests/build/release/serverTests
 win32:exec = $$PWD/SnakeServer/serverProtocolTests/build/release/serverTests.exe
-QT_DIR = $$QMAKESPEC/../../bin
+QT_DIR = $$[QT_HOST_BINS]
 
 QMAKE_BIN = $$QT_DIR/qmake
 
