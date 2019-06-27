@@ -1,4 +1,4 @@
-QT_DIR = $$dirname(QMAKE_QMAKE)
+QT_DIR = $$QMAKESPEC/../../bin
 
 message(QT_DIR = $$QT_DIR)
 
