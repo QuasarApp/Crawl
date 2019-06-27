@@ -1,4 +1,7 @@
 QT_DIR = $$dirname(QMAKE_QMAKE)
+
+message(QT_DIR = $$QT_DIR)
+
 QML_DIR = $$PWD/../Snake/
 DEPLOY_TARGET = $$PWD/../Snake/build/release
 DEPLOY_SERVER = $$PWD/../SnakeServer/Daemon/build/release,$$PWD/../SnakeServer/Terminal/build/release
