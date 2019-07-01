@@ -5,3 +5,6 @@
 [submodule "SnakeServer/Qt-Secret"]
 	path = SnakeServer/Qt-Secret
 	url = git@github.com:QuasarApp/Qt-Secret.git
+[submodule "installer"]
+	path = installer
+	url = git@github.com:QuasarApp/DesktopInstaller.git
