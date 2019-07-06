@@ -20,8 +20,9 @@ namespace ClientProtocol {
     class BaseNetworkObject;
 }
 
-class SERVERSHARED_EXPORT SqlDBCache : private SqlDBWriter
+class SERVERSHARED_EXPORT SqlDBCache: public QObject , private SqlDBWriter
 {
+    Q_OBJECT
 private:
     qint64 lastUpdateTime = 0;
     qint64 updateInterval = DEFAULT_UPDATE_INTERVAL;
@@ -63,6 +64,11 @@ public:
     bool getAllItemsOfPalyer(int player, QSet<int>& items) override;
 
     friend class testSankeServer;
+
+signals:
+    void sigItemChanged(int id, const Item& newData);
+    void sigPlayerChanged(int id, const PlayerDBData& newData);
+
 };
 
 #endif // SQLDBCASHE_H

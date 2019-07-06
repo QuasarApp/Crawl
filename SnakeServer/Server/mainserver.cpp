@@ -2,6 +2,7 @@
 #include "mainserver.h"
 #include "playerdbdata.h"
 #include "sqldbcache.h"
+#include "websocketcontroller.h"
 #include <spserver.h>
 #include <cpserver.h>
 #include <quasarapp.h>
@@ -158,7 +159,11 @@ void MainServer::handleRequest(ClientProtocol::Header hdr,
         ClientProtocol::WebSocket websocket;
         websocket.fromBytes(data);
 
-
+        if (websocket.isSubscribe()) {
+            _websocketctrl->subscribe(addres, websocket.getCommand());
+        } else {
+            _websocketctrl->subscribe(addres, websocket.getCommand());
+        }
 
         break;
     }
@@ -246,8 +251,8 @@ MainServer::MainServer(bool forceKeys ,QObject *ptr):
     QObject (ptr) {
 
     _keyReactor = new KeysReactor(forceKeys , this);
-
     _serverDaemon = new  ClientProtocol::Server(_keyReactor->getPool(), this);
+    _websocketctrl = new WebSocketController(_serverDaemon, this);
     _terminalPort = new  ServerProtocol::Server(this);
 
     _db = new SqlDBCache();

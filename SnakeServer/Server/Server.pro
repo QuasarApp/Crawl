@@ -29,7 +29,8 @@ SOURCES += \
     mainserver.cpp \
     playerdbdata.cpp \
     sqldbcache.cpp \
-    sqldbwriter.cpp
+    sqldbwriter.cpp \
+    websocketcontroller.cpp
 
 TARGET = Server
 
@@ -47,7 +48,8 @@ HEADERS += \
         playerdbdata.h \
         server_global.h \
         sqldbcache.h \
-        sqldbwriter.h
+        sqldbwriter.h \
+        websocketcontroller.h
 
 include($$PWD/../../QuasarAppLib/QuasarLib.pri)
 include($$PWD/../ServerProtocol/ServerProtocol.pri)

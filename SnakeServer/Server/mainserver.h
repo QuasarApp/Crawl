@@ -18,6 +18,7 @@ namespace ClientProtocol {
 class KeysReactor;
 class SqlDBCache;
 class PlayerDBData;
+class WebSocketController;
 
 class SERVERSHARED_EXPORT MainServer: public QObject
 {
@@ -25,8 +26,9 @@ class SERVERSHARED_EXPORT MainServer: public QObject
 private:
     ServerProtocol::Server *_terminalPort = nullptr;
     ClientProtocol::Server *_serverDaemon= nullptr;
-    SqlDBCache* _db = nullptr;
+    SqlDBCache *_db = nullptr;
     KeysReactor *_keyReactor = nullptr;
+    WebSocketController* _websocketctrl = nullptr;
 
     bool payItem(int player, int idItem);
     bool sellItem(int player, int idItem);

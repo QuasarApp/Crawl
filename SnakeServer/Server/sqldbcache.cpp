@@ -200,6 +200,8 @@ int SqlDBCache::saveItem(const Item &saveData) {
 
     globalUpdateDataBase(SqlDBCasheWriteMode::On_New_Thread);
 
+    emit sigItemChanged(id, item);
+
     return id;
 }
 
@@ -251,6 +253,7 @@ int SqlDBCache::savePlayer(const PlayerDBData &saveData) {
     playersIds.insert(player.getGmail(), id);
 
     globalUpdateDataBase(SqlDBCasheWriteMode::On_New_Thread);
+    emit sigPlayerChanged(id, player);
 
     return id;
 }
@@ -341,7 +344,12 @@ bool SqlDBCache::getItem(int player, int item, bool check) {
 }
 
 bool SqlDBCache::moveItem(int owner, int receiver, int item) {
-    return giveAwayItem(owner, item) && getItem(receiver, item, false);
+    if (!(giveAwayItem(owner, item) && getItem(receiver, item, false))) {
+        return false;
+    }
+
+    sigItemChanged(item, getItem(item));
+    return true;
 }
 
 int SqlDBCache::getPlayerId(const QString &gmail) {
