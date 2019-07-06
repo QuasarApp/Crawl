@@ -3,7 +3,7 @@
 WebSocketController::WebSocketController(ClientProtocol::Server *server, QObject* obj):
     QObject (obj) {
 
-    assert( !server );
+    assert( server );
     _serverDaemon = server;
 }
 
