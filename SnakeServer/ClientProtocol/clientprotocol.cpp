@@ -11,6 +11,7 @@
 #include <map.h>
 #include <pubkey.h>
 #include <snake.h>
+#include <websocket.h>
 
 #define DEFAULT_GAME_PORT 7777
 
@@ -199,6 +200,11 @@ bool initClientProtockol() {
 
     if (!FactoryNetObjects::regType<PubKey>(
                 static_cast<quint8>(Command::PubKey))) {
+        return false;
+    }
+
+    if (!FactoryNetObjects::regType<WebSocket>(
+                static_cast<quint8>(Command::WebSocket))) {
         return false;
     }
 

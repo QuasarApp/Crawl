@@ -48,6 +48,7 @@ SOURCES += \
         Objects/objdata.cpp \
         Objects/pubkey.cpp \
         Objects/snake.cpp \
+        Objects/websocket.cpp \
         clientprotocol.cpp \
         client.cpp \
         Objects/gamedata.cpp \
@@ -68,6 +69,7 @@ HEADERS += \
         Objects/objdata.h \
         Objects/pubkey.h \
         Objects/snake.h \
+        Objects/websocket.h \
         clientprotocol.h \
         clientprotocol_global.h \
         Objects/gamedata.h \

@@ -10,6 +10,7 @@
 #include <QCoreApplication>
 #include <rsakeyspool.h>
 #include <getitem.h>
+#include <websocket.h>
 
 QByteArray MainServer::generateTocket(const QString& gmail) const {
 
@@ -149,6 +150,16 @@ void MainServer::handleRequest(ClientProtocol::Header hdr,
         }
 
         _serverDaemon->badRequest(addres, hdr);
+        break;
+    }
+
+    case ClientProtocol::Command::WebSocket: {
+
+        ClientProtocol::WebSocket websocket;
+        websocket.fromBytes(data);
+
+
+
         break;
     }
 

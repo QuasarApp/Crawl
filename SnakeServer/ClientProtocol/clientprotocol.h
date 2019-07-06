@@ -29,7 +29,8 @@ enum class Command: quint8 {
     Player = 0x07,
     Snake = 0x08,
     Map = 0x09,
-    PubKey = 0x0a
+    PubKey = 0x0a,
+    WebSocket = 0x0b,
 };
 
 bool isValidSize(quint8 type, unsigned int size);
