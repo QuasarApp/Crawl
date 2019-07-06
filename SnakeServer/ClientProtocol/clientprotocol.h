@@ -121,6 +121,8 @@ struct CLIENTPROTOCOLSHARED_EXPORT Package {
             return false;
 
         res = *obj;
+        delete obj;
+
         return true;
     }
 
@@ -163,6 +165,13 @@ struct CLIENTPROTOCOLSHARED_EXPORT Package {
      * @brief reset - reset all data and set for package invalid status
      */
     void reset();
+
+    /**
+     * @brief signPackage sign package from old data
+     * @param oldHeader old data header
+     * @return true if all good
+     */
+    bool signPackage(const Header& oldHeader);
 
     virtual ~Package() = default;
 

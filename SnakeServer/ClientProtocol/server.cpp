@@ -320,6 +320,22 @@ bool Server::sendResponse(const BaseNetworkObject *resp, quint32 address, const 
     return true;
 }
 
+bool Server::sendResponse(Package *pcg, quint32 address, const Header &req) {
+
+    auto client = _connections.value(address);
+
+    if (!client) {
+        return false;
+    }
+
+    pcg->signPackage(req);
+    if (!sendPackage(*pcg, client->getSct())) {
+        return false;
+    }
+
+    return true;
+}
+
 QString Server::getWorkState() const {
     if (isListening()) {
         if (hasPendingConnections())
@@ -351,6 +367,19 @@ bool Server::getRSA(quint32 key, RSAKeyPair& res) const {
     auto sct = _connections.value(key);
     if (sct) {
         res = sct->getRSAKey();
+        return true;
+    }
+
+    return false;
+}
+
+QByteArray Server::getToken(quint32 address) const {
+    return _connections.value(address)->getToken();
+}
+
+bool Server::setToken(quint32 address, const QByteArray &token) {
+    if (_connections.contains(address)) {
+        _connections[address]->setToken(token);
         return true;
     }
 

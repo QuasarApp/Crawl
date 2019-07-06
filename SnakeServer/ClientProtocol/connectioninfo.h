@@ -17,6 +17,7 @@ class CLIENTPROTOCOLSHARED_EXPORT Connectioninfo {
     QTcpSocket *sct = nullptr;
     int karma = DEFAULT_KARMA;
     RSAKeyPair RSAKey;
+    QByteArray token;
 
 public:
     void disconnect();
@@ -38,6 +39,8 @@ public:
     void setRSAKey(const RSAKeyPair &value);
     QTcpSocket *getSct() const;
     void setSct(QTcpSocket *value);
+    QByteArray getToken() const;
+    void setToken(const QByteArray &value);
 };
 }
 #endif // CONNECTIONINFO_H

@@ -116,13 +116,7 @@ bool Package::create(Command cmd, Type type, const Header &old) {
     hdr.size = static_cast<unsigned short>(data.size());
 
     if (type == Type::Responke) {
-
-        if (!old.isValid()) {
-            return false;
-        }
-
-        hdr.sig = old.sig;
-        hdr.requestCommand = old.command;
+        signPackage(old);
     }
 
     return isValid();
@@ -140,6 +134,18 @@ QByteArray Package::toBytes() const {
 void Package::reset() {
     hdr.reset();
     data.clear();
+}
+
+bool Package::signPackage(const Header &oldHeader) {
+
+    if (!oldHeader.isValid()) {
+        return false;
+    }
+
+    hdr.sig = oldHeader.sig;
+    hdr.requestCommand = oldHeader.command;
+
+    return true;
 }
 
 bool isValidSize(quint8 type, unsigned int size) {

@@ -3,7 +3,7 @@
 #include <clientprotocol.h>
 #include "server_global.h"
 
-class SERVERSHARED_EXPORT Item : protected ClientProtocol::Package
+class SERVERSHARED_EXPORT Item : public ClientProtocol::Package
 {
 private:
 

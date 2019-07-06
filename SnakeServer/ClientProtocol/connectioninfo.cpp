@@ -28,9 +28,18 @@ void Connectioninfo::setSct(QTcpSocket *value) {
     sct = value;
 }
 
+QByteArray Connectioninfo::getToken() const {
+    return token;
+}
+
+void Connectioninfo::setToken(const QByteArray &value) {
+    token = value;
+}
+
 void Connectioninfo::disconnect() {
     if (sct) {
         sct->close();
+        token = "";
         delete sct;
         sct = nullptr;
     }
@@ -57,6 +66,7 @@ Connectioninfo::Connectioninfo(QTcpSocket *tcp, int kar, RSAKeyPair keys) {
     sct = tcp;
     karma = kar;
     RSAKey = keys;
+    token = "";
 }
 
 Connectioninfo::~Connectioninfo() {

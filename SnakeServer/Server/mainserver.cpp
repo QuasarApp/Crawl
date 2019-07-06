@@ -9,6 +9,7 @@
 #include <login.h>
 #include <QCoreApplication>
 #include <rsakeyspool.h>
+#include <getitem.h>
 
 QByteArray MainServer::generateTocket(const QString& gmail) const {
 
@@ -130,10 +131,24 @@ void MainServer::handleRequest(ClientProtocol::Header hdr,
     }
 
     case ClientProtocol::Command::UpdatePlayerData: {
+
         break;
     }
 
     case ClientProtocol::Command::GetItem: {
+
+        ClientProtocol::GetItem getRequest;
+        getRequest.fromBytes(data);
+
+        auto tocken = _serverDaemon->getToken(addres);
+
+        if (!tocken.isEmpty() && tocken == getRequest.getToken()) {
+            auto item = _db->getItem(getRequest.id());
+            _serverDaemon->sendResponse(&item, addres, hdr);
+
+        }
+
+        _serverDaemon->badRequest(addres, hdr);
         break;
     }
 
