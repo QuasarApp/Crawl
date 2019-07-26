@@ -10,6 +10,8 @@
 #define BASE_ENCRYPTION_BITS 256
 #define BASE_RSA_BITS static_cast<QRSAEncryption::Rsa>(BASE_ENCRYPTION_BITS)
 #define BASE_HASH_BITS 256
+#define BASE_ENCRYPTION_BYTES BASE_ENCRYPTION_BITS / 8
+#define BASE_HASH_BYTES BASE_HASH_BITS / 8
 
 namespace ClientProtocol {
 

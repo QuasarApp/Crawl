@@ -23,11 +23,12 @@ enum cryptoAlghoritms: unsigned int {
 
 struct EncryptionParams {
     unsigned int alg = SHA;
-    unsigned int baseBits = QRSAEncryption::RSA_256;
-    unsigned int encryptBits = QRSAEncryption::RSA_256;
+    unsigned int baseBytes = QRSAEncryption::RSA_256 / 8;
+    unsigned int encryptBytes = QRSAEncryption::RSA_256 / 8;
 };
 
-template <typename T>
+template <class T
+          class Params = enable_if>
 NetworkClassSize getTypeSize(const T& type = {}, EncryptionParams params = {}) {
 
     auto hash = typeid(type).hash_code();
@@ -60,19 +61,19 @@ NetworkClassSize getTypeSize(const T& type = {}, EncryptionParams params = {}) {
 
                 return {
                     static_cast<unsigned int>(sizeof (int) +
-                            QRSAEncryption::getKeyBytesSize(static_cast<QRSAEncryption::Rsa>(params.baseBits)))
+                            QRSAEncryption::getKeyBytesSize(static_cast<QRSAEncryption::Rsa>(params.baseBytes)))
                 };
             }
 
             auto baseSize =
                     static_cast<unsigned int>(sizeof (int) +
-                    QRSAEncryption::getKeyBytesSize(static_cast<QRSAEncryption::Rsa>(params.encryptBits))) / 2;
+                    QRSAEncryption::getKeyBytesSize(static_cast<QRSAEncryption::Rsa>(params.encryptBytes))) / 2;
 
-            return {baseSize, baseSize * params.baseBits};
+            return {baseSize, baseSize * params.baseBytes};
         }
 
         case SHA: {
-            return {static_cast<unsigned int>(sizeof (int) + params.baseBits)};
+            return {static_cast<unsigned int>(sizeof (int) + params.baseBytes)};
         }
         default:
             return sizeof (int) + 10;
