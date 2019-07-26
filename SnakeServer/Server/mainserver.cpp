@@ -28,7 +28,7 @@ QByteArray MainServer::registerPlayer(const ClientProtocol::Login& login,
     PlayerDBData player;
     player.setGmail( login.getGmail());
 
-    player.setPass(QRSAEncryption::decodeS(login.getHashPass(), rsa.priv));
+    player.setPass(QRSAEncryption::decode(login.getHashPass(), rsa.priv, BASE_RSA_BITS));
 
     int id = _db->savePlayer(player);
     if (id < 0) {
@@ -58,7 +58,7 @@ QByteArray MainServer::loginPlayer(const ClientProtocol::Login& login,
         return {};
     }
 
-    auto pass = QRSAEncryption::decodeS(login.getHashPass(), rsa.priv);
+    auto pass = QRSAEncryption::decode(login.getHashPass(), rsa.priv, BASE_RSA_BITS);
 
     if (_db->login(login.getGmail(), pass.toHex())) {
         return generateTocket(login.getGmail());

@@ -14,7 +14,12 @@ BaseNetworkObject *Login::create() const {
 
 NetworkClassSize Login::classSize() const {
     auto size = BaseNetworkObject::classSize();
-    return size + getTypeSize(hashRsaPass) + getTypeSize(gmail);
+    EncryptionParams param = {
+        cryptoAlghoritms::RSA | cryptoAlghoritms::Key,
+        BASE_HASH_BITS,
+        BASE_ENCRYPTION_BITS
+    };
+    return size + getTypeSize(hashRsaPass, param) + getTypeSize(gmail);
 }
 
 QDataStream &Login::writeToStream(QDataStream &stream) const {

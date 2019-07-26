@@ -7,6 +7,10 @@
 #include <snakeutils.h>
 #include "config.h"
 
+#define BASE_ENCRYPTION_BITS 256
+#define BASE_RSA_BITS static_cast<QRSAEncryption::Rsa>(BASE_ENCRYPTION_BITS)
+#define BASE_HASH_BITS 256
+
 namespace ClientProtocol {
 
 class BaseNetworkObject;

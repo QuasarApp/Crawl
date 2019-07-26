@@ -13,7 +13,6 @@ class SERVERSHARED_EXPORT KeysReactor: public QObject
     Q_OBJECT
 private:
     ClientProtocol::RSAKeysPool _pool;
-    QRSAEncryption _generator;
     int _poolSize = DEFAULT_KEYPOOL_SIZE;
     QHash<QRSAEncryption::Rsa, bool> _mutexs;
     void generateKeys(QRSAEncryption::Rsa);

@@ -220,7 +220,7 @@ bool Client::login(const QString &gmail, const QByteArray &pass) {
 
     Login login;
 
-    login.setHashPass(QRSAEncryption::encodeS(generateHash(pass), _rsaKey));
+    login.setHashPass(QRSAEncryption::encode(generateHash(pass), _rsaKey, QRSAEncryption::RSA_256));
     login.setGmail(gmail);
     login.setId(0);
 

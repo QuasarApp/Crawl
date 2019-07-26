@@ -168,7 +168,7 @@ bool Server::sendPubKey(QTcpSocket * target, const QByteArray &pubKey) {
     PubKey pubkey;
 
     pubkey.setKey(pubKey);
-    pubkey.setTypeKey(QRSAEncryption::RSA_128);
+    pubkey.setTypeKey(BASE_RSA_BITS);
     pubkey.setId(0);
 
     if (!pubkey.isValid()) {

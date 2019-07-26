@@ -14,16 +14,22 @@
 
 namespace ClientProtocol {
 
-enum cryptoAlghoritms: int {
-    RSA64 = 0x0,
-    RSA128 = 0x1,
-    SHA256 = 0x2,
+enum cryptoAlghoritms: unsigned int {
+    RSA = 0x0,
+    SHA = 0x2,
 
     Key = 0x100
 };
 
+struct EncryptionParams {
+    unsigned int alg = SHA;
+    unsigned int baseBits = QRSAEncryption::RSA_256;
+    unsigned int encryptBits = QRSAEncryption::RSA_256;
+};
+
 template <typename T>
-NetworkClassSize getTypeSize(const T& type = {}, int alg = SHA256) {
+NetworkClassSize getTypeSize(const T& type = {}, EncryptionParams params = {}) {
+
     auto hash = typeid(type).hash_code();
 
     if (hash == typeid(QString).hash_code()) {
@@ -45,48 +51,28 @@ NetworkClassSize getTypeSize(const T& type = {}, int alg = SHA256) {
 
     } else if (hash == typeid(QByteArray).hash_code()) {
 
-        bool isKey = alg & Key;
+        bool isKey = params.alg & Key;
 
-        switch (alg & ~Key) {
-        case RSA64: {
+        switch (params.alg & ~Key) {
+        case RSA: {
 
             if (isKey) {
+
                 return {
                     static_cast<unsigned int>(sizeof (int) +
-                            QRSAEncryption::getKeyBytesSize(QRSAEncryption::RSA_64))
+                            QRSAEncryption::getKeyBytesSize(static_cast<QRSAEncryption::Rsa>(params.baseBits)))
                 };
             }
 
-            return {
-                static_cast<unsigned int>(sizeof (int) +
-                        QRSAEncryption::getKeyBytesSize(QRSAEncryption::RSA_64)),
-
-                static_cast<unsigned int>(sizeof (int) +
-                        QRSAEncryption::getKeyBytesSize(QRSAEncryption::RSA_64) * 2)
-
-            };
-        }
-        case RSA128: {
-            if (isKey) {
-                return {
+            auto baseSize =
                     static_cast<unsigned int>(sizeof (int) +
-                            QRSAEncryption::getKeyBytesSize(QRSAEncryption::RSA_128))
-                };
-            }
+                    QRSAEncryption::getKeyBytesSize(static_cast<QRSAEncryption::Rsa>(params.encryptBits))) / 2;
 
-            return {
-                static_cast<unsigned int>(sizeof (int) +
-                        QRSAEncryption::getKeyBytesSize(QRSAEncryption::RSA_128)),
-
-                static_cast<unsigned int>(sizeof (int) +
-                        QRSAEncryption::getKeyBytesSize(QRSAEncryption::RSA_128) * 2)
-
-            };
-
+            return {baseSize, baseSize * params.baseBits};
         }
 
-        case SHA256: {
-            return {sizeof (int) + 32};
+        case SHA: {
+            return {static_cast<unsigned int>(sizeof (int) + params.baseBits)};
         }
         default:
             return sizeof (int) + 10;
