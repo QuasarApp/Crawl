@@ -49,7 +49,7 @@ bool Server::parsePackage(const Package &pkg, QTcpSocket* sender) {
     return true;
 }
 
-bool Server::sendPackage(Package &pkg, QTcpSocket * target) {
+bool Server::sendPackage(const Package &pkg, QTcpSocket * target) {
     if (!pkg.isValid()) {
         return false;
     }
@@ -196,15 +196,20 @@ void Server::avelableBytes() {
         _downloadPackage.data.append(array);
 
     } else {
+        _downloadPackage.reset();
+
         memcpy(&_downloadPackage.hdr,
                array.data(), sizeof(Header));
+
         _downloadPackage.data.append(array.mid(sizeof(Header)));
     }
 
     if (_downloadPackage.isValid()) {
         parsePackage(_downloadPackage, client);
+    }
+
+    if (_downloadPackage.data.size() >= _downloadPackage.hdr.size) {
         _downloadPackage.reset();
-        return;
     }
 }
 
@@ -320,7 +325,7 @@ bool Server::sendResponse(const BaseNetworkObject *resp, quint32 address, const 
     return true;
 }
 
-bool Server::sendResponse(Package *pcg, quint32 address, const Header &req) {
+bool Server::sendResponse(const BaseNetworkObject *resp, quint32 address) {
 
     auto client = _connections.value(address);
 
@@ -328,8 +333,33 @@ bool Server::sendResponse(Package *pcg, quint32 address, const Header &req) {
         return false;
     }
 
+    Package pcg;
+    if (!(pcg.create(resp, Type::Responke))) {
+        QuasarAppUtils::Params::verboseLog("Bad request detected, bud responce command nor received!",
+                                           QuasarAppUtils::Error);
+    };
+
+    if (!sendPackage(pcg, client->getSct())) {
+        return false;
+    }
+
+    return true;
+}
+
+bool Server::sendResponse(Package *pcg, quint32 address, const Header &req) {
     pcg->signPackage(req);
-    if (!sendPackage(*pcg, client->getSct())) {
+    return sendResponse(*pcg, address);
+}
+
+bool Server::sendResponse(const Package &pcg, quint32 address)
+{
+    auto client = _connections.value(address);
+
+    if (!client) {
+        return false;
+    }
+
+    if (!sendPackage(pcg, client->getSct())) {
         return false;
     }
 

@@ -6,17 +6,17 @@
 #include <quasarapp.h>
 #include <qrsaencryption.h>
 #include <pubkey.h>
+#include <websocket.h>
 #include "factorynetobjects.h"
 #include "gamedata.h"
 #include "getitem.h"
 #include "login.h"
 #include "updateplayerdata.h"
+#include <QHash>
 
 #define SOLT "SNAKE"
 namespace ClientProtocol {
 
-
-// TODO
 Command Client::checkCommand(int sig, Command reqCmd, Type type) {
 
 #define idx static_cast<quint8>(sig)
@@ -68,14 +68,20 @@ bool Client::receiveData(const QByteArray &obj, Header hdr) {
         return setRSAKey(data.getKey());;
     }
 
-    auto expectedCommand = checkCommand(hdr.sig, requesCommand, type);
+    if (type != Type::Stream) {
+        auto expectedCommand = checkCommand(hdr.sig, requesCommand, type);
 
-    if (expectedCommand == Command::Undefined) {
-        QuasarAppUtils::Params::verboseLog("wrong sig of package");
+        if (expectedCommand == Command::Undefined) {
+            QuasarAppUtils::Params::verboseLog("wrong sig of package");
+            return false;
+        }
+
+        updateStatuses(expectedCommand, command, type, obj);
+    } else if (_subscribe.contains(hdr.command)) {
+        _subscribe[hdr.command] = true;
+    } else {
         return false;
     }
-
-    updateStatuses(expectedCommand, command, type, obj);
 
     emit sigIncommingData(static_cast<Command>(hdr.command), obj);
 
@@ -305,7 +311,7 @@ bool Client::getItem(int id) {
         return false;
     }
 
-    if (!id) {
+    if (id < 0) {
         return false;
     }
 
@@ -337,5 +343,45 @@ const bool& Client::isOnline() const {
 const bool& Client::isLogin() const {
     return _logined;
 }
+
+bool Client::changeSubscribe(Command cmd, bool subscribe, int id) {
+    if (!isLogin()) {
+        return false;
+    }
+
+    Package pcg;
+
+    WebSocket rec;
+    rec.setId(0);
+    rec.setToken(_token);
+    rec.setCommand(cmd);
+    rec.setObjectId(id);
+    rec.setSubscribe(subscribe);
+
+    if (!rec.isValid()) {
+        return false;
+    }
+
+    if (!pcg.create(&rec, Type::Stream)) {
+        return false;
+    };
+
+    if (!sendPackage(pcg)) {
+        return false;
+    }
+
+    if (subscribe)
+        _subscribe[static_cast<quint8>(cmd)] = false;
+    else {
+        _subscribe.remove(static_cast<quint8>(cmd));
+    }
+
+    return true;
+}
+
+QHash<quint8, bool> Client::getSubscribe() const {
+    return _subscribe;
+}
+
 
 }

@@ -23,7 +23,7 @@ private:
 
     RSAKeysPool * _pool = nullptr;
     bool parsePackage(const Package &pkg, QTcpSocket * sender);
-    bool sendPackage(Package &pkg, QTcpSocket * target);
+    bool sendPackage(const Package &pkg, QTcpSocket * target);
     bool registerSocket(QTcpSocket *socket);
     bool changeKarma(quint32 addresss, int diff);
     inline bool isBaned(const QTcpSocket *) const;
@@ -45,8 +45,11 @@ public:
     void stop(bool reset = false);
 
     void badRequest(quint32 address, const Header &req);
+
+    bool sendResponse(const BaseNetworkObject *resp, quint32 address);
     bool sendResponse(const BaseNetworkObject* resp,  quint32 address, const Header &req);
     bool sendResponse(Package *pcg, quint32 address, const Header &req);
+    bool sendResponse(const Package &pcg, quint32 address);
 
     void ban(quint32 target);
     void unBan(quint32 target);

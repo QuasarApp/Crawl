@@ -7,12 +7,12 @@ namespace ClientProtocol {
 
 #pragma pack(push, 1)
 struct WebSocketData {
-    char cmd : 5;
-    char subscribe : 5;
+    unsigned char cmd : 5;
+    unsigned subscribe : 1;
+    int objectId : 26; // -1 is all ovjects, or other bumber is number of object
 
     friend QDataStream& operator<< (QDataStream& stream, WebSocketData data);
     friend QDataStream& operator>> (QDataStream& stream, WebSocketData& data);
-
 };
 #pragma pack(pop)
 
@@ -30,9 +30,12 @@ public:
 
     bool isSubscribe() const;
     Command getCommand() const;
+    int getObjectId() const;
 
     void setSubscribe(bool subscribe);
     void setCommand(Command cmd) ;
+    void setObjectId(int value);
+
 };
 }
 #endif // WEBSOCKET_H

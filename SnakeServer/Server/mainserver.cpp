@@ -160,9 +160,11 @@ void MainServer::handleRequest(ClientProtocol::Header hdr,
         websocket.fromBytes(data);
 
         if (websocket.isSubscribe()) {
-            _websocketctrl->subscribe(addres, websocket.getCommand());
+            _websocketctrl->subscribe(addres, websocket.getCommand(),
+                                        websocket.getObjectId());
         } else {
-            _websocketctrl->subscribe(addres, websocket.getCommand());
+            _websocketctrl->unsubscribe(addres, websocket.getCommand(),
+                                      websocket.getObjectId());
         }
 
         break;
@@ -262,6 +264,12 @@ MainServer::MainServer(bool forceKeys ,QObject *ptr):
 
     connect(_terminalPort, &ServerProtocol::Server::incomingRequest,
             this, &MainServer::handleTerminalRequest);
+
+    connect(_db, &SqlDBCache::sigItemChanged,
+            _websocketctrl, &WebSocketController::handleItemChanged);
+
+    connect(_db, &SqlDBCache::sigPlayerChanged,
+            _websocketctrl, &WebSocketController::handlePlayerChanged);
 
 }
 

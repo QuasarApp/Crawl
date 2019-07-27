@@ -38,6 +38,7 @@ private:
     void testUserData(ClientProtocol::Client& cle);
     void testGetItem(ClientProtocol::Client& cle);
     void testApplyData(ClientProtocol::Client& cle);
+    void testWebSockets(ClientProtocol::Client& cle);
 
     void testBaseSql();
     void testSqlCache();
@@ -352,6 +353,13 @@ void testSankeServer::testApplyData(ClientProtocol::Client &cle) {
 
     QVERIFY(cle.savaData(listData));
 
+}
+
+void testSankeServer::testWebSockets(ClientProtocol::Client &cle) {
+
+    QVERIFY(cle.changeSubscribe(ClientProtocol::Command::Player, true));
+    QVERIFY(cle.changeSubscribe(ClientProtocol::Command::Player, false));
+
 
 }
 
@@ -603,6 +611,7 @@ void testSankeServer::testProtockols() {
         testGetItem(cleC);
         testUserData(cleC);
         testApplyData(cleC);
+        testWebSockets(cleC);
 
         // test server protockiol
         testPingServerProtockol(cleS);

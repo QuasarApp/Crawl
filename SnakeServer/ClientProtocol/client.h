@@ -4,6 +4,7 @@
 #include "clientprotocol_global.h"
 #include "clientprotocol.h"
 #include <QObject>
+#include <QSet>
 
 class QTcpSocket;
 class Player;
@@ -25,6 +26,7 @@ private:
     QByteArray _rsaKey;
     int currentIndex = 0;
     QHash<unsigned char, QVariantMap> _requestsMap;
+    QHash<quint8, bool> _subscribe; // command and data confirmation
 
     /**
      * @brief checkCommand - return old sendet command if commnad not valid return undefined command
@@ -34,17 +36,11 @@ private:
      * @return if commnad not valid return undefined command
      */
     Command checkCommand(int sig, Command reqCmd, Type type);
-
     bool receiveData(const QByteArray &obj, Header hdr);
-
     bool setRSAKey(const QByteArray &key);
-
     void setLoginStatus(bool newStatus);
-
     void setOnlineStatus(bool newStatus);
-
     bool sendPackage(Package &pkg);
-
     inline unsigned char nextIndex();
 
     bool ping();
@@ -106,7 +102,24 @@ public:
      */
     const bool &isLogin() const;
 
+    /**
+     * @brief changeSubscribe change subscribe of command "cmd"
+     * @param cmd - command of subscribe
+     * @param subscribe - boolean barametr. true is subscribe, false is unsubscribe
+     * @param id - id of object for commands (Player and Item).
+     *  If this parameter is -1 then subscribe on all changes of objects.
+     * @return true if all good
+     */
+    bool changeSubscribe(Command cmd, bool subscribe, int id = -1);
+
+    /**
+     * @brief getSubscribe
+     * @return set of current subscribe commands
+     */
+    QHash<quint8, bool> getSubscribe() const;
+
     friend class ::testSankeServer;
+
 
 signals:
     void sigIncommingData(Command cmd, const QByteArray& obj);

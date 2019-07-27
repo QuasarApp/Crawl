@@ -41,12 +41,20 @@ Command WebSocket::getCommand() const {
     return static_cast<Command>(_data.cmd);
 }
 
+int WebSocket::getObjectId() const {
+    return _data.objectId;
+}
+
 void WebSocket::setSubscribe(bool subscribe){
     _data.subscribe = subscribe;
 }
 
 void WebSocket::setCommand(Command cmd) {
-    _data.cmd = static_cast<char>(cmd);
+    _data.cmd = static_cast<unsigned char>(cmd);
+}
+
+void WebSocket::setObjectId(int value) {
+    _data.objectId = value;
 }
 
 QDataStream &operator<<(QDataStream &stream, WebSocketData data) {
