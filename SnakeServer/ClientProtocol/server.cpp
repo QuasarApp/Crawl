@@ -96,7 +96,7 @@ bool Server::registerSocket(QTcpSocket *socket) {
 
     RSAKeyPair pair;
 
-    if (!_pool->take(QRSAEncryption::RSA_128, pair)) {
+    if (!_pool->take(BASE_RSA_BITS, pair)) {
         QuasarAppUtils::Params::verboseLog("key pool is empty", QuasarAppUtils::Error);
         return false;
     }
@@ -168,7 +168,7 @@ bool Server::sendPubKey(QTcpSocket * target, const QByteArray &pubKey) {
     PubKey pubkey;
 
     pubkey.setKey(pubKey);
-    pubkey.setTypeKey(QRSAEncryption::RSA_128);
+    pubkey.setTypeKey(BASE_RSA_BITS);
     pubkey.setId(0);
 
     if (!pubkey.isValid()) {

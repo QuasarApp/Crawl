@@ -19,7 +19,7 @@ void KeysReactor::generateKeys(QRSAEncryption::Rsa rsa) {
     QByteArray pub, priv;
 
     if (_poolSize > _pool.size(rsa)) {
-        _generator.generatePairKey(pub, priv, rsa);
+        QRSAEncryption::generatePairKey(pub, priv, rsa);
         _pool.addNewKey(rsa, {pub, priv});
     }
 
@@ -39,7 +39,7 @@ void KeysReactor::handleGenerateNewKeys() {
         QByteArray pub, priv;
 
         while (_poolSize > _pool.size(rsa)) {
-            _generator.generatePairKey(pub, priv, rsa);
+            QRSAEncryption::generatePairKey(pub, priv, rsa);
             _pool.addNewKey(rsa, {pub, priv});
         }
 
@@ -50,6 +50,8 @@ void KeysReactor::handleGenerateNewKeys() {
 
     QtConcurrent::run(generatorFunc, QRSAEncryption::RSA_64);
     QtConcurrent::run(generatorFunc, QRSAEncryption::RSA_128);
+    QtConcurrent::run(generatorFunc, QRSAEncryption::RSA_256);
+    QtConcurrent::run(generatorFunc, QRSAEncryption::RSA_512);
 
 }
 
@@ -58,11 +60,14 @@ KeysReactor::KeysReactor(bool ForceGenerateKey, QObject *ptr):
 
     _mutexs[QRSAEncryption::RSA_64] = false;
     _mutexs[QRSAEncryption::RSA_128] = false;
+    _mutexs[QRSAEncryption::RSA_256] = false;
+    _mutexs[QRSAEncryption::RSA_512] = false;
 
     if (ForceGenerateKey) {
         generateKeys(QRSAEncryption::RSA_64);
         generateKeys(QRSAEncryption::RSA_128);
-
+        generateKeys(QRSAEncryption::RSA_256);
+        generateKeys(QRSAEncryption::RSA_512);
     }
 
     handleGenerateNewKeys();
