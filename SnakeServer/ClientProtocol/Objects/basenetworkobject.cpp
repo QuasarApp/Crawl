@@ -59,4 +59,40 @@ void BaseNetworkObject::fromBytes(const QByteArray &array) {
 
     readFromStream(stream);
 }
+
+NetworkClassSize getTypeSize(const EncryptionParams &params) {
+    bool isKey = params.alg & Key;
+
+    switch (params.alg & ~Key) {
+    case RSA: {
+
+        if (isKey) {
+
+            return {
+                static_cast<unsigned int>(sizeof (int) +
+                                          QRSAEncryption::getKeyBytesSize(static_cast<QRSAEncryption::Rsa>(params.baseBits)))
+            };
+        }
+
+        auto baseSize =
+                static_cast<unsigned int>(sizeof (int) +
+                                          QRSAEncryption::getKeyBytesSize(static_cast<QRSAEncryption::Rsa>(params.encryptBits))) / 2;
+
+        return {baseSize, baseSize * params.baseBytes()};
+    }
+
+    case SHA: {
+        return {static_cast<unsigned int>(sizeof (int) + params.baseBytes())};
+    }
+    default:
+        return sizeof (int) + 10;
+    }
+
+
+}
+
+unsigned int EncryptionParams::baseBytes() const {
+    return baseBits / 8;
+}
+
 }

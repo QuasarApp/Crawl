@@ -24,10 +24,10 @@ BaseNetworkObject *UpdatePlayerData::create() const {
 NetworkClassSize UpdatePlayerData::classSize() const {
     EncryptionParams param = {
         cryptoAlghoritms::SHA,
-        BASE_HASH_BYTES
+        BASE_HASH_BITS
     };
 
-    return BaseNetworkObject::classSize() + getTypeSize(token, param);
+    return BaseNetworkObject::classSize() + getTypeSize(param);
 }
 
 QDataStream &UpdatePlayerData::writeToStream(QDataStream &stream) const {

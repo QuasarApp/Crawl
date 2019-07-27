@@ -19,7 +19,7 @@ NetworkClassSize Login::classSize() const {
         BASE_HASH_BITS,
         BASE_ENCRYPTION_BITS
     };
-    return size + getTypeSize(hashRsaPass, param) + getTypeSize(gmail);
+    return size + getTypeSize(param) + getTypeSize(gmail);
 }
 
 QDataStream &Login::writeToStream(QDataStream &stream) const {

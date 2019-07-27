@@ -31,10 +31,10 @@ BaseNetworkObject *PubKey::create() const {
 NetworkClassSize PubKey::classSize() const {
     EncryptionParams param = {
         cryptoAlghoritms::RSA | cryptoAlghoritms::Key,
-        BASE_ENCRYPTION_BYTES
+        BASE_ENCRYPTION_BITS
     };
     return BaseNetworkObject::classSize() +
-            getTypeSize(key, param) +
+            getTypeSize(param) +
             getTypeSize(int(typeKey));
 }
 
