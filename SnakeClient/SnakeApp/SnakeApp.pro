@@ -1,4 +1,4 @@
-QT += quick gui
+QT += quick
 CONFIG += c++17
 
 # The following define makes your compiler emit warnings if you use
