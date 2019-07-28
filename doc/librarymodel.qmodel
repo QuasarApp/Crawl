@@ -50,7 +50,7 @@
                          <object>{d51b5a71-74cc-42da-a35f-20676c490201}</object>
                          <context>QuasarAppLib</context>
                          <name>QuasarApp</name>
-                         <pos>x:390;y:70</pos>
+                         <pos>x:390;y:60</pos>
                          <rect>x:-60;y:-30;w:120;h:60</rect>
                          <visual-role>0</visual-role>
                         </DObject>
@@ -419,9 +419,105 @@
                       </DDependency>
                      </instance>
                     </item>
+                    <item>
+                     <instance type="DComponent">
+                      <DComponent>
+                       <base-DObject>
+                        <DObject>
+                         <base-DElement>
+                          <DElement>
+                           <uid>{d9d1345e-7f2b-4795-991b-329acbef5a3a}</uid>
+                          </DElement>
+                         </base-DElement>
+                         <object>{179586c1-7898-4183-9bf5-a77ba74f8f0d}</object>
+                         <context>SnakeUtils</context>
+                         <name>SnakeUtils</name>
+                         <pos>x:15;y:145</pos>
+                         <rect>x:-60;y:-30;w:120;h:60</rect>
+                         <visual-role>0</visual-role>
+                        </DObject>
+                       </base-DObject>
+                      </DComponent>
+                     </instance>
+                    </item>
+                    <item>
+                     <instance type="DDependency">
+                      <DDependency>
+                       <base-DRelation>
+                        <DRelation>
+                         <base-DElement>
+                          <DElement>
+                           <uid>{c22760ec-b51c-49c2-9046-9b143e53f839}</uid>
+                          </DElement>
+                         </base-DElement>
+                         <object>{0ded816f-d6d8-4a25-80dc-523dde93cf81}</object>
+                         <a>{d9d1345e-7f2b-4795-991b-329acbef5a3a}</a>
+                         <b>{7456d55f-3559-46e5-b237-d7430adb61d3}</b>
+                        </DRelation>
+                       </base-DRelation>
+                      </DDependency>
+                     </instance>
+                    </item>
+                    <item>
+                     <instance type="DComponent">
+                      <DComponent>
+                       <base-DObject>
+                        <DObject>
+                         <base-DElement>
+                          <DElement>
+                           <uid>{e26e74b1-8ca5-437e-b6b1-784bfc2f064f}</uid>
+                          </DElement>
+                         </base-DElement>
+                         <object>{e9f56c30-0bd7-4728-bede-81a308bfeb87}</object>
+                         <context>Qt-Secret</context>
+                         <name>Qt-Secret</name>
+                         <pos>x:390;y:-25</pos>
+                         <rect>x:-55;y:-30;w:110;h:60</rect>
+                         <visual-role>0</visual-role>
+                        </DObject>
+                       </base-DObject>
+                      </DComponent>
+                     </instance>
+                    </item>
+                    <item>
+                     <instance type="DDependency">
+                      <DDependency>
+                       <base-DRelation>
+                        <DRelation>
+                         <base-DElement>
+                          <DElement>
+                           <uid>{e8737647-b81d-4ffc-9590-1be3f88f6863}</uid>
+                          </DElement>
+                         </base-DElement>
+                         <object>{0448e403-ef91-4ed8-9a92-6cc96e246407}</object>
+                         <a>{e26e74b1-8ca5-437e-b6b1-784bfc2f064f}</a>
+                         <b>{155d97c2-3148-41d5-8783-709e51e52482}</b>
+                        </DRelation>
+                       </base-DRelation>
+                      </DDependency>
+                     </instance>
+                    </item>
+                    <item>
+                     <instance type="DDependency">
+                      <DDependency>
+                       <base-DRelation>
+                        <DRelation>
+                         <base-DElement>
+                          <DElement>
+                           <uid>{d46f31e4-5658-411a-ad00-ed49eccd6d19}</uid>
+                          </DElement>
+                         </base-DElement>
+                         <object>{1579610b-168b-45b5-8a9f-8b8f79cb3705}</object>
+                         <a>{e26e74b1-8ca5-437e-b6b1-784bfc2f064f}</a>
+                         <b>{787259f9-aabe-4c93-be84-23639f7fbcc3}</b>
+                        </DRelation>
+                       </base-DRelation>
+                      </DDependency>
+                     </instance>
+                    </item>
                    </qlist>
                   </elements>
-                  <last-modified>1550308484094</last-modified>
+                  <last-modified>1564305456003</last-modified>
                   <toolbarid>General</toolbarid>
                  </MDiagram>
                 </base-MDiagram>
@@ -1166,6 +1262,222 @@
                  </MObject>
                 </base-MObject>
                </MComponent>
+              </instance>
+             </target>
+            </handle>
+           </item>
+           <item>
+            <handle>
+             <uid>{4f6ef33d-c575-448e-a0da-f31a5f6434f0}</uid>
+             <target>
+              <instance type="MPackage">
+               <MPackage>
+                <base-MObject>
+                 <MObject>
+                  <base-MElement>
+                   <MElement>
+                    <uid>{4f6ef33d-c575-448e-a0da-f31a5f6434f0}</uid>
+                    <flags>1</flags>
+                   </MElement>
+                  </base-MElement>
+                  <name>SnakeUtils</name>
+                  <children>
+                   <handles>
+                    <handles>
+                     <qlist>
+                      <item>
+                       <handle>
+                        <uid>{179586c1-7898-4183-9bf5-a77ba74f8f0d}</uid>
+                        <target>
+                         <instance type="MComponent">
+                          <MComponent>
+                           <base-MObject>
+                            <MObject>
+                             <base-MElement>
+                              <MElement>
+                               <uid>{179586c1-7898-4183-9bf5-a77ba74f8f0d}</uid>
+                               <flags>1</flags>
+                              </MElement>
+                             </base-MElement>
+                             <name>SnakeUtils</name>
+                             <relations>
+                              <handles>
+                               <handles>
+                                <qlist>
+                                 <item>
+                                  <handle>
+                                   <uid>{0ded816f-d6d8-4a25-80dc-523dde93cf81}</uid>
+                                   <target>
+                                    <instance type="MDependency">
+                                     <MDependency>
+                                      <base-MRelation>
+                                       <MRelation>
+                                        <base-MElement>
+                                         <MElement>
+                                          <uid>{0ded816f-d6d8-4a25-80dc-523dde93cf81}</uid>
+                                         </MElement>
+                                        </base-MElement>
+                                        <a>{179586c1-7898-4183-9bf5-a77ba74f8f0d}</a>
+                                        <b>{56f5d199-029a-4d7d-a667-63e884b121c9}</b>
+                                       </MRelation>
+                                      </base-MRelation>
+                                     </MDependency>
+                                    </instance>
+                                   </target>
+                                  </handle>
+                                 </item>
+                                </qlist>
+                               </handles>
+                              </handles>
+                             </relations>
+                            </MObject>
+                           </base-MObject>
+                          </MComponent>
+                         </instance>
+                        </target>
+                       </handle>
+                      </item>
+                     </qlist>
+                    </handles>
+                   </handles>
+                  </children>
+                 </MObject>
+                </base-MObject>
+               </MPackage>
+              </instance>
+             </target>
+            </handle>
+           </item>
+           <item>
+            <handle>
+             <uid>{e6099df6-b1b3-4db3-b0ee-296006811b8d}</uid>
+             <target>
+              <instance type="MPackage">
+               <MPackage>
+                <base-MObject>
+                 <MObject>
+                  <base-MElement>
+                   <MElement>
+                    <uid>{e6099df6-b1b3-4db3-b0ee-296006811b8d}</uid>
+                    <flags>1</flags>
+                   </MElement>
+                  </base-MElement>
+                  <name>SnakeServer</name>
+                  <children>
+                   <handles>
+                    <handles>
+                     <qlist>
+                      <item>
+                       <handle>
+                        <uid>{2fa91d20-c7ff-4432-9e89-d4c57d9d0953}</uid>
+                        <target>
+                         <instance type="MPackage">
+                          <MPackage>
+                           <base-MObject>
+                            <MObject>
+                             <base-MElement>
+                              <MElement>
+                               <uid>{2fa91d20-c7ff-4432-9e89-d4c57d9d0953}</uid>
+                               <flags>1</flags>
+                              </MElement>
+                             </base-MElement>
+                             <name>Qt-Secret</name>
+                             <children>
+                              <handles>
+                               <handles>
+                                <qlist>
+                                 <item>
+                                  <handle>
+                                   <uid>{e9f56c30-0bd7-4728-bede-81a308bfeb87}</uid>
+                                   <target>
+                                    <instance type="MComponent">
+                                     <MComponent>
+                                      <base-MObject>
+                                       <MObject>
+                                        <base-MElement>
+                                         <MElement>
+                                          <uid>{e9f56c30-0bd7-4728-bede-81a308bfeb87}</uid>
+                                          <flags>1</flags>
+                                         </MElement>
+                                        </base-MElement>
+                                        <name>Qt-Secret</name>
+                                        <relations>
+                                         <handles>
+                                          <handles>
+                                           <qlist>
+                                            <item>
+                                             <handle>
+                                              <uid>{0448e403-ef91-4ed8-9a92-6cc96e246407}</uid>
+                                              <target>
+                                               <instance type="MDependency">
+                                                <MDependency>
+                                                 <base-MRelation>
+                                                  <MRelation>
+                                                   <base-MElement>
+                                                    <MElement>
+                                                     <uid>{0448e403-ef91-4ed8-9a92-6cc96e246407}</uid>
+                                                    </MElement>
+                                                   </base-MElement>
+                                                   <a>{e9f56c30-0bd7-4728-bede-81a308bfeb87}</a>
+                                                   <b>{b4ce19d6-e501-4fa6-82c5-791fab5b94eb}</b>
+                                                  </MRelation>
+                                                 </base-MRelation>
+                                                </MDependency>
+                                               </instance>
+                                              </target>
+                                             </handle>
+                                            </item>
+                                            <item>
+                                             <handle>
+                                              <uid>{1579610b-168b-45b5-8a9f-8b8f79cb3705}</uid>
+                                              <target>
+                                               <instance type="MDependency">
+                                                <MDependency>
+                                                 <base-MRelation>
+                                                  <MRelation>
+                                                   <base-MElement>
+                                                    <MElement>
+                                                     <uid>{1579610b-168b-45b5-8a9f-8b8f79cb3705}</uid>
+                                                    </MElement>
+                                                   </base-MElement>
+                                                   <a>{e9f56c30-0bd7-4728-bede-81a308bfeb87}</a>
+                                                   <b>{3eafef02-7a87-4877-8889-72ea7cb240e9}</b>
+                                                  </MRelation>
+                                                 </base-MRelation>
+                                                </MDependency>
+                                               </instance>
+                                              </target>
+                                             </handle>
+                                            </item>
+                                           </qlist>
+                                          </handles>
+                                         </handles>
+                                        </relations>
+                                       </MObject>
+                                      </base-MObject>
+                                     </MComponent>
+                                    </instance>
+                                   </target>
+                                  </handle>
+                                 </item>
+                                </qlist>
+                               </handles>
+                              </handles>
+                             </children>
+                            </MObject>
+                           </base-MObject>
+                          </MPackage>
+                         </instance>
+                        </target>
+                       </handle>
+                      </item>
+                     </qlist>
+                    </handles>
+                   </handles>
+                  </children>
+                 </MObject>
+                </base-MObject>
+               </MPackage>
               </instance>
              </target>
             </handle>
