@@ -14,7 +14,6 @@ class World : public BaseClass
 private:
 
     Snake snake;
-//    QVector<ItemWorld*> items;
     QMultiMap<QString, ItemWorld*> items;
     double currentLong = 0;
     int endLong;
