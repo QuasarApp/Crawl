@@ -1,8 +1,8 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
-#include "controller.h"
-#include "diff.h"
+#include <controller.h>
+#include <diff.h>
 
 int main(int argc, char *argv[])
 {

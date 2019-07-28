@@ -7,8 +7,9 @@
 #include "diff.h"
 #include "snake.h"
 #include "world.h"
+#include "client_global.h"
 
-class Controller : public QObject
+class CLIENTSHARED_EXPORT Controller : public QObject
 {
     Q_OBJECT
 
@@ -16,18 +17,21 @@ class Controller : public QObject
     Q_PROPERTY(int generalLong READ generalLong NOTIFY generalLongchanged)
 
 private:
+
     World world;
-    QTimer *timer;
-    bool pause = false;
-    int lvl = 0;
     QMap<int, GuiObject *> objectsContainer;
+    QTimer *timer = nullptr;
+
+    int lvl = 0;
+    int m_generalLong = 0;
+    bool pause = false;
 
     void generateDiff(const QMap<int, GuiObject *> &);
 
-    int m_generalLong = 0;
-
 public:
     Controller();
+    ~Controller();
+
     void startTimer();
     void stopTimer();
 

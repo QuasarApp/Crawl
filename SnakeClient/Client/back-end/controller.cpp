@@ -11,6 +11,10 @@ Controller::Controller() {
     connect(timer, SIGNAL(timeout()), this, SLOT(update()));
 }
 
+Controller::~Controller() {
+
+}
+
 bool Controller::nextLvl() {
     if (lvl + 1 >= lvls.size()) {
         return true;

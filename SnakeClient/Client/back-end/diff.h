@@ -2,8 +2,9 @@
 #define DIFF_H
 
 #include <QObject>
+#include "client_global.h"
 
-class Diff
+class CLIENTSHARED_EXPORT Diff
 {
     Q_GADGET
 private:
