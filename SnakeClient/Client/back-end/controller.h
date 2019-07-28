@@ -7,8 +7,9 @@
 #include "diff.h"
 #include "snake.h"
 #include "world.h"
+#include "client_global.h"
 
-class Controller : public QObject
+class CLIENTSHARED_EXPORT Controller : public QObject
 {
     Q_OBJECT
 

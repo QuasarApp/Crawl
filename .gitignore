@@ -14,7 +14,8 @@
 # Qt-es
 /Build*
 /build*
-Snake/build/
+SnakeClient/Client/build/
+SnakeClient/SnakeApp/build/
 SnakeServer/Server/build/
 SnakeServer/serverProtocolTests/build/
 SnakeServer/Terminal/build
