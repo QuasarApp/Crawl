@@ -12,6 +12,8 @@
         <file>front-end/BasePopUp.qml</file>
         <file>front-end/TextInput.qml</file>
         <file>front-end/PagePopUp.qml</file>
+        <file>front-end/UserView.qml</file>
+        <file>front-end/ImageView.qml</file>
     </qresource>
     <qresource prefix="/texture">
         <file alias="up">img/up.svg</file>
@@ -19,5 +21,8 @@
     <qresource prefix="/logo">
         <file alias="logo">img/logo.png</file>
         <file alias="icon">img/icon.ico</file>
+    </qresource>
+    <qresource prefix="/img">
+        <file alias="defaultuser">img/defaultUser.png</file>
     </qresource>
 </RCC>

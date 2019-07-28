@@ -72,8 +72,8 @@
                         </DElement>
                        </base-DElement>
                        <text>BackEnd</text>
-                       <pos>x:360;y:480</pos>
-                       <rect>x:-295;y:-315;w:590;h:630</rect>
+                       <pos>x:570;y:480</pos>
+                       <rect>x:-505;y:-315;w:1010;h:630</rect>
                       </DBoundary>
                      </instance>
                     </item>
@@ -158,8 +158,8 @@
                          <object>{5f23ec13-fb38-44b8-9d85-69bd3db54622}</object>
                          <context>Back-End</context>
                          <name>Controller</name>
-                         <pos>x:360;y:660</pos>
-                         <rect>x:-255;y:-35;w:510;h:70</rect>
+                         <pos>x:415;y:660</pos>
+                         <rect>x:-310;y:-35;w:620;h:70</rect>
                          <auto-sized>false</auto-sized>
                          <visual-role>0</visual-role>
                         </DObject>
@@ -486,8 +486,8 @@
                         </DElement>
                        </base-DElement>
                        <text>FrontEnd</text>
-                       <pos>x:360;y:960</pos>
-                       <rect>x:-295;y:-95;w:590;h:190</rect>
+                       <pos>x:570;y:930</pos>
+                       <rect>x:-505;y:-95;w:1010;h:190</rect>
                       </DBoundary>
                      </instance>
                     </item>
@@ -502,9 +502,9 @@
                           </DElement>
                          </base-DElement>
                          <object>{0e9152a2-43b7-4021-b067-51b48d88bf23}</object>
-                         <name>QML</name>
-                         <pos>x:360;y:935</pos>
-                         <rect>x:-255;y:-15;w:510;h:30</rect>
+                         <name>QML Scene</name>
+                         <pos>x:255;y:905</pos>
+                         <rect>x:-150;y:-15;w:300;h:30</rect>
                          <auto-sized>false</auto-sized>
                          <visual-role>0</visual-role>
                         </DObject>
@@ -528,24 +528,7 @@
                          <b>{4f1e9064-853b-420c-a6e7-16e67ac57a3f}</b>
                         </DRelation>
                        </base-DRelation>
-                      </DDependency>
-                     </instance>
-                    </item>
-                    <item>
-                     <instance type="DDependency">
-                      <DDependency>
-                       <base-DRelation>
-                        <DRelation>
-                         <base-DElement>
-                          <DElement>
-                           <uid>{7d3844fd-8abb-435e-a78b-3b0f08777214}</uid>
-                          </DElement>
-                         </base-DElement>
-                         <object>{fe475b66-3ea8-4a72-be84-1020884bfb0c}</object>
-                         <a>{4f1e9064-853b-420c-a6e7-16e67ac57a3f}</a>
-                         <b>{493c7165-1575-4b46-b8a1-1643f7716160}</b>
-                        </DRelation>
-                       </base-DRelation>
+                       <direction>2</direction>
                       </DDependency>
                      </instance>
                     </item>
@@ -625,7 +608,7 @@
                          </base-DElement>
                          <object>{eac9ab00-70e1-4346-a40e-a09dfa347d20}</object>
                          <name> Diff </name>
-                         <pos>x:515;y:750</pos>
+                         <pos>x:205;y:745</pos>
                          <rect>x:-100;y:-30;w:200;h:60</rect>
                          <auto-sized>false</auto-sized>
                          <visual-role>6</visual-role>
@@ -649,24 +632,7 @@
                          <b>{4f1e9064-853b-420c-a6e7-16e67ac57a3f}</b>
                         </DRelation>
                        </base-DRelation>
-                      </DDependency>
-                     </instance>
-                    </item>
-                    <item>
-                     <instance type="DDependency">
-                      <DDependency>
-                       <base-DRelation>
-                        <DRelation>
-                         <base-DElement>
-                          <DElement>
-                           <uid>{adcbe372-9319-425d-bfb4-8fc28aba717b}</uid>
-                          </DElement>
-                         </base-DElement>
-                         <object>{b4071def-6543-48b9-80a5-73d360a8a00f}</object>
-                         <a>{4f1e9064-853b-420c-a6e7-16e67ac57a3f}</a>
-                         <b>{3d1f0043-257f-4f06-aaf4-d5096b619766}</b>
-                        </DRelation>
-                       </base-DRelation>
+                       <direction>1</direction>
                       </DDependency>
                      </instance>
                     </item>
@@ -689,26 +655,353 @@
                      </instance>
                     </item>
                     <item>
+                     <instance type="DClass">
+                      <DClass>
+                       <base-DObject>
+                        <DObject>
+                         <base-DElement>
+                          <DElement>
+                           <uid>{2bde9796-53db-4a67-8944-252d87de8730}</uid>
+                          </DElement>
+                         </base-DElement>
+                         <object>{7e3f8bf1-3d3a-44d6-8888-e9cae3473683}</object>
+                         <context>ProfileViewItems</context>
+                         <name>NetworkProfileMainModel</name>
+                         <pos>x:770;y:555</pos>
+                         <rect>x:-100;y:-30;w:200;h:60</rect>
+                         <auto-sized>false</auto-sized>
+                         <visual-role>0</visual-role>
+                        </DObject>
+                       </base-DObject>
+                      </DClass>
+                     </instance>
+                    </item>
+                    <item>
+                     <instance type="DAssociation">
+                      <DAssociation>
+                       <base-DRelation>
+                        <DRelation>
+                         <base-DElement>
+                          <DElement>
+                           <uid>{ccc76006-4713-4d75-a8ad-178e47e4a791}</uid>
+                          </DElement>
+                         </base-DElement>
+                         <object>{49cf0ec6-7362-4c19-a129-cfc0bb8179b8}</object>
+                         <a>{4f1e9064-853b-420c-a6e7-16e67ac57a3f}</a>
+                         <b>{2bde9796-53db-4a67-8944-252d87de8730}</b>
+                        </DRelation>
+                       </base-DRelation>
+                       <a>
+                        <DAssociationEnd>
+                         <cradinality>1</cradinality>
+                         <navigable>true</navigable>
+                         <kind>2</kind>
+                        </DAssociationEnd>
+                       </a>
+                      </DAssociation>
+                     </instance>
+                    </item>
+                    <item>
+                     <instance type="DItem">
+                      <DItem>
+                       <base-DObject>
+                        <DObject>
+                         <base-DElement>
+                          <DElement>
+                           <uid>{287432e6-e89a-436e-9613-7cebd238944a}</uid>
+                          </DElement>
+                         </base-DElement>
+                         <object>{59144cd0-4796-4da3-a967-0ae0bacdf5f2}</object>
+                         <name>qmk profileView</name>
+                         <pos>x:770;y:905</pos>
+                         <rect>x:-110;y:-15;w:220;h:30</rect>
+                         <auto-sized>false</auto-sized>
+                         <visual-role>0</visual-role>
+                        </DObject>
+                       </base-DObject>
+                       <shape-editable>false</shape-editable>
+                      </DItem>
+                     </instance>
+                    </item>
+                    <item>
                      <instance type="DDependency">
                       <DDependency>
                        <base-DRelation>
                         <DRelation>
                          <base-DElement>
                           <DElement>
-                           <uid>{65d3bc09-7cb9-4414-bc58-bbabdb2b6757}</uid>
+                           <uid>{0f681f9b-2bc0-44aa-ab27-0485f815b6c0}</uid>
                           </DElement>
                          </base-DElement>
-                         <object>{2e5a2e2d-77af-4074-840f-4b8144df7bdb}</object>
-                         <a>{493c7165-1575-4b46-b8a1-1643f7716160}</a>
-                         <b>{3d1f0043-257f-4f06-aaf4-d5096b619766}</b>
+                         <object>{79dba8a4-e8b0-4f96-b405-7663076e9785}</object>
+                         <a>{287432e6-e89a-436e-9613-7cebd238944a}</a>
+                         <b>{2bde9796-53db-4a67-8944-252d87de8730}</b>
+                        </DRelation>
+                       </base-DRelation>
+                       <direction>2</direction>
+                      </DDependency>
+                     </instance>
+                    </item>
+                    <item>
+                     <instance type="DDependency">
+                      <DDependency>
+                       <base-DRelation>
+                        <DRelation>
+                         <base-DElement>
+                          <DElement>
+                           <uid>{d69bf2a5-e9cd-4711-a941-13d5742f42a6}</uid>
+                          </DElement>
+                         </base-DElement>
+                         <object>{b8530bc1-b5f0-4a9e-acfb-969901f48cb3}</object>
+                         <a>{287432e6-e89a-436e-9613-7cebd238944a}</a>
+                         <b>{4f1e9064-853b-420c-a6e7-16e67ac57a3f}</b>
+                        </DRelation>
+                       </base-DRelation>
+                       <direction>1</direction>
+                      </DDependency>
+                     </instance>
+                    </item>
+                    <item>
+                     <instance type="DItem">
+                      <DItem>
+                       <base-DObject>
+                        <DObject>
+                         <base-DElement>
+                          <DElement>
+                           <uid>{bdf9558b-c8bc-4e75-b5fc-bb990a862f0b}</uid>
+                          </DElement>
+                         </base-DElement>
+                         <object>{d90eff49-65d5-4667-bbbc-d034dea875d4}</object>
+                         <name>UserView</name>
+                         <pos>x:980;y:905</pos>
+                         <rect>x:-75;y:-15;w:150;h:30</rect>
+                         <auto-sized>false</auto-sized>
+                         <visual-role>0</visual-role>
+                        </DObject>
+                       </base-DObject>
+                       <shape-editable>false</shape-editable>
+                      </DItem>
+                     </instance>
+                    </item>
+                    <item>
+                     <instance type="DDependency">
+                      <DDependency>
+                       <base-DRelation>
+                        <DRelation>
+                         <base-DElement>
+                          <DElement>
+                           <uid>{51773586-0194-4056-8e24-b44fef54fe04}</uid>
+                          </DElement>
+                         </base-DElement>
+                         <object>{fddab005-ecbd-4104-8be1-2b157f36ff3c}</object>
+                         <a>{bdf9558b-c8bc-4e75-b5fc-bb990a862f0b}</a>
+                         <b>{287432e6-e89a-436e-9613-7cebd238944a}</b>
                         </DRelation>
                        </base-DRelation>
                       </DDependency>
                      </instance>
                     </item>
+                    <item>
+                     <instance type="DClass">
+                      <DClass>
+                       <base-DObject>
+                        <DObject>
+                         <base-DElement>
+                          <DElement>
+                           <uid>{3149b367-e4a8-4582-9868-2c08d3059097}</uid>
+                          </DElement>
+                         </base-DElement>
+                         <object>{8c05ffe4-0340-4093-88f9-6570795713f9}</object>
+                         <context>ProfileViewItems</context>
+                         <name>UserView</name>
+                         <pos>x:975;y:410</pos>
+                         <rect>x:-40;y:-30;w:80;h:60</rect>
+                         <visual-role>0</visual-role>
+                        </DObject>
+                       </base-DObject>
+                      </DClass>
+                     </instance>
+                    </item>
+                    <item>
+                     <instance type="DAssociation">
+                      <DAssociation>
+                       <base-DRelation>
+                        <DRelation>
+                         <base-DElement>
+                          <DElement>
+                           <uid>{279317e4-324c-41b7-9c26-f4f3c7b9c8ea}</uid>
+                          </DElement>
+                         </base-DElement>
+                         <object>{c5334666-c506-46b1-9ae1-e7a29630bd03}</object>
+                         <a>{2bde9796-53db-4a67-8944-252d87de8730}</a>
+                         <b>{3149b367-e4a8-4582-9868-2c08d3059097}</b>
+                        </DRelation>
+                       </base-DRelation>
+                       <a>
+                        <DAssociationEnd>
+                         <cradinality>1</cradinality>
+                         <navigable>true</navigable>
+                         <kind>2</kind>
+                        </DAssociationEnd>
+                       </a>
+                      </DAssociation>
+                     </instance>
+                    </item>
+                    <item>
+                     <instance type="DDependency">
+                      <DDependency>
+                       <base-DRelation>
+                        <DRelation>
+                         <base-DElement>
+                          <DElement>
+                           <uid>{24c0f49e-07be-44d7-8958-ec0dae723657}</uid>
+                          </DElement>
+                         </base-DElement>
+                         <object>{fd446cc7-6634-4476-adbd-580b314f736f}</object>
+                         <a>{bdf9558b-c8bc-4e75-b5fc-bb990a862f0b}</a>
+                         <b>{3149b367-e4a8-4582-9868-2c08d3059097}</b>
+                        </DRelation>
+                       </base-DRelation>
+                       <direction>2</direction>
+                      </DDependency>
+                     </instance>
+                    </item>
+                    <item>
+                     <instance type="DClass">
+                      <DClass>
+                       <base-DObject>
+                        <DObject>
+                         <base-DElement>
+                          <DElement>
+                           <uid>{8c5183be-0767-4399-a856-633d562f035a}</uid>
+                          </DElement>
+                         </base-DElement>
+                         <object>{eb0b85b6-658d-4eff-a2e6-cd2ae7befd6d}</object>
+                         <context>ClientProtocol</context>
+                         <name>Client</name>
+                         <pos>x:770;y:415</pos>
+                         <rect>x:-40;y:-35;w:80;h:70</rect>
+                         <visual-role>0</visual-role>
+                        </DObject>
+                       </base-DObject>
+                       <namespace>ClientProtocol</namespace>
+                      </DClass>
+                     </instance>
+                    </item>
+                    <item>
+                     <instance type="DAssociation">
+                      <DAssociation>
+                       <base-DRelation>
+                        <DRelation>
+                         <base-DElement>
+                          <DElement>
+                           <uid>{a55f34e3-8354-4588-9948-498b3d97b05f}</uid>
+                          </DElement>
+                         </base-DElement>
+                         <object>{7a93a742-d00d-4e04-80fd-f1739a191669}</object>
+                         <a>{2bde9796-53db-4a67-8944-252d87de8730}</a>
+                         <b>{8c5183be-0767-4399-a856-633d562f035a}</b>
+                        </DRelation>
+                       </base-DRelation>
+                       <a>
+                        <DAssociationEnd>
+                         <cradinality>1</cradinality>
+                         <navigable>true</navigable>
+                         <kind>2</kind>
+                        </DAssociationEnd>
+                       </a>
+                      </DAssociation>
+                     </instance>
+                    </item>
+                    <item>
+                     <instance type="DClass">
+                      <DClass>
+                       <base-DObject>
+                        <DObject>
+                         <base-DElement>
+                          <DElement>
+                           <uid>{3c479b36-a43f-46ba-a822-2766c16905f2}</uid>
+                          </DElement>
+                         </base-DElement>
+                         <object>{27cb7b78-cb1d-4418-8f91-025824839a1b}</object>
+                         <context>ProfileViewItems</context>
+                         <name>PlayerClientData</name>
+                         <pos>x:900;y:320</pos>
+                         <rect>x:-55;y:-35;w:110;h:70</rect>
+                         <visual-role>0</visual-role>
+                        </DObject>
+                       </base-DObject>
+                      </DClass>
+                     </instance>
+                    </item>
+                    <item>
+                     <instance type="DAssociation">
+                      <DAssociation>
+                       <base-DRelation>
+                        <DRelation>
+                         <base-DElement>
+                          <DElement>
+                           <uid>{ff44016a-db4c-4ec0-9281-f0af1a179097}</uid>
+                          </DElement>
+                         </base-DElement>
+                         <object>{2c238bae-21c1-46c4-9468-86d8d0bb9115}</object>
+                         <a>{2bde9796-53db-4a67-8944-252d87de8730}</a>
+                         <b>{3c479b36-a43f-46ba-a822-2766c16905f2}</b>
+                        </DRelation>
+                       </base-DRelation>
+                       <a>
+                        <DAssociationEnd>
+                         <cradinality>*</cradinality>
+                         <navigable>true</navigable>
+                         <kind>1</kind>
+                        </DAssociationEnd>
+                       </a>
+                      </DAssociation>
+                     </instance>
+                    </item>
+                    <item>
+                     <instance type="DClass">
+                      <DClass>
+                       <base-DObject>
+                        <DObject>
+                         <base-DElement>
+                          <DElement>
+                           <uid>{7125e61b-fb26-40bf-9ba3-3c365f5cf02e}</uid>
+                          </DElement>
+                         </base-DElement>
+                         <object>{38c55945-27ed-4d5c-9d38-761b84e9ae80}</object>
+                         <context>Objects</context>
+                         <name>Player</name>
+                         <pos>x:900;y:220</pos>
+                         <rect>x:-40;y:-35;w:80;h:70</rect>
+                         <visual-role>0</visual-role>
+                        </DObject>
+                       </base-DObject>
+                       <namespace>ClientProtocol</namespace>
+                      </DClass>
+                     </instance>
+                    </item>
+                    <item>
+                     <instance type="DInheritance">
+                      <DInheritance>
+                       <base-DRelation>
+                        <DRelation>
+                         <base-DElement>
+                          <DElement>
+                           <uid>{800dddfe-52a2-41bb-be8a-462423cacaa0}</uid>
+                          </DElement>
+                         </base-DElement>
+                         <object>{238a4ada-2b3e-4084-8e38-e027f0d6482c}</object>
+                         <a>{7125e61b-fb26-40bf-9ba3-3c365f5cf02e}</a>
+                         <b>{3c479b36-a43f-46ba-a822-2766c16905f2}</b>
+                        </DRelation>
+                       </base-DRelation>
+                      </DInheritance>
+                     </instance>
+                    </item>
                    </qlist>
                   </elements>
-                  <last-modified>1539329807224</last-modified>
+                  <last-modified>1564341524375</last-modified>
                   <toolbarid>General</toolbarid>
                  </MDiagram>
                 </base-MDiagram>
@@ -1167,6 +1460,7 @@
                                         <b>{0e9152a2-43b7-4021-b067-51b48d88bf23}</b>
                                        </MRelation>
                                       </base-MRelation>
+                                      <direction>1</direction>
                                      </MDependency>
                                     </instance>
                                    </target>
@@ -1212,6 +1506,35 @@
                                        </MRelation>
                                       </base-MRelation>
                                      </MDependency>
+                                    </instance>
+                                   </target>
+                                  </handle>
+                                 </item>
+                                 <item>
+                                  <handle>
+                                   <uid>{49cf0ec6-7362-4c19-a129-cfc0bb8179b8}</uid>
+                                   <target>
+                                    <instance type="MAssociation">
+                                     <MAssociation>
+                                      <base-MRelation>
+                                       <MRelation>
+                                        <base-MElement>
+                                         <MElement>
+                                          <uid>{49cf0ec6-7362-4c19-a129-cfc0bb8179b8}</uid>
+                                         </MElement>
+                                        </base-MElement>
+                                        <a>{5f23ec13-fb38-44b8-9d85-69bd3db54622}</a>
+                                        <b>{7e3f8bf1-3d3a-44d6-8888-e9cae3473683}</b>
+                                       </MRelation>
+                                      </base-MRelation>
+                                      <a>
+                                       <MAssociationEnd>
+                                        <cardinality>1</cardinality>
+                                        <navigable>true</navigable>
+                                        <kind>2</kind>
+                                       </MAssociationEnd>
+                                      </a>
+                                     </MAssociation>
                                     </instance>
                                    </target>
                                   </handle>
@@ -2187,7 +2510,7 @@
                     <uid>{0e9152a2-43b7-4021-b067-51b48d88bf23}</uid>
                    </MElement>
                   </base-MElement>
-                  <name>QML</name>
+                  <name>QML Scene</name>
                   <relations>
                    <handles>
                     <handles>
@@ -2209,6 +2532,7 @@
                              <b>{5f23ec13-fb38-44b8-9d85-69bd3db54622}</b>
                             </MRelation>
                            </base-MRelation>
+                           <direction>2</direction>
                           </MDependency>
                          </instance>
                         </target>
@@ -2521,6 +2845,7 @@
                              <b>{5f23ec13-fb38-44b8-9d85-69bd3db54622}</b>
                             </MRelation>
                            </base-MRelation>
+                           <direction>1</direction>
                           </MDependency>
                          </instance>
                         </target>
@@ -2555,6 +2880,632 @@
                  </MObject>
                 </base-MObject>
                </MClass>
+              </instance>
+             </target>
+            </handle>
+           </item>
+           <item>
+            <handle>
+             <uid>{283c0360-30a4-45a0-9e31-99610872d9c5}</uid>
+             <target>
+              <instance type="MPackage">
+               <MPackage>
+                <base-MObject>
+                 <MObject>
+                  <base-MElement>
+                   <MElement>
+                    <uid>{283c0360-30a4-45a0-9e31-99610872d9c5}</uid>
+                    <flags>1</flags>
+                   </MElement>
+                  </base-MElement>
+                  <name>SnakeClient</name>
+                  <children>
+                   <handles>
+                    <handles>
+                     <qlist>
+                      <item>
+                       <handle>
+                        <uid>{d669449c-136b-4a00-959d-c0e77dad4c11}</uid>
+                        <target>
+                         <instance type="MPackage">
+                          <MPackage>
+                           <base-MObject>
+                            <MObject>
+                             <base-MElement>
+                              <MElement>
+                               <uid>{d669449c-136b-4a00-959d-c0e77dad4c11}</uid>
+                               <flags>1</flags>
+                              </MElement>
+                             </base-MElement>
+                             <name>Client</name>
+                             <children>
+                              <handles>
+                               <handles>
+                                <qlist>
+                                 <item>
+                                  <handle>
+                                   <uid>{b0e2d377-64aa-4416-aa0f-7a7806e7921a}</uid>
+                                   <target>
+                                    <instance type="MPackage">
+                                     <MPackage>
+                                      <base-MObject>
+                                       <MObject>
+                                        <base-MElement>
+                                         <MElement>
+                                          <uid>{b0e2d377-64aa-4416-aa0f-7a7806e7921a}</uid>
+                                          <flags>1</flags>
+                                         </MElement>
+                                        </base-MElement>
+                                        <name>Back-End</name>
+                                        <children>
+                                         <handles>
+                                          <handles>
+                                           <qlist>
+                                            <item>
+                                             <handle>
+                                              <uid>{796b776f-d4a7-40fc-a1aa-e99dee0e244c}</uid>
+                                              <target>
+                                               <instance type="MPackage">
+                                                <MPackage>
+                                                 <base-MObject>
+                                                  <MObject>
+                                                   <base-MElement>
+                                                    <MElement>
+                                                     <uid>{796b776f-d4a7-40fc-a1aa-e99dee0e244c}</uid>
+                                                     <flags>1</flags>
+                                                    </MElement>
+                                                   </base-MElement>
+                                                   <name>ProfileViewItems</name>
+                                                   <children>
+                                                    <handles>
+                                                     <handles>
+                                                      <qlist>
+                                                       <item>
+                                                        <handle>
+                                                         <uid>{7e3f8bf1-3d3a-44d6-8888-e9cae3473683}</uid>
+                                                         <target>
+                                                          <instance type="MClass">
+                                                           <MClass>
+                                                            <base-MObject>
+                                                             <MObject>
+                                                              <base-MElement>
+                                                               <MElement>
+                                                                <uid>{7e3f8bf1-3d3a-44d6-8888-e9cae3473683}</uid>
+                                                                <flags>1</flags>
+                                                               </MElement>
+                                                              </base-MElement>
+                                                              <name>NetworkProfileMainModel</name>
+                                                              <relations>
+                                                               <handles>
+                                                                <handles>
+                                                                 <qlist>
+                                                                  <item>
+                                                                   <handle>
+                                                                    <uid>{c5334666-c506-46b1-9ae1-e7a29630bd03}</uid>
+                                                                    <target>
+                                                                     <instance type="MAssociation">
+                                                                      <MAssociation>
+                                                                       <base-MRelation>
+                                                                        <MRelation>
+                                                                         <base-MElement>
+                                                                          <MElement>
+                                                                           <uid>{c5334666-c506-46b1-9ae1-e7a29630bd03}</uid>
+                                                                          </MElement>
+                                                                         </base-MElement>
+                                                                         <a>{7e3f8bf1-3d3a-44d6-8888-e9cae3473683}</a>
+                                                                         <b>{8c05ffe4-0340-4093-88f9-6570795713f9}</b>
+                                                                        </MRelation>
+                                                                       </base-MRelation>
+                                                                       <a>
+                                                                        <MAssociationEnd>
+                                                                         <cardinality>1</cardinality>
+                                                                         <navigable>true</navigable>
+                                                                         <kind>2</kind>
+                                                                        </MAssociationEnd>
+                                                                       </a>
+                                                                      </MAssociation>
+                                                                     </instance>
+                                                                    </target>
+                                                                   </handle>
+                                                                  </item>
+                                                                  <item>
+                                                                   <handle>
+                                                                    <uid>{7a93a742-d00d-4e04-80fd-f1739a191669}</uid>
+                                                                    <target>
+                                                                     <instance type="MAssociation">
+                                                                      <MAssociation>
+                                                                       <base-MRelation>
+                                                                        <MRelation>
+                                                                         <base-MElement>
+                                                                          <MElement>
+                                                                           <uid>{7a93a742-d00d-4e04-80fd-f1739a191669}</uid>
+                                                                          </MElement>
+                                                                         </base-MElement>
+                                                                         <a>{7e3f8bf1-3d3a-44d6-8888-e9cae3473683}</a>
+                                                                         <b>{eb0b85b6-658d-4eff-a2e6-cd2ae7befd6d}</b>
+                                                                        </MRelation>
+                                                                       </base-MRelation>
+                                                                       <a>
+                                                                        <MAssociationEnd>
+                                                                         <cardinality>1</cardinality>
+                                                                         <navigable>true</navigable>
+                                                                         <kind>2</kind>
+                                                                        </MAssociationEnd>
+                                                                       </a>
+                                                                      </MAssociation>
+                                                                     </instance>
+                                                                    </target>
+                                                                   </handle>
+                                                                  </item>
+                                                                  <item>
+                                                                   <handle>
+                                                                    <uid>{2c238bae-21c1-46c4-9468-86d8d0bb9115}</uid>
+                                                                    <target>
+                                                                     <instance type="MAssociation">
+                                                                      <MAssociation>
+                                                                       <base-MRelation>
+                                                                        <MRelation>
+                                                                         <base-MElement>
+                                                                          <MElement>
+                                                                           <uid>{2c238bae-21c1-46c4-9468-86d8d0bb9115}</uid>
+                                                                          </MElement>
+                                                                         </base-MElement>
+                                                                         <a>{7e3f8bf1-3d3a-44d6-8888-e9cae3473683}</a>
+                                                                         <b>{27cb7b78-cb1d-4418-8f91-025824839a1b}</b>
+                                                                        </MRelation>
+                                                                       </base-MRelation>
+                                                                       <a>
+                                                                        <MAssociationEnd>
+                                                                         <cardinality>*</cardinality>
+                                                                         <navigable>true</navigable>
+                                                                         <kind>1</kind>
+                                                                        </MAssociationEnd>
+                                                                       </a>
+                                                                      </MAssociation>
+                                                                     </instance>
+                                                                    </target>
+                                                                   </handle>
+                                                                  </item>
+                                                                 </qlist>
+                                                                </handles>
+                                                               </handles>
+                                                              </relations>
+                                                             </MObject>
+                                                            </base-MObject>
+                                                           </MClass>
+                                                          </instance>
+                                                         </target>
+                                                        </handle>
+                                                       </item>
+                                                       <item>
+                                                        <handle>
+                                                         <uid>{8c05ffe4-0340-4093-88f9-6570795713f9}</uid>
+                                                         <target>
+                                                          <instance type="MClass">
+                                                           <MClass>
+                                                            <base-MObject>
+                                                             <MObject>
+                                                              <base-MElement>
+                                                               <MElement>
+                                                                <uid>{8c05ffe4-0340-4093-88f9-6570795713f9}</uid>
+                                                                <flags>1</flags>
+                                                               </MElement>
+                                                              </base-MElement>
+                                                              <name>UserView</name>
+                                                             </MObject>
+                                                            </base-MObject>
+                                                           </MClass>
+                                                          </instance>
+                                                         </target>
+                                                        </handle>
+                                                       </item>
+                                                       <item>
+                                                        <handle>
+                                                         <uid>{27cb7b78-cb1d-4418-8f91-025824839a1b}</uid>
+                                                         <target>
+                                                          <instance type="MClass">
+                                                           <MClass>
+                                                            <base-MObject>
+                                                             <MObject>
+                                                              <base-MElement>
+                                                               <MElement>
+                                                                <uid>{27cb7b78-cb1d-4418-8f91-025824839a1b}</uid>
+                                                                <flags>1</flags>
+                                                               </MElement>
+                                                              </base-MElement>
+                                                              <name>PlayerClientData</name>
+                                                              <relations>
+                                                               <handles>
+                                                                <handles>
+                                                                 <qlist>
+                                                                  <item>
+                                                                   <handle>
+                                                                    <uid>{a9667697-7d4c-4757-bf4f-0ab2568873aa}</uid>
+                                                                    <target>
+                                                                     <instance type="MInheritance">
+                                                                      <MInheritance>
+                                                                       <base-MRelation>
+                                                                        <MRelation>
+                                                                         <base-MElement>
+                                                                          <MElement>
+                                                                           <uid>{a9667697-7d4c-4757-bf4f-0ab2568873aa}</uid>
+                                                                          </MElement>
+                                                                         </base-MElement>
+                                                                         <a>{27cb7b78-cb1d-4418-8f91-025824839a1b}</a>
+                                                                         <b>{38c55945-27ed-4d5c-9d38-761b84e9ae80}</b>
+                                                                        </MRelation>
+                                                                       </base-MRelation>
+                                                                      </MInheritance>
+                                                                     </instance>
+                                                                    </target>
+                                                                   </handle>
+                                                                  </item>
+                                                                 </qlist>
+                                                                </handles>
+                                                               </handles>
+                                                              </relations>
+                                                             </MObject>
+                                                            </base-MObject>
+                                                           </MClass>
+                                                          </instance>
+                                                         </target>
+                                                        </handle>
+                                                       </item>
+                                                      </qlist>
+                                                     </handles>
+                                                    </handles>
+                                                   </children>
+                                                  </MObject>
+                                                 </base-MObject>
+                                                </MPackage>
+                                               </instance>
+                                              </target>
+                                             </handle>
+                                            </item>
+                                           </qlist>
+                                          </handles>
+                                         </handles>
+                                        </children>
+                                       </MObject>
+                                      </base-MObject>
+                                     </MPackage>
+                                    </instance>
+                                   </target>
+                                  </handle>
+                                 </item>
+                                </qlist>
+                               </handles>
+                              </handles>
+                             </children>
+                            </MObject>
+                           </base-MObject>
+                          </MPackage>
+                         </instance>
+                        </target>
+                       </handle>
+                      </item>
+                     </qlist>
+                    </handles>
+                   </handles>
+                  </children>
+                 </MObject>
+                </base-MObject>
+               </MPackage>
+              </instance>
+             </target>
+            </handle>
+           </item>
+           <item>
+            <handle>
+             <uid>{59144cd0-4796-4da3-a967-0ae0bacdf5f2}</uid>
+             <target>
+              <instance type="MItem">
+               <MItem>
+                <base-MObject>
+                 <MObject>
+                  <base-MElement>
+                   <MElement>
+                    <uid>{59144cd0-4796-4da3-a967-0ae0bacdf5f2}</uid>
+                   </MElement>
+                  </base-MElement>
+                  <name>qmk profileView</name>
+                  <relations>
+                   <handles>
+                    <handles>
+                     <qlist>
+                      <item>
+                       <handle>
+                        <uid>{79dba8a4-e8b0-4f96-b405-7663076e9785}</uid>
+                        <target>
+                         <instance type="MDependency">
+                          <MDependency>
+                           <base-MRelation>
+                            <MRelation>
+                             <base-MElement>
+                              <MElement>
+                               <uid>{79dba8a4-e8b0-4f96-b405-7663076e9785}</uid>
+                              </MElement>
+                             </base-MElement>
+                             <a>{59144cd0-4796-4da3-a967-0ae0bacdf5f2}</a>
+                             <b>{7e3f8bf1-3d3a-44d6-8888-e9cae3473683}</b>
+                            </MRelation>
+                           </base-MRelation>
+                           <direction>2</direction>
+                          </MDependency>
+                         </instance>
+                        </target>
+                       </handle>
+                      </item>
+                      <item>
+                       <handle>
+                        <uid>{b8530bc1-b5f0-4a9e-acfb-969901f48cb3}</uid>
+                        <target>
+                         <instance type="MDependency">
+                          <MDependency>
+                           <base-MRelation>
+                            <MRelation>
+                             <base-MElement>
+                              <MElement>
+                               <uid>{b8530bc1-b5f0-4a9e-acfb-969901f48cb3}</uid>
+                              </MElement>
+                             </base-MElement>
+                             <a>{59144cd0-4796-4da3-a967-0ae0bacdf5f2}</a>
+                             <b>{5f23ec13-fb38-44b8-9d85-69bd3db54622}</b>
+                            </MRelation>
+                           </base-MRelation>
+                           <direction>1</direction>
+                          </MDependency>
+                         </instance>
+                        </target>
+                       </handle>
+                      </item>
+                     </qlist>
+                    </handles>
+                   </handles>
+                  </relations>
+                 </MObject>
+                </base-MObject>
+               </MItem>
+              </instance>
+             </target>
+            </handle>
+           </item>
+           <item>
+            <handle>
+             <uid>{d90eff49-65d5-4667-bbbc-d034dea875d4}</uid>
+             <target>
+              <instance type="MItem">
+               <MItem>
+                <base-MObject>
+                 <MObject>
+                  <base-MElement>
+                   <MElement>
+                    <uid>{d90eff49-65d5-4667-bbbc-d034dea875d4}</uid>
+                   </MElement>
+                  </base-MElement>
+                  <name>UserView</name>
+                  <relations>
+                   <handles>
+                    <handles>
+                     <qlist>
+                      <item>
+                       <handle>
+                        <uid>{fddab005-ecbd-4104-8be1-2b157f36ff3c}</uid>
+                        <target>
+                         <instance type="MDependency">
+                          <MDependency>
+                           <base-MRelation>
+                            <MRelation>
+                             <base-MElement>
+                              <MElement>
+                               <uid>{fddab005-ecbd-4104-8be1-2b157f36ff3c}</uid>
+                              </MElement>
+                             </base-MElement>
+                             <a>{d90eff49-65d5-4667-bbbc-d034dea875d4}</a>
+                             <b>{59144cd0-4796-4da3-a967-0ae0bacdf5f2}</b>
+                            </MRelation>
+                           </base-MRelation>
+                          </MDependency>
+                         </instance>
+                        </target>
+                       </handle>
+                      </item>
+                      <item>
+                       <handle>
+                        <uid>{fd446cc7-6634-4476-adbd-580b314f736f}</uid>
+                        <target>
+                         <instance type="MDependency">
+                          <MDependency>
+                           <base-MRelation>
+                            <MRelation>
+                             <base-MElement>
+                              <MElement>
+                               <uid>{fd446cc7-6634-4476-adbd-580b314f736f}</uid>
+                              </MElement>
+                             </base-MElement>
+                             <a>{d90eff49-65d5-4667-bbbc-d034dea875d4}</a>
+                             <b>{8c05ffe4-0340-4093-88f9-6570795713f9}</b>
+                            </MRelation>
+                           </base-MRelation>
+                           <direction>2</direction>
+                          </MDependency>
+                         </instance>
+                        </target>
+                       </handle>
+                      </item>
+                     </qlist>
+                    </handles>
+                   </handles>
+                  </relations>
+                 </MObject>
+                </base-MObject>
+               </MItem>
+              </instance>
+             </target>
+            </handle>
+           </item>
+           <item>
+            <handle>
+             <uid>{06a33c34-d3d3-4407-a9be-f0b48c7d24d7}</uid>
+             <target>
+              <instance type="MPackage">
+               <MPackage>
+                <base-MObject>
+                 <MObject>
+                  <base-MElement>
+                   <MElement>
+                    <uid>{06a33c34-d3d3-4407-a9be-f0b48c7d24d7}</uid>
+                    <flags>1</flags>
+                   </MElement>
+                  </base-MElement>
+                  <name>SnakeServer</name>
+                  <children>
+                   <handles>
+                    <handles>
+                     <qlist>
+                      <item>
+                       <handle>
+                        <uid>{9b53aa1a-bc2a-48cd-809c-9ea7e1668fdb}</uid>
+                        <target>
+                         <instance type="MPackage">
+                          <MPackage>
+                           <base-MObject>
+                            <MObject>
+                             <base-MElement>
+                              <MElement>
+                               <uid>{9b53aa1a-bc2a-48cd-809c-9ea7e1668fdb}</uid>
+                               <flags>1</flags>
+                              </MElement>
+                             </base-MElement>
+                             <name>ClientProtocol</name>
+                             <children>
+                              <handles>
+                               <handles>
+                                <qlist>
+                                 <item>
+                                  <handle>
+                                   <uid>{eb0b85b6-658d-4eff-a2e6-cd2ae7befd6d}</uid>
+                                   <target>
+                                    <instance type="MClass">
+                                     <MClass>
+                                      <base-MObject>
+                                       <MObject>
+                                        <base-MElement>
+                                         <MElement>
+                                          <uid>{eb0b85b6-658d-4eff-a2e6-cd2ae7befd6d}</uid>
+                                          <flags>1</flags>
+                                         </MElement>
+                                        </base-MElement>
+                                        <name>Client</name>
+                                       </MObject>
+                                      </base-MObject>
+                                      <namespace>ClientProtocol</namespace>
+                                     </MClass>
+                                    </instance>
+                                   </target>
+                                  </handle>
+                                 </item>
+                                 <item>
+                                  <handle>
+                                   <uid>{a98b7369-6a0e-4da6-869e-2b8755cfc148}</uid>
+                                   <target>
+                                    <instance type="MPackage">
+                                     <MPackage>
+                                      <base-MObject>
+                                       <MObject>
+                                        <base-MElement>
+                                         <MElement>
+                                          <uid>{a98b7369-6a0e-4da6-869e-2b8755cfc148}</uid>
+                                          <flags>1</flags>
+                                         </MElement>
+                                        </base-MElement>
+                                        <name>Objects</name>
+                                        <children>
+                                         <handles>
+                                          <handles>
+                                           <qlist>
+                                            <item>
+                                             <handle>
+                                              <uid>{38c55945-27ed-4d5c-9d38-761b84e9ae80}</uid>
+                                              <target>
+                                               <instance type="MClass">
+                                                <MClass>
+                                                 <base-MObject>
+                                                  <MObject>
+                                                   <base-MElement>
+                                                    <MElement>
+                                                     <uid>{38c55945-27ed-4d5c-9d38-761b84e9ae80}</uid>
+                                                     <flags>1</flags>
+                                                    </MElement>
+                                                   </base-MElement>
+                                                   <name>Player</name>
+                                                   <relations>
+                                                    <handles>
+                                                     <handles>
+                                                      <qlist>
+                                                       <item>
+                                                        <handle>
+                                                         <uid>{238a4ada-2b3e-4084-8e38-e027f0d6482c}</uid>
+                                                         <target>
+                                                          <instance type="MInheritance">
+                                                           <MInheritance>
+                                                            <base-MRelation>
+                                                             <MRelation>
+                                                              <base-MElement>
+                                                               <MElement>
+                                                                <uid>{238a4ada-2b3e-4084-8e38-e027f0d6482c}</uid>
+                                                               </MElement>
+                                                              </base-MElement>
+                                                              <a>{38c55945-27ed-4d5c-9d38-761b84e9ae80}</a>
+                                                              <b>{27cb7b78-cb1d-4418-8f91-025824839a1b}</b>
+                                                             </MRelation>
+                                                            </base-MRelation>
+                                                           </MInheritance>
+                                                          </instance>
+                                                         </target>
+                                                        </handle>
+                                                       </item>
+                                                      </qlist>
+                                                     </handles>
+                                                    </handles>
+                                                   </relations>
+                                                  </MObject>
+                                                 </base-MObject>
+                                                 <namespace>ClientProtocol</namespace>
+                                                </MClass>
+                                               </instance>
+                                              </target>
+                                             </handle>
+                                            </item>
+                                           </qlist>
+                                          </handles>
+                                         </handles>
+                                        </children>
+                                       </MObject>
+                                      </base-MObject>
+                                     </MPackage>
+                                    </instance>
+                                   </target>
+                                  </handle>
+                                 </item>
+                                </qlist>
+                               </handles>
+                              </handles>
+                             </children>
+                            </MObject>
+                           </base-MObject>
+                          </MPackage>
+                         </instance>
+                        </target>
+                       </handle>
+                      </item>
+                     </qlist>
+                    </handles>
+                   </handles>
+                  </children>
+                 </MObject>
+                </base-MObject>
+               </MPackage>
               </instance>
              </target>
             </handle>

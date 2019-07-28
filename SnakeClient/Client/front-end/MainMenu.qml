@@ -48,7 +48,7 @@ Item {
             spacing: 2
 
             onClicked: {
-//                rec._show();
+                userView._show();
             }
         }
 
@@ -94,19 +94,15 @@ Item {
         source: "About.qml"
     }
 
-//    PagePopUp {
-//        id: rec;
-//        width: parent.width / 2
-//        height: parent.height / 2;
-//        x: parent.width / 2 - width / 2
-//        y: parent.height / 2 - height / 2
+    PagePopUp {
+        id: userView;
+        width: parent.width / 2
+        height: parent.height / 2;
+        x: parent.width / 2 - width / 2
+        y: parent.height / 2 - height / 2
 
-//        source: "RecordsPage.qml"
-//    }
+        source: "UserView.qml"
+    }
 
 }
 
-/*##^## Designer {
-    D{i:0;autoSize:true;height:480;width:640}D{i:4;anchors_height:100;anchors_width:100;anchors_x:284;anchors_y:167}
-}
- ##^##*/

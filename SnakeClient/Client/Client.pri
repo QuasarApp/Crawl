@@ -19,10 +19,13 @@ LIBS += -L$$CLIENT_LIB_OUTPUT_DIR -lClient
 
 include($$PWD/../../QuasarAppLib/QuasarLib.pri)
 include($$PWD/../../SnakeUtils/SnakeUtils.pri)
+include($$PWD/../../SnakeServer/ClientProtocol/ClientProtocol.pri)
 
 INCLUDEPATH += "$$PWD"
 INCLUDEPATH += "$$PWD/front-end"
 INCLUDEPATH += "$$PWD/back-end"
+#INCLUDEPATH += "$$PWD/back-end/ProfileViewItems"
+
 
 
 
