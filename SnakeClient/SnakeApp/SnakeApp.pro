@@ -1,4 +1,4 @@
-QT += quick
+QT += quick gui
 CONFIG += c++17
 
 # The following define makes your compiler emit warnings if you use
@@ -14,6 +14,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     main.cpp
+
+
+TARGET = Snake
 
 
 CONFIG(release, debug|release): {
