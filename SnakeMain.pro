@@ -4,8 +4,8 @@ CONFIG += ordered
 
 SUBDIRS +=  \
         QuasarAppLib \
-        SnakeClient \
         SnakeUtils \
+        SnakeClient \
         SnakeServer \
 
 QuasarAppLib.file = QuasarAppLib/QuasarApp.pro
