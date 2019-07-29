@@ -7,11 +7,10 @@
 #include "diff.h"
 #include "snake.h"
 #include "world.h"
-#include "client_global.h"
 
 class MainMenuModel;
 
-class CLIENTSHARED_EXPORT Controller : public QObject
+class Controller : public QObject
 {
     Q_OBJECT
 

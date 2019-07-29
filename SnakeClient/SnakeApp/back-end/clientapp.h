@@ -3,11 +3,10 @@
 
 #include "controller.h"
 #include "diff.h"
-#include "client_global.h"
 
 class QQmlApplicationEngine;
 
-class CLIENTSHARED_EXPORT ClientApp
+class ClientApp
 {
 private:
     Controller contr;
