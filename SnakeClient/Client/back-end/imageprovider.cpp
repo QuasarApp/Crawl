@@ -1,31 +1,26 @@
+#include "asyncimageresponse.h"
 #include "imageprovider.h"
+#include <QQuickImageResponse>
+#include <QtConcurrent>
 
-ImageProvider::ImageProvider(): QQuickAsyncImageProvider() {
+ImageProvider::ImageProvider() = default;
+ImageProvider::~ImageProvider() = default;
 
+QQuickImageResponse *ImageProvider::requestImageResponse(const QString &id,
+                                                         const QSize &requestedSize) {
+
+    Q_UNUSED(id);
+    AsyncImageResponse* response = new AsyncImageResponse();
+
+    auto readImage = [requestedSize, response]() mutable {
+        Q_UNUSED(requestedSize);
+        response->setResult(QImage(":/img/defaultuser").scaled(requestedSize));
+    };
+
+    QtConcurrent::run(readImage);
+
+    return response;
 }
 
-QPixmap ImageProvider::requestPixmap(const QString &id, QSize *size,
-                                     const QSize &requestedSize) {
 
-    bool ok;
-    int user = id.toShort(&ok);
 
-    if(!ok) {
-        *size = QSize(1,1);
-        return QPixmap(1,1);
-    }
-
-    short width = 100;
-    short height = 50;
-
-    QPixmap result;
-
-    if (size)
-        *size = QSize(width, height);
-
-    if(user){
-       return QPixmap(":/img/defaultuser").scaled(requestedSize);
-    }
-
-    return result.scaled(requestedSize);
-}

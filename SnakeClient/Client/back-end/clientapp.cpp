@@ -1,4 +1,5 @@
 #include "clientapp.h"
+#include "imageprovider.h"
 #include "ProfileViewItems/userview.h"
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
@@ -6,7 +7,9 @@
 #include <back-end/ProfileViewItems/mainmenumodel.h>
 
 ClientApp::ClientApp() {
+}
 
+ClientApp::~ClientApp() {
 }
 
 bool ClientApp::init(QQmlApplicationEngine *engine) {
@@ -19,6 +22,9 @@ bool ClientApp::init(QQmlApplicationEngine *engine) {
     auto root = engine->rootContext();
     if (!root)
         return false;
+
+
+    engine->addImageProvider(QLatin1String("userItems"), new ImageProvider());
 
     root->setContextProperty("contr", &contr);
 

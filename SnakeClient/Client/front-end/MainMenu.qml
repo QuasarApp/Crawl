@@ -93,7 +93,7 @@ Item {
         x: parent.width / 2 - width / 2
         y: parent.height / 2 - height / 2
 
-        source: "About.qml"
+        source: About {}
     }
 
     PagePopUp {
@@ -103,7 +103,9 @@ Item {
         x: parent.width / 2 - width / 2
         y: parent.height / 2 - height / 2
 
-        source: "UserView.qml"
+        source: UserView {
+            model: (item1.model)? item1.model.userViewModel: null
+        }
     }
 
 }

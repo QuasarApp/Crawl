@@ -18,7 +18,7 @@ class UserView : public QObject
     Q_PROPERTY(int id READ id NOTIFY sourceChanged)
 
 private:
-    const PlayerClientData *_source;
+    const PlayerClientData *_source = nullptr;
 
 public:
     explicit UserView(QObject *parent = nullptr);

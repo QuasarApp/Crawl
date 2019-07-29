@@ -10,7 +10,7 @@ TEMPLATE = lib
 
 DEFINES += CLIENT_LIBRARY
 
-QT += quick
+QT += quick concurrent
 CONFIG += c++17
 
 # The following define makes your compiler emit warnings if you use
@@ -27,6 +27,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 HEADERS += \
     back-end/ProfileViewItems/mainmenumodel.h \
     back-end/ProfileViewItems/playerclientdata.h \
+    back-end/asyncimageresponse.h \
     back-end/baseclass.h \
     back-end/clientapp.h \
     back-end/head.h \
@@ -48,6 +49,7 @@ HEADERS += \
 SOURCES += \
     back-end/ProfileViewItems/mainmenumodel.cpp \
     back-end/ProfileViewItems/playerclientdata.cpp \
+    back-end/asyncimageresponse.cpp \
     back-end/baseclass.cpp \
     back-end/clientapp.cpp \
     back-end/head.cpp \

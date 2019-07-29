@@ -9,9 +9,10 @@ class ImageProvider: public QQuickAsyncImageProvider
 private:
 public:
     explicit ImageProvider();
+    ~ImageProvider() override;
 
-    QPixmap requestPixmap(const QString &id, QSize *size,
-                          const QSize &requestedSize);
+    QQuickImageResponse *requestImageResponse(const QString &id,
+                                              const QSize &requestedSize) override;
 };
 
 

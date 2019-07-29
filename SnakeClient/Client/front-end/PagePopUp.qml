@@ -5,19 +5,28 @@ import QtQuick.Layouts 1.3
 
 BasePopUp {
     id: pagePopUp
-    property string source: ""
+    property var source: null
     autoClose: false
 
-    Loader {
-        id: sour
+    Item {
+        id: sourceVal
         anchors.fill: parent
-        source: (pagePopUp.source)? pagePopUp.source: "Item.qml";
+    }
 
-        Connections {
-            target: sour.item
-            onClose: {
-                pagePopUp.close();
-            }
+    onSourceChanged: {
+        source.parent = sourceVal;
+        source.anchors.fill = sourceVal;
+
+        if (source.close) {
+            closeConnect.target = source;
+        }
+    }
+    Connections {
+        id : closeConnect
+        target: null
+        ignoreUnknownSignals: true
+        onClose: {
+            pagePopUp.close();
         }
     }
 }

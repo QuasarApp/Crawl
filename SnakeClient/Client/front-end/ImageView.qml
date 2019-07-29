@@ -5,9 +5,10 @@ import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.13
 
 Item {
+    id: imageView
     property int size: 50
     property double ratio: 1
-    property string darawItem: ""
+    property string drawItem: ""
     property bool hovered: false
     property bool hold: false
 
@@ -19,7 +20,7 @@ Item {
     Image {
         id: img
         fillMode: Image.PreserveAspectCrop
-        source: darawItem
+        source: drawItem
         sourceSize: Qt.size(parent.width, parent.height)
         smooth: true
         visible: false
@@ -70,10 +71,10 @@ Item {
 
         onReleased: {
             parent.hold = false;
-            clicked();
+            imageView.clicked();
         }
 
-        onClicked: {
+        onPressed: {
             parent.hold = true;
         }
     }
