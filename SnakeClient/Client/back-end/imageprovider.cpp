@@ -9,12 +9,23 @@ ImageProvider::~ImageProvider() = default;
 QQuickImageResponse *ImageProvider::requestImageResponse(const QString &id,
                                                          const QSize &requestedSize) {
 
-    Q_UNUSED(id);
     AsyncImageResponse* response = new AsyncImageResponse();
-
-    auto readImage = [requestedSize, response]() mutable {
+    auto readImage = [id, requestedSize, response]() mutable {
         Q_UNUSED(requestedSize);
-        response->setResult(QImage(":/img/defaultuser").scaled(requestedSize));
+
+        auto params = id.split("/");
+
+        if (params.contains("player")) {
+            response->setResult(QImage(":/img/defaultuser").
+                                scaled(requestedSize, Qt::KeepAspectRatioByExpanding));
+
+        } else if (params.contains("item")) {
+            response->setResult(QImage(":/img/defaultsnake").
+                                scaled(requestedSize, Qt::KeepAspectRatioByExpanding));
+        } else {
+            response->error("Wrong first parametr example 'first/last'");
+        }
+
     };
 
     QtConcurrent::run(readImage);

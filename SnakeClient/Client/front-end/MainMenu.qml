@@ -5,21 +5,35 @@ import QtQuick.Layouts 1.3
 
 Item {
     id: item1
-    property alias level: level
     property var model: null
     visible: true
     z: 1
 
     signal playGame();
 
+    UserView {
+        id: userView
+        anchors.verticalCenter: parent.verticalCenter
+
+        anchors.left: parent.left
+        anchors.leftMargin: 0
+
+
+        model: (item1.model)? item1.model.userViewModel: null
+    }
 
     ColumnLayout {
         id: columnLayout
-        width: 642
+        anchors.top: parent.top
         anchors.topMargin: 0
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 0
+        anchors.left: userView.right
+        anchors.leftMargin: 0
+        anchors.right: parent.right
+        anchors.rightMargin: 0
         transformOrigin: Item.Center
         spacing: -100
-        anchors.fill: parent
 
         Button {
             id: play
@@ -96,17 +110,13 @@ Item {
         source: About {}
     }
 
-    PagePopUp {
-        id: userView;
-        width: parent.width / 2
-        height: parent.height / 2;
-        x: parent.width / 2 - width / 2
-        y: parent.height / 2 - height / 2
 
-        source: UserView {
-            model: (item1.model)? item1.model.userViewModel: null
-        }
-    }
+
 
 }
 
+
+/*##^## Designer {
+    D{i:0;autoSize:true;height:480;width:640}
+}
+ ##^##*/

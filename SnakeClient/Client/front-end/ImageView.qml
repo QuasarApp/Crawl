@@ -1,8 +1,8 @@
-import QtQuick 2.13
-import QtQuick.Controls.Material 2.13
-import QtQuick.Controls 2.13
+import QtQuick 2.12
+import QtQuick.Controls.Material 2.12
+import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.3
-import QtGraphicalEffects 1.13
+import QtGraphicalEffects 1.12
 
 Item {
     id: imageView
@@ -19,11 +19,12 @@ Item {
 
     Image {
         id: img
-        fillMode: Image.PreserveAspectCrop
+        fillMode: Image.PreserveAspectFit
         source: drawItem
-        sourceSize: Qt.size(parent.width, parent.height)
+        sourceSize: Qt.size(width, height)
         smooth: true
         visible: false
+        anchors.fill: parent
     }
 
     DropShadow {
@@ -53,7 +54,7 @@ Item {
                 duration: 200
             }
         }
-        color: (hold)? "#80000000": (hovered)? "#40000000": "#20000000"
+        color: (hold)? "#80000000": (hovered)? "#60000000": "#40000000"
         source: img
     }
 

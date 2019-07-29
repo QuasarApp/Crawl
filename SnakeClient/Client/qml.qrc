@@ -14,6 +14,7 @@
         <file>front-end/PagePopUp.qml</file>
         <file>front-end/UserView.qml</file>
         <file>front-end/ImageView.qml</file>
+        <file>front-end/PropertyView.qml</file>
     </qresource>
     <qresource prefix="/texture">
         <file alias="up">img/up.svg</file>
@@ -24,5 +25,6 @@
     </qresource>
     <qresource prefix="/img">
         <file alias="defaultuser">img/defaultUser.png</file>
+        <file alias="defaultsnake">img/defaultSnake.png</file>
     </qresource>
 </RCC>
