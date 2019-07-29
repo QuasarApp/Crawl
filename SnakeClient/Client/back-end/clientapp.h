@@ -14,7 +14,7 @@ private:
 
 public:
     ClientApp();
-    bool run(QQmlApplicationEngine* engine);
+    bool init(QQmlApplicationEngine* engine);
 };
 
 #endif // CLIENTAPP_H

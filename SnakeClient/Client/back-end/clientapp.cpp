@@ -3,17 +3,17 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 
-#include <back-end/ProfileViewItems/networkprofilemainmodel.h>
+#include <back-end/ProfileViewItems/mainmenumodel.h>
 
 ClientApp::ClientApp() {
 
 }
 
-bool ClientApp::run(QQmlApplicationEngine *engine) {
+bool ClientApp::init(QQmlApplicationEngine *engine) {
 
     qmlRegisterType <GuiObject> ();
     qmlRegisterType <Diff> ();
-    qmlRegisterType <NetworkProfileMainModel> ();
+    qmlRegisterType <MainMenuModel> ();
     qmlRegisterType <UserView> ();
 
     auto root = engine->rootContext();

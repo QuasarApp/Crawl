@@ -5,7 +5,7 @@
 
 class UserView;
 
-class NetworkProfileMainModel : public QObject
+class MainMenuModel : public QObject
 {
     Q_OBJECT
 
@@ -14,11 +14,13 @@ class NetworkProfileMainModel : public QObject
     UserView* _userViewModel = nullptr;
 
 public:
-    NetworkProfileMainModel(QObject *ptr = nullptr);
+    MainMenuModel(QObject *ptr = nullptr);
 
     QObject* userViewModel() const;
 signals:
     void userViewModelChanged(QObject* userViewModel);
+    void newGame();
+
 };
 
 #endif // NETWORKPROFILEMAINMODEL_H

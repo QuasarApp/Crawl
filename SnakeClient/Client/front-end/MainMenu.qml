@@ -6,10 +6,11 @@ import QtQuick.Layouts 1.3
 Item {
     id: item1
     property alias level: level
+    property var model: null
     visible: true
     z: 1
 
-    signal paly();
+    signal playGame();
 
 
     ColumnLayout {
@@ -32,8 +33,9 @@ Item {
             Layout.preferredWidth: item1.height * 0.8
 
             onClicked: {
-                paly();
-                contr.newGame();
+                playGame();
+                if (model)
+                    model.newGame();
             }
 
         }

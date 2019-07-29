@@ -3,12 +3,18 @@
 #include <ctime>
 #include "diff.h"
 #include <lvls.h>
+#include "ProfileViewItems/mainmenumodel.h"
 
 Controller::Controller() {
     srand(static_cast<unsigned int>(time(nullptr)));
     timer = new QTimer();
     timer->setInterval(1);
+
+    _networkModel = new MainMenuModel(this);
+
     connect(timer, SIGNAL(timeout()), this, SLOT(update()));
+    connect(_networkModel, &MainMenuModel::newGame, this, &Controller::handleNewGame);
+
 }
 
 Controller::~Controller() {
@@ -72,7 +78,7 @@ void Controller::update() {
 
 }
 
-void Controller::newGame() {
+void Controller::handleNewGame() {
 
     world.resetPosition();
 
@@ -101,6 +107,10 @@ int Controller::long_() const {
 
 int Controller::generalLong() const {
     return m_generalLong + long_();
+}
+
+QObject *Controller::mainMenuModel() const {
+    return _networkModel;
 }
 
 void Controller::buttonPress() {

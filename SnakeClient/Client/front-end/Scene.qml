@@ -23,9 +23,9 @@ Item {
 
     }
 
-    property var model: (contr)? contr: null;
+    property var model: null;
     property var arrayObjects: []
-    property bool showMenu: false
+    property bool showMenu: true
     property bool isPause: false
 
     function add (cppObjId) {
@@ -66,15 +66,6 @@ Item {
         }
     }
 
-    function setAuto (auto) {
-        if (auto && model) {
-            model.newGame();
-
-        }
-        showMenu = (auto && model)
-        autoTimer.running = auto && model;
-    }
-
     function updateBackgroundColor(lvl) {
         switch(lvl % 7) {
         case 0: background.color = "#d6eaf8"; break;
@@ -89,11 +80,10 @@ Item {
         }
     }
 
-
     Timer {
-        id :autoTimer;
+        id: autoTimer;
         repeat: true;
-        running: false;
+        running: showMenu;
         interval: 1000
         onTriggered: {
             interval = Math.random() * 600
@@ -139,23 +129,25 @@ Item {
 
                 model.nextLvl();
             } else if (autoTimer.running) {
-                model.newGame();
+                model.handleNewGame();
             } else {
                 showMenu = true;
+                model.handleNewGame();
             }
         }
     }
 
     Component.onCompleted: {
         updateBackgroundColor(0);
+        model.handleNewGame();
+
     }
 
     MouseArea {
         anchors.fill: parent;
 
         onClicked: {
-            if (!model) {
-                console.log("model not found");
+            if (!model || showMenu) {
                 return;
             }
 

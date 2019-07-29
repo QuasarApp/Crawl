@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
     ClientApp client;
 
-    if (!client.run(&engine)) {
+    if (!client.init(&engine)) {
         return 1;
     }
 

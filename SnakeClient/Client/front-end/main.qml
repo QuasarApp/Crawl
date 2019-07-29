@@ -13,23 +13,20 @@ ApplicationWindow {
 
     property real point: (width < height) ? width/pointCount : height/pointCount;
 
-    Component.onCompleted: {
-        scane.setAuto(true);
-//        contr.newGame();
-    }
-
     Scene {
         id: scane;
+        model: contr;
         anchors.fill: parent;
     }
 
     MainMenu {
 
+        model: (contr)? contr.mainMenuModel: null;
         anchors.fill: parent;
         visible: scane.showMenu;
 
-        onPaly: {
-            scane.setAuto(false);
+        onPlayGame: {
+            scane.showMenu = false;
         }
 
     }
