@@ -8,3 +8,11 @@ MainMenuModel::MainMenuModel(QObject *ptr): QObject (ptr) {
 QObject *MainMenuModel::userViewModel() const {
     return _userViewModel;
 }
+
+bool MainMenuModel::online() const {
+    return false;
+}
+
+bool MainMenuModel::login() const {
+    return false;
+}

@@ -15,7 +15,7 @@ Item {
     property string valueImage: "";
     property string valueText: "";
 
-    property int lineWidth : 1
+    property int lineWidth : 0.5 * metrix.mm
 
     property bool hovered: false
     property bool hold: false
@@ -27,7 +27,7 @@ Item {
 
         Rectangle {
             height: lineWidth
-            color: (hold)? Material.foreground: (hovered)? Material.foreground:"#aaa"
+            color: (hold)? Material.accent: (hovered)? Material.foreground:"#aaa"
             anchors.bottom: parent.bottom
             anchors.left: parent.left
             anchors.right: parent.right
@@ -35,7 +35,7 @@ Item {
             Behavior on color {
 
                 ColorAnimation {
-                    duration: 200
+                    duration: 100
                 }
             }
         }

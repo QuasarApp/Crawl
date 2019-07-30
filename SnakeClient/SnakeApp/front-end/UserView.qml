@@ -4,20 +4,10 @@ import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.12
 
-Frame {
+FrameView {
     id: userVew
 
     property var model: null
-    property int sourceId: 0
-    width: 5 * metrix.pt
-    background: Rectangle {
-        color: "#50ffffff"
-        border.color: "#5e5d5d"
-        radius:  4
-    }
-
-    padding: 10
-
 
     ColumnLayout {
         id: columnLayout
