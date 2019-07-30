@@ -5,9 +5,8 @@
 #include "QObject"
 
 #include <QRectF>
-#include "client_global.h"
 
-class CLIENTSHARED_EXPORT GuiObject:public QObject, public BaseClass
+class GuiObject:public QObject, public BaseClass
 {
     Q_OBJECT
 // @todo: add color

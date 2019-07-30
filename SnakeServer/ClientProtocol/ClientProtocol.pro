@@ -14,6 +14,7 @@
 QT       -= gui
 QT       += network
 
+CONFIG += c++14
 TARGET = ClientProtocol
 TEMPLATE = lib
 

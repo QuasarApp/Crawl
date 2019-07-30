@@ -7,14 +7,16 @@
 #include "diff.h"
 #include "snake.h"
 #include "world.h"
-#include "client_global.h"
 
-class CLIENTSHARED_EXPORT Controller : public QObject
+class MainMenuModel;
+
+class Controller : public QObject
 {
     Q_OBJECT
 
     Q_PROPERTY(int long_ READ long_ NOTIFY long_changed)
     Q_PROPERTY(int generalLong READ generalLong NOTIFY generalLongchanged)
+    Q_PROPERTY(QObject* mainMenuModel READ mainMenuModel NOTIFY mainMenuModelchanged)
 
 private:
 
@@ -28,6 +30,8 @@ private:
 
     void generateDiff(const QMap<int, GuiObject *> &);
 
+    MainMenuModel* _networkModel = nullptr;
+
 public:
     Controller();
     ~Controller();
@@ -38,6 +42,8 @@ public:
     int long_() const;
 
     int generalLong() const;
+
+    QObject* mainMenuModel() const;
 
 public slots:
     void buttonPress();
@@ -55,7 +61,7 @@ public slots:
     /**
      * @brief newGame - start game from first lvl
      */
-    void newGame();
+    void handleNewGame();
 
     /**
      * @brief getGameObject
@@ -80,6 +86,7 @@ signals:
     void gameObjectsChanged(const Diff &dif);
     void long_changed(int m_long);
     void generalLongchanged(int generalLong);
+    void mainMenuModelchanged(QObject* mainMenuModel);
 };
 
 #endif // CONTROLLER_H

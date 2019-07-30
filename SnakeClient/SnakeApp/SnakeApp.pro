@@ -1,4 +1,4 @@
-QT += quick
+QT += quick concurrent
 CONFIG += c++17
 
 # The following define makes your compiler emit warnings if you use
@@ -13,7 +13,25 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    main.cpp
+    back-end/ProfileViewItems/mainmenumodel.cpp \
+    back-end/ProfileViewItems/playerclientdata.cpp \
+    back-end/ProfileViewItems/userview.cpp \
+    back-end/asyncimageresponse.cpp \
+    back-end/background.cpp \
+    back-end/backgrounditem.cpp \
+    back-end/baseclass.cpp \
+    back-end/box.cpp \
+    back-end/clientapp.cpp \
+    back-end/controller.cpp \
+    back-end/diff.cpp \
+    back-end/guiobject.cpp \
+    back-end/guiobjectfactory.cpp \
+    back-end/head.cpp \
+    back-end/imageprovider.cpp \
+    back-end/itemworld.cpp \
+    back-end/snake.cpp \
+    back-end/world.cpp \
+    back-end/main.cpp
 
 
 TARGET = Snake
@@ -32,12 +50,28 @@ QML_IMPORT_PATH =
 # Additional import path used to resolve QML modules just for Qt Quick Designer
 QML_DESIGNER_IMPORT_PATH =
 
-include($$PWD/../Client/Client.pri)
+include($$PWD/../../QuasarAppLib/QuasarLib.pri)
+include($$PWD/../../SnakeUtils/SnakeUtils.pri)
+include($$PWD/../../SnakeServer/ClientProtocol/ClientProtocol.pri)
 
 DISTFILES += \
     android/AndroidManifest.xml \
+    android/AndroidManifest.xml \
+    android/AndroidManifest.xml \
+    android/build.gradle \
+    android/build.gradle \
     android/gradle/wrapper/gradle-wrapper.jar \
+    android/gradle/wrapper/gradle-wrapper.jar \
+    android/gradle/wrapper/gradle-wrapper.jar \
+    android/gradle/wrapper/gradle-wrapper.properties \
+    android/gradle/wrapper/gradle-wrapper.properties \
     android/gradlew \
+    android/gradlew \
+    android/gradlew \
+    android/gradlew.bat \
+    android/gradlew.bat \
+    android/res/values/libs.xml \
+    android/res/values/libs.xml \
     android/res/values/libs.xml \
     android/build.gradle \
     android/gradle/wrapper/gradle-wrapper.properties \
@@ -45,3 +79,26 @@ DISTFILES += \
     front-end/PagePopUp.qml
 
 ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
+
+RESOURCES += \
+    qml.qrc
+
+HEADERS += \
+    back-end/ProfileViewItems/mainmenumodel.h \
+    back-end/ProfileViewItems/playerclientdata.h \
+    back-end/ProfileViewItems/userview.h \
+    back-end/asyncimageresponse.h \
+    back-end/background.h \
+    back-end/backgrounditem.h \
+    back-end/baseclass.h \
+    back-end/box.h \
+    back-end/clientapp.h \
+    back-end/controller.h \
+    back-end/diff.h \
+    back-end/guiobject.h \
+    back-end/guiobjectfactory.h \
+    back-end/head.h \
+    back-end/imageprovider.h \
+    back-end/itemworld.h \
+    back-end/snake.h \
+    back-end/world.h

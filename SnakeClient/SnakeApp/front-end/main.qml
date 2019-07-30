@@ -1,6 +1,6 @@
-import QtQuick 2.9
-import QtQuick.Window 2.2
-import QtQuick.Controls 2.2
+import QtQuick 2.12
+import QtQuick.Window 2.12
+import QtQuick.Controls 2.12
 
 ApplicationWindow {
     id: mainWindow;
@@ -12,24 +12,22 @@ ApplicationWindow {
     readonly property int pointCount: 100;
 
     property real point: (width < height) ? width/pointCount : height/pointCount;
-
-    Component.onCompleted: {
-        scane.setAuto(true);
-//        contr.newGame();
-    }
+    Metrix {id: metrix}
 
     Scene {
         id: scane;
+        model: contr;
         anchors.fill: parent;
     }
 
     MainMenu {
 
+        model: (contr)? contr.mainMenuModel: null;
         anchors.fill: parent;
         visible: scane.showMenu;
 
-        onPaly: {
-            scane.setAuto(false);
+        onPlayGame: {
+            scane.showMenu = false;
         }
 
     }
