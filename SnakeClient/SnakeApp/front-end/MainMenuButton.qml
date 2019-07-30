@@ -14,7 +14,4 @@ Button {
     Layout.preferredHeight: parent.height / (parent.rows + 1)
     Layout.preferredWidth: parent.width / (parent.columns + 1)
 
-    onClicked: {
-        Qt.quit();
-    }
 }
