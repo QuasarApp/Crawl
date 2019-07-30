@@ -15,6 +15,7 @@
         <file>front-end/UserView.qml</file>
         <file>front-end/ImageView.qml</file>
         <file>front-end/PropertyView.qml</file>
+        <file>front-end/Metrix.qml</file>
     </qresource>
     <qresource prefix="/texture">
         <file alias="up">img/up.svg</file>

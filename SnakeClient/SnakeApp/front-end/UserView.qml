@@ -9,7 +9,7 @@ Frame {
 
     property var model: null
     property int sourceId: 0
-    width: 40 * point
+    width: 5 * metrix.pt
     background: Rectangle {
         color: "#50ffffff"
         border.color: "#5e5d5d"
