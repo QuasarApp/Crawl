@@ -240,7 +240,7 @@ Item {
 
                     if (tabBar.currentIndex) {
                         // register request
-                        sigNewUser(registerEmail.text, register.);
+                        sigNewUser(registerEmail.text, registerName.text, registerPassword);
                         waitforAnsver();
                     } else {
                         //login request
@@ -265,22 +265,33 @@ Item {
         property string text: ""
         Label {
             id: sourceText;
+            wrapMode: Text.WordWrap
             text: errorMessage.text
+            anchors.fill: parent
         }
 
         background: Rectangle {
-            color: "#ff4500"
+            color: "#ff8f68"
 
-            radius: height / 4;
+            radius: 1 * metrix.mm;
         }
+        closeInterval: 10000
 
         height: 2 * metrix.controlPtMaterial;
-        width: 5 * metrix.controlPtMaterial
+        width: 7 * metrix.controlPtMaterial;
         x: 0;
         y: 0;
     }
 
-    BasePopUp {
+    onLoginStatusChanged: {
+        if (loginStatus === -2)
+            busy._show();
+        else {
+            busy.close();
+        }
+    }
+
+    PagePopUp {
         id: busy
         modal: true
         autoClose: false;
@@ -289,11 +300,13 @@ Item {
             running: loginStatus < 0
             anchors.fill: parent
         }
-
-        visible: loginStatus < 0;
-
         height: 2 * metrix.controlPtMaterial
         width: height
+
+        background: Rectangle {
+            radius: 2 * metrix.mm
+            color: Material.background;
+        }
 
     }
 
