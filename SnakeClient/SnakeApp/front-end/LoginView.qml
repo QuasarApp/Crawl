@@ -269,12 +269,7 @@ Item {
             text: errorMessage.text
             anchors.fill: parent
         }
-
-        background: Rectangle {
-            color: "#ff8f68"
-
-            radius: 1 * metrix.mm;
-        }
+        backgroundColor: "#ff8f68"
         closeInterval: 10000
 
         height: 2 * metrix.controlPtMaterial;
@@ -303,10 +298,6 @@ Item {
         height: 2 * metrix.controlPtMaterial
         width: height
 
-        background: Rectangle {
-            radius: 2 * metrix.mm
-            color: Material.background;
-        }
 
     }
 
