@@ -100,8 +100,6 @@ Item {
         id: about;
         width: parent.width / 2
         height: parent.height / 2;
-        x: parent.width / 2 - width / 2
-        y: parent.height / 2 - height / 2
 
         source: About {}
     }
@@ -111,15 +109,15 @@ Item {
     PagePopUp {
         id: loginPopUp
         source: LoginView {
-
+            id: loginView
         }
 
         visible: true;
-
-        width: parent.width / 2
-        height: parent.height / 2;
-        x: parent.width / 2 - width / 2
-        y: parent.height / 2 - height / 2
+        modal: true;
+        autoClose: false
+        clickClose: false
+        width: 10 * metrix.controlPtMaterial
+        height: ((loginView.currentView)? 12 : 7) * metrix.controlPtMaterial;
     }
 
 

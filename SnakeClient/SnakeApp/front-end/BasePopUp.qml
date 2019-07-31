@@ -13,6 +13,8 @@ Popup {
     transformOrigin: Item.Center
 
     property bool autoClose: true
+    property bool clickClose: true
+
     property int closeInterval: 15000;
     property int margin : 0
 
@@ -60,7 +62,7 @@ Popup {
             opacity = 0;
     }
 
-    closePolicy: (autoClose)? Popup.NoAutoClose: Popup.CloseOnReleaseOutside
+    closePolicy: (!clickClose || autoClose)? Popup.NoAutoClose: Popup.CloseOnReleaseOutside
 
 
 }

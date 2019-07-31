@@ -13,9 +13,7 @@ ApplicationWindow {
         mainWindow.showFullScreen();
     }
 
-    readonly property int pointCount: 100;
 
-    property real point: (width < height) ? width/pointCount : height/pointCount;
     Metrix {id: metrix}
 
     Scene {
