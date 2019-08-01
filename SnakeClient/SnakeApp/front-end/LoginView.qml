@@ -7,13 +7,13 @@ import QtGraphicalEffects 1.12
 Item {
     id: element
 
-    // -1 general state (Without Data)
-    // -2 wait for ansever
-    property int loginStatus : -1
+    readonly property int loginStatus : 0
     readonly property var resultLoginEnum: [
         qsTr("Success"), // 0
-        qsTr("Authorization fail"), // 1
-        qsTr("Client is offline "), // 2
+        qsTr("Authorization Required"), // 1
+        qsTr("Wait for answer"), // 2
+        qsTr("Authorization fail"), // 3
+        qsTr("Client is offline "), // 4
     ]
 
     readonly property int currentView: tabBar.currentIndex
@@ -79,10 +79,6 @@ Item {
         }
 
         return _checkLogin();
-    }
-
-    function waitforAnsver() {
-        loginStatus = -2;
     }
 
     SwipeView {
@@ -241,11 +237,9 @@ Item {
                     if (tabBar.currentIndex) {
                         // register request
                         sigNewUser(registerEmail.text, registerName.text, registerPassword);
-                        waitforAnsver();
                     } else {
                         //login request
                         sigLogin(loginEmail.text, loginPass.text);
-                        waitforAnsver();
                     }
                 } else {
                     errorMessage.text = resultEnum[messageIndex];
@@ -269,8 +263,8 @@ Item {
             text: errorMessage.text
             anchors.fill: parent
         }
-        backgroundColor: "#ff8f68"
-        closeInterval: 10000
+        backgroundColor: "#ff4f28"
+        closeInterval: 5000
 
         height: 2 * metrix.controlPtMaterial;
         width: 7 * metrix.controlPtMaterial;
@@ -279,10 +273,14 @@ Item {
     }
 
     onLoginStatusChanged: {
-        if (loginStatus === -2)
+        if (loginStatus === 2)
             busy._show();
         else {
             busy.close();
+            if (loginStatus > 2) {
+                errorMessage._show();
+                errorMessage.text =  resultLoginEnum[loginStatus];
+            }
         }
     }
 
@@ -292,7 +290,7 @@ Item {
         autoClose: false;
         clickClose: false;
         BusyIndicator {
-            running: loginStatus < 0
+            running: true
             anchors.fill: parent
         }
         height: 2 * metrix.controlPtMaterial

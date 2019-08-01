@@ -9,10 +9,14 @@ QObject *MainMenuModel::userViewModel() const {
     return _userViewModel;
 }
 
-bool MainMenuModel::online() const {
-    return false;
+int MainMenuModel::onlineStatus() const {
+    return _onlineStatus;
 }
 
-bool MainMenuModel::login() const {
-    return false;
+void MainMenuModel::setOnlineStatus(int onlineStatus) {
+    if (_onlineStatus == onlineStatus)
+        return;
+
+    _onlineStatus = static_cast<OnlineStatus>(onlineStatus);
+    emit onlineStatusChanged();
 }

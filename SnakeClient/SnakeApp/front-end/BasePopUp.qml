@@ -39,43 +39,23 @@ Popup {
         }
     }
 
-
-    NumberAnimation {
-        id: animation;
-        target: basePopup
-        property: "opacity"
-        easing.period: 0.33
-        easing.amplitude: 1
-        duration: 2000
-        easing.type: Easing.OutElastic
-
-        onStopped: {
-            if (to < 1)
-                close();
-        }
-    }
-
     function _show() {
-        animation.from = 0;
-        animation.to = 1;
-        animation.start();
 
         if (autoClose) {
-            timerAnimation.start();
+            timerAutoClose.start();
         }
 
         open();
     }
 
     Timer {
-        id: timerAnimation;
+        id: timerAutoClose;
         running: false;
         repeat: false;
+        interval: closeInterval;
 
         onTriggered: {
-            animation.from = 1;
-            animation.to = 0;
-            animation.start();
+            close();
         }
     }
 
