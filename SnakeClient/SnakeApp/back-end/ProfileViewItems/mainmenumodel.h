@@ -31,6 +31,8 @@ private:
     OnlineStatus _onlineStatus = ClientIsOffline;
     QSettings *_conf = nullptr;
 
+private slots:
+    void handleClientStatusChanged(bool);
 
 public:
     MainMenuModel(QObject *ptr = nullptr);
@@ -40,6 +42,8 @@ public:
 
 public slots:
     void setOnlineStatus(int onlineStatus);
+    void login(const QString& email, const QString& pass);
+    void registerNewUser(const QString& email, const QString& name, const QString& pass);
 
 signals:
     void userViewModelChanged(QObject* userViewModel);
