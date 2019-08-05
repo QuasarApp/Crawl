@@ -7,7 +7,7 @@ import QtGraphicalEffects 1.12
 Item {
     id: element
 
-    readonly property int loginStatus : 0
+    property int loginStatus : 0
     readonly property var resultLoginEnum: [
         qsTr("Success"), // 0
         qsTr("Authorization Required"), // 1
@@ -296,7 +296,20 @@ Item {
         height: 2 * metrix.controlPtMaterial
         width: height
 
+    }
 
+    Label {
+        visible: loginStatus === 4
+        text: qsTr("You need connect to server");
+        font.pixelSize: height / 10;
+        anchors.fill: parent;
+        wrapMode: Text.WordWrap
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
+
+        background: FrameView {
+            anchors.fill: parent
+        }
     }
 
 }

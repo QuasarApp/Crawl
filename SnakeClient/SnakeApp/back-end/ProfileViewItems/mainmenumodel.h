@@ -2,10 +2,11 @@
 #define NETWORKPROFILEMAINMODEL_H
 
 #include <QObject>
+#include <QSettings>
 
 class UserView;
 
-namespace ClientProtockol {
+namespace ClientProtocol {
     class Client;
 }
 
@@ -26,9 +27,10 @@ class MainMenuModel : public QObject
 
 private:
     UserView* _userViewModel = nullptr;
-    ClientProtockol::Client *_client = nullptr;
+    ClientProtocol::Client *_client = nullptr;
+    OnlineStatus _onlineStatus = ClientIsOffline;
+    QSettings *_conf = nullptr;
 
-    OnlineStatus _onlineStatus;
 
 public:
     MainMenuModel(QObject *ptr = nullptr);

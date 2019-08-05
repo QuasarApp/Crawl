@@ -29,6 +29,7 @@ SOURCES += \
     back-end/head.cpp \
     back-end/imageprovider.cpp \
     back-end/itemworld.cpp \
+    back-end/settings.cpp \
     back-end/snake.cpp \
     back-end/world.cpp \
     back-end/main.cpp
@@ -100,5 +101,6 @@ HEADERS += \
     back-end/head.h \
     back-end/imageprovider.h \
     back-end/itemworld.h \
+    back-end/settings.h \
     back-end/snake.h \
     back-end/world.h

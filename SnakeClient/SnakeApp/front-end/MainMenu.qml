@@ -6,16 +6,15 @@ import QtQuick.Layouts 1.3
 Item {
     id: item1
     property var model: null
-    property bool online: (model)? model.online: false
-    property bool login: (model)? model.login: false
+    readonly property int  onlineStatus: (model)? model.onlineStatus: false
 
     visible: true
     z: 1
 
     signal playGame();
 
-    onLoginChanged: {
-        if (!login) {
+    onOnlineStatusChanged: {
+        if (onlineStatus !== 4) {
             loginPopUp._show();
         }
     }
@@ -110,6 +109,7 @@ Item {
         id: loginPopUp
         source: LoginView {
             id: loginView
+            loginStatus: onlineStatus
         }
 
         visible: true;
