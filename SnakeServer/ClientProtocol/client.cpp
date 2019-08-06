@@ -13,6 +13,7 @@
 #include "login.h"
 #include "updateplayerdata.h"
 #include <QHash>
+#include <player.h>
 
 #define SOLT "SNAKE"
 namespace ClientProtocol {
@@ -311,13 +312,43 @@ bool Client::getItem(int id) {
         return false;
     }
 
-    if (id < 0) {
+    if (id <= 0) {
         return false;
     }
 
     Package pcg;
 
     GetItem rec;
+    rec.setToken(_token);
+    rec.setId(id);
+
+    if (!rec.isValid()) {
+        return false;
+    }
+
+    if (!pcg.create(&rec, Type::Request)) {
+        return false;
+    };
+
+    if (!sendPackage(pcg)) {
+        return false;
+    }
+
+    return true;
+}
+
+bool Client::getPlayer(int id){
+    if (!isLogin()) {
+        return false;
+    }
+
+    if (id <= 0) {
+        return false;
+    }
+
+    Package pcg;
+
+    UpdatePlayerData rec;
     rec.setToken(_token);
     rec.setId(id);
 

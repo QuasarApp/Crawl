@@ -133,7 +133,18 @@ void MainServer::handleRequest(ClientProtocol::Header hdr,
     }
 
     case ClientProtocol::Command::UpdatePlayerData: {
+        ClientProtocol::UpdatePlayerData request;
+        request.fromBytes(data);
 
+        auto tocken = _serverDaemon->getToken(addres);
+
+        if (!tocken.isEmpty() && tocken == request.getToken()) {
+            auto player = _db->getPlayer(request.id());
+            _serverDaemon->sendResponse(&player, addres, hdr);
+
+        }
+
+        _serverDaemon->badRequest(addres, hdr);
         break;
     }
 

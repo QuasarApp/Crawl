@@ -92,6 +92,13 @@ public:
     bool getItem(int id);
 
     /**
+     * @brief getPlayer
+     * @param id of player
+     * @return player data
+     */
+    bool getPlayer(int id);
+
+    /**
      * @brief isOnline
      * @return true if client is connected to server and get rsapub key
      */
