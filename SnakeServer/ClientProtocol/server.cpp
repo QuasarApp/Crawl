@@ -261,8 +261,10 @@ Server::~Server() {
 }
 
 bool Server::run(const QString &ip, unsigned short port) {
-    if (!listen(QHostAddress(ip), port) ) {
-        QuasarAppUtils::Params::verboseLog("listing fail " + this->errorString());
+
+    if (!listen(QHostAddress(ip), port)) {
+        QuasarAppUtils::Params::verboseLog("listing fail " + this->errorString(),
+                                           QuasarAppUtils::Error);
         return false;
     }
 

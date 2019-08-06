@@ -271,18 +271,21 @@ MainServer::MainServer(bool forceKeys ,QObject *ptr):
     connect(_db, &SqlDBCache::sigPlayerChanged,
             _websocketctrl, &WebSocketController::handlePlayerChanged);
 
+    if (!ClientProtocol::initClientProtockol()){
+        QuasarAppUtils::Params::verboseLog("clientProtocol no inited", QuasarAppUtils::Error);
+    }
+
 }
 
 bool MainServer::run(const QString &ip, unsigned short port, const QString& db,
-                     const QString& terminalServer, bool terminalForce) {
+                     const QString& terminalServer) {
 
     if (!_db->initDb((db.size())? db: DEFAULT_DB_PATH)) {
         QuasarAppUtils::Params::verboseLog("init db fail!", QuasarAppUtils::Error);
         return false;
     }
 
-    if (!_terminalPort->run((terminalServer.isEmpty())? DEFAULT_SERVER : terminalServer,
-                            terminalForce)) {
+    if (!_terminalPort->run((terminalServer.isEmpty())? DEFAULT_SERVER : terminalServer, true)) {
         QuasarAppUtils::Params::verboseLog("run termonal fail!", QuasarAppUtils::Error);
         return false;
     }

@@ -14,8 +14,10 @@ Item {
     signal playGame();
 
     onOnlineStatusChanged: {
-        if (onlineStatus !== 4) {
+        if (onlineStatus) {
             loginPopUp._show();
+        } else {
+            loginPopUp.close();
         }
     }
 
@@ -110,6 +112,21 @@ Item {
         source: LoginView {
             id: loginView
             loginStatus: onlineStatus
+            onSigLogin: {
+                if (!model) {
+                    return;
+                }
+
+                model.login(gmail, password);
+            }
+            onSigNewUser: {
+                if (!model) {
+                    return;
+                }
+
+                model.registerNewUser(gmail, userName, password);
+
+            }
         }
 
         visible: true;

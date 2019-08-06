@@ -43,7 +43,6 @@ private:
     bool sendPackage(Package &pkg);
     inline unsigned char nextIndex();
 
-    bool ping();
 
     QByteArray generateHash(const QByteArray &pass) const;
 
@@ -67,6 +66,8 @@ public:
      * @return
      */
     bool login(const QString& gmail, const QByteArray &pass);
+
+    bool ping();
 
     void loginOut();
 

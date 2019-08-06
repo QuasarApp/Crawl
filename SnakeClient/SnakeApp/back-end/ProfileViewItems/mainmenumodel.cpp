@@ -4,6 +4,7 @@
 #include <client.h>
 
 #include <back-end/settings.h>
+#include <quasarapp.h>
 
 void MainMenuModel::handleClientStatusChanged(bool) {
     auto  status = OnlineStatus::ClientIsOffline;
@@ -11,12 +12,22 @@ void MainMenuModel::handleClientStatusChanged(bool) {
         status = OnlineStatus::AuthorizationRequired;
     }
 
+    if (_client->isLogin()) {
+        status = OnlineStatus::Success;
+    }
+
     setOnlineStatus(status);
 }
 
 MainMenuModel::MainMenuModel(QObject *ptr): QObject (ptr) {
+
+    if(!ClientProtocol::initClientProtockol()) {
+        QuasarAppUtils::Params::verboseLog("client protockol not inited", QuasarAppUtils::Error);
+    }
+
     _userViewModel = new UserView (this);
     _conf = Settings::instans();
+
     auto adderss = _conf->value(SERVER_ADDRESS, SERVER_ADDRESS_DEFAULT).toString();
     auto port = _conf->value(SERVER_ADDRESS_PORT, SERVER_ADDRESS_DEFAULT_PORT).toInt();
     _client = new ClientProtocol::Client(adderss, static_cast<unsigned short>(port), this);
@@ -26,6 +37,7 @@ MainMenuModel::MainMenuModel(QObject *ptr): QObject (ptr) {
 
     connect(_client, &ClientProtocol::Client::onlineChanged,
             this , &MainMenuModel::handleClientStatusChanged);
+
 }
 
 QObject *MainMenuModel::userViewModel() const {

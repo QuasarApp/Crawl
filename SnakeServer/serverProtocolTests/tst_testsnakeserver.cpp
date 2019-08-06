@@ -596,7 +596,7 @@ void testSankeServer::testProtockols() {
     QCoreApplication app(argc, argv);
 
     auto serv = new MainServer(true, this);
-    QVERIFY(serv->run(TEST_SERVER_ADDRESS, TEST_SERVER_PORT , "", TEST_LOCAL_SERVER, true));
+    QVERIFY(serv->run(TEST_SERVER_ADDRESS, TEST_SERVER_PORT , "", TEST_LOCAL_SERVER));
     ServerProtocol::Client cleS(TEST_LOCAL_SERVER);
     ClientProtocol::Client cleC(TEST_SERVER_ADDRESS, TEST_SERVER_PORT);
 
