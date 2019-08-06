@@ -48,10 +48,15 @@ void KeysReactor::handleGenerateNewKeys() {
         return;
     };
 
-    QtConcurrent::run(generatorFunc, QRSAEncryption::RSA_64);
-    QtConcurrent::run(generatorFunc, QRSAEncryption::RSA_128);
-    QtConcurrent::run(generatorFunc, QRSAEncryption::RSA_256);
-    QtConcurrent::run(generatorFunc, QRSAEncryption::RSA_512);
+    _futures.insert(QRSAEncryption::RSA_64,
+                    QtConcurrent::run(generatorFunc, QRSAEncryption::RSA_64));
+    _futures.insert(QRSAEncryption::RSA_128,
+                    QtConcurrent::run(generatorFunc, QRSAEncryption::RSA_128));
+    _futures.insert(QRSAEncryption::RSA_256,
+                    QtConcurrent::run(generatorFunc, QRSAEncryption::RSA_256));
+    _futures.insert(QRSAEncryption::RSA_512,
+                    QtConcurrent::run(generatorFunc, QRSAEncryption::RSA_512));
+
 
 }
 
@@ -77,5 +82,8 @@ KeysReactor::KeysReactor(bool ForceGenerateKey, QObject *ptr):
 }
 
 KeysReactor::~KeysReactor() {
-
+    for (auto && i: _futures) {
+        i.cancel();
+        i.waitForFinished();
+    }
 }
