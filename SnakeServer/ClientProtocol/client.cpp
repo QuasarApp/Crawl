@@ -52,6 +52,8 @@ void Client::updateStatuses(Command extCmd, Command cmd, Type type, const QByteA
 
         }
 
+        _currentUserId = data.id();
+
         setLoginStatus(cmd == Command::UpdatePlayerData && validData);
     }
 }
@@ -375,7 +377,7 @@ const bool& Client::isLogin() const {
     return _logined;
 }
 
-bool Client::changeSubscribe(Command cmd, bool subscribe, int id) {
+bool Client::setSubscribe(Command cmd, bool subscribe, int id) {
     if (!isLogin()) {
         return false;
     }

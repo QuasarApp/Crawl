@@ -28,6 +28,7 @@ private:
     QHash<unsigned char, QVariantMap> _requestsMap;
     QHash<quint8, bool> _subscribe; // command and data confirmation
 
+
     /**
      * @brief checkCommand - return old sendet command if commnad not valid return undefined command
      * @param sig - sig package
@@ -51,6 +52,10 @@ private:
 private slots:
     void incommingData();
     void handleDisconnected();
+
+protected:
+    int _currentUserId = -1;
+
 
 public:
     explicit Client(const QString& addrress = LOCAL_SNAKE_SERVER,
@@ -111,14 +116,14 @@ public:
     const bool &isLogin() const;
 
     /**
-     * @brief changeSubscribe change subscribe of command "cmd"
+     * @brief setSubscribe change subscribe of command "cmd"
      * @param cmd - command of subscribe
      * @param subscribe - boolean barametr. true is subscribe, false is unsubscribe
      * @param id - id of object for commands (Player and Item).
      *  If this parameter is -1 then subscribe on all changes of objects.
      * @return true if all good
      */
-    bool changeSubscribe(Command cmd, bool subscribe, int id = -1);
+    bool setSubscribe(Command cmd, bool subscribe, int id = -1);
 
     /**
      * @brief getSubscribe

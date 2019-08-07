@@ -357,8 +357,8 @@ void testSankeServer::testApplyData(ClientProtocol::Client &cle) {
 
 void testSankeServer::testWebSockets(ClientProtocol::Client &cle) {
 
-    QVERIFY(cle.changeSubscribe(ClientProtocol::Command::Player, true));
-    QVERIFY(cle.changeSubscribe(ClientProtocol::Command::Player, false));
+    QVERIFY(cle.setSubscribe(ClientProtocol::Command::Player, true));
+    QVERIFY(cle.setSubscribe(ClientProtocol::Command::Player, false));
 
 
 }
