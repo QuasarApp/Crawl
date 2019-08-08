@@ -16,9 +16,12 @@ class UserView : public QObject
     Q_PROPERTY(int avgRecord READ avgRecord NOTIFY sourceChanged)
     Q_PROPERTY(int cureentSnake READ cureentSnake NOTIFY sourceChanged)
     Q_PROPERTY(int id READ id NOTIFY sourceChanged)
+    Q_PROPERTY(bool offline READ offline NOTIFY offlineChanged)
 
 private:
     const PlayerClientData *_source = nullptr;
+
+    bool _offline = false;
 
 public:
     explicit UserView(QObject *parent = nullptr);
@@ -33,10 +36,14 @@ public:
 
     const PlayerClientData *getSource() const;
     void setSource(const PlayerClientData *value);
+    bool offline() const;
+    void setOffline(bool offline);
 
 signals:
 
     void sourceChanged();
+
+    void offlineChanged(bool offline);
 
 public slots:
 };

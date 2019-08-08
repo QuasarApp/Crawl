@@ -27,10 +27,13 @@ public:
 
     QObject* userViewModel() const;
     int onlineStatus() const;
+    Q_INVOKABLE void playOffline();
+    Q_INVOKABLE void tryConnect();
 
 public slots:
     void login(const QString& email, const QString& pass);
     void registerNewUser(const QString& email, const QString& name, const QString& pass);
+
 
 signals:
     void userViewModelChanged(QObject* userViewModel);

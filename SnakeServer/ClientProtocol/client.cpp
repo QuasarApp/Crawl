@@ -150,8 +150,7 @@ Client::Client(const QString &addrress, unsigned short port, QObject *ptr):
     QObject (ptr) {
 
     _destination = new QTcpSocket(this);
-
-    _destination->connectToHost(addrress, port);
+    connectToHost(addrress, port);
 
     connect(_destination, &QTcpSocket::readyRead,
             this, &Client::incommingData);
@@ -258,6 +257,15 @@ bool Client::registration(const QString &gmail, const QString &name,
 void Client::loginOut() {
     _token = "";
     setLoginStatus(false);
+}
+
+void Client::dissconnectFromHost() {
+    loginOut();
+    _destination->disconnectFromHost();
+}
+
+void Client::connectToHost(const QString &addrress, unsigned short port) {
+    _destination->connectToHost(addrress, port);
 }
 
 bool Client::updateData() {

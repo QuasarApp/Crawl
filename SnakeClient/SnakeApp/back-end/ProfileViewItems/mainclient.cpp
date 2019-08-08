@@ -16,6 +16,7 @@ void MainClient::setOnlineStatus(OnlineStatus onlineStatus) {
 
 void MainClient::clientStatusChanged() {
     auto  status = OnlineStatus::ClientIsOffline;
+
     if (isOnline()) {
         status = OnlineStatus::AuthorizationRequired;
     }
@@ -83,6 +84,17 @@ bool MainClient::registration(const QString &gmail, const QString &name,
     }
 
     return true;
+}
+
+void MainClient::playOffline() {
+    if (_onlineStatus == OnlineStatus::ClientIsOffline) {
+        setOnlineStatus(OfflineMode);
+    }
+}
+
+void MainClient::tryConnect(const QString &addrress, unsigned short port) {
+    setOnlineStatus(ClientIsOffline);
+    connectToHost(addrress, port);
 }
 
 MainClient::~MainClient() {

@@ -14,29 +14,37 @@ Item {
     signal playGame();
 
     onOnlineStatusChanged: {
-        if (onlineStatus) {
+        if (onlineStatus && onlineStatus !== 5) {
             loginPopUp._show();
         } else {
             loginPopUp.close();
         }
     }
 
-    UserView {
-        id: userView
-        anchors.verticalCenter: parent.verticalCenter
+    LeftSideBar {
+        id: userViewSideBar
+        openWidth: 7 * metrix.pt;
 
-        anchors.left: parent.left
-        anchors.leftMargin: 0
+        openHeight: columnLayout.height
+        source: UserView {
 
+            anchors.fill: parent;
+            model: (item1.model)? item1.model.userViewModel: null
+            visible: userViewSideBar.openFinished
+            onTryConnect: {
+                if (item1.model)
+                    item1.model.tryConnect();
+            }
+        }
 
-        model: (item1.model)? item1.model.userViewModel: null
     }
+
 
     GridLayout {
         id: columnLayout
         anchors.top: parent.top
         anchors.bottom: parent.bottom
-        anchors.left: userView.right
+        anchors.left: userViewSideBar.right
         anchors.right: parent.right
 
         anchors.leftMargin: 0
@@ -126,6 +134,14 @@ Item {
 
                 model.registerNewUser(gmail, userName, password);
 
+            }
+
+            onToOffline: {
+                if (!model) {
+                    return;
+                }
+
+                model.playOffline();
             }
         }
 

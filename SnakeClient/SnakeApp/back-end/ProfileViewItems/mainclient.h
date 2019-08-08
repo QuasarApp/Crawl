@@ -9,7 +9,8 @@ enum OnlineStatus: int {
     AuthorizationRequired,
     WaitForAnswer,
     AuthorizationFail,
-    ClientIsOffline
+    ClientIsOffline,
+    OfflineMode
 };
 
 class MainClient: public ClientProtocol::Client
@@ -18,7 +19,6 @@ class MainClient: public ClientProtocol::Client
 private:
     QHash<int, QSharedPointer<PlayerClientData>> _users;
     OnlineStatus _onlineStatus = ClientIsOffline;
-
 
     void setOnlineStatus(OnlineStatus onlineStatus);
     void clientStatusChanged();
@@ -36,6 +36,8 @@ public:
     bool login(const QString& gmail, const QByteArray &pass) override;
     bool registration(const QString& gmail, const QString& name,
                       const QByteArray &pass) override;
+    void playOffline();
+    void tryConnect(const QString &addrress, unsigned short port);
 
     ~MainClient() override;
 

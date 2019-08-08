@@ -6,7 +6,6 @@ import QtGraphicalEffects 1.12
 
 Frame {
     id: frameVew
-    width: 5 * metrix.pt
     background: Rectangle {
         color: (Material.theme == Material.Dark)? "#50000000": "#50ffffff"
         border.color: "#5e5d5d"

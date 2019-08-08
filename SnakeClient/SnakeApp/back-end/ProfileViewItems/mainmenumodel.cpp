@@ -31,6 +31,17 @@ int MainMenuModel::onlineStatus() const {
     return _client->onlineStatus();
 }
 
+void MainMenuModel::playOffline() {
+    _client->playOffline();
+    _userViewModel->setOffline(true);
+}
+
+void MainMenuModel::tryConnect() {
+    auto adderss = _conf->value(SERVER_ADDRESS, SERVER_ADDRESS_DEFAULT).toString();
+    auto port = _conf->value(SERVER_ADDRESS_PORT, SERVER_ADDRESS_DEFAULT_PORT).toInt();
+    _client->tryConnect(adderss, static_cast<unsigned short>(port));
+}
+
 void MainMenuModel::login(const QString &email, const QString &pass) {
     _client->login(email, pass.toUtf8());
 }

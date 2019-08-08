@@ -14,6 +14,8 @@ Item {
         qsTr("Wait for answer"), // 2
         qsTr("Authorization fail"), // 3
         qsTr("Client is offline "), // 4
+        qsTr("Offline Mode "), // 5
+
     ]
 
     readonly property int currentView: tabBar.currentIndex
@@ -29,6 +31,7 @@ Item {
 
     signal sigNewUser(var gmail, var userName, var password);
     signal sigLogin(var gmail, var password);
+    signal toOffline();
 
 
     function _checkLogin() {
@@ -298,20 +301,37 @@ Item {
 
     }
 
-    Label {
+
+    FrameView {
         visible: loginStatus === 4
-        text: qsTr("You need connect to server");
-        font.pixelSize: height / 10;
-        anchors.fill: parent;
-        wrapMode: Text.WordWrap
-        horizontalAlignment: Text.AlignHCenter
-        verticalAlignment: Text.AlignVCenter
-
-        background: FrameView {
+        anchors.fill: parent
+        ColumnLayout {
             anchors.fill: parent
-        }
-    }
 
+            Label {
+                text: qsTr("You need connect to server");
+                font.pixelSize: metrix.controlPtMaterial;
+                wrapMode: Text.WordWrap
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+
+            }
+
+            Button {
+                text: qsTr("Use OfflineMode");
+                Layout.alignment: Qt.AlignHCenter
+
+                onClicked: {
+                    toOffline();
+                }
+
+            }
+        }
+
+    }
 }
 
 /*##^## Designer {

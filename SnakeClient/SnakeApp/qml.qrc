@@ -19,6 +19,9 @@
         <file>front-end/LoginView.qml</file>
         <file>front-end/FrameView.qml</file>
         <file>front-end/MainMenuButton.qml</file>
+        <file>front-end/SideBar.qml</file>
+        <file>front-end/LeftSideBar.qml</file>
+        <file>front-end/LeftBoxSideBar.qml</file>
     </qresource>
     <qresource prefix="/texture">
         <file alias="up">img/up.svg</file>

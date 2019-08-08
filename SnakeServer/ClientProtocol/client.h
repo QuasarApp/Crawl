@@ -82,6 +82,8 @@ public:
     bool ping();
 
     void loginOut();
+    void dissconnectFromHost();
+    void connectToHost(const QString &addrress, unsigned short port);
 
     /**
      * @brief updateData
