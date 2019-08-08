@@ -70,7 +70,14 @@ public:
      * @param error - error ( if all good this variable is empty)
      * @return
      */
-    bool login(const QString& gmail, const QByteArray &pass);
+    bool virtual login(const QString& gmail, const QByteArray &pass);
+
+    /**
+     * @brief registration - it is wraper of login method
+     * @return
+     */
+    bool virtual registration(const QString& gmail, const QString& name, const QByteArray &pass);
+
 
     bool ping();
 

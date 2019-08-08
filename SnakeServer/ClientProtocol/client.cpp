@@ -249,6 +249,12 @@ bool Client::login(const QString &gmail, const QByteArray &pass) {
     return true;
 }
 
+bool Client::registration(const QString &gmail, const QString &name,
+                          const QByteArray &pass) {
+    Q_UNUSED( name );
+    return login(gmail, pass);
+}
+
 void Client::loginOut() {
     _token = "";
     setLoginStatus(false);
