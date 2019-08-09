@@ -1,15 +1,15 @@
 #include "userview.h"
 
 const PlayerClientData *UserView::getSource() const {
-    return _source;
+    return _source.data();
 }
 
-void UserView::setSource(const PlayerClientData *value) {
+void UserView::setSource(QSharedPointer<PlayerClientData> data) {
 
-    _offline = value == nullptr;
+    _offline = data == nullptr;
 
-    if (value->id() != _source->id()) {
-        _source = value;
+    if (data->id() != _source->id()) {
+        _source = data;
         emit sourceChanged();
     }
 }

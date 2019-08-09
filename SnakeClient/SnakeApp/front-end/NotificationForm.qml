@@ -6,6 +6,8 @@ import QtQuick.Layouts 1.3
 BasePopUp {
     id : popup
 
+    autoClose: true;
+    closeInterval: 5000
     function show(title_, message_, img_) {
         title.text = title_;
         message.text = message_;

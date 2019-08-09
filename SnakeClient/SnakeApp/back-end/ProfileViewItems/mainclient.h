@@ -45,6 +45,7 @@ public:
 
 signals:
     void sigOnlineStatusChanged(OnlineStatus);
+    void currentUserDataChanged(QSharedPointer<PlayerClientData>);
 };
 
 #endif // MAINCLIENT_H

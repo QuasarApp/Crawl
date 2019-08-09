@@ -22,6 +22,8 @@ MainMenuModel::MainMenuModel(QObject *ptr): QObject (ptr) {
     connect(_client, &MainClient::sigOnlineStatusChanged,
             this , &MainMenuModel::onlineStatusChanged);
 
+    connect(_client, &MainClient::currentUserDataChanged,
+            _userViewModel , &UserView::setSource);
 }
 
 QObject *MainMenuModel::userViewModel() const {

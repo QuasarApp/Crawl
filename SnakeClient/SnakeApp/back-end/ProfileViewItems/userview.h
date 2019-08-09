@@ -19,7 +19,7 @@ class UserView : public QObject
     Q_PROPERTY(bool offline READ offline NOTIFY offlineChanged)
 
 private:
-    const PlayerClientData *_source = nullptr;
+    QSharedPointer<PlayerClientData> _source = nullptr;
 
     bool _offline = false;
 
@@ -35,7 +35,6 @@ public:
     int id() const;
 
     const PlayerClientData *getSource() const;
-    void setSource(const PlayerClientData *value);
     bool offline() const;
     void setOffline(bool offline);
 
@@ -46,6 +45,8 @@ signals:
     void offlineChanged(bool offline);
 
 public slots:
+    void setSource(QSharedPointer<PlayerClientData> data);
+
 };
 
 #endif // USERVIEW_H

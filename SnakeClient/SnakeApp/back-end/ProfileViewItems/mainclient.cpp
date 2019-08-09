@@ -37,6 +37,10 @@ void MainClient::handleReceivePackage(ClientProtocol::Command cmd, const QByteAr
 
         _users [playerData->id()] = playerData;
 
+        if (playerData->id() == _currentUserId) {
+            emit currentUserDataChanged(_users [playerData->id()]);
+        }
+
         break;
     }
     default: return;
