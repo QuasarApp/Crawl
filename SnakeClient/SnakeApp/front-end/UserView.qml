@@ -6,10 +6,11 @@ import QtGraphicalEffects 1.12
 
 
 Flickable {
+    id: userVewFlic
 
     contentWidth: userVew.width
     contentHeight: userVew.height
-//    flickingHorizontally: false
+    flickableDirection: Flickable.VerticalFlick;
     property var model: null
     signal tryConnect();
 
@@ -20,8 +21,7 @@ Flickable {
     Item {
         id: userVew
 
-
-        width: 7 * metrix.pt
+        width: userVewFlic.width
 
         ColumnLayout {
             id: columnLayout

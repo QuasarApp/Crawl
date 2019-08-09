@@ -8,6 +8,7 @@ FrameView {
     property int closedHeight: 1 * metrix.pt
     property int openWidth: 10 * metrix.pt
     property int closedWidth: 1 * metrix.pt
+    property int headerHeight : 1 * metrix.controlPtMaterial
 
     clip: true;
 
@@ -17,6 +18,7 @@ FrameView {
     property bool isOpened: true
     property bool chainAnimation: true
     property var source: null
+    property var header: null
 
     readonly property bool openFinished: openHeight === height && openWidth == width;
     readonly property bool closeFinished: closedHeight === height && closedWidth == width;
@@ -69,23 +71,33 @@ FrameView {
             duration: 1000
             easing.type: Easing.OutBounce
         }
-
-
     }
 
+    Item {
+        id: headerVal
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: parent.top
+        height: headerHeight
+    }
 
     Item {
         id: sourceVal
-        anchors.fill: parent
+
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: headerVal.bottom
+        anchors.bottom: parent.bottom
+
     }
 
     onSourceChanged: {
         source.parent = sourceVal;
         source.anchors.fill = sourceVal;
-        source.anchors.margins = 0;
-        if (source.close) {
-            closeConnect.target = source;
-        }
     }
 
+    onHeaderChanged: {
+        header.parent = headerVal;
+        header.anchors.fill = headerVal;
+    }
 }
