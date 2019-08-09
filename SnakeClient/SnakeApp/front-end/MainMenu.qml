@@ -129,8 +129,8 @@ Item {
         modal: false;
         autoClose: false
         clickClose: true
-        width: parent.width / 2
-        height: parent.height / 2;
+        width: 10 * metrix.controlPtMaterial
+        height: 7 * metrix.controlPtMaterial;
 
         onAccepted: {
             settingsView.save();
