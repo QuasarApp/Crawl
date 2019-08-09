@@ -17,6 +17,7 @@ SOURCES += \
     back-end/ProfileViewItems/mainmenumodel.cpp \
     back-end/ProfileViewItems/networkclient.cpp \
     back-end/ProfileViewItems/playerclientdata.cpp \
+    back-end/ProfileViewItems/settingsviewmodel.cpp \
     back-end/ProfileViewItems/userview.cpp \
     back-end/asyncimageresponse.cpp \
     back-end/background.cpp \
@@ -91,6 +92,7 @@ HEADERS += \
     back-end/ProfileViewItems/mainmenumodel.h \
     back-end/ProfileViewItems/networkclient.h \
     back-end/ProfileViewItems/playerclientdata.h \
+    back-end/ProfileViewItems/settingsviewmodel.h \
     back-end/ProfileViewItems/userview.h \
     back-end/asyncimageresponse.h \
     back-end/background.h \

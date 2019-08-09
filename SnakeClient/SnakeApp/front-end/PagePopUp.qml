@@ -16,18 +16,6 @@ BasePopUp {
     onSourceChanged: {
         source.parent = sourceVal;
         source.anchors.fill = sourceVal;
-
-        if (source.close) {
-            closeConnect.target = source;
-        }
-    }
-    Connections {
-        id : closeConnect
-        target: null
-        ignoreUnknownSignals: true
-        onClose: {
-            pagePopUp.close();
-        }
     }
 
     x: parent.width / 2 - width / 2

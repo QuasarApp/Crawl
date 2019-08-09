@@ -92,6 +92,11 @@ Item {
             id: settings
             text: qsTr("My Settings")
 
+            onClicked: {
+                settingsPopUp._show();
+
+            }
+
         }
 
         MainMenuButton {
@@ -113,6 +118,33 @@ Item {
         source: About {}
     }
 
+    PagePopUp {
+        id: settingsPopUp
+        source: SettingsView {
+            id: settingsView
+            model: item1.model ? item1.model.userSettingsModel: null
+        }
+
+        standardButtons:  Dialog.Save | Dialog.Cancel | Dialog.RestoreDefaults
+        modal: false;
+        autoClose: false
+        clickClose: true
+        width: parent.width / 2
+        height: parent.height / 2;
+
+        onAccepted: {
+            settingsView.save();
+        }
+
+        onReset: {
+            settingsView.reset();
+        }
+
+        onOpened: {
+            settingsView.update();
+        }
+
+    }
 
 
     PagePopUp {

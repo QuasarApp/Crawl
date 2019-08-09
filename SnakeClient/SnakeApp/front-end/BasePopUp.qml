@@ -4,7 +4,7 @@ import QtQuick.Controls.Material 2.0
 import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.13
 
-Popup {
+Dialog {
     id : basePopup
     width: 200
     height: 100
@@ -66,5 +66,6 @@ Popup {
 
     closePolicy: (!clickClose || autoClose)? Popup.NoAutoClose: Popup.CloseOnReleaseOutside
 
+    onRejected: close()
 
 }

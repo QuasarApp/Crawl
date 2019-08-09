@@ -6,6 +6,16 @@
 
 #include <back-end/ProfileViewItems/mainmenumodel.h>
 
+QByteArray ClientApp::initTheme() {
+    int themeIndex = Settings::get()->getValue(THEME, THEME_DEFAULT).toInt();
+
+    switch (themeIndex) {
+    case 1: return "Dark";
+    default: return "Light";
+    }
+
+}
+
 ClientApp::ClientApp() {
 }
 
@@ -13,6 +23,8 @@ ClientApp::~ClientApp() {
 }
 
 bool ClientApp::init(QQmlApplicationEngine *engine) {
+
+    qputenv("QT_QUICK_CONTROLS_MATERIAL_THEME", initTheme());
 
     qmlRegisterType <GuiObject> ();
     qmlRegisterType <Diff> ();

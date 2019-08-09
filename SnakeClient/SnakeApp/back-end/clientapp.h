@@ -11,6 +11,8 @@ class ClientApp
 private:
     Controller contr;
 
+    QByteArray initTheme();
+
 public:
     ClientApp();
     ~ClientApp();
