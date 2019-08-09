@@ -8,7 +8,7 @@ Frame {
     id: frameVew
     background: Rectangle {
         color: (Material.theme == Material.Dark)? "#50000000": "#50ffffff"
-        border.color: "#5e5d5d"
+        border.color: (Material.theme == Material.Dark)? "#000000": "#cfcfcf"
         radius:  metrix.mm
     }
 
