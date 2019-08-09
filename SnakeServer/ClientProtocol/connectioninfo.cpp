@@ -40,7 +40,7 @@ void Connectioninfo::disconnect() {
     if (sct) {
         sct->close();
         token = "";
-        delete sct;
+        sct->deleteLater();
         sct = nullptr;
     }
 }

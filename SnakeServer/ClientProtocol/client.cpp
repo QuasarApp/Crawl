@@ -13,6 +13,7 @@
 #include "login.h"
 #include "updateplayerdata.h"
 #include <QHash>
+#include <player.h>
 
 #define SOLT "SNAKE"
 namespace ClientProtocol {
@@ -50,6 +51,8 @@ void Client::updateStatuses(Command extCmd, Command cmd, Type type, const QByteA
             _token = data.getToken();
 
         }
+
+        _currentUserId = data.id();
 
         setLoginStatus(cmd == Command::UpdatePlayerData && validData);
     }
@@ -147,8 +150,7 @@ Client::Client(const QString &addrress, unsigned short port, QObject *ptr):
     QObject (ptr) {
 
     _destination = new QTcpSocket(this);
-
-    _destination->connectToHost(addrress, port);
+    connectToHost(addrress, port);
 
     connect(_destination, &QTcpSocket::readyRead,
             this, &Client::incommingData);
@@ -246,9 +248,24 @@ bool Client::login(const QString &gmail, const QByteArray &pass) {
     return true;
 }
 
+bool Client::registration(const QString &gmail, const QString &name,
+                          const QByteArray &pass) {
+    Q_UNUSED( name );
+    return login(gmail, pass);
+}
+
 void Client::loginOut() {
     _token = "";
     setLoginStatus(false);
+}
+
+void Client::dissconnectFromHost() {
+    loginOut();
+    _destination->disconnectFromHost();
+}
+
+void Client::connectToHost(const QString &addrress, unsigned short port) {
+    _destination->connectToHost(addrress, port);
 }
 
 bool Client::updateData() {
@@ -311,13 +328,43 @@ bool Client::getItem(int id) {
         return false;
     }
 
-    if (id < 0) {
+    if (id <= 0) {
         return false;
     }
 
     Package pcg;
 
     GetItem rec;
+    rec.setToken(_token);
+    rec.setId(id);
+
+    if (!rec.isValid()) {
+        return false;
+    }
+
+    if (!pcg.create(&rec, Type::Request)) {
+        return false;
+    };
+
+    if (!sendPackage(pcg)) {
+        return false;
+    }
+
+    return true;
+}
+
+bool Client::getPlayer(int id){
+    if (!isLogin()) {
+        return false;
+    }
+
+    if (id <= 0) {
+        return false;
+    }
+
+    Package pcg;
+
+    UpdatePlayerData rec;
     rec.setToken(_token);
     rec.setId(id);
 
@@ -344,7 +391,7 @@ const bool& Client::isLogin() const {
     return _logined;
 }
 
-bool Client::changeSubscribe(Command cmd, bool subscribe, int id) {
+bool Client::setSubscribe(Command cmd, bool subscribe, int id) {
     if (!isLogin()) {
         return false;
     }

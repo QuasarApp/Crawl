@@ -9,9 +9,11 @@ ApplicationWindow {
     height: 540;
     title: qsTr("SnakeOnTheRoad");
 
-    readonly property int pointCount: 100;
+    Component.onCompleted: {
+        mainWindow.showFullScreen();
+    }
 
-    property real point: (width < height) ? width/pointCount : height/pointCount;
+
     Metrix {id: metrix}
 
     Scene {

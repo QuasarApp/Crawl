@@ -13,7 +13,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    back-end/ProfileViewItems/mainclient.cpp \
     back-end/ProfileViewItems/mainmenumodel.cpp \
+    back-end/ProfileViewItems/networkclient.cpp \
     back-end/ProfileViewItems/playerclientdata.cpp \
     back-end/ProfileViewItems/userview.cpp \
     back-end/asyncimageresponse.cpp \
@@ -29,6 +31,7 @@ SOURCES += \
     back-end/head.cpp \
     back-end/imageprovider.cpp \
     back-end/itemworld.cpp \
+    back-end/settings.cpp \
     back-end/snake.cpp \
     back-end/world.cpp \
     back-end/main.cpp
@@ -84,7 +87,9 @@ RESOURCES += \
     qml.qrc
 
 HEADERS += \
+    back-end/ProfileViewItems/mainclient.h \
     back-end/ProfileViewItems/mainmenumodel.h \
+    back-end/ProfileViewItems/networkclient.h \
     back-end/ProfileViewItems/playerclientdata.h \
     back-end/ProfileViewItems/userview.h \
     back-end/asyncimageresponse.h \
@@ -100,5 +105,6 @@ HEADERS += \
     back-end/head.h \
     back-end/imageprovider.h \
     back-end/itemworld.h \
+    back-end/settings.h \
     back-end/snake.h \
     back-end/world.h

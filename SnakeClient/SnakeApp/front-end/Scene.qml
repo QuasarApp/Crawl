@@ -158,12 +158,12 @@ Item {
     NotificationForm {
         z: -1
         id: notification;
-        margin: mainWindow.point;
+        margin: metrix.gamePt;
 
         x: parent.width - width - margin;
         y: margin;
 
-        width: 40 * mainWindow.point;
+        width: 40 * metrix.gamePt;
         height: width * 0.5
 
     }
@@ -174,10 +174,10 @@ Item {
         text: "<<"
 
         anchors.left: parent.left
-        anchors.leftMargin: point
+        anchors.leftMargin: metrix.gamePt
 
         anchors.top: parent.top
-        anchors.topMargin: point
+        anchors.topMargin: metrix.gamePt
         z: 1
 
         onClicked: {
@@ -193,10 +193,10 @@ Item {
         text: (isPause)?  "▶" :"||"
 
         anchors.left: returnToMenu.right
-        anchors.leftMargin: point
+        anchors.leftMargin: metrix.gamePt
 
         anchors.top: parent.top
-        anchors.topMargin: point
+        anchors.topMargin: metrix.gamePt
         z: returnToMenu.z
 
         onClicked: {
@@ -221,14 +221,14 @@ Item {
             text: qsTr("lvl long: ") + ((model)? model.long_: "0")
         }
 
-        width: 35 * point;
+        width: 35 * metrix.gamePt;
         height: pause.height;
 
         anchors.left: pause.right
-        anchors.leftMargin: point
+        anchors.leftMargin: metrix.gamePt
 
         anchors.top: parent.top
-        anchors.topMargin: point
+        anchors.topMargin: metrix.gamePt
         z: returnToMenu.z
 
         visible: !showMenu
@@ -247,14 +247,14 @@ Item {
             text: qsTr("general long: ") + ((model)? model.generalLong: "0")
         }
 
-        width: 35 * point;
+        width: 35 * metrix.gamePt;
         height: long_.height;
 
         anchors.left: long_.right
-        anchors.leftMargin: point
+        anchors.leftMargin: metrix.gamePt
 
         anchors.top: parent.top
-        anchors.topMargin: point
+        anchors.topMargin: metrix.gamePt
         z: returnToMenu.z
 
         visible: !showMenu

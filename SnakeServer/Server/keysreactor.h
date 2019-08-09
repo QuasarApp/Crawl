@@ -15,6 +15,7 @@ private:
     ClientProtocol::RSAKeysPool _pool;
     int _poolSize = DEFAULT_KEYPOOL_SIZE;
     QHash<QRSAEncryption::Rsa, bool> _mutexs;
+    QHash<QRSAEncryption::Rsa, QFuture<void>> _futures;
     void generateKeys(QRSAEncryption::Rsa);
 
 private slots:

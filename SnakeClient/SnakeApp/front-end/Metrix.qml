@@ -4,11 +4,13 @@ import QtQuick.Controls.Material 2.0
 import QtQuick.Controls 2.3
 
 Item {
-    property real mm: Screen.pixelDensity
-    property real sm: 10 * mm
+    readonly property int pointCount: 100;
+    readonly property real mm: Screen.pixelDensity
+    readonly property real sm: 10 * mm
     readonly property real dsm: Math.sqrt(Math.pow(Screen.desktopAvailableWidth, 2) + Math.pow(Screen.desktopAvailableHeight, 2)) / sm
-    property real pt: getfactor(dsm) * sm
-    property real controlPtMaterial: Material.buttonHeight
+    readonly property real pt: getfactor(dsm) * sm
+    readonly property real controlPtMaterial: Material.buttonHeight
+    readonly property real gamePt: (width < height) ? width / pointCount : height / pointCount;
 
     function getfactor(dsm) {
         if (dsm < 30) {
@@ -20,4 +22,6 @@ Item {
         } else
             return 4;
     }
+
+    anchors.fill: parent;
 }

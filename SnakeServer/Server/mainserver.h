@@ -48,7 +48,7 @@ private slots:
 public:
     MainServer(bool forceKeys, QObject *ptr = nullptr);
     bool run(const QString& ip = "", unsigned short port = 0, const QString &db = "",
-             const QString &terminalServer = "", bool terminalForce = false);
+             const QString &terminalServer = "");
     virtual ~MainServer();
 
 };

@@ -27,6 +27,7 @@ public:
     bool take(QRSAEncryption::Rsa rsa, RSAKeyPair &res);
     void addNewKey(QRSAEncryption::Rsa rsa, const RSAKeyPair& key);
     int size(QRSAEncryption::Rsa rsa) const;
+
 signals:
 
     void sigKeyTaked();

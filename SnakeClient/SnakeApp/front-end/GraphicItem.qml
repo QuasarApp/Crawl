@@ -21,13 +21,13 @@ Rectangle {
 
     color: (model) ? model.color : "#11ff32";
 
-    width: (model) ? model.w * mainWindow.point: 0;
-    height: (model) ? model.h * mainWindow.point: 0;
+    width: (model) ? model.w * metrix.gamePt: 0;
+    height: (model) ? model.h * metrix.gamePt: 0;
 
-    x: (model) ? model.x * mainWindow.point - devX: 0;
-    y: (model) ? model.y * mainWindow.point - devY: 0;
+    x: (model) ? model.x * metrix.gamePt - devX: 0;
+    y: (model) ? model.y * metrix.gamePt - devY: 0;
 
-    radius: (model) ? model.radius * mainWindow.point : 0;
+    radius: (model) ? model.radius * metrix.gamePt : 0;
 
     transform: Rotation {
         origin.x: devX;

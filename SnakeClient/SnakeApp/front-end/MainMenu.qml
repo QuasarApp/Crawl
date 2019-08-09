@@ -6,45 +6,62 @@ import QtQuick.Layouts 1.3
 Item {
     id: item1
     property var model: null
+    readonly property int  onlineStatus: (model)? model.onlineStatus: false
+
     visible: true
     z: 1
 
     signal playGame();
 
-    UserView {
-        id: userView
-        anchors.verticalCenter: parent.verticalCenter
-
-        anchors.left: parent.left
-        anchors.leftMargin: 0
-
-
-        model: (item1.model)? item1.model.userViewModel: null
+    onOnlineStatusChanged: {
+        if (onlineStatus && onlineStatus !== 5) {
+            loginPopUp._show();
+        } else {
+            loginPopUp.close();
+        }
     }
 
-    ColumnLayout {
+    LeftSideBar {
+        id: userViewSideBar
+        openWidth: 7 * metrix.pt;
+
+        openHeight: columnLayout.height
+        source: UserView {
+
+            anchors.fill: parent;
+            model: (item1.model)? item1.model.userViewModel: null
+            visible: userViewSideBar.openFinished
+            onTryConnect: {
+                if (item1.model)
+                    item1.model.tryConnect();
+            }
+        }
+
+    }
+
+
+    GridLayout {
         id: columnLayout
         anchors.top: parent.top
-        anchors.topMargin: 0
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 0
-        anchors.left: userView.right
-        anchors.leftMargin: 0
+        anchors.left: userViewSideBar.right
         anchors.right: parent.right
-        anchors.rightMargin: 0
-        transformOrigin: Item.Center
-        spacing: -100
 
-        Button {
+        anchors.leftMargin: 0
+        anchors.rightMargin: 0
+        anchors.bottomMargin: 0
+        anchors.topMargin: 0
+
+        columns: 3
+        rows: 2
+
+
+        transformOrigin: Item.Center
+
+
+        MainMenuButton {
             id: play
             text: qsTr("Play game")
-            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-            font.pixelSize: 20
-            spacing: 4
-            focusPolicy: Qt.StrongFocus
-            display: AbstractButton.TextBesideIcon
-            Layout.preferredHeight: item1.height / 5
-            Layout.preferredWidth: item1.height * 0.8
 
             onClicked: {
                 playGame();
@@ -54,27 +71,32 @@ Item {
 
         }
 
-        Button {
-            id: level
-            text: qsTr("My Status")
-            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-            font.pixelSize: 20
-            Layout.preferredHeight: item1.height / 5
-            Layout.preferredWidth: item1.height * 0.8
-            spacing: 2
+        MainMenuButton {
+            id: store
+            text: qsTr("Store")
 
-            onClicked: {
-                userView._show();
-            }
         }
 
-        Button {
+        MainMenuButton {
+            id: invitar
+            text: qsTr("My Items")
+        }
+
+        MainMenuButton {
+            id: freands
+            text: qsTr("My friends")
+
+        }
+
+        MainMenuButton {
+            id: settings
+            text: qsTr("My Settings")
+
+        }
+
+        MainMenuButton {
             id: exit
             text: qsTr("Exit")
-            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-            font.pixelSize: 20
-            Layout.preferredHeight: item1.height / 5
-            Layout.preferredWidth: item1.height * 0.8
 
             onClicked: {
                 Qt.quit();
@@ -83,34 +105,53 @@ Item {
 
     }
 
-    RoundButton {
-        id: roundButton
-        x: 569
-        y: 20
-        height: 48
-        clip: false
-        anchors.right: parent.right
-        anchors.rightMargin: 23
-        anchors.top: parent.top
-        anchors.topMargin: 20
-
-        onClicked: {
-            about._show();
-        }
-    }
-
-
     PagePopUp {
         id: about;
         width: parent.width / 2
         height: parent.height / 2;
-        x: parent.width / 2 - width / 2
-        y: parent.height / 2 - height / 2
 
         source: About {}
     }
 
 
+
+    PagePopUp {
+        id: loginPopUp
+        source: LoginView {
+            id: loginView
+            loginStatus: onlineStatus
+            onSigLogin: {
+                if (!model) {
+                    return;
+                }
+
+                model.login(gmail, password);
+            }
+            onSigNewUser: {
+                if (!model) {
+                    return;
+                }
+
+                model.registerNewUser(gmail, userName, password);
+
+            }
+
+            onToOffline: {
+                if (!model) {
+                    return;
+                }
+
+                model.playOffline();
+            }
+        }
+
+        visible: true;
+        modal: true;
+        autoClose: false
+        clickClose: false
+        width: 10 * metrix.controlPtMaterial
+        height: ((loginView.currentView)? 12 : 7) * metrix.controlPtMaterial;
+    }
 
 
 }

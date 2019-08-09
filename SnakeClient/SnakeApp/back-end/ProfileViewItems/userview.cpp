@@ -5,9 +5,22 @@ const PlayerClientData *UserView::getSource() const {
 }
 
 void UserView::setSource(const PlayerClientData *value) {
+
+    _offline = value == nullptr;
+
     if (value->id() != _source->id()) {
         _source = value;
         emit sourceChanged();
+    }
+}
+
+bool UserView::offline() const {
+    return _offline;
+}
+
+void UserView::setOffline(bool offline) {
+    if (_offline != offline) {
+        emit offlineChanged(_offline = offline);
     }
 }
 
