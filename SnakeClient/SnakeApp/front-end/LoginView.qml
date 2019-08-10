@@ -305,6 +305,8 @@ Item {
     FrameView {
         visible: loginStatus === 4
         anchors.fill: parent
+        translucent: false
+        showBorder: false
         ColumnLayout {
             anchors.fill: parent
 

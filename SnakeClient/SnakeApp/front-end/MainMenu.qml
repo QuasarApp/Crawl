@@ -129,8 +129,8 @@ Item {
         modal: false;
         autoClose: false
         clickClose: true
-        width: 10 * metrix.controlPtMaterial
-        height: 7 * metrix.controlPtMaterial;
+        width: 12 * metrix.controlPtMaterial
+        height: 8 * metrix.controlPtMaterial;
 
         onAccepted: {
             settingsView.save();
@@ -152,6 +152,7 @@ Item {
         source: LoginView {
             id: loginView
             loginStatus: onlineStatus
+
             onSigLogin: {
                 if (!model) {
                     return;
