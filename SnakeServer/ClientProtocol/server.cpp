@@ -242,7 +242,7 @@ void Server::handleIncommingConnection() {
 
         if (isBaned(socket)) {
             socket->abort();
-            break;
+            continue;
         }
 
         registerSocket(socket);

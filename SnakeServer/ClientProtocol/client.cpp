@@ -264,8 +264,12 @@ void Client::dissconnectFromHost() {
     _destination->disconnectFromHost();
 }
 
-void Client::connectToHost(const QString &addrress, unsigned short port) {
-    _destination->connectToHost(addrress, port);
+void Client::connectToHost(const QString &address, unsigned short port) {
+    _destination->connectToHost(_address = address, _port = port);
+}
+
+void Client::reconnectToHost() {
+    _destination->connectToHost(_address, _port);
 }
 
 bool Client::updateData() {

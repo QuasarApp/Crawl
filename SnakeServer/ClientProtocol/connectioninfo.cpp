@@ -10,6 +10,10 @@ int Connectioninfo::getKarma() const {
 
 void Connectioninfo::setKarma(int value) {
     karma = value;
+
+    if (isBaned()) {
+        disconnect();
+    }
 }
 
 RSAKeyPair Connectioninfo::getRSAKey() const {

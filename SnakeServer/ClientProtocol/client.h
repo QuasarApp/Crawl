@@ -27,7 +27,8 @@ private:
     int currentIndex = 0;
     QHash<unsigned char, QVariantMap> _requestsMap;
     QHash<quint8, bool> _subscribe; // command and data confirmation
-
+    QString _address = LOCAL_SNAKE_SERVER;
+    unsigned short _port = DEFAULT_SNAKE_PORT;
 
     /**
      * @brief checkCommand - return old sendet command if commnad not valid return undefined command
@@ -84,6 +85,7 @@ public:
     void loginOut();
     void dissconnectFromHost();
     void connectToHost(const QString &addrress, unsigned short port);
+    void reconnectToHost();
 
     /**
      * @brief updateData
