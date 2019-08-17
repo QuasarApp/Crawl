@@ -9,7 +9,7 @@ class TestUtils
 public:
     TestUtils();
     static bool wait(const bool &forWait, int msec);
-    static bool loginFunction(ClientProtocol::Client &cli,
+    static bool loginFunc(ClientProtocol::Client &cli,
                               const QString &login,
                               const QByteArray &pass,
                               bool sendResult,
@@ -18,6 +18,8 @@ public:
     static bool unBanFunc(ServerProtocol::Client &cli, const QHostAddress &address);
     static bool banFunc(ServerProtocol::Client &cli, const QHostAddress &address);
     static bool reconnectFunc(ClientProtocol::Client &cli);
+    static bool registerFunc(ClientProtocol::Client &cli, const QString &login,
+                             const QByteArray &pass, bool sendResult, bool loginResult);
 };
 
 #endif // TESTUTILS_H

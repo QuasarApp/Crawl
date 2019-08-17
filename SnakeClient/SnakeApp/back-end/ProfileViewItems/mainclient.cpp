@@ -70,7 +70,7 @@ MainClient::MainClient(const QString &addrress, unsigned short port, QObject *pt
             this, &MainClient::handleLoginChanged);
 }
 
-bool MainClient::login(const QString &gmail, const QByteArray &pass) {
+bool MainClient::login(const QString &gmail, const QByteArray &pass, bool) {
     if (!ClientProtocol::Client::login(gmail, pass)) {
         setOnlineStatus(OnlineStatus::AuthorizationFail);
         return false;
@@ -79,10 +79,10 @@ bool MainClient::login(const QString &gmail, const QByteArray &pass) {
     return true;
 }
 
-bool MainClient::registration(const QString &gmail, const QString &name,
+bool MainClient::registration(const QString &gmail,
                               const QByteArray &pass) {
 
-    if (!ClientProtocol::Client::registration(gmail, name, pass)) {
+    if (!ClientProtocol::Client::registration(gmail, pass)) {
         setOnlineStatus(OnlineStatus::AuthorizationFail);
         return false;
     }

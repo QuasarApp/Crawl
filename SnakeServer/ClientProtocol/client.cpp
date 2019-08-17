@@ -211,7 +211,7 @@ QByteArray Client::generateHash(const QByteArray& pass) const {
     return QCryptographicHash::hash(SOLT + passHash, QCryptographicHash::Sha256);
 }
 
-bool Client::login(const QString &gmail, const QByteArray &pass) {
+bool Client::login(const QString &gmail, const QByteArray &pass, bool newUser) {
     if (!pass.size()) {
         return false;
     }
@@ -231,6 +231,7 @@ bool Client::login(const QString &gmail, const QByteArray &pass) {
     login.setHashPass(QRSAEncryption::encode(generateHash(pass), _rsaKey, QRSAEncryption::RSA_256));
     login.setGmail(gmail);
     login.setId(0);
+    login.setRegisterNewUser(newUser);
 
     if (!login.isValid()) {
         return false;
@@ -248,10 +249,9 @@ bool Client::login(const QString &gmail, const QByteArray &pass) {
     return true;
 }
 
-bool Client::registration(const QString &gmail, const QString &name,
+bool Client::registration(const QString &gmail,
                           const QByteArray &pass) {
-    Q_UNUSED( name );
-    return login(gmail, pass);
+    return login(gmail, pass, true);
 }
 
 void Client::loginOut() {

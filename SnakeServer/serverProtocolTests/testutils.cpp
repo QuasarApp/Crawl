@@ -84,7 +84,7 @@ bool TestUtils::wait(const bool &forWait, int msec) {
 }
 
 
-bool TestUtils::loginFunction(
+bool TestUtils::loginFunc(
         ClientProtocol::Client &cli,
                     const QString& login,
                     const QByteArray& pass,
@@ -100,6 +100,24 @@ bool TestUtils::loginFunction(
 
     return loginResult == cli.isLogin();
 }
+
+bool TestUtils::registerFunc(
+        ClientProtocol::Client &cli,
+                    const QString& login,
+                    const QByteArray& pass,
+                    bool sendResult,
+                    bool loginResult) {
+
+    auto wraper = [&cli, login, pass](){return cli.registration(login, pass);};
+    bool result = clientFuncPrivate(wraper, cli);
+
+    if (!result) {
+        return !sendResult;
+    }
+
+    return loginResult == cli.isLogin();
+}
+
 
 bool TestUtils::getState( ServerProtocol::Client& cli, QVariantMap &state) {
     auto wraper = [&cli](){return cli.getState();};

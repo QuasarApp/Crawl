@@ -29,7 +29,7 @@ Item {
 
     ]
 
-    signal sigNewUser(var gmail, var userName, var password);
+    signal sigNewUser(var gmail, var password);
     signal sigLogin(var gmail, var password);
     signal toOffline();
 
@@ -98,19 +98,22 @@ Item {
         Item {
             id: loginPage
 
-            ColumnLayout {
+            GridLayout {
                 id: columnLayout
                 anchors.fill: parent
-
+                columns: 2
+                rows: 2
                 Label {
                     text: qsTr("Email")
                 }
+
                 TextField {
                     id: loginEmail
                     placeholderText: "Enter Your Email"
                     Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                     Layout.fillWidth: true
                 }
+
 
                 Label {
                     text: qsTr("Passsword")
@@ -126,15 +129,18 @@ Item {
                     Layout.fillWidth: true
 
                 }
+
             }
         }
 
         Item {
             id: rigisterPage
-            ColumnLayout {
+            GridLayout {
 
                 anchors.fill: parent
 
+                columns: 2
+                rows: 3
 
                 Label {
                     text: qsTr("Email")
@@ -144,21 +150,6 @@ Item {
                     placeholderText: qsTr("Enter Your Email")
                     Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                     Layout.fillWidth: true
-
-                }
-
-                Label {
-                    text: qsTr("User Name")
-                }
-                TextField {
-                    id: registerName;
-
-                    Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-                    Layout.fillWidth: true
-
-                    placeholderText: qsTr("Enter Your Name")
-                    echoMode: TextInput.NoEcho
-                    cursorVisible: true
 
                 }
 
@@ -239,7 +230,7 @@ Item {
 
                     if (tabBar.currentIndex) {
                         // register request
-                        sigNewUser(registerEmail.text, registerName.text, registerPassword);
+                        sigNewUser(registerEmail.text, registerPassword);
                     } else {
                         //login request
                         sigLogin(loginEmail.text, loginPass.text);

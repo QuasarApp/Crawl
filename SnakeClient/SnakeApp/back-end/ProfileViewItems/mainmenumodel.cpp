@@ -53,7 +53,7 @@ void MainMenuModel::login(const QString &email, const QString &pass) {
     _client->login(email, pass.toUtf8());
 }
 
-void MainMenuModel::registerNewUser(const QString &email, const QString &name,
+void MainMenuModel::registerNewUser(const QString &email,
                                     const QString &pass) {
-    _client->registration(email, name, pass.toUtf8());
+    _client->registration(email, pass.toUtf8());
 }

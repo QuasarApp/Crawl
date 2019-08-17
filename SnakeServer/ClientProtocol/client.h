@@ -69,15 +69,15 @@ public:
      * @param gmail - gmail of user
      * @param pass - hash of pass of user
      * @param error - error ( if all good this variable is empty)
-     * @return
+     * @return true if message sendet
      */
-    bool virtual login(const QString& gmail, const QByteArray &pass);
+    bool virtual login(const QString& gmail, const QByteArray &pass, bool newUser = false);
 
     /**
      * @brief registration - it is wraper of login method
-     * @return
+     * @return true if message sendet
      */
-    bool virtual registration(const QString& gmail, const QString& name, const QByteArray &pass);
+    bool virtual registration(const QString& gmail, const QByteArray &pass);
 
 
     bool ping();

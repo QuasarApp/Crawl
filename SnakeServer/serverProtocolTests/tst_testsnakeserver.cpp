@@ -262,9 +262,14 @@ void testSankeServer::testPingClientProtockol(ClientProtocol::Client &cli) {
 
 void testSankeServer::testLogin(ClientProtocol::Client &cli) {
 
-    QVERIFY(TestUtils::loginFunction(cli, "Test@gmail.com", "testpass", true, true));
-    QVERIFY(TestUtils::loginFunction(cli, "Test@gmail.com", "testpass2", true, false));
-    QVERIFY(TestUtils::loginFunction(cli, "Test@gmail.com", "testpass", true, true));
+    QVERIFY(TestUtils::loginFunc(cli, "Test@gmail.com", "testpass", true, false));
+
+    QVERIFY(TestUtils::registerFunc(cli, "Test@gmail.com", "testpass", true, true));
+    QVERIFY(TestUtils::registerFunc(cli, "Test@gmail.com", "testpass", true, false));
+
+    QVERIFY(TestUtils::loginFunc(cli, "Test@gmail.com", "testpass", true, true));
+    QVERIFY(TestUtils::loginFunc(cli, "Test@gmail.com", "testpass2", true, false));
+    QVERIFY(TestUtils::loginFunc(cli, "Test@gmail.com", "testpass", true, true));
 
 }
 
@@ -274,13 +279,13 @@ void testSankeServer::testBanLogin(ClientProtocol::Client &cli, ServerProtocol::
     TestUtils::getState(term, state);
 
     for (int i = 0; i < 25 && cli.isOnline(); i++) {
-        QVERIFY(TestUtils::loginFunction(cli, "Test@gmail.com", "testpass2", true, false) == cli.isOnline());
+        QVERIFY(TestUtils::loginFunc(cli, "Test@gmail.com", "testpass2", true, false) == cli.isOnline());
     }
 
     TestUtils::getState(term, state);
     QVERIFY(state.value("Baned List").toStringList().contains("127.0.0.1"));
-    QVERIFY(TestUtils::loginFunction(cli, "Test@gmail.com", "testpass", false, false));
-    QVERIFY(TestUtils::loginFunction(cli, "Test123@gmail.com", "testpass2", false, false));
+    QVERIFY(TestUtils::loginFunc(cli, "Test@gmail.com", "testpass", false, false));
+    QVERIFY(TestUtils::loginFunc(cli, "Test123@gmail.com", "testpass2", false, false));
 
     TestUtils::unBanFunc(term, QHostAddress::LocalHost);
 
@@ -296,8 +301,8 @@ void testSankeServer::testBanLogin(ClientProtocol::Client &cli, ServerProtocol::
     cli.reconnectToHost();
 
     TestUtils::reconnectFunc(cli);
-    QVERIFY(TestUtils::loginFunction(cli, "Test@gmail.com", "testpass", true, true));
-    QVERIFY(TestUtils::loginFunction(cli, "Test123@gmail.com", "testpass2", true, true));
+    QVERIFY(TestUtils::loginFunc(cli, "Test@gmail.com", "testpass", true, true));
+    QVERIFY(TestUtils::loginFunc(cli, "Test123@gmail.com", "testpass2", true, false));
 
 }
 

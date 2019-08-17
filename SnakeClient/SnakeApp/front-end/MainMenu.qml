@@ -165,7 +165,7 @@ Item {
                     return;
                 }
 
-                model.registerNewUser(gmail, userName, password);
+                model.registerNewUser(gmail, password);
 
             }
 
@@ -182,8 +182,8 @@ Item {
         modal: true;
         autoClose: false
         clickClose: false
-        width: 10 * metrix.controlPtMaterial
-        height: ((loginView.currentView)? 12 : 7) * metrix.controlPtMaterial;
+        width: 12 * metrix.controlPtMaterial
+        height: ((loginView.currentView)? 9 : 7) * metrix.controlPtMaterial;
     }
 
 

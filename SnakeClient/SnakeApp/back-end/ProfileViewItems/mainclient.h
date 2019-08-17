@@ -33,8 +33,8 @@ public:
     MainClient(const QString& addrress = LOCAL_SNAKE_SERVER,
                unsigned short port = DEFAULT_SNAKE_PORT,
                QObject * ptr = nullptr);
-    bool login(const QString& gmail, const QByteArray &pass) override;
-    bool registration(const QString& gmail, const QString& name,
+    bool login(const QString& gmail, const QByteArray &pass, bool registerNewUser = false) override;
+    bool registration(const QString& gmail,
                       const QByteArray &pass) override;
     void playOffline();
     void tryConnect(const QString &addrress, unsigned short port);

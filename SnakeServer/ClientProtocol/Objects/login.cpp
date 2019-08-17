@@ -4,6 +4,14 @@
 
 namespace ClientProtocol {
 
+bool Login::getRegisterNewUser() const {
+    return registerNewUser;
+}
+
+void Login::setRegisterNewUser(bool value) {
+    registerNewUser = value;
+}
+
 Login::Login() {
     _class = static_cast<quint8>(Command::Login);
 }
@@ -19,13 +27,14 @@ NetworkClassSize Login::classSize() const {
         BASE_HASH_BITS,
         BASE_ENCRYPTION_BITS
     };
-    return size + getTypeSize(param) + getTypeSize(gmail);
+    return size + getTypeSize(param) + getTypeSize(gmail) + getTypeSize(registerNewUser);
 }
 
 QDataStream &Login::writeToStream(QDataStream &stream) const {
     BaseNetworkObject::writeToStream(stream);
     stream << gmail;
     stream << hashRsaPass;
+    stream << registerNewUser;
     return stream;
 }
 
@@ -33,6 +42,7 @@ QDataStream &Login::readFromStream(QDataStream &stream) {
     BaseNetworkObject::readFromStream(stream);
     stream >> gmail;
     stream >> hashRsaPass;
+    stream >> registerNewUser;
     return stream;
 }
 

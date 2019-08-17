@@ -39,7 +39,7 @@ public:
 
 public slots:
     void login(const QString& email, const QString& pass);
-    void registerNewUser(const QString& email, const QString& name, const QString& pass);
+    void registerNewUser(const QString& email, const QString& pass);
 
 
 signals:

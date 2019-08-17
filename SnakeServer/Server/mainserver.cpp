@@ -21,7 +21,12 @@ QByteArray MainServer::generateTocket(const QString& gmail) const {
 
 QByteArray MainServer::registerPlayer(const ClientProtocol::Login& login,
                                 const ClientProtocol::RSAKeyPair& rsa) const {
+
     if (!login.isValid()) {
+        return {};
+    }
+
+    if (_db->getPlayerId(login.getGmail()) > -1) {
         return {};
     }
 
@@ -100,7 +105,7 @@ void MainServer::handleRequest(ClientProtocol::Header hdr,
         }
 
         QByteArray tocken;
-        if (_db->getPlayerId(loginData.getGmail()) < 0) {
+        if (loginData.getRegisterNewUser()) {
             tocken = registerPlayer(loginData, keys);
             if (!tocken.size()) {
                 _serverDaemon->badRequest(addres, hdr);

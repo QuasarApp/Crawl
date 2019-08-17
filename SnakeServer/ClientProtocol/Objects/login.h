@@ -10,6 +10,7 @@ class CLIENTPROTOCOLSHARED_EXPORT Login : public BaseNetworkObject
 private:
     QByteArray hashRsaPass;
     QString gmail;
+    bool registerNewUser = false;
 
 public:
     Login();
@@ -23,6 +24,8 @@ public:
     void setGmail(const QString &value);
     QByteArray getHashPass() const;
     void setHashPass(const QByteArray &value);
+    bool getRegisterNewUser() const;
+    void setRegisterNewUser(bool value);
 };
 }
 #endif // LOGIN_H
