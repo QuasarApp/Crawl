@@ -45,6 +45,7 @@ void MainClient::handleReceivePackage(ClientProtocol::Command cmd, const QByteAr
     }
 
     case ClientProtocol::Command::BadRequest: {
+
         break;
     }
     default: return;

@@ -33,4 +33,8 @@ ApplicationWindow {
         }
 
     }
+
+    NotificationServiceView {
+        anchors.fill: parent;
+    }
 }

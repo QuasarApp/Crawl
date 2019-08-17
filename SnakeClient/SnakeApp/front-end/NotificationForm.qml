@@ -6,50 +6,24 @@ import QtQuick.Layouts 1.3
 BasePopUp {
     id : popup
 
+    property string text: qsTr("Message")
+    property string img: ""
+    property string titleText: qsTr("Message")
+
     autoClose: true;
     closeInterval: 5000
-    function show(title_, message_, img_) {
-        title.text = title_;
-        message.text = message_;
-        if (img_) {
-            image.source = img_;
-        } else {
-            image.source = "";
-        }
-
-        _show();
-    }
 
     Page {
         id: page
-        title: "Level Up!!!"
+        title: titleText
         anchors.fill: parent
 
-
-        Label {
-            id: title
-            x: 0
-            width: 200
-            height: 31
-            text: qsTr("Title Message")
-            font.bold: true
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.top: parent.top
-            anchors.topMargin: 0
-            font.pointSize: 13
-            fontSizeMode: Text.Fit
-            renderType: Text.QtRendering
-            textFormat: Text.AutoText
-            verticalAlignment: Text.AlignVCenter
-            horizontalAlignment: Text.AlignHCenter
-            wrapMode: Text.WordWrap
-        }
-
+        contentItem:
         RowLayout {
             id: rowLayout
             spacing: 5
             clip: true
-            anchors.top: title.bottom
+            anchors.top: parent.bottom
             anchors.topMargin: 1
             anchors.left: parent.left
             anchors.leftMargin: 0

@@ -5,6 +5,7 @@
 #include <QQmlContext>
 
 #include <back-end/ProfileViewItems/mainmenumodel.h>
+#include <back-end/ProfileViewItems/notificationservice.h>
 
 QByteArray ClientApp::initTheme() {
     int themeIndex = Settings::get()->getValue(THEME, THEME_DEFAULT).toInt();
@@ -39,6 +40,7 @@ bool ClientApp::init(QQmlApplicationEngine *engine) {
     engine->addImageProvider(QLatin1String("userItems"), new ImageProvider());
 
     root->setContextProperty("contr", &contr);
+    root->setContextProperty("notificationService", NotificationService::getService());
 
     engine->load(QUrl(QStringLiteral("qrc:/front-end/main.qml")));
     if (engine->rootObjects().isEmpty())

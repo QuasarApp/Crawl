@@ -123,9 +123,9 @@ Item {
             if (isVictory ) {
 
                 if (!autoTimer.running)
-                    notification.show(qsTr(" Next Lvl!!!"),
-                                  qsTr(" You anblock next lvl (" + gameLvl + ")" ),
-                                  "qrc:/texture/up");
+//                    notification.show(qsTr(" Next Lvl!!!"),
+//                                  qsTr(" You anblock next lvl (" + gameLvl + ")" ),
+//                                  "qrc:/texture/up");
 
                 model.nextLvl();
             } else if (autoTimer.running) {
@@ -153,19 +153,6 @@ Item {
 
             model.buttonPress();
         }
-    }
-
-    NotificationForm {
-        z: -1
-        id: notification;
-        margin: metrix.gamePt;
-
-        x: parent.width - width - margin;
-        y: margin;
-
-        width: 40 * metrix.gamePt;
-        height: width * 0.5
-
     }
 
     Button {

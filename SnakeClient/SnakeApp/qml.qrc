@@ -23,6 +23,7 @@
         <file>front-end/LeftSideBar.qml</file>
         <file>front-end/LeftBoxSideBar.qml</file>
         <file>front-end/SettingsView.qml</file>
+        <file>front-end/NotificationServiceView.qml</file>
     </qresource>
     <qresource prefix="/texture">
         <file alias="up">img/up.svg</file>
