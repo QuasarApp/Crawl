@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
         }
     } else if (QuasarAppUtils::Params::isEndable("start")) {
 
-        QStringList params = QuasarAppUtils::Params::getStrArg("restart").split(":");
+        QStringList params = QuasarAppUtils::Params::getStrArg("start").split(":");
 
         if (!cli.start(params.value(0), params.value(1).toUShort())) {
             qCritical() << "Server not started!";
