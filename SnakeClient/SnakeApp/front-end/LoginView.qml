@@ -55,14 +55,9 @@ Item {
         const pass2 = registerPassword2.text;
 
         const email = registerEmail.text;
-        const login = registerName.text;
 
         if (pass.length < 8) {
             return 1;
-        }
-
-        if (login.length < 1) {
-            return 3;
         }
 
         if (pass !== pass2) {

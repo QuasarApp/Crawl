@@ -16,6 +16,7 @@ SOURCES += \
     back-end/ProfileViewItems/mainclient.cpp \
     back-end/ProfileViewItems/mainmenumodel.cpp \
     back-end/ProfileViewItems/networkclient.cpp \
+    back-end/ProfileViewItems/notificationservice.cpp \
     back-end/ProfileViewItems/playerclientdata.cpp \
     back-end/ProfileViewItems/settingsviewmodel.cpp \
     back-end/ProfileViewItems/userview.cpp \
@@ -91,6 +92,7 @@ HEADERS += \
     back-end/ProfileViewItems/mainclient.h \
     back-end/ProfileViewItems/mainmenumodel.h \
     back-end/ProfileViewItems/networkclient.h \
+    back-end/ProfileViewItems/notificationservice.h \
     back-end/ProfileViewItems/playerclientdata.h \
     back-end/ProfileViewItems/settingsviewmodel.h \
     back-end/ProfileViewItems/userview.h \
