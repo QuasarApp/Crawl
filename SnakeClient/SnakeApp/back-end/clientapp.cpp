@@ -31,6 +31,8 @@ bool ClientApp::init(QQmlApplicationEngine *engine) {
     qmlRegisterType <Diff> ();
     qmlRegisterType <MainMenuModel> ();
     qmlRegisterType <UserView> ();
+    qRegisterMetaType<NotificationData>("NotificationData");
+    qRegisterMetaType<QList<NotificationData>> ("QList<NotificationData>");
 
     auto root = engine->rootContext();
     if (!root)

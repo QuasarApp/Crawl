@@ -77,14 +77,15 @@ void Controller::update() {
         stopTimer();
 
         if (!_showMenu) {
-        setShowMenu(true);
-        /** TO-DO **/
-//        tr(" Next Lvl!!!"),
-//        tr(QString(" You anblock next lvl (%0)" ).arg(lvl)),
-//        "qrc:/texture/up");
-            NotificationService::getService()->setNotify(
-                        QString(" You anblock next lvl (%0)" ).arg(lvl));
+
+            NotificationData notify(tr(" Next Lvl!!!"),
+                                    tr(" You anblock next lvl (%0)" ).arg(lvl),
+                                    "qrc:/texture/up");
+
+            NotificationService::getService()->setNotify(notify);
         }
+
+        nextLvl();
 
     }
 

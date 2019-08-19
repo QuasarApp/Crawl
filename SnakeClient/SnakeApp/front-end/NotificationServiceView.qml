@@ -6,20 +6,24 @@ import QtGraphicalEffects 1.12
 
 Item {
     readonly property var model: notificationService;
-    readonly property string msg: model.notify
+    readonly property var msg: model.notify
     readonly property var history: model.history
 
 
     NotificationForm {
         id: notyfyView
-        titleText : qsTr("new Message");
-        text: msg;
-        img: "";
+        titleText : (msg)? msg.title: "";
+        text: (msg)? msg.text: "";
+        img: (msg)? msg.img: "";
 
         x: parent.width - width - margin;
         y: margin;
 
         width: 40 * metrix.gamePt;
         height: width * 0.5
+    }
+
+    onMsgChanged: {
+        notyfyView._show();
     }
 }

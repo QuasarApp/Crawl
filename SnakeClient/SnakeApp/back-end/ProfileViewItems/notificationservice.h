@@ -1,30 +1,32 @@
 #ifndef NOTIFICATIONSERVICE_H
 #define NOTIFICATIONSERVICE_H
 
+#include "notificationdata.h"
+
 #include <QObject>
 
 class NotificationService: public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(QString notify READ notify NOTIFY notifyChanged)
-    Q_PROPERTY(QStringList history READ history NOTIFY notifyChanged)
+    Q_PROPERTY(NotificationData notify READ notify NOTIFY notifyChanged)
+    Q_PROPERTY(QList<NotificationData> history READ history NOTIFY notifyChanged)
 
 private:
     explicit NotificationService(QObject *ptr = nullptr);
 
-    QString _notify;
-    QStringList _history;
+    NotificationData _notify;
+    QList<NotificationData> _history;
 
 public:
-    QString notify() const;
-    void setNotify(const QString &notify);
+    NotificationData notify() const;
+    void setNotify(const NotificationData &notify);
     static NotificationService* getService();
 
-    const QStringList& history() const;
+    const QList<NotificationData> & history() const;
 
 signals:
-    void notifyChanged(QString notify);
+    void notifyChanged();
 };
 
 

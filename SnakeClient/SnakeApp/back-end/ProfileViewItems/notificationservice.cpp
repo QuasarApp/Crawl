@@ -4,18 +4,18 @@ NotificationService::NotificationService(QObject * ptr): QObject (ptr) {
 
 }
 
-QString NotificationService::notify() const {
+NotificationData NotificationService::notify() const {
     return _notify;
 }
 
-void NotificationService::setNotify(const QString& notify) {
+void NotificationService::setNotify(const NotificationData& notify) {
     if (_notify == notify)
         return;
 
     _notify = notify;
     _history.push_back(_notify);
 
-    emit notifyChanged(_notify);
+    emit notifyChanged();
 }
 
 NotificationService *NotificationService::getService() {
@@ -23,6 +23,6 @@ NotificationService *NotificationService::getService() {
     return service;
 }
 
-const QStringList &NotificationService::history() const {
+const QList<NotificationData> &NotificationService::history() const {
     return _history;
 }
