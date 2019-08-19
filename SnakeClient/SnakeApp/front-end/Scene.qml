@@ -25,7 +25,7 @@ Item {
 
     property var model: null;
     property var arrayObjects: []
-    property bool showMenu: true
+    property alias showMenu: model.showMenu
     property bool isPause: false
 
     function add (cppObjId) {
@@ -110,29 +110,6 @@ Item {
 
             for (i = 0; i < tempDifRem.length; ++i) {
                 remove(tempDifRem[i]);
-            }
-        }
-
-        onFinished: {
-
-            var isVictory = victory;
-            var gameLvl = lvl + 1;
-            var dist = distance;
-            updateBackgroundColor(gameLvl);
-
-            if (isVictory ) {
-
-                if (!autoTimer.running)
-//                    notification.show(qsTr(" Next Lvl!!!"),
-//                                  qsTr(" You anblock next lvl (" + gameLvl + ")" ),
-//                                  "qrc:/texture/up");
-
-                model.nextLvl();
-            } else if (autoTimer.running) {
-                model.handleNewGame();
-            } else {
-                showMenu = true;
-                model.handleNewGame();
             }
         }
     }

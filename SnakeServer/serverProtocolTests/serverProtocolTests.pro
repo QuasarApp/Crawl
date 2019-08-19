@@ -9,8 +9,7 @@ TEMPLATE = app
 TARGET = serverTests
 
 SOURCES += \
-    testutils.cpp \
-    tst_testsnakeserver.cpp
+    testutils.cpp
 
 CONFIG(release, debug|release): {
     DESTDIR = $$PWD/build/release
