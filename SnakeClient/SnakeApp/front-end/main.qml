@@ -29,7 +29,7 @@ ApplicationWindow {
         visible: scane.showMenu;
 
         onPlayGame: {
-            scane.showMenu = false;
+            contr.showMenu = false;
         }
 
     }

@@ -25,7 +25,7 @@ Item {
 
     property var model: null;
     property var arrayObjects: []
-    property alias showMenu: model.showMenu
+    readonly property bool showMenu: (model)? model.showMenu: false
     property bool isPause: false
 
     function add (cppObjId) {
@@ -145,7 +145,8 @@ Item {
         z: 1
 
         onClicked: {
-            showMenu = true;
+            if (model)
+                model.showMenu = true;
         }
 
         visible: !showMenu
