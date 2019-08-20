@@ -12,7 +12,7 @@ Item {
 
     NotificationForm {
         id: notyfyView
-        titleText : (msg)? msg.title: "";
+        titleText : msg.title;
         text: (msg)? msg.text: "";
         img: (msg)? msg.img: "";
 

@@ -13,24 +13,23 @@ BasePopUp {
     autoClose: true;
     closeInterval: 5000
 
+    margins: 0
+    spacing: 0
+
     Page {
         id: page
-        title: titleText
         anchors.fill: parent
+
+        header: Label {
+            text: titleText
+            horizontalAlignment: Text.AlignHCenter
+        }
 
         contentItem:
         RowLayout {
             id: rowLayout
             spacing: 5
             clip: true
-            anchors.top: parent.bottom
-            anchors.topMargin: 1
-            anchors.left: parent.left
-            anchors.leftMargin: 0
-            anchors.right: parent.right
-            anchors.rightMargin: 0
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: 0
 
             Rectangle {
                 color: "#00000000"
@@ -43,14 +42,14 @@ BasePopUp {
                     fillMode: Image.PreserveAspectCrop
                     clip: true
                     anchors.fill: parent;
-                    source: ""
+                    source: img
                 }
             }
 
 
             Label {
                 id: message
-                text: qsTr("Message")
+                text: popup.text
                 Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
                 Layout.fillHeight: true;
                 Layout.fillWidth: true;

@@ -1,6 +1,8 @@
 #include "notificationservice.h"
 
 NotificationService::NotificationService(QObject * ptr): QObject (ptr) {
+    qRegisterMetaType<NotificationData>("NotificationData");
+    qRegisterMetaType<QList<NotificationData>> ("QList<NotificationData>");
 
 }
 
