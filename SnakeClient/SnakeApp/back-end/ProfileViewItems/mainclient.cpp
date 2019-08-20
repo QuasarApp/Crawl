@@ -1,4 +1,5 @@
 #include "mainclient.h"
+#include "notificationservice.h"
 #include "playerclientdata.h"
 
 #include <QSharedPointer>
@@ -12,6 +13,8 @@ void MainClient::setOnlineStatus(OnlineStatus onlineStatus) {
         return;
 
     emit sigOnlineStatusChanged(_onlineStatus = onlineStatus);
+    pushNotify(onlineStatus);
+
 }
 
 void MainClient::clientStatusChanged() {
@@ -26,6 +29,64 @@ void MainClient::clientStatusChanged() {
     }
 
     setOnlineStatus(status);
+}
+
+void MainClient::pushNotify(OnlineStatus onlineStatus) {
+
+
+    switch (onlineStatus) {
+
+    case 0: {
+
+        NotificationService::getService()->setNotify(
+                    NotificationData(tr("Login status"), tr("Success")));
+
+        break;
+    }
+
+//    case 1: {
+
+//        NotificationService::getService()->setNotify(
+//                    NotificationData(tr("Login status"), tr("Authorization Required")));
+
+//        break;
+//    }
+
+//    case 2: {
+
+//        NotificationService::getService()->setNotify(
+//                    NotificationData(tr("Login status"), tr("Wait for answer")));
+
+//        break;
+//    }
+
+    case 3: {
+
+        NotificationService::getService()->setNotify(
+                    NotificationData(tr("Login result"), tr("Authorization fail") ,  "", NotificationData::Error));
+
+        break;
+    }
+
+    case 4: {
+
+        NotificationService::getService()->setNotify(
+                    NotificationData(tr("Login result"), tr("Client is offline"), "", NotificationData::Warning));
+
+        break;
+    }
+
+    case 5: {
+
+        NotificationService::getService()->setNotify(
+                    NotificationData(tr("Login result"), tr("Offline Mode")));
+
+        break;
+    }
+
+    default: break;
+
+    }
 }
 
 void MainClient::handleReceivePackage(ClientProtocol::Command cmd, const QByteArray &obj) {

@@ -9,16 +9,35 @@ BasePopUp {
     property string text: qsTr("Message")
     property string img: ""
     property string titleText: qsTr("Message")
+    property int type: 0
+
+    function _getBackGraundColor(type) {
+        switch(type){
+        case 1: return "#FFC107"
+        case 2: return "#FF5722"
+        }
+
+        return Material.background
+    }
 
     autoClose: true;
     closeInterval: 5000
 
     margins: 0
+    margin: 0
     spacing: 0
+
+
+    backgroundColor: _getBackGraundColor(type);
 
     Page {
         id: page
         anchors.fill: parent
+        spacing: 0
+
+        background: Rectangle {
+            color: "#00000000"
+        }
 
         header: Label {
             text: titleText

@@ -2,11 +2,12 @@
 
 NotificationData::NotificationData(const QString &title,
                                    const QString &text,
-                                   const QString &img) {
+                                   const QString &img, Type type) {
 
     _text = text;
     _title = title;
     _img = img;
+    _type = type;
 }
 
 QString NotificationData::text() const {
@@ -24,5 +25,10 @@ QString NotificationData::title() const {
 bool NotificationData::operator ==(const NotificationData &righ) {
     return _title == righ._title &&
             _text == righ._text &&
-            _img == righ._img;
+            _img == righ._img &&
+            _type == righ._type;
+}
+
+int NotificationData::type() const {
+    return _type;
 }

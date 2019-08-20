@@ -21,6 +21,11 @@ private:
 public:
     NotificationData notify() const;
     void setNotify(const NotificationData &notify);
+    Q_INVOKABLE void setNotify(const QString& title = "",
+                       const QString& text = "",
+                       const QString& img = "",
+                       NotificationData::Type type = NotificationData::Normal);
+
     static NotificationService* getService();
 
     const QList<NotificationData> & history() const;

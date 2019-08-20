@@ -8,15 +8,6 @@ Item {
     id: element
 
     property int loginStatus : 0
-    readonly property var resultLoginEnum: [
-        qsTr("Success"), // 0
-        qsTr("Authorization Required"), // 1
-        qsTr("Wait for answer"), // 2
-        qsTr("Authorization fail"), // 3
-        qsTr("Client is offline "), // 4
-        qsTr("Offline Mode "), // 5
-
-    ]
 
     readonly property int currentView: tabBar.currentIndex
     readonly property var resultEnum: [
@@ -231,8 +222,11 @@ Item {
                         sigLogin(loginEmail.text, loginPass.text);
                     }
                 } else {
-                    errorMessage.text = resultEnum[messageIndex];
-                    errorMessage._show();
+
+                    notificationService.notify(qsTr("Error"),
+                                               resultEnum[messageIndex],
+                                               "",
+                                               2);
                 }
             }
 
@@ -243,33 +237,11 @@ Item {
         anchors.right: parent.right
     }
 
-    BasePopUp {
-        id: errorMessage;
-        property string text: ""
-        Label {
-            id: sourceText;
-            wrapMode: Text.WordWrap
-            text: errorMessage.text
-            anchors.fill: parent
-        }
-        backgroundColor: "#ff4f28"
-        closeInterval: 5000
-
-        height: 2 * metrix.controlPtMaterial;
-        width: 7 * metrix.controlPtMaterial;
-        x: 0;
-        y: 0;
-    }
-
     onLoginStatusChanged: {
         if (loginStatus === 2)
             busy._show();
         else {
             busy.close();
-            if (loginStatus > 2) {
-                errorMessage._show();
-                errorMessage.text =  resultLoginEnum[loginStatus];
-            }
         }
     }
 

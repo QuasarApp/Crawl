@@ -15,6 +15,7 @@ Item {
         titleText : msg.title;
         text: (msg)? msg.text: "";
         img: (msg)? msg.img: "";
+        type: (msg)? msg.type: 0;
 
         x: parent.width - width - margin;
         y: margin;
