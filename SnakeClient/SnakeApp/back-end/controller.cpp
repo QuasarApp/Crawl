@@ -4,6 +4,7 @@
 #include "diff.h"
 #include <lvls.h>
 #include "ProfileViewItems/mainmenumodel.h"
+#include <back-end/ProfileViewItems/notificationservice.h>
 
 Controller::Controller() {
     srand(static_cast<unsigned int>(time(nullptr)));
@@ -63,14 +64,29 @@ void Controller::update() {
     }
 
     world.render();
+
     if(world.isDefiat()) {
         stopTimer();
-        emit finished(false, lvl, world.getCurrentLong());
+        if (!_showMenu) {
+            setShowMenu(true);
+        }
+        handleNewGame();
     }
 
     if (world.isEnd()) {
         stopTimer();
-        emit finished(true, lvl, world.getCurrentLong());
+
+        if (!_showMenu) {
+
+            NotificationData notify(tr(" Next Lvl!!!"),
+                                    tr(" You anblock next lvl (%0)" ).arg(lvl),
+                                    "qrc:/texture/up");
+
+            NotificationService::getService()->setNotify(notify);
+        }
+
+        nextLvl();
+
     }
 
     long_changed(static_cast<int>(world.getCurrentLong()));
@@ -122,5 +138,17 @@ void Controller::setPause(bool p){
     if (!pause) {
         world.unPause();
     }
+}
+
+bool Controller::showMenu() const {
+    return _showMenu;
+}
+
+void Controller::setShowMenu(bool showMenu) {
+    if (_showMenu == showMenu)
+        return;
+
+    _showMenu = showMenu;
+    emit showMenuChanged(_showMenu);
 }
 

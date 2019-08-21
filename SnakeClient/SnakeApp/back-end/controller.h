@@ -17,6 +17,7 @@ class Controller : public QObject
     Q_PROPERTY(int long_ READ long_ NOTIFY long_changed)
     Q_PROPERTY(int generalLong READ generalLong NOTIFY generalLongchanged)
     Q_PROPERTY(QObject* mainMenuModel READ mainMenuModel NOTIFY mainMenuModelchanged)
+    Q_PROPERTY(bool showMenu READ showMenu WRITE setShowMenu NOTIFY showMenuChanged)
 
 private:
 
@@ -27,6 +28,7 @@ private:
     int lvl = 0;
     int m_generalLong = 0;
     bool pause = false;
+    bool _showMenu = true;
 
     void generateDiff(const QMap<int, GuiObject *> &);
 
@@ -40,16 +42,14 @@ public:
     void stopTimer();
 
     int long_() const;
-
     int generalLong() const;
+    bool showMenu() const;
 
     QObject* mainMenuModel() const;
 
 public slots:
     void buttonPress();
-
     void setPause(bool);
-
     void update();
 
     /**
@@ -70,14 +70,9 @@ public slots:
      */
     QObject* getGameObject(int id);
 
+    void setShowMenu(bool showMenu);
+
 signals:
-    /**
-     * @brief finished - imited when game over or victory
-     * @param victory - flag of vicrory, if it equals false then game over
-     * @param lvl - game over lvl
-     * @param distance - game over distance
-     */
-    void finished(bool victory, int lvl, double distance);
 
     /**
      * @brief gameObjectsChanged
@@ -87,6 +82,7 @@ signals:
     void long_changed(int m_long);
     void generalLongchanged(int generalLong);
     void mainMenuModelchanged(QObject* mainMenuModel);
+    void showMenuChanged(bool showMenu);
 };
 
 #endif // CONTROLLER_H

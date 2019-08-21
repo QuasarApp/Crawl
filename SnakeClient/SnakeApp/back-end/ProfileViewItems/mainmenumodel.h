@@ -17,7 +17,6 @@ class MainMenuModel : public QObject
 
     Q_PROPERTY(QObject* userViewModel READ userViewModel NOTIFY userViewModelChanged)
     Q_PROPERTY(QObject* userSettingsModel READ userSettingsModel NOTIFY userSettingsModelChanged)
-
     Q_PROPERTY(int onlineStatus READ onlineStatus NOTIFY onlineStatusChanged)
 
 private:
@@ -36,16 +35,13 @@ public:
     Q_INVOKABLE void playOffline();
     Q_INVOKABLE void tryConnect();
 
-
 public slots:
     void login(const QString& email, const QString& pass);
     void registerNewUser(const QString& email, const QString& pass);
 
-
 signals:
     void userViewModelChanged(QObject* userViewModel);
     void newGame();
-
     void onlinelChanged(bool online);
     void loginChanged(bool login);
     void onlineStatusChanged();

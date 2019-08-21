@@ -25,7 +25,7 @@ Item {
 
     property var model: null;
     property var arrayObjects: []
-    property bool showMenu: true
+    readonly property bool showMenu: (model)? model.showMenu: false
     property bool isPause: false
 
     function add (cppObjId) {
@@ -112,29 +112,6 @@ Item {
                 remove(tempDifRem[i]);
             }
         }
-
-        onFinished: {
-
-            var isVictory = victory;
-            var gameLvl = lvl + 1;
-            var dist = distance;
-            updateBackgroundColor(gameLvl);
-
-            if (isVictory ) {
-
-                if (!autoTimer.running)
-                    notification.show(qsTr(" Next Lvl!!!"),
-                                  qsTr(" You anblock next lvl (" + gameLvl + ")" ),
-                                  "qrc:/texture/up");
-
-                model.nextLvl();
-            } else if (autoTimer.running) {
-                model.handleNewGame();
-            } else {
-                showMenu = true;
-                model.handleNewGame();
-            }
-        }
     }
 
     Component.onCompleted: {
@@ -155,19 +132,6 @@ Item {
         }
     }
 
-    NotificationForm {
-        z: -1
-        id: notification;
-        margin: metrix.gamePt;
-
-        x: parent.width - width - margin;
-        y: margin;
-
-        width: 40 * metrix.gamePt;
-        height: width * 0.5
-
-    }
-
     Button {
         id: returnToMenu;
 
@@ -181,7 +145,8 @@ Item {
         z: 1
 
         onClicked: {
-            showMenu = true;
+            if (model)
+                model.showMenu = true;
         }
 
         visible: !showMenu

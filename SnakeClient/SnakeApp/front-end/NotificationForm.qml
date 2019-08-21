@@ -6,57 +6,49 @@ import QtQuick.Layouts 1.3
 BasePopUp {
     id : popup
 
-    autoClose: true;
-    closeInterval: 5000
-    function show(title_, message_, img_) {
-        title.text = title_;
-        message.text = message_;
-        if (img_) {
-            image.source = img_;
-        } else {
-            image.source = "";
+    property string text: qsTr("Message")
+    property string img: ""
+    property string titleText: qsTr("Message")
+    property int type: 0
+
+    function _getBackGraundColor(type) {
+        switch(type){
+        case 1: return "#FFC107"
+        case 2: return "#FF5722"
         }
 
-        _show();
+        return Material.background
     }
+
+    autoClose: true;
+    closeInterval: 5000
+
+    margins: 0
+    margin: 0
+    spacing: 0
+
+
+    backgroundColor: _getBackGraundColor(type);
 
     Page {
         id: page
-        title: "Level Up!!!"
         anchors.fill: parent
+        spacing: 0
 
-
-        Label {
-            id: title
-            x: 0
-            width: 200
-            height: 31
-            text: qsTr("Title Message")
-            font.bold: true
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.top: parent.top
-            anchors.topMargin: 0
-            font.pointSize: 13
-            fontSizeMode: Text.Fit
-            renderType: Text.QtRendering
-            textFormat: Text.AutoText
-            verticalAlignment: Text.AlignVCenter
-            horizontalAlignment: Text.AlignHCenter
-            wrapMode: Text.WordWrap
+        background: Rectangle {
+            color: "#00000000"
         }
 
+        header: Label {
+            text: titleText
+            horizontalAlignment: Text.AlignHCenter
+        }
+
+        contentItem:
         RowLayout {
             id: rowLayout
             spacing: 5
             clip: true
-            anchors.top: title.bottom
-            anchors.topMargin: 1
-            anchors.left: parent.left
-            anchors.leftMargin: 0
-            anchors.right: parent.right
-            anchors.rightMargin: 0
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: 0
 
             Rectangle {
                 color: "#00000000"
@@ -69,14 +61,14 @@ BasePopUp {
                     fillMode: Image.PreserveAspectCrop
                     clip: true
                     anchors.fill: parent;
-                    source: ""
+                    source: img
                 }
             }
 
 
             Label {
                 id: message
-                text: qsTr("Message")
+                text: popup.text
                 Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
                 Layout.fillHeight: true;
                 Layout.fillWidth: true;

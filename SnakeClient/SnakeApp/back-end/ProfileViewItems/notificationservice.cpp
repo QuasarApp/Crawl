@@ -1,6 +1,37 @@
 #include "notificationservice.h"
 
-NotificationService::NotificationService()
-{
+NotificationService::NotificationService(QObject * ptr): QObject (ptr) {
+    qRegisterMetaType<NotificationData>("NotificationData");
+    qRegisterMetaType<QList<NotificationData>> ("QList<NotificationData>");
 
+}
+
+NotificationData NotificationService::notify() const {
+    return _notify;
+}
+
+void NotificationService::setNotify(const NotificationData& notify) {
+    if (_notify == notify)
+        return;
+
+    _notify = notify;
+    _history.push_back(_notify);
+
+    emit notifyChanged();
+}
+
+void NotificationService::setNotify(const QString &title,
+                                    const QString &text,
+                                    const QString &img,
+                                    NotificationData::Type type) {
+    setNotify(NotificationData(title, text, img, type));
+}
+
+NotificationService *NotificationService::getService() {
+    static auto service = new NotificationService;
+    return service;
+}
+
+const QList<NotificationData> &NotificationService::history() const {
+    return _history;
 }

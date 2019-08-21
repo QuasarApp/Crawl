@@ -14,6 +14,9 @@ BasePopUp {
     }
 
     onSourceChanged: {
+        if (!source)
+            return;
+
         source.parent = sourceVal;
         source.anchors.fill = sourceVal;
     }

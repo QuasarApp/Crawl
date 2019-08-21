@@ -22,7 +22,7 @@ private:
 
     void setOnlineStatus(OnlineStatus onlineStatus);
     void clientStatusChanged();
-
+    void pushNotify(OnlineStatus onlineStatus);
 
 private slots:
     void handleReceivePackage(ClientProtocol::Command cmd, const QByteArray& obj);
