@@ -20,7 +20,7 @@ Item {
         x: parent.width - width - margin;
         y: margin;
 
-        width: 40 * metrix.gamePt;
+        width: 6 * metrix.controlPtMaterial;
         height: width * 0.5
     }
 

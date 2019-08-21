@@ -5,8 +5,8 @@ import QtQuick.Controls 2.12
 ApplicationWindow {
     id: mainWindow;
     visible: true;
-    width: 1140;
-    height: 540;
+    width: 640;
+    height: 480;
     title: qsTr("SnakeOnTheRoad");
 
     Component.onCompleted: {
