@@ -29,7 +29,7 @@ bool Server::parsePackage(const Package &pkg, QTcpSocket* sender) {
 
         Package pcg;
 
-        if (!(pcg.create(Command::Ping, Type::Responke, pkg.hdr))) {
+        if (!(pcg.create(Command::Ping, Type::Responke, &pkg.hdr))) {
             return false;
         };
 
@@ -288,67 +288,55 @@ void Server::badRequest(quint32 address, const Header &req) {
     auto client = _connections.value(address);
 
     if (!client) {
+
+        QuasarAppUtils::Params::verboseLog("Bad request detected, bud responce command not sendet!"
+                                           " because client == null",
+                                           QuasarAppUtils::Error);
         return;
     }
 
     if (!changeKarma(address, REQUEST_ERROR)) {
+
+        QuasarAppUtils::Params::verboseLog("Bad request detected, bud responce command not sendet!"
+                                           " because karma not changed",
+                                           QuasarAppUtils::Error);
+
         return;
     }
 
     Package pcg;
-    if (!(pcg.create(Command::BadRequest, Type::Responke, req))) {
-        QuasarAppUtils::Params::verboseLog("Bad request detected, bud responce command nor received!",
+    if (!(pcg.create(Command::BadRequest, Type::Responke, &req))) {
+        QuasarAppUtils::Params::verboseLog("Bad request detected, bud responce command not sendet!"
+                                           " because package not created",
                                            QuasarAppUtils::Error);
     };
 
     if (!sendPackage(pcg, client->getSct())) {
+
+        QuasarAppUtils::Params::verboseLog("Bad request detected, bud responce command not sendet!"
+                                           " because karma not changed",
+                                           QuasarAppUtils::Error);
         return;
     }
+
+    QuasarAppUtils::Params::verboseLog("Bad request sendet to adderess: " +
+                                       client->getSct()->peerAddress().toString(),
+                                       QuasarAppUtils::Info);
 }
 
-bool Server::sendResponse(const BaseNetworkObject *resp, quint32 address, const Header &req) {
-
-    auto client = _connections.value(address);
-
-    if (!client) {
-        return false;
-    }
+bool Server::sendResponse(const BaseNetworkObject *resp, quint32 address, const Header *req) {
 
     Package pcg;
-    if (!(pcg.create(resp, Type::Responke, req))) {
-        QuasarAppUtils::Params::verboseLog("Bad request detected, bud responce command nor received!",
-                                           QuasarAppUtils::Error);
-    };
 
-    if (!sendPackage(pcg, client->getSct())) {
-        return false;
+    if (!pcg.create(resp, Type::Responke, req)) {
+        QuasarAppUtils::Params::verboseLog("Response not sent because package not created",
+                                           QuasarAppUtils::Error);
     }
 
-    return true;
+    return sendResponse(&pcg, address, req);
 }
 
-bool Server::sendResponse(const BaseNetworkObject *resp, quint32 address) {
-
-    auto client = _connections.value(address);
-
-    if (!client) {
-        return false;
-    }
-
-    Package pcg;
-    if (!(pcg.create(resp, Type::Responke))) {
-        QuasarAppUtils::Params::verboseLog("Bad request detected, bud responce command nor received!",
-                                           QuasarAppUtils::Error);
-    };
-
-    if (!sendPackage(pcg, client->getSct())) {
-        return false;
-    }
-
-    return true;
-}
-
-bool Server::sendResponse(Package *pcg, quint32 address, const Header &req) {
+bool Server::sendResponse(Package *pcg, quint32 address, const Header *req) {
     pcg->signPackage(req);
     return sendResponse(*pcg, address);
 }
@@ -358,10 +346,15 @@ bool Server::sendResponse(const Package &pcg, quint32 address)
     auto client = _connections.value(address);
 
     if (!client) {
+        QuasarAppUtils::Params::verboseLog("Response not sent because client == null",
+                                           QuasarAppUtils::Error);
         return false;
     }
 
+
     if (!sendPackage(pcg, client->getSct())) {
+        QuasarAppUtils::Params::verboseLog("Response not sent!",
+                                           QuasarAppUtils::Error);
         return false;
     }
 

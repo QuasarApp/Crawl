@@ -138,7 +138,7 @@ struct CLIENTPROTOCOLSHARED_EXPORT Package {
      * @param old header (only for request type)
      * @return true if all done
      */
-    bool create(const BaseNetworkObject *data, Type type, const Header &old = Header());
+    bool create(const BaseNetworkObject *data, Type type, const Header *old = nullptr);
 
     /**
      * @brief create
@@ -148,7 +148,7 @@ struct CLIENTPROTOCOLSHARED_EXPORT Package {
      * @param old - header (only for request type)
      * @return true if all good
      */
-    bool create(Command cmd, Type type, const QByteArray& data, const Header& old = Header());
+    bool create(Command cmd, Type type, const QByteArray& data, const Header* old = nullptr);
 
 
 
@@ -159,7 +159,7 @@ struct CLIENTPROTOCOLSHARED_EXPORT Package {
      * @param old header (only for request type)
      * @return true if all good
      */
-    bool create(Command cmd, Type type, const Header& old = Header());
+    bool create(Command cmd, Type type, const Header* old = nullptr);
 
     /**
      * @brief toBytes
@@ -177,7 +177,7 @@ struct CLIENTPROTOCOLSHARED_EXPORT Package {
      * @param oldHeader old data header
      * @return true if all good
      */
-    bool signPackage(const Header& oldHeader);
+    bool signPackage(const Header* oldHeader);
 
     virtual ~Package() = default;
 

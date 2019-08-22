@@ -124,7 +124,7 @@ void MainServer::handleRequest(ClientProtocol::Header hdr,
         tockenObj.setToken(tocken);
         tockenObj.setId(_db->getPlayerId(loginData.getGmail()));
 
-        if (!_serverDaemon->sendResponse(&tockenObj, addres, hdr)) {
+        if (!_serverDaemon->sendResponse(&tockenObj, addres, &hdr)) {
             QuasarAppUtils::Params::verboseLog("responce not sendet",
                                                QuasarAppUtils::Warning);
             return;
@@ -145,7 +145,7 @@ void MainServer::handleRequest(ClientProtocol::Header hdr,
 
         if (!tocken.isEmpty() && tocken == request.getToken()) {
             auto player = _db->getPlayer(request.id());
-            _serverDaemon->sendResponse(&player, addres, hdr);
+            _serverDaemon->sendResponse(&player, addres, &hdr);
 
         }
 
@@ -162,7 +162,7 @@ void MainServer::handleRequest(ClientProtocol::Header hdr,
 
         if (!tocken.isEmpty() && tocken == getRequest.getToken()) {
             auto item = _db->getItem(getRequest.id());
-            _serverDaemon->sendResponse(&item, addres, hdr);
+            _serverDaemon->sendResponse(&item, addres, &hdr);
 
         }
 

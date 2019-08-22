@@ -82,7 +82,7 @@ BaseNetworkObject* Package::parse() const {
 }
 
 
-bool Package::create(const BaseNetworkObject *obj, Type type, const Header& old) {
+bool Package::create(const BaseNetworkObject *obj, Type type, const Header *old) {
 
     if (!obj) {
         return false;
@@ -100,12 +100,12 @@ bool Package::create(const BaseNetworkObject *obj, Type type, const Header& old)
     return create(command, type, old);
 }
 
-bool Package::create(Command cmd, Type type, const QByteArray &data, const Header& old) {
+bool Package::create(Command cmd, Type type, const QByteArray &data, const Header* old) {
     this->data = data;
     return create(cmd, type, old);
 }
 
-bool Package::create(Command cmd, Type type, const Header &old) {
+bool Package::create(Command cmd, Type type, const Header *old) {
 
 
     if (cmd == Command::Undefined) {
@@ -137,14 +137,14 @@ void Package::reset() {
     data.clear();
 }
 
-bool Package::signPackage(const Header &oldHeader) {
+bool Package::signPackage(const Header *oldHeader) {
 
-    if (!oldHeader.isValid()) {
+    if (!oldHeader || !oldHeader->isValid()) {
         return false;
     }
 
-    hdr.sig = oldHeader.sig;
-    hdr.requestCommand = oldHeader.command;
+    hdr.sig = oldHeader->sig;
+    hdr.requestCommand = oldHeader->command;
 
     return true;
 }

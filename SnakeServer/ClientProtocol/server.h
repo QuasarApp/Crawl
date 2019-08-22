@@ -46,9 +46,9 @@ public:
 
     void badRequest(quint32 address, const Header &req);
 
-    bool sendResponse(const BaseNetworkObject *resp, quint32 address);
-    bool sendResponse(const BaseNetworkObject* resp,  quint32 address, const Header &req);
-    bool sendResponse(Package *pcg, quint32 address, const Header &req);
+    bool sendResponse(const BaseNetworkObject* resp,  quint32 address,
+                      const Header *req = nullptr);
+    bool sendResponse(Package *pcg, quint32 address, const Header *req = nullptr);
     bool sendResponse(const Package &pcg, quint32 address);
 
     void ban(quint32 target);
