@@ -36,7 +36,7 @@ void MainClient::pushNotify(OnlineStatus onlineStatus) {
 
     switch (onlineStatus) {
 
-    case 0: {
+    case OnlineStatus::Success: {
 
         NotificationService::getService()->setNotify(
                     NotificationData(tr("Login status"), tr("Success")));
@@ -44,23 +44,23 @@ void MainClient::pushNotify(OnlineStatus onlineStatus) {
         break;
     }
 
-//    case 1: {
+    case OnlineStatus::AuthorizationRequired: {
 
-//        NotificationService::getService()->setNotify(
-//                    NotificationData(tr("Login status"), tr("Authorization Required")));
+        NotificationService::getService()->setNotify(
+                    NotificationData(tr("Login status"), tr("Authorization Required")));
 
-//        break;
-//    }
+        break;
+    }
 
-//    case 2: {
+    case OnlineStatus::WaitForAnswer: {
 
-//        NotificationService::getService()->setNotify(
-//                    NotificationData(tr("Login status"), tr("Wait for answer")));
+        NotificationService::getService()->setNotify(
+                    NotificationData(tr("Login status"), tr("Wait for answer")));
 
-//        break;
-//    }
+        break;
+    }
 
-    case 3: {
+    case OnlineStatus::AuthorizationFail: {
 
         NotificationService::getService()->setNotify(
                     NotificationData(tr("Login result"), tr("Authorization fail") ,  "", NotificationData::Error));
@@ -68,7 +68,7 @@ void MainClient::pushNotify(OnlineStatus onlineStatus) {
         break;
     }
 
-    case 4: {
+    case OnlineStatus::ClientIsOffline: {
 
         NotificationService::getService()->setNotify(
                     NotificationData(tr("Login result"), tr("Client is offline"), "", NotificationData::Warning));
@@ -76,7 +76,7 @@ void MainClient::pushNotify(OnlineStatus onlineStatus) {
         break;
     }
 
-    case 5: {
+    case OnlineStatus::OfflineMode: {
 
         NotificationService::getService()->setNotify(
                     NotificationData(tr("Login result"), tr("Offline Mode")));
@@ -106,6 +106,11 @@ void MainClient::handleReceivePackage(ClientProtocol::Command cmd, const QByteAr
     }
 
     case ClientProtocol::Command::BadRequest: {
+
+        NotificationService::getService()->setNotify(
+                    NotificationData(tr("Request"), tr("Bad Request"), "",
+                                     NotificationData::Error));
+
 
         break;
     }

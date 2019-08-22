@@ -29,6 +29,10 @@ bool NotificationData::operator ==(const NotificationData &righ) {
             _type == righ._type;
 }
 
+bool NotificationData::operator !=(const NotificationData &righ) {
+    return !operator==(righ);
+}
+
 int NotificationData::type() const {
     return _type;
 }

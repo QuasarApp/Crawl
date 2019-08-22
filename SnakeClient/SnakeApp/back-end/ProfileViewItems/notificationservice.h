@@ -24,7 +24,7 @@ public:
     Q_INVOKABLE void setNotify(const QString& title = "",
                        const QString& text = "",
                        const QString& img = "",
-                       NotificationData::Type type = NotificationData::Normal);
+                       int type = NotificationData::Normal);
 
     static NotificationService* getService();
 

@@ -11,11 +11,10 @@ NotificationData NotificationService::notify() const {
 }
 
 void NotificationService::setNotify(const NotificationData& notify) {
-    if (_notify == notify)
-        return;
+    if (_notify != notify)
+        _history.push_back(_notify);
 
     _notify = notify;
-    _history.push_back(_notify);
 
     emit notifyChanged();
 }
@@ -23,8 +22,10 @@ void NotificationService::setNotify(const NotificationData& notify) {
 void NotificationService::setNotify(const QString &title,
                                     const QString &text,
                                     const QString &img,
-                                    NotificationData::Type type) {
-    setNotify(NotificationData(title, text, img, type));
+                                    int type) {
+
+    setNotify(NotificationData(title, text, img,
+                               static_cast<NotificationData::Type>(type)));
 }
 
 NotificationService *NotificationService::getService() {

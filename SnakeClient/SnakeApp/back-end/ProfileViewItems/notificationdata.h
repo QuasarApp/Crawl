@@ -34,6 +34,8 @@ public:
     Q_INVOKABLE int type() const;
 
     bool operator ==(const NotificationData &righ);
+    bool operator !=(const NotificationData &righ);
+
 };
 
 #endif // NOTIFICATIONDATA_H

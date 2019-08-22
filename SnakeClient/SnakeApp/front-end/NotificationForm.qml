@@ -12,9 +12,11 @@ BasePopUp {
     property int type: 0
 
     function _getBackGraundColor(type) {
-        switch(type){
+        switch(type) {
+
         case 1: return "#FFC107"
         case 2: return "#FF5722"
+
         }
 
         return Material.background

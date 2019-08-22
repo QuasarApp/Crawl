@@ -223,7 +223,7 @@ Item {
                     }
                 } else {
 
-                    notificationService.notify(qsTr("Error"),
+                    notificationService.setNotify(qsTr("Error"),
                                                resultEnum[messageIndex],
                                                "",
                                                2);

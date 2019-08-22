@@ -9,9 +9,9 @@ ApplicationWindow {
     height: 480;
     title: qsTr("SnakeOnTheRoad");
 
-    Component.onCompleted: {
-        mainWindow.showFullScreen();
-    }
+//    Component.onCompleted: {
+//        mainWindow.showFullScreen();
+//    }
 
 
     Metrix {id: metrix}
