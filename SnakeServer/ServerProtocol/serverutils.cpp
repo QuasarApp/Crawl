@@ -9,40 +9,45 @@ ServerUtils::ServerUtils() {
 
 void ServerUtils::helpDaemon() {
 
-    qInfo() << "";
-    qInfo() << "Usage: SnakeServer-daemon.sh <[params]> ";
-    qInfo() << "";
-    qInfo() << "Options:";
-    qInfo() << "   help / h                 : show help.";
-    qInfo() << "   daemon / d               : start like daemon.";
-    qInfo() << "   -port (port)             : start with custom port.";
-    qInfo() << "   -address (address)       : start with custom address.";
-    qInfo() << "   -db (path/to/db.file)    : start with custom db";
+    QStringList help =
+    {{ ""},
+    { "Usage: SnakeServer-daemon.sh <[params]> "},
+    { ""},
+    { "Options:"},
+    { "   help / h                 : show help."},
+    { "   daemon / d               : start like daemon."},
+    { "   -port (port)             : start with custom port."},
+    { "   -address (address)       : start with custom address."},
+    { "   -db (path/to/db.file)    : start with custom db"},
+    { ""},
+    { "General Options:"}};
 
-    qInfo() << "   verbose                  : show debug log";
+    help.append(QuasarAppUtils::Params::getparamsHelp());
+    QuasarAppUtils::Params::showHelp(help);
 
-    qInfo() << "";
 }
 
 void ServerUtils::helpClient() {
 
-    qInfo() << "";
-    qInfo() << "Usage: Terminal.sh <[params]> ";
-    qInfo() << "";
-    qInfo() << "Options:";
-    qInfo() << "   help / h                 : show help.";
-    qInfo() << "   ping                     : debug commnad";
-    qInfo() << "   state                    : show information about deamon";
-    qInfo() << "   stop                     : stop server deamon";
-    qInfo() << "   -ban (address)           : ban user with address";
-    qInfo() << "   -unban (address)         : unban user with address";
-    qInfo() << "   -restart (address:port)  : restarrt server deamon with new address and port";
-    qInfo() << "   -start (address:port)    : start server deamon with custom address";
-    qInfo() << "   start                    : start server deamon with default address";
+    QStringList help =
+    {{ ""},
+    { "Usage: Terminal.sh <[params]> "},
+    { ""},
+    { "Options:"},
+    { "   help / h                 : show help."},
+    { "   ping                     : debug commnad"},
+    { "   state                    : show information about deamon"},
+    { "   stop                     : stop server deamon"},
+    { "   -ban (address)           : ban user with address"},
+    { "   -unban (address)         : unban user with address"},
+    { "   -restart (address:port)  : restarrt server deamon with new address and port"},
+    { "   -start (address:port)    : start server deamon with custom address"},
+    { "   start                    : start server deamon with default address"},
+    { ""},
+    { "General Options:"},};
 
-    qInfo() << "   verbose                  : show debug log";
-
-    qInfo() << "";
+    help.append(QuasarAppUtils::Params::getparamsHelp());
+    QuasarAppUtils::Params::showHelp(help);
 }
 
 bool ServerUtils::runDaemon() {
