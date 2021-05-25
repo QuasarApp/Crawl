@@ -1,0 +1,19 @@
+{
+    "binDir": "./../src/build/Debug/SnakeProjectEaxample",
+    "clear": true,
+    "libDir": "./../",
+    "recursiveDepth": "10",
+    "deploySystem": false,
+    "qmlDir": "../",
+    "ignoreEnv": [
+        "./../installer",
+        "./../Distro",
+        "./../parts",
+        "./../snap",
+        "./../prime",
+        "./../stage"
+        ],
+    "extraLib": "crypto",
+    "targetDir": "./../DisttibutionKit"
+}
+

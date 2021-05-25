@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>SnakeProjectModule/qmldir</file>
+        <file>SnakeProjectModule/SnakeProject.qml</file>
+    </qresource>
+</RCC>
