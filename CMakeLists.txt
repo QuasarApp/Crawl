@@ -23,36 +23,37 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Test QUIET)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Test QUIET)
 
-include(submodules/CMake/ccache.cmake)
-include(submodules/CMake/QuasarAppCITargets.cmake)
+include(submodules/QuasarAppLib/CMake/QuasarApp.cmake)
 
-# Add sub directories
-add_subdirectory(src)
-
-if (NOT DEFINED SnakeProject_TESTS)
-    set(SnakeProject_TESTS ON)
+if (NOT DEFINED SNAKEPROJECT_TESTS)
+    set(SNAKEPROJECT_TESTS ON)
 
     if (DEFINED TARGET_PLATFORM_TOOLCHAIN)
         if (${TARGET_PLATFORM_TOOLCHAIN} STREQUAL "wasm32")
-            set(SnakeProject_TESTS OFF)
+            set(SNAKEPROJECT_TESTS OFF)
         endif()
     endif()
 
     if (ANDROID)
-        set(SnakeProject_TESTS OFF)
+        set(SNAKEPROJECT_TESTS OFF)
     endif()
 
     if (NOT QT_VERSION_MAJOR)
-        set(SnakeProject_TESTS OFF)
+        set(SNAKEPROJECT_TESTS OFF)
     endif()
 endif()
 
+# Add sub directories
 
-if (SnakeProject_TESTS)
+add_subdirectory(src/ClientLib)
+add_subdirectory(src/Client)
+
+if (SNAKEPROJECT_TESTS)
     add_subdirectory(tests)
 else()
     message("The ${PROJECT_NAME} tests is disabled.")
 endif()
+
 
 initAll()
 
