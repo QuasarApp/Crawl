@@ -42,6 +42,8 @@ if (ANDROID)
 
 else()
     add_executable(${CURRENT_PROJECT} ${SOURCE_CPP} ${SOURCE_QRC})
+    addDeployFromCustomFile("SnakeProject" "${CMAKE_CURRENT_SOURCE_DIR}/../../Deploy/SnakeProject.json")
+
 endif()
 
 target_link_libraries(${CURRENT_PROJECT} PUBLIC ${PROJECT_NAME}Core)
