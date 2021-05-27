@@ -129,13 +129,6 @@
     </message>
 </context>
 <context>
-    <name>NotificationForm</name>
-    <message>
-        <source>Message</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>Scene</name>
     <message>
         <source>lvl long: </source>
