@@ -8,7 +8,7 @@ inline void initSnakeProjectResources() { Q_INIT_RESOURCE(SnakeProject); }
 
 class QQmlApplicationEngine;
 
-class ClientApp
+class SNAKEPROJECT_EXPORT ClientApp
 {
 private:
     Controller contr;

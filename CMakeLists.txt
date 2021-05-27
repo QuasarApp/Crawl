@@ -25,6 +25,13 @@ find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Test REQUIRED)
 
 include(submodules/QuasarAppLib/CMake/QuasarApp.cmake)
 
+if (DEFINED TARGET_PLATFORM_TOOLCHAIN)
+    if (${TARGET_PLATFORM_TOOLCHAIN} STREQUAL "wasm32")
+        initAll()
+        return()
+    endif()
+endif()
+
 if (NOT DEFINED SNAKEPROJECT_TESTS)
     set(SNAKEPROJECT_TESTS ON)
 

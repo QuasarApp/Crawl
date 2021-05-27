@@ -156,14 +156,6 @@
 <context>
     <name>SettingsView</name>
     <message>
-        <source>Game Host</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Game Port</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Use Them</source>
         <translation type="unfinished"></translation>
     </message>
