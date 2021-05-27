@@ -4,6 +4,8 @@
 #include "controller.h"
 #include "diff.h"
 
+inline void initSnakeProjectResources() { Q_INIT_RESOURCE(SnakeProject); }
+
 class QQmlApplicationEngine;
 
 class ClientApp

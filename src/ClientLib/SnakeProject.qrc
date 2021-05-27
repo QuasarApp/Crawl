@@ -26,4 +26,7 @@
         <file>SnakeProjectModule/TextInput.qml</file>
         <file>SnakeProjectModule/UserView.qml</file>
     </qresource>
+    <qresource prefix="/SnakeTr">
+        <file>languages/en.qm</file>
+    </qresource>
 </RCC>

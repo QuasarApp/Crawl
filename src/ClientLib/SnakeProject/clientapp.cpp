@@ -43,26 +43,28 @@ bool ClientApp::init(QQmlApplicationEngine *engine) {
 
     qputenv("QT_QUICK_CONTROLS_MATERIAL_THEME", initTheme());
 
-    qmlRegisterType <GuiObject> ();
-    qmlRegisterType <Diff> ();
-    qmlRegisterType <MainMenuModel> ();
+
+    qmlRegisterAnonymousType<GuiObject>("GuiObject", 1);
+    qmlRegisterAnonymousType<Diff>("Diff", 1);
+    qmlRegisterAnonymousType<MainMenuModel>("MainMenuModel", 1);
 
     auto root = engine->rootContext();
     if (!root)
         return false;
 
-
     engine->addImageProvider(QLatin1String("userItems"), new ImageProvider());
 
     root->setContextProperty("contr", &contr);
-
+    initSnakeProjectResources();
     initLang();
+
+    engine->addImportPath(":/SnakeProjectModule/");
 
     if (!QmlNotificationService::init(engine)) {
         return false;
     }
 
-    engine->load(QUrl(QStringLiteral("qrc:/front-end/main.qml")));
+    engine->load("qrc:/SnakeProjectModule/SnakeProject.qml");
     if (engine->rootObjects().isEmpty())
         return false;
 
