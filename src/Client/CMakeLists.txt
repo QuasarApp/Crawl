@@ -7,7 +7,7 @@
 
 cmake_minimum_required(VERSION 3.14)
 
-set(CURRENT_PROJECT "${PROJECT_NAME}Eaxample")
+set(CURRENT_PROJECT "${PROJECT_NAME}")
 
 file(GLOB SOURCE_CPP
     "*.cpp"
@@ -33,10 +33,7 @@ else ()
     add_executable(${CURRENT_PROJECT} ${SOURCE_CPP} ${SOURCE_QRC})
 endif()
 
-if (${QT_VERSION_MAJOR})
-    target_link_libraries(${CURRENT_PROJECT} PUBLIC Qt${QT_VERSION_MAJOR}::Core)
-endif()
-target_link_libraries(${CURRENT_PROJECT} PUBLIC ${PROJECT_NAME})
+target_link_libraries(${CURRENT_PROJECT} PUBLIC ${PROJECT_NAME}Core)
 
 target_include_directories(${CURRENT_PROJECT} PUBLIC ${PUBLIC_INCUDE_DIR})
 target_include_directories(${CURRENT_PROJECT} PRIVATE ${PRIVATE_INCUDE_DIR})

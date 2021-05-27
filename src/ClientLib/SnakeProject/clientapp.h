@@ -13,6 +13,8 @@ private:
 
     QByteArray initTheme();
 
+    void initLang();
+    
 public:
     ClientApp();
     ~ClientApp();

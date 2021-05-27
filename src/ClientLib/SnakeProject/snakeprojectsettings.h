@@ -1,6 +1,5 @@
 #ifndef SNAKESETTINGS_H
 #define SNAKESETTINGS_H
-#include <config.h>
 #include <quasarapp.h>
 
 #define SERVER_ADDRESS "SERVER_ADDRESS"

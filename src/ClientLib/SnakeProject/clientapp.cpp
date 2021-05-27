@@ -1,11 +1,12 @@
 #include "clientapp.h"
 #include "imageprovider.h"
-#include "ProfileViewItems/userview.h"
+#include "mainmenumodel.h"
+
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include <quasarapp.h>
 
-#include <back-end/ProfileViewItems/mainmenumodel.h>
-#include <back-end/ProfileViewItems/notificationservice.h>
+#include <qmlnotifyservice.h>
 
 QByteArray ClientApp::initTheme() {
     int themeIndex = Settings::get()->getValue(THEME, THEME_DEFAULT).toInt();
@@ -21,6 +22,21 @@ ClientApp::ClientApp() {
 }
 
 ClientApp::~ClientApp() {
+}
+
+void ClientApp::initLang() {
+    QLocale locale = QLocale::system();
+    QString customLanguage = QuasarAppUtils::Params::getArg("lang");
+    if(customLanguage.size()) {
+        locale = QLocale(customLanguage);
+    }
+
+    if(!QuasarAppUtils::Locales::init(locale, {":/languages/languages/",
+                                               ":/credits_languages/",
+                                               ":/qmlNotify_languages/",
+                                               ":/lv_languages/"})){
+        QuasarAppUtils::Params::log("Error load language : " , QuasarAppUtils::Error);
+    }
 }
 
 bool ClientApp::init(QQmlApplicationEngine *engine) {
@@ -40,7 +56,12 @@ bool ClientApp::init(QQmlApplicationEngine *engine) {
     engine->addImageProvider(QLatin1String("userItems"), new ImageProvider());
 
     root->setContextProperty("contr", &contr);
-    root->setContextProperty("notificationService", NotificationService::getService());
+
+    initLang();
+
+    if (!QmlNotificationService::init(engine)) {
+        return false;
+    }
 
     engine->load(QUrl(QStringLiteral("qrc:/front-end/main.qml")));
     if (engine->rootObjects().isEmpty())

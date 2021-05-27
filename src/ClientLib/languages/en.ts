@@ -102,49 +102,6 @@
     </message>
 </context>
 <context>
-    <name>MainClient</name>
-    <message>
-        <source>Login status</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Success</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Authorization Required</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Wait for answer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Login result</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Authorization fail</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Client is offline</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Offline Mode</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Request</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Bad Request</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>MainMenu</name>
     <message>
         <source>Play game</source>
@@ -273,14 +230,6 @@
     </message>
     <message>
         <source>try conect to server </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Undefined name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Undefined gmail</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

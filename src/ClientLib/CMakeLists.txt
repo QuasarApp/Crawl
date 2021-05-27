@@ -6,6 +6,7 @@
 #
 
 cmake_minimum_required(VERSION 3.14)
+set(CURRENT_PROJECT "${PROJECT_NAME}Core")
 
 add_definitions(-DSnakeProject_LIBRARY)
 
@@ -13,16 +14,10 @@ add_definitions(-DSnakeProject_LIBRARY)
 file(GLOB SOURCE_CPP
     "*SnakeProject/*.cpp"
      "SnakeProject/Private/*.cpp"
+     "*.qrc"
+     "SnakeProject/*.qrc"
+     "SnakeProject/Private/*.qrc"
 )
-
-if (${QT_VERSION_MAJOR})
-    file(GLOB SOURCE_QRC
-        "*.qrc"
-        "SnakeProject/*.qrc"
-        "SnakeProject/Private/*.qrc"
-    )
-
-endif()
 
 set(PUBLIC_INCUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 set(PRIVATE_INCUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Private")
@@ -30,18 +25,16 @@ set(PRIVATE_INCUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Private")
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Quick REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick REQUIRED)
 
+add_library(${CURRENT_PROJECT} ${SOURCE_CPP} ${SOURCE_QRC})
 
-add_library(${PROJECT_NAME} ${SOURCE_CPP} ${SOURCE_QRC})
+target_link_libraries(${CURRENT_PROJECT} PUBLIC Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick QuasarApp QmlNotyfyService)
 
-target_link_libraries(${PROJECT_NAME} PUBLIC Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick)
-
-target_include_directories(${PROJECT_NAME} PUBLIC ${PUBLIC_INCUDE_DIR})
-target_include_directories(${PROJECT_NAME} PRIVATE ${PRIVATE_INCUDE_DIR})
+target_include_directories(${CURRENT_PROJECT} PUBLIC ${PUBLIC_INCUDE_DIR})
+target_include_directories(${CURRENT_PROJECT} PRIVATE ${PRIVATE_INCUDE_DIR})
 
 set(LANGS ${CMAKE_CURRENT_SOURCE_DIR}/languages/en.ts)
 
-
-prepareQM(${PROJECT_NAME} ${CMAKE_CURRENT_SOURCE_DIR} "${LANGS}")
+prepareQM(${CURRENT_PROJECT} ${CMAKE_CURRENT_SOURCE_DIR} "${LANGS}")
 
 set(QML_IMPORT_PATH ${QML_IMPORT_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/src" CACHE STRING "" FORCE)
 
