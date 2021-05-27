@@ -93,7 +93,7 @@ Item {
 
     Connections {
         target: model;
-        onGameObjectsChanged: {
+        function onGameObjectsChanged(dif) {
             if (!dif) {
                 console.log("dif not found");
                 return;

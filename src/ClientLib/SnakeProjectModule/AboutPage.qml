@@ -19,7 +19,7 @@ Item {
                 id: aboutLogo
                 fillMode: Image.PreserveAspectFit
 
-                source: "qrc:/logo/logo"
+                source: "qrc:/images/res/logo.png"
                 anchors.margins: 10
                 anchors.fill: parent
 

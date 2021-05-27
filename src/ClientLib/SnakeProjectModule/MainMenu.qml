@@ -6,45 +6,17 @@ import QtQuick.Layouts 1.3
 Item {
     id: item1
     property var model: null
-    readonly property int  onlineStatus: (model)? model.onlineStatus: false
 
     visible: true
     z: 1
 
     signal playGame();
 
-    onOnlineStatusChanged: {
-        if (onlineStatus && onlineStatus !== 5) {
-            loginPopUp._show();
-        } else {
-            loginPopUp.close();
-        }
-    }
-
-    LeftSideBar {
-        id: userViewSideBar
-        openWidth: 7 * metrix.pt;
-
-        openHeight: columnLayout.height
-        source: UserView {
-
-            anchors.fill: parent;
-            model: (item1.model)? item1.model.userViewModel: null
-            visible: userViewSideBar.openFinished
-            onTryConnect: {
-                if (item1.model)
-                    item1.model.tryConnect();
-            }
-        }
-
-    }
-
-
     GridLayout {
         id: columnLayout
         anchors.top: parent.top
         anchors.bottom: parent.bottom
-        anchors.left: userViewSideBar.right
+        anchors.left: parent.left
         anchors.right: parent.right
 
         anchors.leftMargin: 0
@@ -145,47 +117,6 @@ Item {
         }
 
     }
-
-
-    PagePopUp {
-        id: loginPopUp
-        source: LoginView {
-            id: loginView
-            loginStatus: onlineStatus
-
-            onSigLogin: {
-                if (!model) {
-                    return;
-                }
-
-                model.login(gmail, password);
-            }
-            onSigNewUser: {
-                if (!model) {
-                    return;
-                }
-
-                model.registerNewUser(gmail, password);
-
-            }
-
-            onToOffline: {
-                if (!model) {
-                    return;
-                }
-
-                model.playOffline();
-            }
-        }
-
-        visible: true;
-        modal: true;
-        autoClose: false
-        clickClose: false
-        width: 12 * metrix.controlPtMaterial
-        height: ((loginView.currentView)? 9 : 7) * metrix.controlPtMaterial;
-    }
-
 
 }
 

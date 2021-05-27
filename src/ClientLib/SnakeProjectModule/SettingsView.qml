@@ -41,40 +41,6 @@ Item {
         columns: 2
         anchors.fill: parent
 
-
-        Label {
-            text: qsTr("Game Host")
-            Layout.fillWidth: true
-        }
-
-        TextField {
-            id: host;
-            text: (model)? model.host: "localhost"
-            Layout.fillHeight: false
-            Layout.fillWidth: true
-            horizontalAlignment: Text.AlignLeft
-            Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
-
-        }
-
-        Label {
-            text: qsTr("Game Port")
-            Layout.fillWidth: true
-        }
-
-        SpinBox {
-            id: port;
-            Layout.fillWidth: true
-            to: 10000
-            from: 7000
-            antialiasing: false
-            scale: 1
-            Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
-
-            value: (model)? model.port: 7777
-
-        }
-
         Label {
             text: qsTr("Use Them")
             Layout.fillWidth: true

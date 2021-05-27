@@ -29,4 +29,15 @@
     <qresource prefix="/SnakeTr">
         <file>languages/en.qm</file>
     </qresource>
+    <qresource prefix="/images">
+        <file>res/up.svg</file>
+        <file>res/logo.png</file>
+        <file>res/icon.ico</file>
+        <file>res/defaultUser.png</file>
+        <file>res/defaultSnake.png</file>
+        <file>res/cogs-solid.svg</file>
+        <file>res/box-texture.png</file>
+        <file>res/asphalt.jpg</file>
+        <file>res/Settings-icon.png</file>
+    </qresource>
 </RCC>
