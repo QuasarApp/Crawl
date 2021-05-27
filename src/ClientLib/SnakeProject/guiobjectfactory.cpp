@@ -1,6 +1,6 @@
 #include "guiobjectfactory.h"
 #include "box.h"
-#include <snakeutils.h>
+#include "snakeutils.h"
 #include "head.h"
 #include "background.h"
 #include "backgrounditem.h"

@@ -1,6 +1,6 @@
 #include "clientapp.h"
 #include "imageprovider.h"
-#include "mainmenumodel.h"
+#include "SnakeProject/mainmenumodel.h"
 
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
@@ -9,7 +9,7 @@
 #include <qmlnotifyservice.h>
 
 QByteArray ClientApp::initTheme() {
-    int themeIndex = Settings::get()->getValue(THEME, THEME_DEFAULT).toInt();
+    int themeIndex = Settings::instance()->getValue(THEME, THEME_DEFAULT).toInt();
 
     switch (themeIndex) {
     case 1: return "Dark";
@@ -46,7 +46,6 @@ bool ClientApp::init(QQmlApplicationEngine *engine) {
     qmlRegisterType <GuiObject> ();
     qmlRegisterType <Diff> ();
     qmlRegisterType <MainMenuModel> ();
-    qmlRegisterType <UserView> ();
 
     auto root = engine->rootContext();
     if (!root)

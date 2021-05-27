@@ -1,7 +1,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
-#include "clientapp.h"
+#include <SnakeProject/clientapp.h>
 
 
 int main(int argc, char *argv[])

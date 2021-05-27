@@ -2,9 +2,9 @@
 #include <cmath>
 #include <ctime>
 #include "diff.h"
-#include <lvls.h>
-#include "ProfileViewItems/mainmenumodel.h"
-#include <back-end/ProfileViewItems/notificationservice.h>
+#include "lvls.h"
+#include "mainmenumodel.h"
+#include "qmlnotifyservice.h"
 
 Controller::Controller() {
     srand(static_cast<unsigned int>(time(nullptr)));
@@ -78,11 +78,13 @@ void Controller::update() {
 
         if (!_showMenu) {
 
-            NotificationData notify(tr(" Next Lvl!!!"),
-                                    tr(" You anblock next lvl (%0)" ).arg(lvl),
-                                    "qrc:/texture/up");
 
-            NotificationService::getService()->setNotify(notify);
+            if (auto service = QmlNotificationService::NotificationService::getService()) {
+                QmlNotificationService::NotificationData notify(tr(" Next Lvl!!!"),
+                                        tr(" You anblock next lvl (%0)" ).arg(lvl),
+                                        "qrc:/texture/up");
+                service->setNotify(notify);
+            }
         }
 
         nextLvl();

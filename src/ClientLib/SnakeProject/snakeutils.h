@@ -1,7 +1,7 @@
 #ifndef SNAKEUTILS_H
 #define SNAKEUTILS_H
 
-
+#include "SnakeProject/global.h"
 #include <QMap>
 #include <QPoint>
 #include <QVariant>
@@ -17,4 +17,4 @@
 typedef QMap<QString, int> WorldRules;
 
 
-#endif // SNAKEUTILS_H
+#endif // SNAKEUTILS_Hм.

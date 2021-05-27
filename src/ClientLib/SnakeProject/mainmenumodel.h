@@ -2,7 +2,7 @@
 #define NETWORKPROFILEMAINMODEL_H
 
 #include <QObject>
-#include "snakeprojectsettings.h"
+#include "SnakeProject/settings.h"
 
 
 class MainMenuModel : public QObject
@@ -13,6 +13,7 @@ class MainMenuModel : public QObject
 
 private:
     Settings *_conf = nullptr;
+    QObject* _userSettingsModel = nullptr;
 
 public:
     MainMenuModel(QObject *ptr = nullptr);
@@ -20,6 +21,7 @@ public:
 
 signals:
     void userSettingsModelChanged(QObject* userSettingsModel);
+    void newGame();
 };
 
 #endif // NETWORKPROFILEMAINMODEL_H

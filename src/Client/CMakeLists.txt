@@ -11,20 +11,20 @@ set(CURRENT_PROJECT "${PROJECT_NAME}")
 
 file(GLOB SOURCE_CPP
     "*.cpp"
-     "Private/*.cpp"
+     "private/*.cpp"
 )
 
 if (${QT_VERSION_MAJOR})
     file(GLOB SOURCE_QRC
         "*.qrc"
-        "Private/*.qrc"
+        "private/*.qrc"
     )
 
 endif()
 
 set(PUBLIC_INCUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 
-set(PRIVATE_INCUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Private")
+set(PRIVATE_INCUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/private")
 
 
 if (ANDROID)
