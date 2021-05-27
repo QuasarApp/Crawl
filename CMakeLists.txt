@@ -58,6 +58,10 @@ add_subdirectory(submodules/SimpleQmlNotify)
 add_subdirectory(src/ClientLib)
 add_subdirectory(src/Client)
 
+if (ANDROID)
+    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src/Client/android")
+endif()
+
 if (SNAKEPROJECT_TESTS)
     add_subdirectory(tests)
 else()
