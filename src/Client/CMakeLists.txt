@@ -52,7 +52,7 @@ if (ANDROID)
                 "SnakeProject"
                 "${SIGPATH}/SnakeProject.keystore"
                 "${SIGPASS_SNAKE}"
-                "${CMAKE_SOURCE_DIR}/Distro"
+                "${CMAKE_SOURCE_DIR}/Distro/"
                 "${SNAKE_EXTRA_LIBS}")
 
     target_link_libraries(${CURRENT_PROJECT} PRIVATE Qt${QT_VERSION_MAJOR}::AndroidExtras)
