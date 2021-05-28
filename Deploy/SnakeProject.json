@@ -11,7 +11,7 @@
     "qifStyle": "quasar",
     "qifLogo": "./../src/ClientLib/res/logo.png",
     "deb": true,
-    "qmlDir": "../",
+    "qmlDir": "./../",
     "ignoreEnv": [
         "./../installer",
         "./../Distro",
