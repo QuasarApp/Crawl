@@ -38,6 +38,8 @@ target_link_libraries(${CURRENT_PROJECT} PUBLIC ${PROJECT_NAME}Core)
 target_include_directories(${CURRENT_PROJECT} PUBLIC ${PUBLIC_INCUDE_DIR})
 target_include_directories(${CURRENT_PROJECT} PRIVATE ${PRIVATE_INCUDE_DIR})
 
+SET(TARGET_DIR "${CMAKE_SOURCE_DIR}/Distro")
+file(MAKE_DIRECTORY ${TARGET_DIR})
 
 if (ANDROID)
     set(SNAKE_EXTRA_LIBS "${PROJECT_NAME}Core"
@@ -52,7 +54,7 @@ if (ANDROID)
                 "SnakeProject"
                 "${SIGPATH}/SnakeProject.keystore"
                 "${SIGPASS_SNAKE}"
-                "${CMAKE_SOURCE_DIR}/Distro/"
+                "${TARGET_DIR}/Distro/"
                 "${SNAKE_EXTRA_LIBS}")
 
     target_link_libraries(${CURRENT_PROJECT} PRIVATE Qt${QT_VERSION_MAJOR}::AndroidExtras)
