@@ -41,6 +41,8 @@ target_include_directories(${CURRENT_PROJECT} PRIVATE ${PRIVATE_INCUDE_DIR})
 SET(TARGET_DIR "${CMAKE_SOURCE_DIR}/Distro")
 file(MAKE_DIRECTORY ${TARGET_DIR})
 
+
+
 if (ANDROID)
     set(SNAKE_EXTRA_LIBS "${PROJECT_NAME}Core"
                          QuasarApp
