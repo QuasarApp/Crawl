@@ -29,10 +29,8 @@ set(PRIVATE_INCUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/private")
 
 if (ANDROID)
     add_library(${CURRENT_PROJECT} ${SOURCE_CPP} ${SOURCE_QRC})
-
 else()
     add_executable(${CURRENT_PROJECT} ${SOURCE_CPP} ${SOURCE_QRC})
-
 endif()
 
 target_link_libraries(${CURRENT_PROJECT} PUBLIC ${PROJECT_NAME}Core)
@@ -54,7 +52,7 @@ if (ANDROID)
                 "SnakeProject"
                 "${SIGPATH}/SnakeProject.keystore"
                 "${SIGPASS_SNAKE}"
-                "${TARGET_DIR}"
+                "${CMAKE_SOURCE_DIR}/Distro"
                 "${SNAKE_EXTRA_LIBS}")
 
     target_link_libraries(${CURRENT_PROJECT} PRIVATE Qt${QT_VERSION_MAJOR}::AndroidExtras)
