@@ -30,19 +30,8 @@ set(PRIVATE_INCUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/private")
 if (ANDROID)
     add_library(${CURRENT_PROJECT} ${SOURCE_CPP} ${SOURCE_QRC})
 
-    set(HANOI_EXTRA_LIBS "${PROJECT_NAME}Core"
-                         QuasarApp
-                         QmlNotyfyService)
-
-    find_package(QT NAMES Qt6 Qt5 COMPONENTS AndroidExtras REQUIRED)
-    find_package(Qt${QT_VERSION_MAJOR} COMPONENTS AndroidExtras REQUIRED)
-
-    addDeployAPK(${CURRENT_PROJECT} "${CMAKE_CURRENT_LIST_DIR}/android" "digitalface" "${SIGPATH}/DigitalFaceMobily.keystore" "${SIGPASS_HANOI}" "${TARGET_DIR}" "${HANOI_EXTRA_LIBS}")
-    target_link_libraries(${CURRENT_PROJECT} PRIVATE Qt${QT_VERSION_MAJOR}::AndroidExtras)
-
 else()
     add_executable(${CURRENT_PROJECT} ${SOURCE_CPP} ${SOURCE_QRC})
-    addDeployFromCustomFile("SnakeProject" "${CMAKE_CURRENT_SOURCE_DIR}/../../Deploy/SnakeProject.json")
 
 endif()
 
@@ -52,3 +41,26 @@ target_include_directories(${CURRENT_PROJECT} PUBLIC ${PUBLIC_INCUDE_DIR})
 target_include_directories(${CURRENT_PROJECT} PRIVATE ${PRIVATE_INCUDE_DIR})
 
 
+if (ANDROID)
+    set(SNAKE_EXTRA_LIBS "${PROJECT_NAME}Core"
+                         QuasarApp
+                         QmlNotyfyService)
+
+    find_package(QT NAMES Qt6 Qt5 COMPONENTS AndroidExtras REQUIRED)
+    find_package(Qt${QT_VERSION_MAJOR} COMPONENTS AndroidExtras REQUIRED)
+
+    addDeployAPK(${CURRENT_PROJECT}
+                "${CMAKE_CURRENT_LIST_DIR}/android"
+                "SnakeProject"
+                "${SIGPATH}/SnakeProject.keystore"
+                "${SIGPASS_SNAKE}"
+                "${TARGET_DIR}"
+                "${SNAKE_EXTRA_LIBS}")
+
+    target_link_libraries(${CURRENT_PROJECT} PRIVATE Qt${QT_VERSION_MAJOR}::AndroidExtras)
+
+else()
+    # Desctop deploying
+    addDeployFromCustomFile("SnakeProject"
+                            "${CMAKE_CURRENT_SOURCE_DIR}/../../Deploy/SnakeProject.json")
+endif()
