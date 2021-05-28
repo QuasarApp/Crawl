@@ -1,0 +1,26 @@
+{
+    "bin": [
+        "src/Client/SnakeProject",
+        "src/Client/SnakeProject.exe"
+        ],
+    "clear": true,
+    "libDir": "./../",
+    "recursiveDepth": "10",
+    "deploySystem": false,
+    "qif": true,
+    "qifStyle": "quasar",
+    "qifLogo": "./../src/ClientLib/res/logo.png",
+    "deb": true,
+    "qmlDir": "./../",
+    "ignoreEnv": [
+        "./../installer",
+        "./../Distro",
+        "./../parts",
+        "./../snap",
+        "./../prime",
+        "./../stage"
+        ],
+    "extraLib": "crypto",
+    "targetDir": "./../Distro"
+}
+

@@ -1,33 +1,19 @@
 # C++ objects and libs
-
 *.slo
 *.lo
 *.o
 *.a
 *.la
 *.lai
-*.so*
+*.so
+*.so.*
 *.dll
 *.dylib
-*.exe
 
 # Qt-es
-/Build*
-/build*
-SnakeClient/Client/build/
-SnakeClient/SnakeApp/build/
-SnakeServer/Server/build/
-SnakeServer/serverProtocolTests/build/
-SnakeServer/Terminal/build
-*.stash
-/Release*
-/parts/*
-/prime/*
-/snap/.snapcraft/*
-/stage/*
-/Build-*
-/Release-*
-*.stash
+object_script.*.Release
+object_script.*.Debug
+*_plugin_import.cpp
 /.qmake.cache
 /.qmake.stash
 *.pro.user
@@ -39,46 +25,43 @@ moc_*.cpp
 moc_*.h
 qrc_*.cpp
 ui_*.h
+*.qmlc
+*.jsc
 Makefile*
 *build-*
-*_qml.cpp
-*.snap
+tests/build/
+src/build/
 *.qm
-qml_qmlcache.qrc
-qmlcache_loader.cpp
-snake
-SnakeServer/Terminal/build/debug/Terminal
+*.prl
+
+# Qt unit tests
+target_wrapper.*
 
 # QtCreator
-installer/HanoiTowersInstaller
 *.autosave
-installer/installer
 
-# QtCtreator Qml
+# QtCreator Qml
 *.qmlproject.user
 *.qmlproject.user.*
 
-# QtCtreator CMake
+# QtCreator CMake
 CMakeLists.txt.user*
-installer/packages/Snake/data
-\.buildconfig
 
-SnakeServer/Daemon/build/*
+# QtCreator 4.8< compilation database 
+compile_commands.json
 
-SnakeServer/Client/build/*/Client
+# QtCreator local machine specific files for imported projects
+*creator.user*
 
-SnakeServer/Daemon/build/*/Daemon
-
-SnakeServer/serverProtocolTests/target_wrapper\.sh
-
-SnakeServer/serverProtocolTests/serverProtocolTests
-
-deployTests/
-
-installer/SnakeInstaller
-
-Distro/
-
-android-build/
-
-*.db
+CMakeLists.txt.user
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Testing
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+_deps
+*_autogen*
