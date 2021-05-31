@@ -27,6 +27,81 @@
     </message>
 </context>
 <context>
+    <name>LoginView</name>
+    <message>
+        <source>Success</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Password must be at least 8 characters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Name must be at least 1 characters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Passwords must match</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The letter must match the pattern &apos;X@xxxx.xxx&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Email</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Passsword</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter Your passsword</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter Your Email</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Repeat password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter Your passsword again</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sign in</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sign Up</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You need connect to server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use OfflineMode</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>MainMenu</name>
     <message>
         <source>Play game</source>

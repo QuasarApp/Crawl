@@ -10,6 +10,7 @@
         <file>SnakeProjectModule/ImageView.qml</file>
         <file>SnakeProjectModule/LeftBoxSideBar.qml</file>
         <file>SnakeProjectModule/LeftSideBar.qml</file>
+        <file>SnakeProjectModule/LoginView.qml</file>
         <file>SnakeProjectModule/MainMenu.qml</file>
         <file>SnakeProjectModule/MainMenuButton.qml</file>
         <file>SnakeProjectModule/Metrix.qml</file>

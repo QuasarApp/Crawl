@@ -1,7 +1,8 @@
-import QtQuick
-import QtQuick.Controls
-
-import QtQuick.Layouts
+import QtQuick 2.11
+import QtQuick.Controls 2.3
+import QtQuick.Controls.Material 2.0
+import QtQuick.Layouts 1.3
+import QtGraphicalEffects 1.12
 
 Dialog {
     id : basePopup
@@ -17,6 +18,26 @@ Dialog {
 
     property int closeInterval: 15000;
     property int margin : 0
+    property color backgroundColor: Material.background
+
+    background: Item {
+        id: bacground
+
+        Rectangle{
+            anchors.fill: parent
+            id: backCorner
+            color: backgroundColor
+            radius: metrix.mm
+        }
+
+        DropShadow {
+            anchors.fill: parent
+            source: backCorner
+            color: "#80000000"
+            verticalOffset: 10
+            samples: 30
+        }
+    }
 
     function _show() {
 

@@ -1,6 +1,6 @@
-import QtQuick
-
-import QtQuick.Controls
+import QtQuick 2.12
+import QtQuick.Controls.Material 2.12
+import QtQuick.Controls 2.12
 
 FrameView {
     id: sideBar
@@ -20,8 +20,8 @@ FrameView {
     property var source: null
     property var header: null
 
-    readonly property bool openFinished: openHeight === height && openWidth === width;
-    readonly property bool closeFinished: closedHeight === height && closedWidth === width;
+    readonly property bool openFinished: openHeight === height && openWidth == width;
+    readonly property bool closeFinished: closedHeight === height && closedWidth == width;
 
     function show() {
         if (resizeWidth && !(chainAnimation && resizeHeight))
