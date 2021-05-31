@@ -1,8 +1,7 @@
-import QtQuick 2.12
-import QtQuick.Controls.Material 2.12
-import QtQuick.Controls 2.12
-import QtQuick.Layouts 1.3
-import QtGraphicalEffects 1.12
+import QtQuick
+import QtQuick.Controls.Material
+import QtQuick.Controls
+import QtQuick.Layouts
 
 Item {
     id: properyView
@@ -39,17 +38,6 @@ Item {
                 }
             }
         }
-    }
-
-    DropShadow {
-        anchors.fill: background
-        horizontalOffset: 2
-        verticalOffset: 2
-        radius: 8.0
-        samples: 17
-
-        color:  "#80000000";
-        source: background
     }
 
     MouseArea {

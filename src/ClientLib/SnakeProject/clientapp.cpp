@@ -42,7 +42,7 @@ void ClientApp::initLang() {
 bool ClientApp::init(QQmlApplicationEngine *engine) {
 
     qputenv("QT_QUICK_CONTROLS_MATERIAL_THEME", initTheme());
-    qputenv("QT_QUICK_CONTROLS_STYLE", "material");
+    qputenv("QT_QUICK_CONTROLS_STYLE", "Basic");
 
     qmlRegisterAnonymousType<GuiObject>("GuiObject", 1);
     qmlRegisterAnonymousType<Diff>("Diff", 1);

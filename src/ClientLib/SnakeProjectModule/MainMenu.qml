@@ -1,7 +1,7 @@
-import QtQuick 2.9
-import QtQuick.Controls.Material 2.0
-import QtQuick.Controls 2.3
-import QtQuick.Layouts 1.3
+import QtQuick
+import QtQuick.Controls.Material
+import QtQuick.Controls
+import QtQuick.Layouts
 
 Item {
     id: item1
@@ -65,7 +65,7 @@ Item {
             text: qsTr("My Settings")
 
             onClicked: {
-                settingsPopUp._show();
+                settingsPopUp.open();
 
             }
 
@@ -83,14 +83,6 @@ Item {
     }
 
     PagePopUp {
-        id: about;
-        width: parent.width / 2
-        height: parent.height / 2;
-
-        source: About {}
-    }
-
-    PagePopUp {
         id: settingsPopUp
         source: SettingsView {
             id: settingsView
@@ -99,8 +91,6 @@ Item {
 
         standardButtons:  Dialog.Save | Dialog.Cancel | Dialog.RestoreDefaults
         modal: false;
-        autoClose: false
-        clickClose: true
         width: 12 * metrix.controlPtMaterial
         height: 8 * metrix.controlPtMaterial;
 

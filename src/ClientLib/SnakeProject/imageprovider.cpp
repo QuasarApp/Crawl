@@ -6,6 +6,8 @@
 ImageProvider::ImageProvider() = default;
 ImageProvider::~ImageProvider() = default;
 
+#define IgnoreQFuture(x) x.isRunning()
+
 QQuickImageResponse *ImageProvider::requestImageResponse(const QString &id,
                                                          const QSize &requestedSize) {
 
@@ -28,7 +30,7 @@ QQuickImageResponse *ImageProvider::requestImageResponse(const QString &id,
 
     };
 
-    QtConcurrent::run(readImage);
+    IgnoreQFuture(QtConcurrent::run(readImage));
 
     return response;
 }
