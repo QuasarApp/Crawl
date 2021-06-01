@@ -7,7 +7,7 @@
 #define POINT 100
 
 ItemWorld::ItemWorld(double x, double y, const QString& guiTemplate):
-    GuiObject (guiTemplate) {
+    GuiObject3D (guiTemplate) {
     setLoc(x, y);
 }
 
@@ -26,16 +26,16 @@ void ItemWorld::setLoc(double x, double y) {
 }
 
 void ItemWorld::render() {
-    if (m_x + w() < 0) {
-        m_x = (rand() % 400) + 200;
-        m_y = rand() % 100;
+    if (_x + w() < 0) {
+        _x = (rand() % 400) + 200;
+        _y = rand() % 100;
         emit xChanged();
         emit yChanged();
     }
 }
 
 bool ItemWorld::move(const GuiObject *snakeRiger, double dx) {
-    m_x -= dx;
+    _x -= dx;
     emit xChanged();
 
     return snakeRiger->rect().intersects(rect()) && !beckGroundObject;

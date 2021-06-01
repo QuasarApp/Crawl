@@ -6,13 +6,7 @@
 
 class ItemWorld : public GuiObject
 {
-private:    
-    bool beckGroundObject = false;
-protected:
-    virtual void setSize(double h, double w);
-    virtual void setLoc(double x, double y);
-    void setBeckGroundObject(bool value);
-
+    Q_OBJECT
 public:
     ItemWorld(double x, double y, const QString& GuiTemplate = "GraphicItem");
 
@@ -21,6 +15,16 @@ public:
     bool isBeckGroundObject();
 
     ~ItemWorld();
+
+
+protected:
+    void setSize(double h, double w);
+    void setLoc(double x, double y);
+    void setBeckGroundObject(bool value);
+
+
+private:
+    bool beckGroundObject = false;
 };
 
 #endif // ITEMWORLD_H

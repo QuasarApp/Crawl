@@ -3,7 +3,7 @@
 #include <QColor>
 
 Box::Box(double x, double y):
-    ItemWorld (x, y) {
+    ItemWorld (x, y, "3dPrimitive") {
 
     this->setSize(10, 10);
 

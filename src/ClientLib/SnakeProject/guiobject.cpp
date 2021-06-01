@@ -2,71 +2,29 @@
 
 GuiObject::GuiObject(const QString &viewTempalte, QObject *ptr):
     QObject (ptr) {
-    m_viewTemplate = viewTempalte;
+    _viewTemplate = viewTempalte;
     generateId();
 
-}
-
-double GuiObject::angle() const {
-    return m_angle;
-}
-
-QString GuiObject::texture() const {
-    return m_texture;
 }
 
 void GuiObject::render() {
 }
 
-QRectF GuiObject::rect() const {
-    return QRectF(m_x - m_w / 2, m_y - m_h / 2, m_w, m_h);
-}
-
-void GuiObject::setAngle(double angle) {
-    m_angle = angle;
-    emit angleChanged(m_angle);
-}
-
-int GuiObject::guiId() const {
-    return m_guiId;
-}
-
 QString GuiObject::color() const {
-    return m_color;
+    return _color;
 }
 
 void GuiObject::setColor(QString color) {
-    if (m_color == color)
+    if (_color == color)
         return;
 
-    m_color = color;
-    emit colorChanged(m_color);
-}
-
-double GuiObject::x() const {
-    return m_x;
-}
-
-double GuiObject::y() const {
-    return m_y;
-}
-
-double GuiObject::w() const {
-    return m_w;
-}
-
-double GuiObject::h() const {
-    return m_h;
+    _color = color;
+    emit colorChanged(_color);
 }
 
 void GuiObject::generateId() {
     static int id = 0;
-    m_guiId = id++;
-}
-
-void GuiObject::setH(double h) {
-    m_h = h;
-    emit hChanged();
+    _guiId = id++;
 }
 
 void GuiObject::reset() {
@@ -74,43 +32,134 @@ void GuiObject::reset() {
     setY(-1);
 }
 
-int GuiObject::radius() const {
-    return m_radius;
-}
 
 QString GuiObject::viewTemplate() const {
-    return m_viewTemplate;
+    return _viewTemplate;
 }
 
-void GuiObject::setRadius(int radius) {
-    if (m_radius == radius)
+int GuiObject::guiId() const {
+    return _guiId;
+}
+
+void GuiObject::setGuiId(int guiId) {
+    if (guiId == _guiId)
         return;
 
-    m_radius = radius;
-    emit radiusChanged(m_radius);
+    _guiId = guiId;
+    emit guiIdChanged(guiId);
 }
 
-void GuiObject::setW(double w) {
-    m_w = w;
-    emit wChanged();
-
+float GuiObject::x() const {
+    return _x;
 }
 
-void GuiObject::setY(double y) {
-    m_y = y;
-    emit yChanged();
-
-}
-
-void GuiObject::setX(double x) {
-    m_x = x;
+void GuiObject::setX(float newX) {
+    if (qFuzzyCompare(_x, newX))
+        return;
+    _x = newX;
     emit xChanged();
-
 }
 
-void GuiObject::setTexture(const QString &texture) {
-    m_texture = texture;
-    emit textureChanged(m_texture);
+float GuiObject::y() const {
+    return _y;
 }
 
+void GuiObject::setY(float newY) {
+    if (qFuzzyCompare(_y, newY))
+        return;
+    _y = newY;
+    emit yChanged();
+}
 
+float GuiObject::z() const {
+    return _z;
+}
+
+void GuiObject::setZ(float newZ) {
+    if (qFuzzyCompare(_z, newZ))
+        return;
+    _z = newZ;
+    emit zChanged();
+}
+
+float GuiObject::dx() const {
+    return _dx;
+}
+
+void GuiObject::setDx(float newDx) {
+    if (qFuzzyCompare(_dx, newDx))
+        return;
+    _dx = newDx;
+    emit dxChanged();
+}
+
+float GuiObject::dy() const {
+    return _dy;
+}
+
+void GuiObject::setDy(float newDy) {
+    if (qFuzzyCompare(_dy, newDy))
+        return;
+    _dy = newDy;
+    emit dyChanged();
+}
+
+float GuiObject::dz() const {
+    return _dz;
+}
+
+void GuiObject::setDz(float newDz) {
+    if (qFuzzyCompare(_dz, newDz))
+        return;
+    _dz = newDz;
+    emit dzChanged();
+}
+
+float GuiObject::rx() const {
+    return _rx;
+}
+
+void GuiObject::setRx(float newRx) {
+    if (qFuzzyCompare(_rx, newRx))
+        return;
+    _rx = newRx;
+    emit rxChanged();
+}
+
+float GuiObject::ry() const {
+    return _ry;
+}
+
+void GuiObject::setRy(float newRy) {
+    if (qFuzzyCompare(_ry, newRy))
+        return;
+    _ry = newRy;
+    emit ryChanged();
+}
+
+float GuiObject::rz() const {
+    return _rz;
+}
+
+void GuiObject::setRz(float newRz) {
+    if (qFuzzyCompare(_rz, newRz))
+        return;
+    _rz = newRz;
+    emit rzChanged();
+}
+
+const QString &GuiObject::baseColorMap() const {
+    return _baseColorMap;
+}
+
+const QString &GuiObject::roughnessMap() const {
+    return _roughnessMap;
+}
+
+const QString &GuiObject::normalMap() const {
+    return _normalMap;
+}
+
+const QString &GuiObject::emissiveMap() const {
+    return _emissiveMap;
+}

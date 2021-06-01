@@ -22,7 +22,7 @@ private:
 
 public:
     Head(double x , double y, double h, double w, double *speed);
-    void setAngle(double angle) override;
+    void setAngle(double angle);
     void render() override;
     void reset() override;
     void unPause();

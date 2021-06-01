@@ -8,8 +8,8 @@ void Head::render() {
     qint64 tempTime = QDateTime::currentMSecsSinceEpoch() - time;
     time = QDateTime::currentMSecsSinceEpoch();
 
-    double my = (m_y + (*speed * 0.55) * sin(m_angle * TO_RADIAN));
-    m_y += (my - m_y) / 1000 * tempTime;
+    double my = (_y + (*speed * 0.55) * sin(m_angle * TO_RADIAN));
+    _y += (my - _y) / 1000 * tempTime;
 
     if (*speed < 1) {
         setColor(generalSpeadColor);

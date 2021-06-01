@@ -9,7 +9,7 @@ BackGround::BackGround(double x, double y): ItemWorld (x, y) {
 void BackGround::render() {
     auto wPart = w() / 2;
 
-    if (m_x + wPart < 200) {
+    if (_x + wPart < 200) {
         setX(wPart);
     }
 }
