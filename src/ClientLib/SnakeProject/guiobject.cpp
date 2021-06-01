@@ -66,7 +66,7 @@ void GuiObject::generateId() {
 
 void GuiObject::setH(double h) {
     m_h = h;
-    emit hChanged(m_h);
+    emit hChanged();
 }
 
 void GuiObject::reset() {
@@ -92,19 +92,19 @@ void GuiObject::setRadius(int radius) {
 
 void GuiObject::setW(double w) {
     m_w = w;
-    emit wChanged(m_w);
+    emit wChanged();
 
 }
 
 void GuiObject::setY(double y) {
     m_y = y;
-    emit yChanged(m_y);
+    emit yChanged();
 
 }
 
 void GuiObject::setX(double x) {
     m_x = x;
-    emit xChanged(m_x);
+    emit xChanged();
 
 }
 

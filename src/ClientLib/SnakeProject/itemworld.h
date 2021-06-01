@@ -16,7 +16,7 @@ protected:
 public:
     ItemWorld(double x, double y, const QString& GuiTemplate = "GraphicItem");
 
-    void render();
+    void render() override;
     virtual bool move(const GuiObject* snakeRiger, double dx);
     bool isBeckGroundObject();
 

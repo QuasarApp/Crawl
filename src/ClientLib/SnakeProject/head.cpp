@@ -29,7 +29,7 @@ void Head::render() {
 
     }
 
-    emit yChanged(m_y);
+    emit yChanged();
 }
 
 void Head::reset() {

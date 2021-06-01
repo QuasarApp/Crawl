@@ -80,10 +80,10 @@ signals:
     void textureChanged(QString texture);
     void guiIdChanged(int guiId);
     void colorChanged(QString color);
-    void xChanged(double x);
-    void yChanged(double y);
-    void wChanged(double w);
-    void hChanged(double h);
+    void xChanged();
+    void yChanged();
+    void wChanged();
+    void hChanged();
     void radiusChanged(int radius);
     void viewTemplateChanged(QString viewTemplate);
 };

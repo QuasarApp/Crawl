@@ -1,7 +1,6 @@
 import QtQuick
 
 GraphicItem {
-
     Behavior on color {
         ColorAnimation {
             duration: 2000

@@ -1,9 +1,10 @@
 import QtQuick
+import QtQuick3D
 import QtQuick.Controls.Material
 import QtQuick.Controls
 import QtQuick.Layouts
 
-Item {
+View3D {
     id: scene;
     z: -2
 
@@ -49,7 +50,7 @@ Item {
             obj.z = -2;
             arrayObjects.push(obj)
         } else {
-            console.log("wrong viewTemplate in model");
+            console.log("wrong viewTemplate in model. Message: " + temp.errorString());
         }
     }
 
@@ -78,6 +79,16 @@ Item {
         case 7: background.color = "#fbfcfc"; break;
 
         }
+    }
+
+    PerspectiveCamera {
+        id: camera
+        position: Qt.vector3d(0, 200, 300)
+        eulerRotation.x: -30
+    }
+
+    DirectionalLight {
+        eulerRotation.x: -30
     }
 
     Timer {
