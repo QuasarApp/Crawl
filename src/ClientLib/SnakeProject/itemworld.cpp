@@ -7,7 +7,7 @@
 #define POINT 100
 
 ItemWorld::ItemWorld(double x, double y, const QString& guiTemplate):
-    GuiObject3D (guiTemplate) {
+    GuiObject (guiTemplate) {
     setLoc(x, y);
 }
 
@@ -16,8 +16,8 @@ void ItemWorld::setBeckGroundObject(bool value) {
 }
 
 void ItemWorld::setSize(double h, double w) {
-    setH(h);
-    setW(w);
+    setDx(h);
+    setDy(w);
 }
 
 void ItemWorld::setLoc(double x, double y) {
@@ -26,19 +26,16 @@ void ItemWorld::setLoc(double x, double y) {
 }
 
 void ItemWorld::render() {
-    if (_x + w() < 0) {
-        _x = (rand() % 400) + 200;
-        _y = rand() % 100;
-        emit xChanged();
-        emit yChanged();
+    if (position().y() + size().y() < 0) {
+        setX((rand() % 400) + 200);
+        setY(rand() % 100);
     }
 }
 
 bool ItemWorld::move(const GuiObject *snakeRiger, double dx) {
-    _x -= dx;
-    emit xChanged();
+    setX(position().x() - dx);
 
-    return snakeRiger->rect().intersects(rect()) && !beckGroundObject;
+    return false;// snakeRiger->rect().intersects(rect()) && !beckGroundObject;
 }
 
 bool ItemWorld::isBeckGroundObject() {

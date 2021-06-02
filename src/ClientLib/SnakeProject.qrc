@@ -12,8 +12,6 @@
         <file>SnakeProjectModule/Scene.qml</file>
         <file>SnakeProjectModule/SettingsView.qml</file>
         <file>SnakeProjectModule/SnakeItem.qml</file>
-        <file>SnakeProjectModule/3dPrimitive.qml</file>
-        <file>SnakeProjectModule/AbstractItem.qml</file>
     </qresource>
     <qresource prefix="/SnakeTr">
         <file>languages/en.qm</file>

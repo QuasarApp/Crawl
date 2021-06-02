@@ -2,19 +2,18 @@
 
 BackGround::BackGround(double x, double y): ItemWorld (x, y) {
     this->setSize(200, 400);
-    this->setTexture("qrc:/texture/asphalt");
     setBeckGroundObject(true);
 }
 
 void BackGround::render() {
-    auto wPart = w() / 2;
+    auto wPart = size().x() / 2;
 
-    if (_x + wPart < 200) {
+    if (position().x() + wPart < 200) {
         setX(wPart);
     }
 }
 
 void BackGround::reset() {
-   setX(0 - w());
+   setX(0 - size().x());
    render();
 }

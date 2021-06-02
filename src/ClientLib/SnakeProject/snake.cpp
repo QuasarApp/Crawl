@@ -16,11 +16,11 @@ const QVector<Head *> &Snake::getItems() const {
 void Snake::render() {
 
     auto centerX = [](const Head* head) {
-        return head->x()/* + (head->w() / 2)*/;
+        return head->position().x() + (head->size().x() / 2);
     };
 
     auto centerY = [](const Head* head) {
-        return head->y() /*+ (head->h() / 2)*/;
+        return head->position().y() + (head->size().y() / 2);
     };
 
     for (int i = items.length() - 1; i >= 0; --i) {
@@ -33,31 +33,24 @@ void Snake::render() {
         if (i == 0) {
             if (isClick) {
                 if (countClick & 1){
-                    items[i]->setAngle(45);
+                    items[i]->setRatation(QQuaternion::fromEulerAngles(0,0, 45));
                 } else {
-                    items[i]->setAngle(315);
+                    items[i]->setRatation(QQuaternion::fromEulerAngles(0,0, 315));
                 }
                 isClick = false;
             }
         } else  {
 
+            // fix me
+            // old implementation use 2d eulor coordina system. so for this implementation is depricated.
             double _atan2 = atan2(centerY(items[i - 1]) - centerY(items[i]),
                     centerX(items[i - 1]) - centerX(items[i])) * 90;
 
-            items[i]->setAngle(_atan2);
+            items[i]->setRatation(QQuaternion::fromEulerAngles(0,0, _atan2));
         }
 
         items[i]->render();
     }
-}
-
-double Snake::checDistance(int i) {
-
-    auto result = (items[i]->rect().y() -
-    items[i - 1]->rect().y()) / rataticonDistance;
-
-    return result;
-
 }
 
 double Snake::getRataticonDistance() const {
@@ -75,17 +68,17 @@ void Snake::unPause() {
 }
 
 double Snake::sizeByLvl(double lvl , int count) const {
-    double maxSize = 9;
-    double minSize = 5;
+    double maxSize = 550;
+    double minSize = 350;
 
     double pos = (1 - (lvl / count));
 
     QList<QPair<double, double>> snakeGradientSize {
-        {1, 4},
-        {0.99, 7},
-        {0.8, 5},
-        {0.6, 6},
-        {0.0, 3}
+        {1, 40},
+        {0.99, 70},
+        {0.8, 50},
+        {0.6, 60},
+        {0.0, 30}
     };
 
     double local = 0;
@@ -116,10 +109,10 @@ void Snake::changeCountObjects(int count) {
 
             auto size = sizeByLvl(i, count);
             auto obj = new Head(margin * (count - i),
-                                50, size , size,
+                                50, size , size, size,
                                 this->speed);
 
-            obj->setY(50 + obj->h() / 2);
+            obj->setY(50 + obj->size().y() / 2);
 
             items.push_back(obj);
         }
@@ -133,7 +126,7 @@ void Snake::changeCountObjects(int count) {
     }
 }
 
-QMap<int, GuiObject*> Snake::init(int size, double *speed) {
+QMap<int, GuiObject*> Snake::init(int size, float *speed) {
 
     QMap<int, GuiObject*> res;
 
@@ -170,8 +163,7 @@ void Snake::resetPosotion() {
 
     for ( int i = 0; i < items.size(); ++i ) {
         items[i]->setX(margin * (items.size() - i));
-        items[i]->setY(50 + items[i]->h() / 2);
-        items[i]->setAngle(0);
+        items[i]->setY(50 + items[i]->size().y() / 2);
     }
 }
 

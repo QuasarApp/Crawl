@@ -33,7 +33,7 @@ void World::unPause() {
 }
 
 void World::clearItems() {
-    for (auto i : items) {
+    for (auto i : qAsConst(items)) {
         delete i;
     }
     oldRules.clear();
@@ -54,7 +54,7 @@ void World::changeCountObjects(const QString &name, int count) {
                 break;
             }
 
-            items.insertMulti(name, obj);
+            items.insert(name, obj);
         }
 
     } else {
@@ -94,7 +94,7 @@ QMap<int, GuiObject *> World::init(WorldRules rules) {
         res.insert(i.key(), i.value());
     }
 
-    for (auto i : items) {
+    for (auto i : qAsConst(items)) {
         res[i->guiId()] = i;
     }
 
@@ -128,17 +128,17 @@ void World::render() {
         (*i)->render();
     }
 
-    defiat |= (rig->y()< 0 || rig->y() > 100);
+    defiat |= (rig->position().y()< 0 || rig->position().y() > 100);
 
-    if (!snake.isDead() && defiat) {
-        snake.kill();
-    }
+//    if (!snake.isDead() && defiat) {
+//        snake.kill();
+//    }
 
     currentLong += dx;
 }
 
 void World::resetPosition() {
-    for (auto i : items) {
+    for (auto i : qAsConst(items)) {
         i->reset();
     }
     spead = 0;

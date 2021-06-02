@@ -16,14 +16,13 @@ class Snake : public BaseClass
 private:
     double rataticonDistance = 1;
     QVector<Head*> items;
-    double *speed = nullptr;
+    float *speed = nullptr;
     bool isClick = false;
     int countClick = 0;
     bool dead = false;
     double sizeByLvl(double lvl, int count) const;
     void changeCountObjects(int count);
 
-    double checDistance(int i);
     void clearItems();
 
 
@@ -38,7 +37,7 @@ public:
 
     void reverse();
     void render() override;
-    QMap<int, GuiObject *> init(int size, double *speed);
+    QMap<int, GuiObject *> init(int size, float *speed);
     bool isInited() const;
     const QVector<Head*>& getItems() const;
     double getMovedLong() const;

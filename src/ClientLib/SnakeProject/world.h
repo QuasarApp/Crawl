@@ -17,7 +17,7 @@ private:
     QMultiMap<QString, ItemWorld*> items;
     double currentLong = 0;
     int endLong;
-    double spead = 0, d_spead = 0;
+    float spead = 0, d_spead = 0;
     QString background;
     qint64 time;
     bool defiat = false;

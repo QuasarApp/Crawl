@@ -10,7 +10,7 @@ class Head : public GuiObject
 {
 private:
     qint64 time;
-    double *speed;
+    float *speed;
     const int megaFastSpead = 200;
     const int fastSpead = 100;
     const int normSpead = 50;
@@ -21,8 +21,7 @@ private:
     const QString megaFastSpeadColor = "#ec7063";
 
 public:
-    Head(double x , double y, double h, double w, double *speed);
-    void setAngle(double angle);
+    Head(float x , float y, float h, float w, float thickness, float *speed);
     void render() override;
     void reset() override;
     void unPause();

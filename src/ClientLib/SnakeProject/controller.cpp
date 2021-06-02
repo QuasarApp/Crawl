@@ -91,8 +91,8 @@ void Controller::update() {
 
     }
 
-    long_changed(static_cast<int>(world.getCurrentLong()));
-    generalLongchanged(generalLong());
+    emit long_changed(static_cast<int>(world.getCurrentLong()));
+    emit generalLongchanged(generalLong());
 
 }
 

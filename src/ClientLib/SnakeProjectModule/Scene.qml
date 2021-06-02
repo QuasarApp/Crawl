@@ -6,23 +6,6 @@ import QtQuick.Layouts
 
 View3D {
     id: scene;
-    z: -2
-
-    Rectangle {
-        id: background;
-        color: "#ffffff"
-        anchors.fill: parent;
-
-        Behavior on color {
-
-            ColorAnimation {
-                duration: 5000
-            }
-        }
-
-        z: -3
-
-    }
 
     property var model: null;
     property var arrayObjects: []
@@ -45,9 +28,8 @@ View3D {
 
         var temp = Qt.createComponent( viewTemplate + ".qml")
         if (temp.status === Component.Ready) {
-            var obj = temp.createObject(parent) // parent - это обьект на который будет помещен соззданный элемент
+            var obj = temp.createObject(mainScane) // parent - это обьект на который будет помещен соззданный элемент
             obj.model = model.getGameObject(cppObjId);
-            obj.z = -2;
             arrayObjects.push(obj)
         } else {
             console.log("wrong viewTemplate in model. Message: " + temp.errorString());
@@ -69,26 +51,37 @@ View3D {
 
     function updateBackgroundColor(lvl) {
         switch(lvl % 7) {
-        case 0: background.color = "#d6eaf8"; break;
-        case 1: background.color = "#d0ece7"; break;
-        case 2: background.color = "#d4efdf"; break;
-        case 3: background.color = "#fcf3cf"; break;
-        case 4: background.color = "#f6ddcc"; break;
-        case 5: background.color = "#f2d7d5"; break;
-        case 6: background.color = "#ebdef0"; break;
-        case 7: background.color = "#fbfcfc"; break;
+        case 0: background.clearColor = "#d6eaf8"; break;
+        case 1: background.clearColor = "#d0ece7"; break;
+        case 2: background.clearColor = "#d4efdf"; break;
+        case 3: background.clearColor = "#fcf3cf"; break;
+        case 4: background.clearColor = "#f6ddcc"; break;
+        case 5: background.clearColor = "#f2d7d5"; break;
+        case 6: background.clearColor = "#ebdef0"; break;
+        case 7: background.clearColor = "#fbfcfc"; break;
 
         }
     }
 
     PerspectiveCamera {
         id: camera
-        position: Qt.vector3d(0, 200, 300)
-        eulerRotation.x: -30
+        position: Qt.vector3d(0, 0, 600)
+//        eulerRotation.y: -90
     }
 
     DirectionalLight {
-        eulerRotation.x: -30
+        eulerRotation.y: -90
+    }
+
+    environment: SceneEnvironment {
+        id: background
+        clearColor: window.color
+        backgroundMode: SceneEnvironment.SkyBox
+        probeOrientation: Qt.vector3d(0, -90, 0)
+    }
+
+    Node {
+        id: mainScane
     }
 
     Timer {

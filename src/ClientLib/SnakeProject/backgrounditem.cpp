@@ -14,6 +14,4 @@ void BackGroundItem::reset() {
     auto radius = rand() % 200;
     setSize(radius , radius);
 
-    setRadius(radius / 2);
-
 }

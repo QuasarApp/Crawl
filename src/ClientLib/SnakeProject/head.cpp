@@ -8,28 +8,22 @@ void Head::render() {
     qint64 tempTime = QDateTime::currentMSecsSinceEpoch() - time;
     time = QDateTime::currentMSecsSinceEpoch();
 
-    double my = (_y + (*speed * 0.55) * sin(m_angle * TO_RADIAN));
-    _y += (my - _y) / 1000 * tempTime;
+    double my = (position().y() + (*speed * 0.55) * sin(ratation().scalar() * TO_RADIAN));
+    setY((my - position().y()) / 1000 * tempTime);
 
     if (*speed < 1) {
         setColor(generalSpeadColor);
-        setRadius(static_cast<int>(m_w * 0.4));
 
     } else if (*speed < normSpead) {
         setColor(normSpeadColor);
-        setRadius(static_cast<int>(m_w * 0.5));
 
     } else if (*speed < fastSpead) {
         setColor(fastSpeadColor);
-        setRadius(static_cast<int>(m_w * 0.5));
 
     } else if (*speed < megaFastSpead) {
         setColor(megaFastSpeadColor);
-        setRadius(static_cast<int>(m_w * 0.4));
 
     }
-
-    emit yChanged();
 }
 
 void Head::reset() {
@@ -39,18 +33,13 @@ void Head::unPause() {
     time = QDateTime::currentMSecsSinceEpoch();
 }
 
-Head::Head(double x, double y, double h, double w, double *spead):
+Head::Head(float x, float y, float h, float w, float thickness, float *spead):
     GuiObject ("SnakeItem") {
-    setX(x);
-    setY(y);
-    setW(w);
-    setH(h);
-    this->speed = spead;
-}
+    setposition({x, y, 0});
+    setSize({w, h, thickness});
 
-void Head::setAngle(double angle) {
-    m_angle = angle;
-    emit angleChanged(m_angle);
+    this->speed = spead;
+    setMash("#Cube");
 }
 
 Head::~Head() {

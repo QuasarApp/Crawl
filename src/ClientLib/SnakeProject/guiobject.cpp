@@ -1,13 +1,12 @@
 #include "guiobject.h"
 
+#include <QVector3D>
+
 GuiObject::GuiObject(const QString &viewTempalte, QObject *ptr):
     QObject (ptr) {
     _viewTemplate = viewTempalte;
     generateId();
 
-}
-
-void GuiObject::render() {
 }
 
 QString GuiObject::color() const {
@@ -49,103 +48,46 @@ void GuiObject::setGuiId(int guiId) {
     emit guiIdChanged(guiId);
 }
 
-float GuiObject::x() const {
-    return _x;
-}
-
 void GuiObject::setX(float newX) {
-    if (qFuzzyCompare(_x, newX))
+    if (qFuzzyCompare(_position.x(), newX))
         return;
-    _x = newX;
-    emit xChanged();
-}
-
-float GuiObject::y() const {
-    return _y;
+    _position.setX(newX);
+    emit positionChanged();
 }
 
 void GuiObject::setY(float newY) {
-    if (qFuzzyCompare(_y, newY))
+    if (qFuzzyCompare(_position.y(), newY))
         return;
-    _y = newY;
-    emit yChanged();
-}
-
-float GuiObject::z() const {
-    return _z;
+    _position.setY(newY);
+    emit positionChanged();
 }
 
 void GuiObject::setZ(float newZ) {
-    if (qFuzzyCompare(_z, newZ))
+    if (qFuzzyCompare(_position.z(), newZ))
         return;
-    _z = newZ;
-    emit zChanged();
-}
-
-float GuiObject::dx() const {
-    return _dx;
+    _position.setZ(newZ);
+    emit positionChanged();
 }
 
 void GuiObject::setDx(float newDx) {
-    if (qFuzzyCompare(_dx, newDx))
+    if (qFuzzyCompare(size().x(), newDx))
         return;
-    _dx = newDx;
-    emit dxChanged();
-}
-
-float GuiObject::dy() const {
-    return _dy;
+    _size.setX(newDx);
+    emit sizeChanged();
 }
 
 void GuiObject::setDy(float newDy) {
-    if (qFuzzyCompare(_dy, newDy))
+    if (qFuzzyCompare(size().y(), newDy))
         return;
-    _dy = newDy;
-    emit dyChanged();
-}
-
-float GuiObject::dz() const {
-    return _dz;
+    _size.setY(newDy);
+    emit sizeChanged();
 }
 
 void GuiObject::setDz(float newDz) {
-    if (qFuzzyCompare(_dz, newDz))
+    if (qFuzzyCompare(size().z(), newDz))
         return;
-    _dz = newDz;
-    emit dzChanged();
-}
-
-float GuiObject::rx() const {
-    return _rx;
-}
-
-void GuiObject::setRx(float newRx) {
-    if (qFuzzyCompare(_rx, newRx))
-        return;
-    _rx = newRx;
-    emit rxChanged();
-}
-
-float GuiObject::ry() const {
-    return _ry;
-}
-
-void GuiObject::setRy(float newRy) {
-    if (qFuzzyCompare(_ry, newRy))
-        return;
-    _ry = newRy;
-    emit ryChanged();
-}
-
-float GuiObject::rz() const {
-    return _rz;
-}
-
-void GuiObject::setRz(float newRz) {
-    if (qFuzzyCompare(_rz, newRz))
-        return;
-    _rz = newRz;
-    emit rzChanged();
+    _size.setZ(newDz);
+    emit sizeChanged();
 }
 
 const QString &GuiObject::baseColorMap() const {
@@ -162,4 +104,52 @@ const QString &GuiObject::normalMap() const {
 
 const QString &GuiObject::emissiveMap() const {
     return _emissiveMap;
+}
+
+QVector3D GuiObject::center() const {
+    return _position + (_size / 2);
+}
+
+const QVector3D &GuiObject::position() const {
+    return _position;
+}
+
+void GuiObject::setposition(const QVector3D &newposition) {
+    if (_position == newposition)
+        return;
+    _position = newposition;
+    emit positionChanged();
+}
+
+const QVector3D &GuiObject::size() const {
+    return _size;
+}
+
+void GuiObject::setSize(const QVector3D &newSize) {
+    if (_size == newSize)
+        return;
+    _size = newSize;
+    emit sizeChanged();
+}
+
+const QQuaternion &GuiObject::ratation() const {
+    return _ratation;
+}
+
+void GuiObject::setRatation(const QQuaternion &newRatation) {
+    if (_ratation == newRatation)
+        return;
+    _ratation = newRatation;
+    emit ratationChanged();
+}
+
+const QString &GuiObject::mash() const {
+    return _mash;
+}
+
+void GuiObject::setMash(const QString &newMash) {
+    if (_mash == newMash)
+        return;
+    _mash = newMash;
+    emit mashChanged();
 }
