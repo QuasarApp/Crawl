@@ -155,7 +155,7 @@ bool World::isEnd() {
 }
 
 bool World::isDefiat() const {
-    return defiat && !static_cast<bool>(spead);
+    return false;//defiat && !static_cast<bool>(spead);
 }
 
 WorldRules World::currentRules() const {

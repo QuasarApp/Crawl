@@ -65,12 +65,13 @@ View3D {
 
     PerspectiveCamera {
         id: camera
-        position: Qt.vector3d(0, 0, 600)
-//        eulerRotation.y: -90
+        position: Qt.vector3d(0, 0, 100)
+        eulerRotation.y: -45
+        eulerRotation.z: -90
+
     }
 
     DirectionalLight {
-        eulerRotation.y: -90
     }
 
     environment: SceneEnvironment {
@@ -78,6 +79,10 @@ View3D {
         clearColor: window.color
         backgroundMode: SceneEnvironment.SkyBox
         probeOrientation: Qt.vector3d(0, -90, 0)
+
+        lightProbe: Texture {
+            source: "qrc:/hdr/res/hdr/lebombo_2k.hdr"
+        }
     }
 
     Node {

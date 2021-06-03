@@ -8,8 +8,9 @@ void Head::render() {
     qint64 tempTime = QDateTime::currentMSecsSinceEpoch() - time;
     time = QDateTime::currentMSecsSinceEpoch();
 
-    double my = (position().y() + (*speed * 0.55) * sin(ratation().scalar() * TO_RADIAN));
-    setY((my - position().y()) / 1000 * tempTime);
+    float u = ratation().toEulerAngles().z();
+    double dy = (*speed) * sin(u * TO_RADIAN) / 1000 * tempTime;
+    setY(position().y() + dy);
 
     if (*speed < 1) {
         setColor(generalSpeadColor);
@@ -39,7 +40,7 @@ Head::Head(float x, float y, float h, float w, float thickness, float *spead):
     setSize({w, h, thickness});
 
     this->speed = spead;
-    setMash("#Cube");
+    setMash("qrc:/mesh/res/meshes/cube.mesh");
 }
 
 Head::~Head() {

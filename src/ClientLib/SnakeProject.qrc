@@ -25,4 +25,10 @@
         <file>res/logo.png</file>
         <file>res/icon.ico</file>
     </qresource>
+    <qresource prefix="/mesh">
+        <file>res/meshes/cube.mesh</file>
+    </qresource>
+    <qresource prefix="/hdr">
+        <file>res/hdr/lebombo_2k.hdr</file>
+    </qresource>
 </RCC>

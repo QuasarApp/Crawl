@@ -27,10 +27,10 @@ void GuiObject::generateId() {
 }
 
 void GuiObject::reset() {
-    setX(-1);
-    setY(-1);
+    setX(0);
+    setY(0);
+    setZ(0);
 }
-
 
 QString GuiObject::viewTemplate() const {
     return _viewTemplate;

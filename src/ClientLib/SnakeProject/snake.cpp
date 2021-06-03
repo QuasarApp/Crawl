@@ -68,17 +68,17 @@ void Snake::unPause() {
 }
 
 double Snake::sizeByLvl(double lvl , int count) const {
-    double maxSize = 550;
-    double minSize = 350;
+    double maxSize = 55;
+    double minSize = 35;
 
     double pos = (1 - (lvl / count));
 
     QList<QPair<double, double>> snakeGradientSize {
-        {1, 40},
-        {0.99, 70},
-        {0.8, 50},
-        {0.6, 60},
-        {0.0, 30}
+        {1, 4},
+        {0.99, 7},
+        {0.8, 5},
+        {0.6, 6},
+        {0.0, 3}
     };
 
     double local = 0;
