@@ -14,11 +14,16 @@
         <file>SnakeProjectModule/SnakeItem.qml</file>
     </qresource>
     <qresource prefix="/SnakeTr">
+        <file>languages/de.qm</file>
         <file>languages/en.qm</file>
-        <file>languages/ua.qm</file>
-        <file>languages/tr.qm</file>
+        <file>languages/es.qm</file>
+        <file>languages/fr.qm</file>
         <file>languages/ja.qm</file>
+        <file>languages/pl.qm</file>
         <file>languages/ru.qm</file>
+        <file>languages/tr.qm</file>
+        <file>languages/ua.qm</file>
+        <file>languages/zh.qm</file>
     </qresource>
     <qresource prefix="/images">
         <file>res/up.svg</file>
