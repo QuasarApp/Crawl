@@ -21,6 +21,7 @@ set(BUILD_SHARED_LIBS ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+set(QT_VERSION_MAJOR 6)
 find_package(Qt6 COMPONENTS Core Test REQUIRED)
 
 include(submodules/QuasarAppLib/CMake/QuasarApp.cmake)
@@ -34,6 +35,7 @@ endif()
 
 if (NOT DEFINED SNAKEPROJECT_TESTS)
     set(SNAKEPROJECT_TESTS ON)
+    message(1)
 
     if (DEFINED TARGET_PLATFORM_TOOLCHAIN)
         if (${TARGET_PLATFORM_TOOLCHAIN} STREQUAL "wasm32")
@@ -47,6 +49,7 @@ if (NOT DEFINED SNAKEPROJECT_TESTS)
 
     if (NOT QT_VERSION_MAJOR)
         set(SNAKEPROJECT_TESTS OFF)
+        message(2)
     endif()
 endif()
 
