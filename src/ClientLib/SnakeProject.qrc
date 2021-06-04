@@ -22,8 +22,8 @@
         <file>languages/pl.qm</file>
         <file>languages/ru.qm</file>
         <file>languages/tr.qm</file>
-        <file>languages/ua.qm</file>
         <file>languages/zh.qm</file>
+        <file>languages/uk.qm</file>
     </qresource>
     <qresource prefix="/images">
         <file>res/up.svg</file>
