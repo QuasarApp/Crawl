@@ -28,7 +28,5 @@
     <qresource prefix="/mesh">
         <file>res/meshes/cube.mesh</file>
     </qresource>
-    <qresource prefix="/hdr">
-        <file>res/hdr/lebombo_2k.hdr</file>
-    </qresource>
+    <qresource prefix="/hdr"/>
 </RCC>
