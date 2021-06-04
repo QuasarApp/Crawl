@@ -12,6 +12,15 @@ if(TARGET ${PROJECT_NAME})
   return()
 endif()
 
+include(submodules/QuasarAppLib/CMake/QuasarApp.cmake)
+
+if (DEFINED TARGET_PLATFORM_TOOLCHAIN)
+    if (${TARGET_PLATFORM_TOOLCHAIN} STREQUAL "wasm32")
+        initAll()
+        return()
+    endif()
+endif()
+
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -23,15 +32,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(QT_VERSION_MAJOR 6)
 find_package(Qt6 COMPONENTS Core Test REQUIRED)
-
-include(submodules/QuasarAppLib/CMake/QuasarApp.cmake)
-
-if (DEFINED TARGET_PLATFORM_TOOLCHAIN)
-    if (${TARGET_PLATFORM_TOOLCHAIN} STREQUAL "wasm32")
-        initAll()
-        return()
-    endif()
-endif()
 
 if (NOT DEFINED SNAKEPROJECT_TESTS)
     set(SNAKEPROJECT_TESTS ON)
