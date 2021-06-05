@@ -1,5 +1,5 @@
-import QtQuick
-import QtQuick3D
+import QtQuick 2.15
+import QtQuick3D 1.15
 
 Model {
     id: graphicItem

@@ -1,7 +1,7 @@
-import QtQuick
-import QtQuick.Window
-import QtQuick.Controls.Material
-import QtQuick.Controls
+import QtQuick 2.15
+import QtQuick.Window 2.15
+import QtQuick.Controls.Material 2.15
+import QtQuick.Controls 2.15
 
 Item {
     readonly property int pointCount: 100;

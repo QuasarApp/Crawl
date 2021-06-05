@@ -1,8 +1,9 @@
-import QtQuick
-import QtQuick3D
-import QtQuick.Controls.Material
-import QtQuick.Controls
-import QtQuick.Layouts
+import QtQuick 2.15
+import QtQuick3D 1.15
+import QtQuick.Controls.Material 2.15
+import QtQuick.Controls 2.15
+import QtQuick.Layouts 1.15
+
 
 View3D {
     id: scene;
@@ -78,7 +79,7 @@ View3D {
         id: background
         clearColor: window.color
         backgroundMode: SceneEnvironment.SkyBox
-        probeOrientation: Qt.vector3d(0, -90, 0)
+        //probeOrientation: Qt.vector3d(0, -90, 0)
 
         lightProbe: Texture {
             source: "qrc:/hdr/res/hdr/lebombo_2k.hdr"
