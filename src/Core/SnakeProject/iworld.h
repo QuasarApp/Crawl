@@ -3,10 +3,13 @@
 
 #include "isnake.h"
 
+#include <QHash>
 #include <QMap>
+#include <QMultiHash>
 #include <QString>
+#include "irender.h"
 
-class ItemWorld;
+class GuiObject;
 
 /**
  * @brief WorldRules
@@ -28,9 +31,17 @@ typedef QMap<QString, int> WorldObjects;
 typedef QMap<int, WorldObjects> WorldRule;
 
 /**
+ * @brief The WorldObjectWraper struct This is simple wraper structure for the internal functionality of the IWorld objects.
+ */
+struct WorldObjectWraper {
+    GuiObject* objectPtr = nullptr;
+    QString groupName = "";
+};
+
+/**
  * @brief The IWorld class use this interface for implementation your own game levels
  */
-class IWorld
+class IWorld : public IRender
 {
 public:
     IWorld();
@@ -60,21 +71,40 @@ public:
      */
     virtual QString initHdrBackGround() const = 0;
 
+    /**
+     * @brief render this method recursive invoke all render functions of the all world items.
+     *  The render function is main function of the SnakeEngine This method recal all propertyes of all objects.
+     */
+    virtual void render(unsigned int tbfMsec) override;
+
+protected:
+    /**
+     * @brief generate This method shold be generate object from the  @a objectType.
+     *  Override this method for add support yourown objects.
+     * @param objectType This is string type name of the object,
+     * @return pointer to the object.
+     */
+    virtual GuiObject* generate(const QString& objectType) const;
+
 private:
-
     bool init();
-
     void deinit();
 
-    ISnake * _snake;
-    QMap<QString, ItemWorld*> items;
+    void worldChanged(const WorldObjects& objects);
+    void clearItems();
+    void addItem(const QString &group, GuiObject *obj);
+    bool removeItem(int id);
+    bool removeAnyItemFromGroup(const QString &group);
 
-    int endLong;
-    float spead = 0, d_spead = 0, currentLong = 0;
+    ISnake * _snake;
+    QHash<int, WorldObjectWraper> _items;
+    QMultiHash<QString, int> _itemsGroup;
+
     QString _hdrMap;
     WorldRule *_worldRules = nullptr;
 
     friend class Engine;
+
 };
 
 #endif // IWORLD_H

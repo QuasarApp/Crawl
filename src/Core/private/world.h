@@ -5,7 +5,6 @@
 
 #include <QVector>
 #include "itemworld.h"
-#include "baseclass.h"
 #include "snakeutils.h"
 #include "snake.h"
 

@@ -1,14 +1,14 @@
 #ifndef GUIOBJECT_H
 #define GUIOBJECT_H
 
-#include "baseclass.h"
 #include "QObject"
 
 #include <QQuaternion>
 #include <QRectF>
 #include <QVector3D>
+#include "SnakeProject/irender.h"
 
-class GuiObject:public QObject, public BaseClass
+class GuiObject:public QObject, public IRender
 {
     Q_OBJECT
     Q_PROPERTY(QString color READ color WRITE setColor NOTIFY colorChanged)
