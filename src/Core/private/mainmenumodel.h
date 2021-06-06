@@ -2,7 +2,7 @@
 #define NETWORKPROFILEMAINMODEL_H
 
 #include <QObject>
-#include "SnakeProject/settings.h"
+#include "settings.h"
 
 
 class MainMenuModel : public QObject

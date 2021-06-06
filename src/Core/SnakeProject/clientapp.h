@@ -1,8 +1,11 @@
 #ifndef CLIENTAPP_H
 #define CLIENTAPP_H
 
-#include "controller.h"
-#include "diff.h"
+#include <QByteArray>
+#include "global.h"
+
+class Controller;
+
 
 inline void initSnakeProjectResources() { Q_INIT_RESOURCE(SnakeProject); }
 
@@ -11,7 +14,7 @@ class QQmlApplicationEngine;
 class SNAKEPROJECT_EXPORT ClientApp
 {
 private:
-    Controller contr;
+    Controller *contr = nullptr;
 
     QByteArray initTheme();
 

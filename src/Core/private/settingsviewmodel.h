@@ -2,7 +2,7 @@
 #define SETTINGSVIEWMODEL_H
 
 #include <QObject>
-#include "SnakeProject/settings.h"
+#include "settings.h"
 
 
 class SettingsViewModel: public QObject

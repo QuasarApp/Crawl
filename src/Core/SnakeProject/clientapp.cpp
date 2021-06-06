@@ -1,10 +1,11 @@
 #include "clientapp.h"
 #include "imageprovider.h"
-#include "SnakeProject/mainmenumodel.h"
+#include "mainmenumodel.h"
 
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <quasarapp.h>
+#include <controller.h>
 
 #include <qmlnotifyservice.h>
 
@@ -19,9 +20,11 @@ QByteArray ClientApp::initTheme() {
 }
 
 ClientApp::ClientApp() {
+    contr = new Controller();
 }
 
 ClientApp::~ClientApp() {
+    delete contr;
 }
 
 void ClientApp::initLang() {
@@ -54,7 +57,7 @@ bool ClientApp::init(QQmlApplicationEngine *engine) {
 
     engine->addImageProvider(QLatin1String("userItems"), new ImageProvider());
 
-    root->setContextProperty("contr", &contr);
+    root->setContextProperty("contr", contr);
     initSnakeProjectResources();
     initLang();
 

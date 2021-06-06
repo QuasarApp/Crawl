@@ -13,16 +13,16 @@ add_definitions(-DSnakeProject_LIBRARY)
 
 file(GLOB SOURCE_CPP
     "*SnakeProject/*.cpp"
-     "SnakeProject/private/*.cpp"
+     "private/*.cpp"
      "*.qrc"
      "SnakeProject/*.qrc"
-     "SnakeProject/private/*.qrc"
+     "private/*.qrc"
 )
 
 set(PUBLIC_INCUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 set(PRIVATE_INCUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/private")
 
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick QuickControls2 Concurrent REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick Quick3D Concurrent REQUIRED)
 
 add_library(${CURRENT_PROJECT} ${SOURCE_CPP} ${SOURCE_QRC})
 
