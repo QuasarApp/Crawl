@@ -12,6 +12,7 @@
         <file>SnakeProjectModule/Scene.qml</file>
         <file>SnakeProjectModule/SettingsView.qml</file>
         <file>SnakeProjectModule/SnakeItem.qml</file>
+        <file>SnakeProject/IRender.qml</file>
     </qresource>
     <qresource prefix="/SnakeTr">
         <file>languages/de.qm</file>
@@ -25,7 +26,13 @@
         <file>languages/zh.qm</file>
         <file>languages/uk.qm</file>
     </qresource>
-    <qresource prefix="/images"/>
-    <qresource prefix="/mesh"/>
+    <qresource prefix="/images">
+        <file>res/up.svg</file>
+        <file>res/logo.png</file>
+        <file>res/icon.ico</file>
+    </qresource>
+    <qresource prefix="/mesh">
+        <file>res/meshes/cube.mesh</file>
+    </qresource>
     <qresource prefix="/hdr"/>
 </RCC>

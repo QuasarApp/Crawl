@@ -2,17 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1">
 <context>
-    <name>Controller</name>
-    <message>
-        <source> Next Lvl!!!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source> You anblock next lvl (%0)</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>MainMenu</name>
     <message>
         <source>Play game</source>

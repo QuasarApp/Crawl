@@ -9,60 +9,6 @@ View3D {
     id: scene;
 
     property var model: null;
-    property var arrayObjects: []
-    readonly property bool showMenu: (model)? model.showMenu: false
-    property bool isPause: false
-
-    function add (cppObjId) {
-        if (!model) {
-            console.log("create object fail")
-            return;
-        }
-        var objModel = model.getGameObject(cppObjId);
-
-        if (!objModel) {
-            console.log("object model not found");
-            return;
-        }
-
-        var viewTemplate = objModel.viewTemplate;
-
-        var temp = Qt.createComponent( viewTemplate + ".qml")
-        if (temp.status === Component.Ready) {
-            var obj = temp.createObject(mainScane) // parent - это обьект на который будет помещен соззданный элемент
-            obj.model = model.getGameObject(cppObjId);
-            arrayObjects.push(obj)
-        } else {
-            console.log("wrong viewTemplate in model. Message: " + temp.errorString());
-        }
-    }
-
-    function remove(id) {
-        if (typeof id !== "number" || id < 0) {
-            console.log("id not found");
-            return;
-        }
-
-        for (var i = 0; i < arrayObjects.length; ++i) {
-            if (id === arrayObjects[i].guiId) {
-                arrayObjects.splice(i,1);
-            }
-        }
-    }
-
-    function updateBackgroundColor(lvl) {
-        switch(lvl % 7) {
-        case 0: background.clearColor = "#d6eaf8"; break;
-        case 1: background.clearColor = "#d0ece7"; break;
-        case 2: background.clearColor = "#d4efdf"; break;
-        case 3: background.clearColor = "#fcf3cf"; break;
-        case 4: background.clearColor = "#f6ddcc"; break;
-        case 5: background.clearColor = "#f2d7d5"; break;
-        case 6: background.clearColor = "#ebdef0"; break;
-        case 7: background.clearColor = "#fbfcfc"; break;
-
-        }
-    }
 
     PerspectiveCamera {
         id: camera
@@ -98,29 +44,6 @@ View3D {
         onTriggered: {
             interval = Math.random() * 600
             scene.model.buttonPress();
-        }
-    }
-
-    Connections {
-        target: model;
-        function onGameObjectsChanged(dif) {
-            if (!dif) {
-                console.log("dif not found");
-                return;
-            }
-
-            var tempDifRem = [];
-            tempDifRem = dif.getRemoveIds();
-            var tempDifAdd = [];
-            tempDifAdd = dif.getAddedIds();
-
-            for (var i = 0; i < tempDifAdd.length; ++i) {
-                add(tempDifAdd[i]);
-            }
-
-            for (i = 0; i < tempDifRem.length; ++i) {
-                remove(tempDifRem[i]);
-            }
         }
     }
 

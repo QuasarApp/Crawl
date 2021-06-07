@@ -63,6 +63,8 @@ add_subdirectory(submodules/QuasarAppLib)
 add_subdirectory(submodules/SimpleQmlNotify)
 
 add_subdirectory(src/Core)
+add_subdirectory(src/Empty)
+
 add_subdirectory(src/Client)
 
 

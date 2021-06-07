@@ -66,6 +66,24 @@ public:
     virtual QString initHdrBackGround() const = 0;
 
     /**
+     * @brief description This method shold be return lvl description.
+     * @return lvel description string.
+     */
+    virtual QString description() const = 0;
+
+    /**
+     * @brief name This method shold be return lvl name.
+     * @return lvl name.
+     */
+    virtual QString name() const = 0;
+
+    /**
+     * @brief amountToUnlock This method shold be return unlock cost.
+     * @return unlock cost
+     */
+    virtual int amountToUnlock() const = 0;
+
+    /**
      * @brief render this method recursive invoke all render functions of the all world items.
      *  The render function is main function of the SnakeEngine This method recal all propertyes of all objects.
      */

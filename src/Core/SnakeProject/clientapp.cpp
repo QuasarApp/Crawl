@@ -1,13 +1,19 @@
 #include "clientapp.h"
 #include "imageprovider.h"
+#include "iworld.h"
 #include "mainmenumodel.h"
 
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <quasarapp.h>
-#include <controller.h>
 
+#include <engine.h>
 #include <qmlnotifyservice.h>
+#include <QStandardPaths>
+#include <QDir>
+#include "pluginloader.h"
+
+#define PLUGINS_DIR QStandardPaths::
 
 QByteArray ClientApp::initTheme() {
     int themeIndex = Settings::instance()->getValue(THEME, THEME_DEFAULT).toInt();
@@ -20,11 +26,11 @@ QByteArray ClientApp::initTheme() {
 }
 
 ClientApp::ClientApp() {
-    contr = new Controller();
+    _engine = new Engine();
 }
 
 ClientApp::~ClientApp() {
-    delete contr;
+    delete _engine;
 }
 
 void ClientApp::initLang() {
@@ -42,13 +48,30 @@ void ClientApp::initLang() {
     }
 }
 
+void ClientApp::initLvls() {
+    auto plugins = availablePlugins();
+
+    for (const auto& lvl: plugins) {
+        IWorld* worldModule = PluginLoader::load(lvl.absoluteFilePath());
+
+        if (worldModule) {
+            _availableLvls.insert(worldModule->name(), worldModule);
+        }
+    }
+}
+
+QList<QFileInfo> ClientApp::availablePlugins() const {
+    QDir dir(QStandardPaths::writableLocation(QStandardPaths::DataLocation));
+    auto list = dir.entryInfoList(QStringList() << "*.so" << "*.dll", QDir::Files);
+
+    return list;
+}
+
 bool ClientApp::init(QQmlApplicationEngine *engine) {
 
     qputenv("QT_QUICK_CONTROLS_MATERIAL_THEME", initTheme());
-    qputenv("QT_QUICK_CONTROLS_STYLE", "Basic");
+    qputenv("QT_QUICK_CONTROLS_STYLE", "Material");
 
-    qmlRegisterAnonymousType<GuiObject>("GuiObject", 1);
-    qmlRegisterAnonymousType<Diff>("Diff", 1);
     qmlRegisterAnonymousType<MainMenuModel>("MainMenuModel", 1);
 
     auto root = engine->rootContext();
@@ -57,9 +80,10 @@ bool ClientApp::init(QQmlApplicationEngine *engine) {
 
     engine->addImageProvider(QLatin1String("userItems"), new ImageProvider());
 
-    root->setContextProperty("contr", contr);
+    root->setContextProperty("engine", QVariant::fromValue(_engine));
     initSnakeProjectResources();
     initLang();
+    initLvls();
 
     engine->addImportPath(":/SnakeProjectModule/");
 
