@@ -5,6 +5,8 @@
 #include <QQmlEngine>
 #include <diff.h>
 
+class IWorld;
+
 /**
  * @brief The Engine class
  */
@@ -20,7 +22,18 @@ public:
      * @return pointer to main game scane.
      */
     Q_INVOKABLE QObject* scane();
-    void setEngine(QQmlEngine *newEngine);
+
+    /**
+     * @brief setQmlEngine This method sets qml engine
+     * @param newEngine This is pointer to the qml engine.
+     */
+    void setQmlEngine(QQmlEngine *newEngine);
+
+    /**
+     * @brief setWorld This method set new world for game.
+     * @param world This is pointer to new world.
+     */
+    void setWorld(const IWorld* world);
 
 public slots:
 

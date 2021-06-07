@@ -1,24 +1,17 @@
 #ifndef IWORLD_H
 #define IWORLD_H
 
-#include "isnake.h"
+#include "iplayer.h"
 
 #include <QHash>
 #include <QMap>
 #include <QMultiHash>
+#include <QObject>
 #include <QString>
 #include "irender.h"
 
-class GuiObject;
-
-/**
- * @brief WorldRules
- * this map conteins:
- * 1. list of generated objects and they count.
- * 2. long of world (Long),
- * 3. spead of world (Spead),
- * !!!Note: all object show on map alltime.
- */
+class IWorldItem;
+class IPlayer;
 
 /**
  * @brief WorldObjects This is map list of the avalable objects and its count on a lvl-long point.
@@ -34,15 +27,16 @@ typedef QMap<int, WorldObjects> WorldRule;
  * @brief The WorldObjectWraper struct This is simple wraper structure for the internal functionality of the IWorld objects.
  */
 struct WorldObjectWraper {
-    GuiObject* objectPtr = nullptr;
+    IWorldItem* objectPtr = nullptr;
     QString groupName = "";
 };
 
 /**
  * @brief The IWorld class use this interface for implementation your own game levels
  */
-class IWorld : public IRender
+class IWorld : public QObject, public IRender
 {
+    Q_OBJECT
 public:
     IWorld();
     virtual ~IWorld();
@@ -53,7 +47,7 @@ public:
      * @note The Palyer object will be deleted when wold distroed.
      *  So do not delete your created player pbject yuorself.
      */
-    virtual ISnake* initPlayer() const = 0;
+    virtual IPlayer* initPlayer() const = 0;
 
     /**
      * @brief initWorldRules The implementation of this interface must be retun initialized list of the world rules.
@@ -77,6 +71,17 @@ public:
      */
     virtual void render(unsigned int tbfMsec) override;
 
+    /**
+     * @brief getItem This method return raw pointer to object by id.
+     * @param id This is id of a required object.
+     * @return pointe to requaried object.
+     * @note if you want to get ovject in the render function of another ItemWorld object then use the IWorldItem::getItem method.
+     */
+    const IWorldItem * getItem(int id) const;
+
+signals:
+    void sigGameFinished(GameResult);
+
 protected:
     /**
      * @brief generate This method shold be generate object from the  @a objectType.
@@ -84,7 +89,7 @@ protected:
      * @param objectType This is string type name of the object,
      * @return pointer to the object.
      */
-    virtual GuiObject* generate(const QString& objectType) const;
+    virtual IWorldItem* generate(const QString& objectType) const = 0;
 
 private:
     bool init();
@@ -92,16 +97,16 @@ private:
 
     void worldChanged(const WorldObjects& objects);
     void clearItems();
-    void addItem(const QString &group, GuiObject *obj);
+    void addItem(const QString &group, IWorldItem *obj);
     bool removeItem(int id);
     bool removeAnyItemFromGroup(const QString &group);
 
-    ISnake * _snake;
     QHash<int, WorldObjectWraper> _items;
     QMultiHash<QString, int> _itemsGroup;
 
     QString _hdrMap;
     WorldRule *_worldRules = nullptr;
+    IPlayer *_player = nullptr;
 
     friend class Engine;
 

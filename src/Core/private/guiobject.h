@@ -8,7 +8,10 @@
 #include <QVector3D>
 #include "SnakeProject/irender.h"
 
-class GuiObject:public QObject, public IRender
+/**
+ * @brief The GuiObject class This base model for gui objects.
+ */
+class GuiObject: public QObject, public IRender
 {
     Q_OBJECT
     Q_PROPERTY(QString color READ color WRITE setColor NOTIFY colorChanged)
@@ -64,15 +67,17 @@ public:
      * @brief intersects This method check if this object contains @a point object.
      * @param point This is checked point
      * @return true if the point contains in the object cube.
+     * @warning This functions check intersect approximate and only works correctly for cubic objects. if you try compare plane objects or lines you get incorrect results.
      */
     bool intersects(const QVector3D& point) const;
 
-//    /**
-//     * @brief intersects This method check intersects betwin current object and @a object.
-//     * @param object This is input object.
-//     * @return true if the two objects has common points.
-//     */
-//    bool intersects(const GuiObject& object) const;
+    /**
+     * @brief intersects This method check intersects betwin current object and @a object.
+     * @param object This is input object.
+     * @return true if the two objects has common points.
+     * @warning This functions check intersect approximate and only works correctly for cubic objects. if you try compare plane objects or lines you get incorrect results.
+     */
+    bool intersects(const GuiObject& object) const;
 
     const QVector3D &position() const;
     void setposition(const QVector3D &newposition);

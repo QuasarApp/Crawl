@@ -58,9 +58,13 @@ bool Engine::remove(int id) {
     return true;
 }
 
-void Engine::setEngine(QQmlEngine *newEngine) {
+void Engine::setQmlEngine(QQmlEngine *newEngine) {
     if (_engine == newEngine)
         return;
 
     _engine = newEngine;
+}
+
+void Engine::setWorld(const IWorld *world) {
+
 }

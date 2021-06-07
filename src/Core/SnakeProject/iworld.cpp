@@ -1,5 +1,5 @@
 #include "iworld.h"
-#include "guiobject.h"
+#include "iworlditem.h"
 #include <quasarapp.h>
 
 IWorld::IWorld() {
@@ -14,6 +14,15 @@ void IWorld::render(unsigned int tbfMsec) {
 
     for (auto i = _items.begin(); i != _items.end(); ++i) {
         (*i).objectPtr->render(tbfMsec);
+
+        // intersects event.
+        if ((*i).objectPtr->intersects(*_player)) {
+            _player->onIntersects((*i).objectPtr);
+        }
+    }
+
+    if (_player->isDead()) {
+        emit sigGameFinished(_player->getCurrentStatus());
     }
 }
 
@@ -21,7 +30,7 @@ bool IWorld::init() {
 
     _worldRules = initWorldRules();
     _hdrMap = initHdrBackGround();
-    _snake = initPlayer();
+    _player = initPlayer();
 
     if (!_worldRules->size())
         return false;
@@ -40,7 +49,7 @@ void IWorld::clearItems() {
 }
 
 void IWorld::deinit() {
-    delete _snake;
+    delete _player;
 
     clearItems();
     _hdrMap = "";
@@ -48,7 +57,7 @@ void IWorld::deinit() {
     delete  _worldRules;
 }
 
-void IWorld::addItem(const QString& group, GuiObject* obj) {
+void IWorld::addItem(const QString& group, IWorldItem* obj) {
     _items.insert(obj->guiId(), WorldObjectWraper{obj, group});
     _itemsGroup.insert(group, obj->guiId());
 }
@@ -81,7 +90,9 @@ void IWorld::worldChanged(const WorldObjects &objects) {
 
         if (count > 0) {
             for ( int i = 0; i < count; ++i ) {
-                auto obj = generate(it.key());
+                IWorldItem *obj = generate(it.key());
+
+                obj->initOnWorld(this);
 
                 if (!obj) {
                     QuasarAppUtils::Params::log("object not created line:" + QString::fromLatin1(Q_FUNC_INFO),
