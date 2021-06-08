@@ -3,25 +3,40 @@
 
 #include <QObject>
 #include "settings.h"
+#include "worldviewdata.h"
 
+namespace ViewSolutions {
+class ListViewModel;
+}
 
+class WorldInfo;
+
+/**
+ * @brief The MainMenuModel class This is main class for controll user interface
+ */
 class MainMenuModel : public QObject
 {
     Q_OBJECT
 
     Q_PROPERTY(QObject* userSettingsModel READ userSettingsModel NOTIFY userSettingsModelChanged)
-
-private:
-    Settings *_conf = nullptr;
-    QObject* _userSettingsModel = nullptr;
+    Q_PROPERTY(QObject * availableLvlsModel READ availableLvlsModel NOTIFY availableLvlsModelChanged)
 
 public:
     MainMenuModel(QObject *ptr = nullptr);
     QObject* userSettingsModel() const;
+    QObject* availableLvlsModel() const;
+    void setAvailableLvls(const QList<QObject *> &newData);
 
 signals:
     void userSettingsModelChanged(QObject* userSettingsModel);
     void newGame();
+    void availableLvlsModelChanged();
+
+private:
+    Settings *_conf = nullptr;
+    QObject* _userSettingsModel = nullptr;
+    ViewSolutions::ListViewModel *_availableLvlsModel = nullptr;
+
 };
 
 #endif // NETWORKPROFILEMAINMODEL_H

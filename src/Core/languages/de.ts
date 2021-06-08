@@ -8,18 +8,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Store</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>My Items</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>My friends</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>My Settings</source>
         <translation type="unfinished"></translation>
     </message>

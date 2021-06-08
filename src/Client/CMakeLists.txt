@@ -44,7 +44,8 @@ file(MAKE_DIRECTORY ${TARGET_DIR})
 if (ANDROID)
     set(SNAKE_EXTRA_LIBS "${PROJECT_NAME}Core"
                          QuasarApp
-                         QmlNotyfyService)
+                         QmlNotyfyService
+                         ViewSolutions)
 
     find_package(Qt6 COMPONENTS AndroidExtras REQUIRED)
 

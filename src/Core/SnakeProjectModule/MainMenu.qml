@@ -10,8 +10,6 @@ Item {
     visible: true
     z: 1
 
-    signal playGame();
-
     GridLayout {
         id: columnLayout
         anchors.top: parent.top
@@ -36,27 +34,9 @@ Item {
             text: qsTr("Play game")
 
             onClicked: {
-                playGame();
                 if (model)
                     model.newGame();
             }
-
-        }
-
-        MainMenuButton {
-            id: store
-            text: qsTr("Store")
-
-        }
-
-        MainMenuButton {
-            id: invitar
-            text: qsTr("My Items")
-        }
-
-        MainMenuButton {
-            id: freands
-            text: qsTr("My friends")
 
         }
 
@@ -90,6 +70,31 @@ Item {
         }
 
         standardButtons:  Dialog.Save | Dialog.Cancel | Dialog.RestoreDefaults
+        modal: false;
+        width: 12 * metrix.controlPtMaterial
+        height: 8 * metrix.controlPtMaterial;
+
+        onAccepted: {
+            settingsView.save();
+        }
+
+        onReset: {
+            settingsView.reset();
+        }
+
+        onOpened: {
+            settingsView.update();
+        }
+
+    }
+
+    PagePopUp {
+        id: selectLvl
+        source: SettingsView {
+            model: item1.model ? item1.model.availableLvlsModel: null
+        }
+
+        standardButtons: Dialog.Cancel | Dialog.Ok
         modal: false;
         width: 12 * metrix.controlPtMaterial
         height: 8 * metrix.controlPtMaterial;

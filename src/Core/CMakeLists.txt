@@ -29,7 +29,8 @@ add_library(${CURRENT_PROJECT} ${SOURCE_CPP} ${SOURCE_QRC})
 target_link_libraries(${CURRENT_PROJECT} PUBLIC
                         Qt${QT_VERSION_MAJOR}::Concurrent
                         QuasarApp
-                        QmlNotyfyService)
+                        QmlNotyfyService
+                        ViewSolutions)
 
 target_include_directories(${CURRENT_PROJECT} PUBLIC ${PUBLIC_INCUDE_DIR})
 target_include_directories(${CURRENT_PROJECT} PRIVATE ${PRIVATE_INCUDE_DIR})

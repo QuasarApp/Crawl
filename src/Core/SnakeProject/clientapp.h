@@ -8,10 +8,20 @@
 
 class Engine;
 class IWorld;
+class WorldViewData;
+class QQmlApplicationEngine;
 
 inline void initSnakeProjectResources() { Q_INIT_RESOURCE(SnakeProject); }
 
-class QQmlApplicationEngine;
+
+/**
+ * @brief The WordlData struct simple structure that contains information about world.
+ */
+struct WordlData {
+    WorldViewData* viewModel = nullptr;
+    IWorld * model = nullptr;
+};
+
 
 /**
  * @brief The ClientApp class This is main class of the Game engine.
@@ -41,9 +51,7 @@ private:
      */
     QList<QFileInfo> availablePlugins() const;
 
-
-    QHash<QString, IWorld*> _availableLvls;
-
+    QHash<QString, WordlData> _availableLvls;
     Engine *_engine = nullptr;
 };
 

@@ -31,6 +31,13 @@ ClientApp::ClientApp() {
 
 ClientApp::~ClientApp() {
     delete _engine;
+
+    for (const auto& item : qAsConst(_availableLvls)) {
+        delete item.viewModel;
+        delete item.model;
+    }
+
+    _availableLvls.clear();
 }
 
 void ClientApp::initLang() {
@@ -52,10 +59,12 @@ void ClientApp::initLvls() {
     auto plugins = availablePlugins();
 
     for (const auto& lvl: plugins) {
-        IWorld* worldModule = PluginLoader::load(lvl.absoluteFilePath());
+        WordlData data;
 
-        if (worldModule) {
-            _availableLvls.insert(worldModule->name(), worldModule);
+        data.model = PluginLoader::load(lvl.absoluteFilePath());
+        if (data.model) {
+            data.viewModel = new WorldViewData(data.model);
+            _availableLvls.insert(data.model->name(), data);
         }
     }
 }

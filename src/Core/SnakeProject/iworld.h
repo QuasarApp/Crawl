@@ -72,16 +72,22 @@ public:
     virtual QString description() const = 0;
 
     /**
+     * @brief imagePreview This method should be return path to banner of the lvl.
+     * @return path to level banner.
+     */
+    virtual QString imagePreview() const = 0;
+
+    /**
      * @brief name This method shold be return lvl name.
      * @return lvl name.
      */
     virtual QString name() const = 0;
 
     /**
-     * @brief amountToUnlock This method shold be return unlock cost.
+     * @brief costToUnlock This method shold be return unlock cost.
      * @return unlock cost
      */
-    virtual int amountToUnlock() const = 0;
+    virtual int costToUnlock() const = 0;
 
     /**
      * @brief render this method recursive invoke all render functions of the all world items.

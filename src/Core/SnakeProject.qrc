@@ -3,7 +3,6 @@
         <file>SnakeProjectModule/qmldir</file>
         <file>SnakeProjectModule/SnakeProject.qml</file>
         <file>SnakeProjectModule/GraphicItem.qml</file>
-        <file>SnakeProjectModule/ImageView.qml</file>
         <file>SnakeProjectModule/MainMenu.qml</file>
         <file>SnakeProjectModule/MainMenuButton.qml</file>
         <file>SnakeProjectModule/Metrix.qml</file>
@@ -12,6 +11,7 @@
         <file>SnakeProjectModule/Scene.qml</file>
         <file>SnakeProjectModule/SettingsView.qml</file>
         <file>SnakeProjectModule/SnakeItem.qml</file>
+        <file>SnakeProjectModule/SelectLvlView.qml</file>
     </qresource>
     <qresource prefix="/SnakeTr">
         <file>languages/de.qm</file>
