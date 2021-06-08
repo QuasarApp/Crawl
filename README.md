@@ -1,15 +1,11 @@
-# CMakeProject
-Template repository for cmake project
-Fork me and replase SnakeProject to Name of your new project.
+# CRAWL
 
-1. Clone this repository 
-2. Run ./init.sh NewProjectName 
+# ![CRAWL_BANNER](Doc/res/Snake_banner_web.jpg)
 
-# This template supports next build targets:
+## About this game
 
-|   Command or make target   |  Description    |
-|------|------|
-| **make test** | The run tests for a project (dependet of Qt Tests, so you need to add Qt in Cmake using CMAKE_PREFIX_PATH) |
-| **make doc** | The generate a documentation for a project (dependet of doxygen) |
-| **make deploy** | The generate distribution for a project (dependet of CQtDeployer) |
-| **make release** | The prepare Qt Installer framework repository for a project, generate a snap package and APK file for android (dependet of CQtDeployer,  snapcraft, AndroidDeployer). |
+This game is about snakes that travel to different locations. Each of them has its own background and purpose, your task is to help them survive in the location. The basic rules of the game is that a snake falls under your control, and you must control it in such a way that it would crawl around obstacles on the way, as well as collect various useful objects. The game has different levels with their own local rules, which implies a variety of unique obstacles and useful objects.
+
+## How to play
+
+To begin with, you need to set the snake in motion, for this you need to click on the playing field, each click adds speed but also changes the direction of movement, the task is to keep the balance of the trajectory during acceleration and maneuver between obstacles trying to collect various useful objects. The levels are endless, but the further you advance in the level by gaining a certain number of points, the next levels will be unlocked, the number of points required to gain access to the levels varies depending on the difficulty of the level
