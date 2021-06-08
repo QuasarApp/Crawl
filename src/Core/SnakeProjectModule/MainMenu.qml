@@ -100,19 +100,9 @@ Item {
         height: 8 * metrix.controlPtMaterial;
 
         onAccepted: {
-            settingsView.save();
+            item1.newGame()
         }
-
-        onReset: {
-            settingsView.reset();
-        }
-
-        onOpened: {
-            settingsView.update();
-        }
-
     }
-
 }
 
 

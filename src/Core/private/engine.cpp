@@ -2,6 +2,7 @@
 
 #include <QQmlComponent>
 #include <guiobject.h>
+#include "SnakeProject/iworld.h"
 
 Engine::Engine() {
 
@@ -58,6 +59,10 @@ bool Engine::remove(int id) {
     return true;
 }
 
+Diff Engine::generateDiff() {
+    TO-DO
+}
+
 void Engine::setQmlEngine(QQmlEngine *newEngine) {
     if (_engine == newEngine)
         return;
@@ -65,6 +70,25 @@ void Engine::setQmlEngine(QQmlEngine *newEngine) {
     _engine = newEngine;
 }
 
-void Engine::setWorld(const IWorld *world) {
+void Engine::setWorld(IWorld *world) {
+    if (_currentWorld == world)
+        return ;
 
+    _currentWorld = world;
+
+    handleGameObjectsChanged();
+}
+
+QString Engine::hdr() const {
+    if (!_currentWorld)
+        return "";
+
+    return _currentWorld->hdrMap();
+}
+
+void Engine::setScane(QObject *newScane) {
+    if (_scane == newScane)
+        return;
+    _scane = newScane;
+    emit scaneChanged();
 }

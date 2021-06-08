@@ -10,6 +10,13 @@ View3D {
 
     property var model: null;
 
+    onModelChanged: {
+        if (!mainScane)
+            return;
+
+        model.scane = mainScane
+    }
+
     PerspectiveCamera {
         id: camera
         position: Qt.vector3d(0, 0, 100)
@@ -21,19 +28,18 @@ View3D {
     DirectionalLight {
     }
 
+    Node {
+        id: mainScane
+    }
+
     environment: SceneEnvironment {
         id: background
         clearColor: window.color
         backgroundMode: SceneEnvironment.SkyBox
-        //probeOrientation: Qt.vector3d(0, -90, 0)
 
         lightProbe: Texture {
             source: "qrc:/hdr/res/hdr/lebombo_2k.hdr"
         }
-    }
-
-    Node {
-        id: mainScane
     }
 
     Timer {

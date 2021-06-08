@@ -13,6 +13,8 @@ class IWorld;
 class Engine : public QObject {
 
     Q_OBJECT
+    Q_PROPERTY(QString hdr READ hdr NOTIFY hdrChanged)
+    Q_PROPERTY(QObject* scane READ scane WRITE setScane NOTIFY scaneChanged)
 
 public:
     Engine();
@@ -33,7 +35,22 @@ public:
      * @brief setWorld This method set new world for game.
      * @param world This is pointer to new world.
      */
-    void setWorld(const IWorld* world);
+    void setWorld(IWorld *world);
+
+    /**
+     * @brief hdr This method should return hdr map of the lvl
+     * @return path to hdr map.
+     */
+    QString hdr() const;
+
+    /**
+     * @brief setScane This method sets new scane object. The scane object are
+     * @param newScane are Qt Quick 3d node object form qml.
+     */
+    void setScane(QObject *newScane);
+
+    IWorld *currentWorld() const;
+    void setCurrentWorld(IWorld *newCurrentWorld);
 
 public slots:
 
@@ -43,14 +60,19 @@ public slots:
      */
     void handleGameObjectsChanged(Diff diff);
 
+signals:
+    void hdrChanged();
+    void scaneChanged();
+
 private:
     bool add(GuiObject* obj);
     bool remove(int id);
+    Diff generateDiff();
 
     QObject *_scane = nullptr;
     QQmlEngine *_engine = nullptr;
-
     QHash<int, QObject*> _qmlObjects;
+    IWorld* _currentWorld = nullptr;
 };
 
 #endif // ENGINE_H

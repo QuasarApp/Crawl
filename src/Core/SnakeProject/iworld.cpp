@@ -82,6 +82,10 @@ bool IWorld::removeAnyItemFromGroup(const QString &group) {
     return removeItem(anyObject);
 }
 
+const QString &IWorld::hdrMap() const {
+    return _hdrMap;
+}
+
 void IWorld::worldChanged(const WorldObjects &objects) {
 
     for (auto it = objects.begin(); it != objects.end(); ++it) {

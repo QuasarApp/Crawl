@@ -103,6 +103,8 @@ public:
      */
     const IWorldItem * getItem(int id) const;
 
+    const QString &hdrMap() const;
+
 signals:
     void sigGameFinished(GameResult);
 
