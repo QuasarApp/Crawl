@@ -38,7 +38,7 @@ View3D {
         backgroundMode: SceneEnvironment.SkyBox
 
         lightProbe: Texture {
-            source: "qrc:/hdr/res/hdr/lebombo_2k.hdr"
+            source: model
         }
     }
 
