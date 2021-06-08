@@ -49,10 +49,13 @@ public:
      */
     void setScane(QObject *newScane);
 
+    /**
+     * @brief currentWorld return pointer to current world object.
+     * @return raw pointer to current world object.
+     */
     IWorld *currentWorld() const;
-    void setCurrentWorld(IWorld *newCurrentWorld);
 
-public slots:
+private slots:
 
     /**
      * @brief handleGameObjectsChanged This slot invoked when games objects changed.
@@ -67,7 +70,6 @@ signals:
 private:
     bool add(GuiObject* obj);
     bool remove(int id);
-    Diff generateDiff();
 
     QObject *_scane = nullptr;
     QQmlEngine *_engine = nullptr;

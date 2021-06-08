@@ -3,6 +3,7 @@
 #include <QQmlComponent>
 #include <guiobject.h>
 #include "SnakeProject/iworld.h"
+#include "diff.h"
 
 Engine::Engine() {
 
@@ -59,10 +60,6 @@ bool Engine::remove(int id) {
     return true;
 }
 
-Diff Engine::generateDiff() {
-    TO-DO
-}
-
 void Engine::setQmlEngine(QQmlEngine *newEngine) {
     if (_engine == newEngine)
         return;
@@ -74,9 +71,17 @@ void Engine::setWorld(IWorld *world) {
     if (_currentWorld == world)
         return ;
 
+    if (_currentWorld) {
+        disconnect(_currentWorld, &IWorld::sigOBjctsListChanged,
+                   this, &Engine::handleGameObjectsChanged);
+    }
+
     _currentWorld = world;
 
-    handleGameObjectsChanged();
+    connect(_currentWorld, &IWorld::sigOBjctsListChanged,
+            this, &Engine::handleGameObjectsChanged,
+            Qt::QueuedConnection);
+
 }
 
 QString Engine::hdr() const {

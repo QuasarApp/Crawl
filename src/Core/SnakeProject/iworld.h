@@ -12,6 +12,7 @@
 
 class IWorldItem;
 class IPlayer;
+class Diff;
 
 /**
  * @brief WorldObjects This is map list of the avalable objects and its count on a lvl-long point.
@@ -40,6 +41,14 @@ class IWorld : public QObject, public IRender
 public:
     IWorld();
     virtual ~IWorld();
+
+    /**
+     * @brief generateGroundTile This method should be generate a new tile of the world.
+     * @return raw pointer to tile of the world ground.
+     * @note The tile count sets automaticly.
+     * @note All generated objects will be distroed automaticaly.
+     */
+    virtual IWorldItem* generateGroundTile() = 0;
 
     /**
      * @brief initPlayer The implementation of This interface must be return playerObject.
@@ -103,10 +112,23 @@ public:
      */
     const IWorldItem * getItem(int id) const;
 
+    /**
+     * @brief hdrMap This method return path to hdr map of world.
+     * @return
+     */
     const QString &hdrMap() const;
 
 signals:
-    void sigGameFinished(GameResult);
+    /**
+     * @brief sigGameFinished This signal emit when game are finished
+     * @brief result This is player statistics after finished level,
+     */
+    void sigGameFinished(GameResult result);
+
+    /**
+     * @brief sigOBjctsListChanged This signal emited when lvel status are changed.
+     */
+    void sigOBjctsListChanged(Diff);
 
 protected:
     /**
@@ -121,6 +143,7 @@ private:
     bool init();
     void deinit();
 
+    void generateGround();
     void worldChanged(const WorldObjects& objects);
     void clearItems();
     void addItem(const QString &group, IWorldItem *obj);

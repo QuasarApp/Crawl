@@ -57,6 +57,11 @@ void IWorld::deinit() {
     delete  _worldRules;
 }
 
+void IWorld::generateGround() {
+    int count = 10;
+    TO-DU
+}
+
 void IWorld::addItem(const QString& group, IWorldItem* obj) {
     _items.insert(obj->guiId(), WorldObjectWraper{obj, group});
     _itemsGroup.insert(group, obj->guiId());
@@ -78,7 +83,7 @@ bool IWorld::removeItem(int id) {
 }
 
 bool IWorld::removeAnyItemFromGroup(const QString &group) {
-    auto anyObject =_itemsGroup.value(group);
+    auto anyObject = _itemsGroup.value(group);
     return removeItem(anyObject);
 }
 
@@ -90,7 +95,7 @@ void IWorld::worldChanged(const WorldObjects &objects) {
 
     for (auto it = objects.begin(); it != objects.end(); ++it) {
 
-        int count = it.value() -_itemsGroup.count(it.key());
+        int count = it.value() - _itemsGroup.count(it.key());
 
         if (count > 0) {
             for ( int i = 0; i < count; ++i ) {
