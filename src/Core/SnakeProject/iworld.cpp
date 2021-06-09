@@ -1,6 +1,7 @@
 #include "iworld.h"
 #include "iworlditem.h"
 #include <quasarapp.h>
+#include "iground.h"
 
 IWorld::IWorld() {
 
@@ -31,6 +32,9 @@ bool IWorld::init() {
     _worldRules = initWorldRules();
     _hdrMap = initHdrBackGround();
     _player = initPlayer();
+    _player->initOnWorld(this, _player);
+
+    setCameraReleativePosition(initCameraPosition());
 
     if (!_worldRules->size())
         return false;
@@ -59,7 +63,18 @@ void IWorld::deinit() {
 
 void IWorld::generateGround() {
     int count = 10;
-    TO-DU
+
+    QVector3D position = {0,0,0};
+    float increment = cameraReleativePosition().z() * 2;
+
+    while (count--) {
+        auto item = generateGroundTile();
+        item->initOnWorld(this, _player);
+
+        position.setX(position.x() + increment);
+        item->setposition(position);
+        addItem("groundTile", item);
+    }
 }
 
 void IWorld::addItem(const QString& group, IWorldItem* obj) {
@@ -87,6 +102,18 @@ bool IWorld::removeAnyItemFromGroup(const QString &group) {
     return removeItem(anyObject);
 }
 
+void IWorld::setCameraReleativePosition(const QVector3D &newCameraReleativePosition) {
+    if (_cameraReleativePosition == newCameraReleativePosition)
+        return;
+
+    _cameraReleativePosition = newCameraReleativePosition;
+    emit cameraReleativePositionChanged();
+}
+
+const QVector3D &IWorld::cameraReleativePosition() const {
+    return _cameraReleativePosition;
+}
+
 const QString &IWorld::hdrMap() const {
     return _hdrMap;
 }
@@ -101,10 +128,11 @@ void IWorld::worldChanged(const WorldObjects &objects) {
             for ( int i = 0; i < count; ++i ) {
                 IWorldItem *obj = generate(it.key());
 
-                obj->initOnWorld(this);
+                obj->initOnWorld(this, _player);
 
                 if (!obj) {
-                    QuasarAppUtils::Params::log("object not created line:" + QString::fromLatin1(Q_FUNC_INFO),
+                    QuasarAppUtils::Params::log("object not created line:" +
+                                                QString::fromLatin1(Q_FUNC_INFO),
                                                 QuasarAppUtils::Warning);
                     break;
                 }

@@ -9,6 +9,9 @@ View3D {
     id: scene;
 
     property var model: null;
+    property var player: (model)? model.player: null
+    property var world: (model)? model.world: null
+    property var releativeCameraPosition: (world)? model.cameraReleativePosition: null
 
     onModelChanged: {
         if (!mainScane)
@@ -19,8 +22,9 @@ View3D {
 
     PerspectiveCamera {
         id: camera
-        position: Qt.vector3d(0, 0, 100)
-        eulerRotation.y: -45
+        position: Qt.vector3d(player.position.x + releativeCameraPosition.x,
+                              player.position.y + releativeCameraPosition.y,
+                              player.position.z + releativeCameraPosition.z)
         eulerRotation.z: -90
 
     }

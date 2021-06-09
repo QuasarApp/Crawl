@@ -9,10 +9,11 @@
 #include <QObject>
 #include <QString>
 #include "irender.h"
+#include "diff.h"
 
 class IWorldItem;
 class IPlayer;
-class Diff;
+class IGround;
 
 /**
  * @brief WorldObjects This is map list of the avalable objects and its count on a lvl-long point.
@@ -38,6 +39,8 @@ struct WorldObjectWraper {
 class IWorld : public QObject, public IRender
 {
     Q_OBJECT
+    Q_PROPERTY(QVector3D cameraReleativePosition READ cameraReleativePosition WRITE setCameraReleativePosition NOTIFY cameraReleativePositionChanged)
+
 public:
     IWorld();
     virtual ~IWorld();
@@ -48,7 +51,7 @@ public:
      * @note The tile count sets automaticly.
      * @note All generated objects will be distroed automaticaly.
      */
-    virtual IWorldItem* generateGroundTile() = 0;
+    virtual IGround* generateGroundTile() = 0;
 
     /**
      * @brief initPlayer The implementation of This interface must be return playerObject.
@@ -105,6 +108,12 @@ public:
     virtual void render(unsigned int tbfMsec) override;
 
     /**
+     * @brief cameraPosition This method should be return relative position of camera. position should be relative of player object.
+     * @return camera releative position
+     */
+    virtual QVector3D initCameraPosition() = 0;
+
+    /**
      * @brief getItem This method return raw pointer to object by id.
      * @param id This is id of a required object.
      * @return pointe to requaried object.
@@ -118,6 +127,13 @@ public:
      */
     const QString &hdrMap() const;
 
+    /**
+     * @brief cameraReleativePosition return  a releative of player camera position.
+     * @return
+     */
+    const QVector3D &cameraReleativePosition() const;
+
+
 signals:
     /**
      * @brief sigGameFinished This signal emit when game are finished
@@ -130,6 +146,8 @@ signals:
      */
     void sigOBjctsListChanged(Diff);
 
+    void cameraReleativePositionChanged();
+
 protected:
     /**
      * @brief generate This method shold be generate object from the  @a objectType.
@@ -138,6 +156,8 @@ protected:
      * @return pointer to the object.
      */
     virtual IWorldItem* generate(const QString& objectType) const = 0;
+
+    void setCameraReleativePosition(const QVector3D &newCameraReleativePosition);
 
 private:
     bool init();
@@ -152,12 +172,14 @@ private:
 
     QHash<int, WorldObjectWraper> _items;
     QMultiHash<QString, int> _itemsGroup;
+    QVector3D _cameraReleativePosition;
 
     QString _hdrMap;
     WorldRule *_worldRules = nullptr;
     IPlayer *_player = nullptr;
 
     friend class Engine;
+
 
 };
 

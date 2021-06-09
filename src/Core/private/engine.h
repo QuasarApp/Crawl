@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include <QQmlEngine>
-#include <diff.h>
+#include <SnakeProject/diff.h>
 
 class IWorld;
 
@@ -14,6 +14,9 @@ class Engine : public QObject {
 
     Q_OBJECT
     Q_PROPERTY(QString hdr READ hdr NOTIFY hdrChanged)
+    Q_PROPERTY(QObject* player READ player NOTIFY playerChanged)
+    Q_PROPERTY(QObject* world READ world NOTIFY worldChanged)
+
     Q_PROPERTY(QObject* scane READ scane WRITE setScane NOTIFY scaneChanged)
 
 public:
@@ -55,6 +58,18 @@ public:
      */
     IWorld *currentWorld() const;
 
+    /**
+     * @brief player return player object.
+     * @return player object
+     */
+    QObject* player() const;
+
+    /**
+     * @brief world return player object.
+     * @return world object
+     */
+    QObject* world() const;
+
 private slots:
 
     /**
@@ -66,6 +81,8 @@ private slots:
 signals:
     void hdrChanged();
     void scaneChanged();
+    void playerChanged();
+    void worldChanged();
 
 private:
     bool add(GuiObject* obj);

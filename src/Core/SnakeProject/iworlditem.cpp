@@ -16,6 +16,27 @@ const IWorldItem *IWorldItem::getItem(int id) const {
     return _world->getItem(id);
 }
 
-void IWorldItem::initOnWorld(const IWorld *world) {
+const IWorldItem *IWorldItem::getPlayer() const {
+    return _playerObject;
+}
+
+void IWorldItem::render(unsigned int) {
+    if (_playerObject->position().x() - position().x() >
+            _world->cameraReleativePosition().z() * 2) {
+        setX(_playerObject->position().x() + _world->cameraReleativePosition().z() * 4);
+
+        float dY = rand() % static_cast<int>(_world->cameraReleativePosition().z() * 2
+                                             - _world->cameraReleativePosition().z());
+
+        setY(_playerObject->position().y() + dY);
+    }
+}
+
+void IWorldItem::initOnWorld(const IWorld *world, const IWorldItem * player) {
     _world = world;
+    _playerObject = player;
+}
+
+const IWorld *IWorldItem::world() const {
+    return _world;
 }

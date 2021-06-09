@@ -1,7 +1,7 @@
 #ifndef IWORLDITEM_H
 #define IWORLDITEM_H
 
-#include <guiobject.h>
+#include <SnakeProject/guiobject.h>
 
 class IWorld;
 /**
@@ -11,6 +11,8 @@ class IWorldItem: public GuiObject {
     Q_OBJECT
 public:
     IWorldItem();
+
+    const IWorld *world() const;
 
 protected:
 
@@ -26,11 +28,26 @@ protected:
      */
     const IWorldItem * getItem(int id) const;
 
+    /**
+     * @brief getPlayer This method return pointer to player object.
+     * @return raw pointer to playerObject
+     */
+    const IWorldItem * getPlayer() const;
+
+    /**
+     * @brief render This implementation move objects from end of scane to begin.
+     * @param tbfMsec
+     * @note new position = playerPosition + scaneSize;
+     */
+    void render(unsigned int tbfMsec) override;
+
 private:
-    void initOnWorld(const IWorld* world);
+    void initOnWorld(const IWorld* world, const IWorldItem *player);
 
     const IWorld* _world = nullptr;
+    const IWorldItem *_playerObject = nullptr;
     friend class IWorld;
+
 };
 
 #endif // IWORLDITEM_H

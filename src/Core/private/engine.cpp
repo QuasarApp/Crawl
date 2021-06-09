@@ -1,9 +1,8 @@
 #include "engine.h"
 
 #include <QQmlComponent>
-#include <guiobject.h>
+#include <SnakeProject/guiobject.h>
 #include "SnakeProject/iworld.h"
-#include "diff.h"
 
 Engine::Engine() {
 
@@ -15,11 +14,11 @@ QObject *Engine::scane() {
 
 void Engine::handleGameObjectsChanged(Diff diff) {
 
-    for (const auto &item: diff.getAddedIds()) {
+    for (const auto &item: qAsConst(diff.addedIds)) {
         add(item);
     }
 
-    for (int id: diff.getRemoveIds()) {
+    for (int id: qAsConst(diff.removeIds)) {
         remove(id);
     }
 }
@@ -97,3 +96,15 @@ void Engine::setScane(QObject *newScane) {
     _scane = newScane;
     emit scaneChanged();
 }
+
+QObject *Engine::player() const {
+    if (_currentWorld)
+        return _currentWorld->_player;
+
+    return nullptr;
+}
+
+QObject *Engine::world() const {
+    return _currentWorld;
+}
+
