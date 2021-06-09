@@ -1,173 +1,51 @@
-#include "background.h"
+#include "box.h"
+#include "plate.h"
 #include "world.h"
 
-#include <QMap>
-#include "guiobject.h"
-#include "guiobjectfactory.h"
-#include <QDateTime>
-#include <QDebug>
+#include <snake.h>
 
-World::World() {
-    currentLong = 0;
-    endLong = 0;
-    background = "";
+
+IGround *World::generateGroundTile() {
+    return new Plate();
 }
 
-void World::clear() {
-    clearItems();
-    snake.clear();
+IPlayer *World::initPlayer() const {
+    return new Snake();
 }
 
-double World::getCurrentLong() const {
-    return currentLong;
+WorldRule *World::initWorldRules() const {
+    return {};
 }
 
-QMultiMap<QString, ItemWorld *> World::getItems() const
-{
-    return items;
+QString World::initHdrBackGround() const {
+    return ":/hdr/res/hdr/testHDR.jpg";
 }
 
-void World::unPause() {
-    time = QDateTime::currentMSecsSinceEpoch();
-    snake.unPause();
+QString World::description() const {
+    return "This a test lvl";
 }
 
-void World::clearItems() {
-    for (auto i : qAsConst(items)) {
-        delete i;
-    }
-    oldRules.clear();
-    items.clear();
-    spead = 0;
-    d_spead = 0;
+QString World::imagePreview() const {
+    return ":/hdr/res/hdr/testHDR.jpg";
+
 }
 
-void World::changeCountObjects(const QString &name, int count) {
-
-    if (count > 0) {
-
-        for ( int i = 0; i < count; ++i ) {
-            auto obj = GuiObjectFactory::generate(name);
-
-            if (!obj) {
-                qWarning() <<"object not created line:" << Q_FUNC_INFO;
-                break;
-            }
-
-            items.insert(name, obj);
-        }
-
-    } else {
-        for ( int i = count; i < 0; ++i ) {
-            auto obj = items.value(name);
-            if (1 != items.remove(name, obj)) {
-                qWarning() << "World::changeCountObjects error delete object!";
-            }
-            delete obj;
-        }
-    }
+QString World::name() const {
+    return "Test";
 }
 
-QMap<int, GuiObject *> World::init(WorldRules rules) {
+int World::costToUnlock() const {
+    return 0;
+}
 
-    QMap<int, GuiObject*> res;
+QVector3D World::initCameraPosition() {
+    return {0, 0, 100};
+}
 
-//    rules["BackGround"] = 1;
-
-    currentLong = -1;
-    for (auto i = rules.begin(); i != rules.end(); ++i) {
-        if (i.key() == "Long") {
-            endLong = rules["Long"];
-            currentLong = 0;
-        }
-        else if (i.key() == "Spead") {
-            d_spead = rules["Spead"];
-        }
-        else {
-            changeCountObjects(i.key(), i.value() - oldRules.value(i.key()));
-        }
+IWorldItem *World::generate(const QString &objectType) const {
+    if (objectType == "Box") {
+        return new Box();
     }
 
-    auto snakeItems = snake.init(20, &spead);
-
-    for (auto i = snakeItems.begin(); i != snakeItems.end(); ++i) {
-        res.insert(i.key(), i.value());
-    }
-
-    for (auto i : qAsConst(items)) {
-        res[i->guiId()] = i;
-    }
-
-
-    oldRules = rules;
-    time = QDateTime::currentMSecsSinceEpoch();
-    defiat = false;
-    return res;
-}
-
-World::~World() {
-    clearItems();
-}
-
-void World::render() {
-
-    qint64 tempTime = QDateTime::currentMSecsSinceEpoch() - time;
-    time = QDateTime::currentMSecsSinceEpoch();
-    double dx = spead / 1000 * tempTime;
-
-    spead -= 0.0310 * tempTime;
-
-    if (spead < 0)
-        spead = 0;
-
-    snake.render();
-    auto rig = snake.getItems().first();
-
-    for (auto i = items.begin(); i != items.end(); ++i) {
-        defiat |= (*i)->move(rig, dx);
-        (*i)->render();
-    }
-
-    defiat |= (rig->position().y()< 0 || rig->position().y() > 100);
-
-//    if (!snake.isDead() && defiat) {
-//        snake.kill();
-//    }
-
-    currentLong += dx;
-}
-
-void World::resetPosition() {
-    for (auto i : qAsConst(items)) {
-        i->reset();
-    }
-    spead = 0;
-
-    snake.resetPosotion();
-}
-
-bool World::move() {
-    return isEnd();
-}
-
-bool World::isEnd() {
-    return currentLong >= endLong;
-}
-
-bool World::isDefiat() const {
-    return false;//defiat && !static_cast<bool>(spead);
-}
-
-WorldRules World::currentRules() const {
-    return oldRules;
-}
-
-void World::reversClick() {
-    if (snake.isDead()) {
-        spead = 0;
-        return;
-    }
-
-    snake.reverse();
-    spead += d_spead;
+    return nullptr;
 }

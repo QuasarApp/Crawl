@@ -27,7 +27,8 @@ public:
 
 protected:
     /**
-     * @brief kill This method kill your player. Invoke this method when you want to kell your player.
+     * @brief kill This method kill your player.
+     *  Invoke this method when you want to kell your player.
      */
     void kill();
 

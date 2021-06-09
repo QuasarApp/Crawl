@@ -12,10 +12,9 @@ add_definitions(-DSnakeProject_LIBRARY)
 
 
 file(GLOB SOURCE_CPP
-    "*Empty/*.cpp"
+    "*.cpp"
      "private/*.cpp"
      "*.qrc"
-     "Empty/*.qrc"
      "private/*.qrc"
 )
 

@@ -1,13 +1,12 @@
 #include "box.h"
 
-#include <QColor>
 
-Box::Box(double x, double y):
-    ItemWorld (x, y) {
-
-    this->setSize(10, 10);
-    setMash("qrc:/mesh/res/meshes/cube.mesh");
-
-    setColor(QColor(100, 100, 100).name());
+Box::Box() {
+    setMash(":/mesh/res/meshes/cube.mesh");
+    setSize({10,10,10});
+    setZ(1);
 }
 
+void Box::onIntersects(const IWorldItem *item) {
+    Q_UNUSED(item);
+}

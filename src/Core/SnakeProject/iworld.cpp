@@ -27,6 +27,10 @@ void IWorld::render(unsigned int tbfMsec) {
     }
 }
 
+const IWorldItem *IWorld::getItem(int id) const {
+    return _items.value(id, {}).objectPtr;
+}
+
 bool IWorld::init() {
 
     _worldRules = initWorldRules();

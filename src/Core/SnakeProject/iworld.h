@@ -157,6 +157,10 @@ protected:
      */
     virtual IWorldItem* generate(const QString& objectType) const = 0;
 
+    /**
+     * @brief setCameraReleativePosition This method update camera position
+     * @param newCameraReleativePosition This is new camera position releative of player.
+     */
     void setCameraReleativePosition(const QVector3D &newCameraReleativePosition);
 
 private:

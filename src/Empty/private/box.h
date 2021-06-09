@@ -1,13 +1,15 @@
 #ifndef BOX_H
 #define BOX_H
+#include "SnakeProject/iworlditem.h"
 
-#include "itemworld.h"
+class Box: public IWorldItem {
 
-class Box: public ItemWorld
-{
 public:
-    Box(double x, double y);
+    Box();
 
+    // IWorldItem interface
+protected:
+    void onIntersects(const IWorldItem *item) override;
 };
 
 #endif // BOX_H
