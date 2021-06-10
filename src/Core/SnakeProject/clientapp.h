@@ -10,6 +10,7 @@ class Engine;
 class IWorld;
 class WorldViewData;
 class QQmlApplicationEngine;
+class MainMenuModel;
 
 inline void initSnakeProjectResources() { Q_INIT_RESOURCE(SnakeProject); }
 
@@ -52,6 +53,7 @@ private:
     QList<QFileInfo> availablePlugins() const;
 
     QHash<QString, WordlData> _availableLvls;
+    MainMenuModel *_menu = nullptr;
     Engine *_engine = nullptr;
 };
 

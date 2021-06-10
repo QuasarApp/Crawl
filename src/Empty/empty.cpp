@@ -1,6 +1,9 @@
 #include "SnakeProject/iworld.h"
 #include "world.h"
 
-IWorld* instance() {
+inline void initResources() { Q_INIT_RESOURCE(Empty); }
+
+extern "C" IWorld* instance() {
+    initResources();
     return new World();
 }

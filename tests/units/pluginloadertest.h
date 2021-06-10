@@ -13,11 +13,11 @@
 
 #include <QtTest>
 
-class ExampleTest: public Test, protected TestUtils
+class PluginLoaderTest: public Test, protected TestUtils
 {
 public:
-    ExampleTest();
-    ~ExampleTest();
+    PluginLoaderTest();
+    ~PluginLoaderTest();
 
     void test();
 

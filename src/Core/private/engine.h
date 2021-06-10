@@ -20,7 +20,7 @@ class Engine : public QObject {
     Q_PROPERTY(QObject* scane READ scane WRITE setScane NOTIFY scaneChanged)
 
 public:
-    Engine();
+    Engine(QObject * parent = nullptr);
 
     /**
      * @brief scane This method return main scane of the game.

@@ -7,6 +7,9 @@
 int main(int argc, char *argv[])
 {
 
+    QCoreApplication::setOrganizationName("QuasarApp");
+    QCoreApplication::setApplicationName("Snake");
+
     QGuiApplication app(argc, argv);
     QQmlApplicationEngine engine;
     ClientApp client;

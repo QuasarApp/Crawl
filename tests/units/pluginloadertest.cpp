@@ -6,17 +6,17 @@
 //#
 
 
-#include "exampletest.h"
+#include "pluginloadertest.h"
 
 
-ExampleTest::ExampleTest() {
-
-}
-
-ExampleTest::~ExampleTest() {
+PluginLoaderTest::PluginLoaderTest() {
 
 }
 
-void ExampleTest::test() {
+PluginLoaderTest::~PluginLoaderTest() {
+
+}
+
+void PluginLoaderTest::test() {
     QVERIFY(true);
 }

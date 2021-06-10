@@ -12,9 +12,11 @@ View3D {
     property var player: (model)? model.player: null
     property var world: (model)? model.world: null
     property var releativeCameraPosition: (world)? model.cameraReleativePosition: null
+    property bool showMenu: false
+    property bool isPause: false
 
     onModelChanged: {
-        if (!mainScane)
+        if (!model)
             return;
 
         model.scane = mainScane
@@ -22,9 +24,12 @@ View3D {
 
     PerspectiveCamera {
         id: camera
-        position: Qt.vector3d(player.position.x + releativeCameraPosition.x,
+        position: (player)? Qt.vector3d(player.position.x + releativeCameraPosition.x,
                               player.position.y + releativeCameraPosition.y,
                               player.position.z + releativeCameraPosition.z)
+                          :
+                            Qt.vector3d(0,0,0)
+
         eulerRotation.z: -90
 
     }
@@ -38,29 +43,11 @@ View3D {
 
     environment: SceneEnvironment {
         id: background
-        clearColor: window.color
         backgroundMode: SceneEnvironment.SkyBox
 
         lightProbe: Texture {
-            source: model
+            source: (model)? model.hdr: ""
         }
-    }
-
-    Timer {
-        id: autoTimer;
-        repeat: true;
-        running: showMenu;
-        interval: 1000
-        onTriggered: {
-            interval = Math.random() * 600
-            scene.model.buttonPress();
-        }
-    }
-
-    Component.onCompleted: {
-        updateBackgroundColor(0);
-        model.handleNewGame();
-
     }
 
     MouseArea {

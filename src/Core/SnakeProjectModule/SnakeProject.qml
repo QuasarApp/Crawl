@@ -20,19 +20,14 @@ ApplicationWindow {
 
     Scene {
         id: scane;
-        model: contr;
+        model: engine;
         anchors.fill: parent;
     }
 
     MainMenu {
 
-        model: (contr)? contr.mainMenuModel: null;
+        model: (mainmenu)? mainmenu: null;
         anchors.fill: parent;
-        visible: scane.showMenu;
-
-        onPlayGame: {
-            contr.showMenu = false;
-        }
 
     }
 

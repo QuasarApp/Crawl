@@ -27,9 +27,11 @@ QByteArray ClientApp::initTheme() {
 
 ClientApp::ClientApp() {
     _engine = new Engine();
+    _menu = new MainMenuModel();
 }
 
 ClientApp::~ClientApp() {
+    delete _menu;
     delete _engine;
 
     for (const auto& item : qAsConst(_availableLvls)) {
@@ -57,16 +59,20 @@ void ClientApp::initLang() {
 
 void ClientApp::initLvls() {
     auto plugins = availablePlugins();
-
+    QList<QObject*> _availableWorlds;
     for (const auto& lvl: plugins) {
         WordlData data;
 
         data.model = PluginLoader::load(lvl.absoluteFilePath());
         if (data.model) {
             data.viewModel = new WorldViewData(data.model);
+            _availableWorlds.push_back(data.viewModel);
             _availableLvls.insert(data.model->name(), data);
         }
     }
+
+    _menu->setAvailableLvls(_availableWorlds);
+
 }
 
 QList<QFileInfo> ClientApp::availablePlugins() const {
@@ -81,8 +87,6 @@ bool ClientApp::init(QQmlApplicationEngine *engine) {
     qputenv("QT_QUICK_CONTROLS_MATERIAL_THEME", initTheme());
     qputenv("QT_QUICK_CONTROLS_STYLE", "Material");
 
-    qmlRegisterAnonymousType<MainMenuModel>("MainMenuModel", 1);
-
     auto root = engine->rootContext();
     if (!root)
         return false;
@@ -90,6 +94,8 @@ bool ClientApp::init(QQmlApplicationEngine *engine) {
     engine->addImageProvider(QLatin1String("userItems"), new ImageProvider());
 
     root->setContextProperty("engine", QVariant::fromValue(_engine));
+    root->setContextProperty("mainmenu", QVariant::fromValue(_menu));
+
     initSnakeProjectResources();
     initLang();
     initLvls();

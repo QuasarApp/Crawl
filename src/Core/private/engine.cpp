@@ -4,7 +4,7 @@
 #include <SnakeProject/guiobject.h>
 #include "SnakeProject/iworld.h"
 
-Engine::Engine() {
+Engine::Engine(QObject *parent): QObject(parent) {
 
 }
 

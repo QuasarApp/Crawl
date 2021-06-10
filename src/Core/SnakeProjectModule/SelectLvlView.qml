@@ -5,6 +5,8 @@ ListView {
     id: root
 
     property string selectedLvl: ""
+    orientation: ListView.Horizontal
+    clip: true
 
     delegate: ImageView {
         property var data : modelData

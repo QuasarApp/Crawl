@@ -34,8 +34,7 @@ Item {
             text: qsTr("Play game")
 
             onClicked: {
-                if (model)
-                    model.newGame();
+                selectLvl.open()
             }
 
         }
@@ -90,7 +89,7 @@ Item {
 
     PagePopUp {
         id: selectLvl
-        source: SettingsView {
+        source: SelectLvlView {
             model: item1.model ? item1.model.availableLvlsModel: null
         }
 
