@@ -90,6 +90,7 @@ Item {
     PagePopUp {
         id: selectLvl
         source: SelectLvlView {
+            id: view
             model: item1.model ? item1.model.availableLvlsModel: null
         }
 
@@ -99,7 +100,7 @@ Item {
         height: 8 * metrix.controlPtMaterial;
 
         onAccepted: {
-            item1.newGame()
+            item1.newGame(view.selectedLvl)
         }
     }
 }

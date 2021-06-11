@@ -114,6 +114,13 @@ public:
     virtual QVector3D initCameraPosition() = 0;
 
     /**
+     * @brief start This method will be invoked when user click start button.
+     * @note The Default implementation reset all positions for all objects.
+     * @return true if game started successful.
+     */
+    virtual bool start();
+
+    /**
      * @brief getItem This method return raw pointer to object by id.
      * @param id This is id of a required object.
      * @return pointe to requaried object.

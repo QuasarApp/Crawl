@@ -12,6 +12,7 @@
 #include <QStandardPaths>
 #include <QDir>
 #include "pluginloader.h"
+#include <viewsolutions.h>
 
 #define PLUGINS_DIR QStandardPaths::
 
@@ -75,6 +76,24 @@ void ClientApp::initLvls() {
 
 }
 
+void ClientApp::start(const QString &lvl) {
+    WordlData data = _availableLvls.value(lvl);
+
+    if (!data.model) {
+        QuasarAppUtils::Params::log("Failed to start lvl.", QuasarAppUtils::Error);
+        return;
+    }
+
+    if (!_engine) {
+        QuasarAppUtils::Params::log("Failed to start lvl, Engine not initialized.",
+                                    QuasarAppUtils::Error);
+
+        return;
+    }
+
+    _engine->setWorld(data.model);
+}
+
 QList<QFileInfo> ClientApp::availablePlugins() const {
     QDir dir(QStandardPaths::writableLocation(QStandardPaths::DataLocation));
     auto list = dir.entryInfoList(QStringList() << "*.so" << "*.dll", QDir::Files);
@@ -103,6 +122,10 @@ bool ClientApp::init(QQmlApplicationEngine *engine) {
     engine->addImportPath(":/SnakeProjectModule/");
 
     if (!QmlNotificationService::init(engine)) {
+        return false;
+    }
+
+    if (!ViewSolutions::init(engine)) {
         return false;
     }
 

@@ -50,17 +50,17 @@ View3D {
         }
     }
 
-    MouseArea {
-        anchors.fill: parent;
+//    MouseArea {
+//        anchors.fill: parent;
 
-        onClicked: {
-            if (!model || showMenu) {
-                return;
-            }
+//        onClicked: {
+//            if (!model || showMenu) {
+//                return;
+//            }
 
-            model.buttonPress();
-        }
-    }
+//            model.buttonPress();
+//        }
+//    }
 
     Button {
         id: returnToMenu;

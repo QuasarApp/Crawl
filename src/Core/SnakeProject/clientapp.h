@@ -47,6 +47,12 @@ private:
     void initLvls();
 
     /**
+     * @brief start This method star new game in @a lvl
+     * @param lvl This is lvl name
+     */
+    void start(const QString& lvl);
+
+    /**
      * @brief availablePlugins This method read all available plugins.
      * @return list of the available plugins.
      */

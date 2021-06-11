@@ -26,10 +26,12 @@ public:
     QObject* userSettingsModel() const;
     QObject* availableLvlsModel() const;
     void setAvailableLvls(const QList<QObject *> &newData);
+    Q_INVOKABLE void newGame(const QString& lvl);
+
 
 signals:
     void userSettingsModelChanged(QObject* userSettingsModel);
-    void newGame();
+    void sigNewGame(const QString& lvl);
     void availableLvlsModelChanged();
 
 private:

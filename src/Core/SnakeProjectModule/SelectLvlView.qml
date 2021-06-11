@@ -14,7 +14,7 @@ ListView {
         source: data.image
         text: data.name
 
-        width: root.height / 2
+        width: root.height * 1.5
         height: root.height * 0.9
 
         onClicked:  {

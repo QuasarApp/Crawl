@@ -3,6 +3,7 @@
 #include <QQmlComponent>
 #include <SnakeProject/guiobject.h>
 #include "SnakeProject/iworld.h"
+#include <quasarapp.h>
 
 Engine::Engine(QObject *parent): QObject(parent) {
 
@@ -73,9 +74,19 @@ void Engine::setWorld(IWorld *world) {
     if (_currentWorld) {
         disconnect(_currentWorld, &IWorld::sigOBjctsListChanged,
                    this, &Engine::handleGameObjectsChanged);
+
+        _currentWorld->deinit();
     }
 
     _currentWorld = world;
+
+    if (!_currentWorld->init()) {
+        QuasarAppUtils::Params::log("Failed to init world. World name: " + _currentWorld->name(),
+                                    QuasarAppUtils::Error);
+
+        _currentWorld = nullptr;
+        return;
+    }
 
     connect(_currentWorld, &IWorld::sigOBjctsListChanged,
             this, &Engine::handleGameObjectsChanged,

@@ -27,6 +27,14 @@ void IWorld::render(unsigned int tbfMsec) {
     }
 }
 
+bool IWorld::start() {
+    _player->setposition({0,0,0});
+    _player->setSpeed(0);
+
+
+    return true;
+}
+
 const IWorldItem *IWorld::getItem(int id) const {
     return _items.value(id, {}).objectPtr;
 }

@@ -25,7 +25,20 @@ public:
      */
     bool isDead() const;
 
+    /**
+     * @brief speed This method return current speed of the snake.
+     * @return current speed
+     */
+    float speed() const;
+
+    /**
+     * @brief setSpeed This method sets new value for player spead.
+     * @param newSpead This is a new value of a snake speed.
+     */
+    void setSpeed(float newSpead);
+
 protected:
+
     /**
      * @brief kill This method kill your player.
      *  Invoke this method when you want to kell your player.
@@ -40,6 +53,21 @@ protected:
     void reward(int value);
 
     /**
+     * @brief speedUp This method increment snake speed.
+     * @param increment This is value that will added to a snake speed.
+     * @return new snake speed.
+     */
+    float speedUp(float increment);
+
+    /**
+     * @brief setSpeedDown This method decrement snake speed.
+     * @param decrement This is value that will take away from a snake speed.
+     * @return new snake speed.
+     * @note return 0 if a snake speed less than a decrement value.
+     */
+    float setSpeedDown(float decrement);
+
+    /**
      * @brief fine This method remove reward for player.
      * @param value This is fine amount;
      * @note This method decriment current points value.
@@ -49,6 +77,7 @@ protected:
 private:
     bool _fDead = false;
     int _currentPoints = 0;
+    float _speed = 0;
 };
 
 #endif // IPLAYER_H
