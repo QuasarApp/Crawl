@@ -6,7 +6,9 @@
 
 int main(int argc, char *argv[])
 {
-    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+
+    QCoreApplication::setOrganizationName("QuasarApp");
+    QCoreApplication::setApplicationName("Snake");
 
     QGuiApplication app(argc, argv);
     QQmlApplicationEngine engine;

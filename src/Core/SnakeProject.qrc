@@ -1,0 +1,31 @@
+<RCC>
+    <qresource prefix="/">
+        <file>SnakeProjectModule/qmldir</file>
+        <file>SnakeProjectModule/SnakeProject.qml</file>
+        <file>SnakeProjectModule/GraphicItem.qml</file>
+        <file>SnakeProjectModule/MainMenu.qml</file>
+        <file>SnakeProjectModule/MainMenuButton.qml</file>
+        <file>SnakeProjectModule/Metrix.qml</file>
+        <file>SnakeProjectModule/PagePopUp.qml</file>
+        <file>SnakeProjectModule/PropertyView.qml</file>
+        <file>SnakeProjectModule/Scene.qml</file>
+        <file>SnakeProjectModule/SettingsView.qml</file>
+        <file>SnakeProjectModule/SnakeItem.qml</file>
+        <file>SnakeProjectModule/SelectLvlView.qml</file>
+    </qresource>
+    <qresource prefix="/SnakeTr">
+        <file>languages/de.qm</file>
+        <file>languages/en.qm</file>
+        <file>languages/es.qm</file>
+        <file>languages/fr.qm</file>
+        <file>languages/ja.qm</file>
+        <file>languages/pl.qm</file>
+        <file>languages/ru.qm</file>
+        <file>languages/tr.qm</file>
+        <file>languages/zh.qm</file>
+        <file>languages/uk.qm</file>
+    </qresource>
+    <qresource prefix="/images"/>
+    <qresource prefix="/mesh"/>
+    <qresource prefix="/hdr"/>
+</RCC>

@@ -12,18 +12,6 @@ if(TARGET ${PROJECT_NAME})
   return()
 endif()
 
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
-set(CMAKE_AUTOUIC ON)
-set(BUILD_SHARED_LIBS ON)
-
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Test REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Test REQUIRED)
-
 include(submodules/QuasarAppLib/CMake/QuasarApp.cmake)
 
 if (DEFINED TARGET_PLATFORM_TOOLCHAIN)
@@ -33,8 +21,21 @@ if (DEFINED TARGET_PLATFORM_TOOLCHAIN)
     endif()
 endif()
 
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOUIC ON)
+set(BUILD_SHARED_LIBS ON)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+set(QT_VERSION_MAJOR 5)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Test REQUIRED)
+
 if (NOT DEFINED SNAKEPROJECT_TESTS)
     set(SNAKEPROJECT_TESTS ON)
+    message(1)
 
     if (DEFINED TARGET_PLATFORM_TOOLCHAIN)
         if (${TARGET_PLATFORM_TOOLCHAIN} STREQUAL "wasm32")
@@ -48,6 +49,7 @@ if (NOT DEFINED SNAKEPROJECT_TESTS)
 
     if (NOT QT_VERSION_MAJOR)
         set(SNAKEPROJECT_TESTS OFF)
+        message(2)
     endif()
 endif()
 
@@ -59,8 +61,11 @@ endif()
 
 add_subdirectory(submodules/QuasarAppLib)
 add_subdirectory(submodules/SimpleQmlNotify)
+add_subdirectory(submodules/ViewSolutions)
 
-add_subdirectory(src/ClientLib)
+add_subdirectory(src/Core)
+add_subdirectory(src/Empty)
+
 add_subdirectory(src/Client)
 
 
