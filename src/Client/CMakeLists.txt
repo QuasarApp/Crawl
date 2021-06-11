@@ -47,7 +47,7 @@ if (ANDROID)
                          QmlNotyfyService
                          ViewSolutions)
 
-    find_package(Qt6 COMPONENTS AndroidExtras REQUIRED)
+    find_package(Qt${QT_VERSION_MAJOR} COMPONENTS AndroidExtras REQUIRED)
 
     addDeployAPK(${CURRENT_PROJECT}
                 "${CMAKE_CURRENT_LIST_DIR}/android"
@@ -57,7 +57,7 @@ if (ANDROID)
                 "${TARGET_DIR}"
                 "${SNAKE_EXTRA_LIBS}")
 
-    target_link_libraries(${CURRENT_PROJECT} PRIVATE Qt6::AndroidExtras)
+    target_link_libraries(${CURRENT_PROJECT} PRIVATE Qt${QT_VERSION_MAJOR}::AndroidExtras)
 
 else()
     # Desctop deploying
