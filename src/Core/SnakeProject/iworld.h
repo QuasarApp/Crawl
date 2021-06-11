@@ -14,6 +14,7 @@
 class IWorldItem;
 class IPlayer;
 class IGround;
+class IControl;
 
 /**
  * @brief WorldObjects This is map list of the avalable objects and its count on a lvl-long point.
@@ -69,6 +70,13 @@ public:
      *  So do not delete your created player pbject yuorself.
      */
     virtual WorldRule* initWorldRules() const = 0;
+
+    /**
+     * @brief initUserInterface This method should be return point to userInterface object.
+     * @note The base implementation return default user interface.
+     * @return pointer to userInterface.
+     */
+    virtual IControl* initUserInterface() const;
 
     /**
      * @brief initHdrBackGround The implementation of this method must be return valid path to the hdr image map.
@@ -140,6 +148,11 @@ public:
      */
     const QVector3D &cameraReleativePosition() const;
 
+    /**
+     * @brief userInterface This method return pointer to userinterface.
+     * @return pointer to user interface
+     */
+    IControl *userInterface() const;
 
 signals:
     /**
@@ -154,6 +167,7 @@ signals:
     void sigOBjctsListChanged(Diff);
 
     void cameraReleativePositionChanged();
+
 
 protected:
     /**
@@ -188,10 +202,9 @@ private:
     QString _hdrMap;
     WorldRule *_worldRules = nullptr;
     IPlayer *_player = nullptr;
+    IControl *_userInterface = nullptr;
 
     friend class Engine;
-
-
 };
 
 #endif // IWORLD_H

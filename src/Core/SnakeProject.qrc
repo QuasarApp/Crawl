@@ -12,6 +12,7 @@
         <file>SnakeProjectModule/SettingsView.qml</file>
         <file>SnakeProjectModule/SnakeItem.qml</file>
         <file>SnakeProjectModule/SelectLvlView.qml</file>
+        <file>SnakeProjectModule/DefaultMenu.qml</file>
     </qresource>
     <qresource prefix="/SnakeTr">
         <file>languages/de.qm</file>

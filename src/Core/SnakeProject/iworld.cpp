@@ -11,6 +11,10 @@ IWorld::~IWorld() {
     deinit();
 }
 
+IControl *IWorld::initUserInterface() const {
+    TO-DO
+}
+
 void IWorld::render(unsigned int tbfMsec) {
 
     for (auto i = _items.begin(); i != _items.end(); ++i) {
@@ -45,6 +49,7 @@ bool IWorld::init() {
     _hdrMap = initHdrBackGround();
     _player = initPlayer();
     _player->initOnWorld(this, _player);
+    _userInterface = initUserInterface();
 
     setCameraReleativePosition(initCameraPosition());
 
@@ -112,6 +117,10 @@ bool IWorld::removeItem(int id) {
 bool IWorld::removeAnyItemFromGroup(const QString &group) {
     auto anyObject = _itemsGroup.value(group);
     return removeItem(anyObject);
+}
+
+IControl *IWorld::userInterface() const {
+    return _userInterface;
 }
 
 void IWorld::setCameraReleativePosition(const QVector3D &newCameraReleativePosition) {
