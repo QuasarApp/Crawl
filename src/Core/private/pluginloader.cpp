@@ -1,14 +1,18 @@
+#include "plugindata.h"
 #include "pluginloader.h"
 #include <QLibrary>
 #include <quasarapp.h>
 
-typedef IWorld* (*instance)();
+typedef IWorld* (*worldInstance)();
+typedef IControl* (*menuInstance)();
+
 
 PluginLoader::PluginLoader() {
 
 }
 
-IWorld *PluginLoader::load(const QString &pluginPath) {
+PluginData PluginLoader::load(const QString &pluginPath) {
+    PluginData result;
     QLibrary lib(pluginPath);
 
     if (!lib.load()) {
@@ -16,19 +20,31 @@ IWorld *PluginLoader::load(const QString &pluginPath) {
         QuasarAppUtils::Params::log("Fail to load game module. Message: " + lib.errorString(),
                                     QuasarAppUtils::Error);
 
-        return nullptr;
+        return {};
     }
 
-    instance func = (instance)lib.resolve("instance");
+    worldInstance worldFunc = (worldInstance)lib.resolve("worldInstance");
 
-    if (!func) {
+    if (!worldFunc) {
         QuasarAppUtils::Params::log("Fail to load game module."
                                     " Message: Failed to find a instance function in the %0 module",
                                     QuasarAppUtils::Error);
 
         lib.unload();
-        return nullptr;
+        return {};
     }
 
-    return func();
+    result.setWorld(worldFunc());
+
+    menuInstance menuFunc = (menuInstance)lib.resolve("menuInstance");
+
+    if (!worldFunc) {
+        QuasarAppUtils::Params::log("The custom menu not found. Use Default menu implementation.",
+                                    QuasarAppUtils::Info);
+
+        return result;
+    }
+
+    result.setControl(menuFunc());
+    return result;
 }

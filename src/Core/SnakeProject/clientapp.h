@@ -11,6 +11,7 @@ class IWorld;
 class WorldViewData;
 class QQmlApplicationEngine;
 class MainMenuModel;
+class IControl;
 
 inline void initSnakeProjectResources() { Q_INIT_RESOURCE(SnakeProject); }
 
@@ -21,6 +22,7 @@ inline void initSnakeProjectResources() { Q_INIT_RESOURCE(SnakeProject); }
 struct WordlData {
     WorldViewData* viewModel = nullptr;
     IWorld * model = nullptr;
+    IControl * menu = nullptr;
 };
 
 
