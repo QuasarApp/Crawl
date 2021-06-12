@@ -18,6 +18,7 @@ class Engine : public QObject {
     Q_PROPERTY(QObject* world READ world NOTIFY worldChanged)
 
     Q_PROPERTY(QObject* scane READ scane WRITE setScane NOTIFY scaneChanged)
+    Q_PROPERTY(QObject* menu READ menu WRITE setMenu NOTIFY menuChanged)
 
 public:
     Engine(QObject * parent = nullptr);
@@ -70,6 +71,9 @@ public:
      */
     QObject* world() const;
 
+    QObject *menu() const;
+    void setMenu(QObject *newMenu);
+
 private slots:
 
     /**
@@ -84,6 +88,8 @@ signals:
     void playerChanged();
     void worldChanged();
 
+    void menuChanged();
+
 private:
     bool add(GuiObject* obj);
     bool remove(int id);
@@ -92,6 +98,7 @@ private:
     QQmlEngine *_engine = nullptr;
     QHash<int, QObject*> _qmlObjects;
     IWorld* _currentWorld = nullptr;
+    QObject *_menu = nullptr;
 };
 
 #endif // ENGINE_H

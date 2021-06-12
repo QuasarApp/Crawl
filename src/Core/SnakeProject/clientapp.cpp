@@ -13,7 +13,6 @@
 #include <QDir>
 #include "pluginloader.h"
 #include <viewsolutions.h>
-#include <plugindata.h>
 
 #define PLUGINS_DIR QStandardPaths::
 
@@ -64,12 +63,11 @@ void ClientApp::initLvls() {
     QList<QObject*> _availableWorlds;
     for (const auto& lvl: plugins) {
         WordlData data;
-        PluginData pluginData = PluginLoader::load(lvl.absoluteFilePath());
+        IWorld* pluginData = PluginLoader::load(lvl.absoluteFilePath());
 
-        if (pluginData.isValid()) {
+        if (pluginData) {
 
-            data.model = pluginData.world();
-            data.menu = pluginData.control();
+            data.model = pluginData;
             data.viewModel = new WorldViewData(data.model);
             _availableWorlds.push_back(data.viewModel);
             _availableLvls.insert(data.model->name(), data);

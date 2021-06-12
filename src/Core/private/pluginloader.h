@@ -3,7 +3,7 @@
 
 #include <QString>
 
-class PluginData;
+class IWorld;
 
 /**
  * @brief The PluginLoader class This class load shared objects like a plugins.
@@ -18,7 +18,7 @@ public:
      * @return Snake WorldInstance;
      * @note The plugin shiold be implement instance function and if you youse Windows systems marked as a DLL_EXPORT symbol.
      */
-    static PluginData load(const QString& pluginPath);
+    static IWorld* load(const QString& pluginPath);
 };
 
 #endif // PLUGINLOADER_H

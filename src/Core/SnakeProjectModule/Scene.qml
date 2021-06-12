@@ -20,6 +20,7 @@ View3D {
             return;
 
         model.scane = mainScane
+        model.menu.parent = this
     }
 
     PerspectiveCamera {

@@ -4,6 +4,7 @@
 #include <SnakeProject/guiobject.h>
 #include "SnakeProject/iworld.h"
 #include <quasarapp.h>
+#include "SnakeProject/icontrol.h"
 
 Engine::Engine(QObject *parent): QObject(parent) {
 
@@ -88,6 +89,9 @@ void Engine::setWorld(IWorld *world) {
         return;
     }
 
+
+    setMenu(_currentWorld->userInterface());
+
     connect(_currentWorld, &IWorld::sigOBjctsListChanged,
             this, &Engine::handleGameObjectsChanged,
             Qt::QueuedConnection);
@@ -119,3 +123,15 @@ QObject *Engine::world() const {
     return _currentWorld;
 }
 
+
+QObject *Engine::menu() const {
+    return _menu;
+}
+
+void Engine::setMenu(QObject *newMenu) {
+    if (_menu == newMenu)
+        return;
+
+    _menu = newMenu;
+    emit menuChanged();
+}

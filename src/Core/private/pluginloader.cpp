@@ -1,18 +1,15 @@
-#include "plugindata.h"
 #include "pluginloader.h"
 #include <QLibrary>
 #include <quasarapp.h>
 
 typedef IWorld* (*worldInstance)();
-typedef IControl* (*menuInstance)();
 
 
 PluginLoader::PluginLoader() {
 
 }
 
-PluginData PluginLoader::load(const QString &pluginPath) {
-    PluginData result;
+IWorld* PluginLoader::load(const QString &pluginPath) {
     QLibrary lib(pluginPath);
 
     if (!lib.load()) {
@@ -34,17 +31,5 @@ PluginData PluginLoader::load(const QString &pluginPath) {
         return {};
     }
 
-    result.setWorld(worldFunc());
-
-    menuInstance menuFunc = (menuInstance)lib.resolve("menuInstance");
-
-    if (!worldFunc) {
-        QuasarAppUtils::Params::log("The custom menu not found. Use Default menu implementation.",
-                                    QuasarAppUtils::Info);
-
-        return result;
-    }
-
-    result.setControl(menuFunc());
-    return result;
+    return worldFunc();
 }

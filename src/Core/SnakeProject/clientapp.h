@@ -22,7 +22,6 @@ inline void initSnakeProjectResources() { Q_INIT_RESOURCE(SnakeProject); }
 struct WordlData {
     WorldViewData* viewModel = nullptr;
     IWorld * model = nullptr;
-    IControl * menu = nullptr;
 };
 
 

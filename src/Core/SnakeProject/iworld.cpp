@@ -2,6 +2,7 @@
 #include "iworlditem.h"
 #include <quasarapp.h>
 #include "iground.h"
+#include "defaultcontrol.h"
 
 IWorld::IWorld() {
 
@@ -12,7 +13,7 @@ IWorld::~IWorld() {
 }
 
 IControl *IWorld::initUserInterface() const {
-    TO-DO
+    return new DefaultControl;
 }
 
 void IWorld::render(unsigned int tbfMsec) {

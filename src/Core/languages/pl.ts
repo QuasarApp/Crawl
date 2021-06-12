@@ -2,6 +2,13 @@
 <!DOCTYPE TS>
 <TS version="2.1">
 <context>
+    <name>DefaultMenu</name>
+    <message>
+        <source>Back to menu.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>MainMenu</name>
     <message>
         <source>Play game</source>

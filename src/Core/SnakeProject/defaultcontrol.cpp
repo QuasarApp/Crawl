@@ -1,10 +1,9 @@
 #include "defaultcontrol.h"
 
-DefaultControl::DefaultControl()
-{
+DefaultControl::DefaultControl() {
 
 }
 
 QString DefaultControl::initQmlView() const {
-    return "";
+    return "qrc:/SnakeProjectModule/DefaultMenu.qml";
 }

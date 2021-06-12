@@ -4,6 +4,10 @@ IControl::IControl() {
 
 }
 
+IControl::~IControl() {
+
+}
+
 const QString &IControl::view() const {
     return _view;
 }
