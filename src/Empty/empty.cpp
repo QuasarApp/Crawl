@@ -3,7 +3,7 @@
 
 inline void initResources() { Q_INIT_RESOURCE(Empty); }
 
-extern "C" IWorld* instance() {
+extern "C" IWorld* worldInstance() {
     initResources();
     return new World();
 }

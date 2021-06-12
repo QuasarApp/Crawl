@@ -3,6 +3,7 @@
 #include "iworld.h"
 #include "mainmenumodel.h"
 
+#include <QCoreApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <quasarapp.h>
@@ -97,7 +98,7 @@ void ClientApp::start(const QString &lvl) {
 }
 
 QList<QFileInfo> ClientApp::availablePlugins() const {
-    QDir dir(QStandardPaths::writableLocation(QStandardPaths::DataLocation));
+    QDir dir(QCoreApplication::applicationDirPath() + "/modules");
     auto list = dir.entryInfoList(QStringList() << "*.so" << "*.dll", QDir::Files);
 
     return list;

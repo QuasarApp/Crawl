@@ -11,16 +11,41 @@ View3D {
     property var model: null;
     property var player: (model)? model.player: null
     property var world: (model)? model.world: null
+    property var gameMenuModel: (model)? model.menu: null
     property var releativeCameraPosition: (world)? model.cameraReleativePosition: null
     property bool showMenu: false
     property bool isPause: false
+    property var gameMenu: null
 
     onModelChanged: {
         if (!model)
             return;
 
         model.scane = mainScane
-        model.menu.parent = this
+    }
+
+    onGameMenuChanged: {
+        if (!gameMenuModel) {
+            return;
+        }
+
+        const comp = Qt.createComponent(gameMenu.view);
+        if (comp.status === Component.Ready) {
+            if (gameMenu)
+                gameMenu.destroy()
+
+            gameMenu = comp.createObject(scene);
+            if (gameMenu === null) {
+                // Error Handling
+                console.log("Error creating object");
+            }
+
+            gameMenu.model = gameMenuModel;
+
+        } else if (component.status === Component.Error) {
+            // Error Handling
+            console.log("Error loading component:", component.errorString());
+        }
     }
 
     PerspectiveCamera {
@@ -49,111 +74,5 @@ View3D {
         lightProbe: Texture {
             source: (model)? model.hdr: ""
         }
-    }
-
-//    MouseArea {
-//        anchors.fill: parent;
-
-//        onClicked: {
-//            if (!model || showMenu) {
-//                return;
-//            }
-
-//            model.buttonPress();
-//        }
-//    }
-
-    Button {
-        id: returnToMenu;
-
-        text: "<<"
-
-        anchors.left: parent.left
-        anchors.leftMargin: metrix.gamePt
-
-        anchors.top: parent.top
-        anchors.topMargin: metrix.gamePt
-        z: 1
-
-        onClicked: {
-            if (model)
-                model.showMenu = true;
-        }
-
-        visible: !showMenu
-    }
-
-    Button {
-        id: pause
-
-        text: (isPause)?  "▶" :"||"
-
-        anchors.left: returnToMenu.right
-        anchors.leftMargin: metrix.gamePt
-
-        anchors.top: parent.top
-        anchors.topMargin: metrix.gamePt
-        z: returnToMenu.z
-
-        onClicked: {
-            isPause = !isPause;
-            if (model) model.setPause(isPause);
-        }
-
-        visible: !showMenu
-
-    }
-
-    Button {
-        id: long_
-        Label {
-            anchors.fill: parent;
-
-            textFormat: Text.AutoText
-            verticalAlignment: Text.AlignVCenter
-            horizontalAlignment: Text.AlignHCenter
-            wrapMode: Text.WordWrap
-
-            text: qsTr("lvl long: ") + ((model)? model.long_: "0")
-        }
-
-        width: 35 * metrix.gamePt;
-        height: pause.height;
-
-        anchors.left: pause.right
-        anchors.leftMargin: metrix.gamePt
-
-        anchors.top: parent.top
-        anchors.topMargin: metrix.gamePt
-        z: returnToMenu.z
-
-        visible: !showMenu
-
-    }
-
-    Button {
-        Label {
-            anchors.fill: parent;
-
-            textFormat: Text.AutoText
-            verticalAlignment: Text.AlignVCenter
-            horizontalAlignment: Text.AlignHCenter
-            wrapMode: Text.WordWrap
-
-            text: qsTr("general long: ") + ((model)? model.generalLong: "0")
-        }
-
-        width: 35 * metrix.gamePt;
-        height: long_.height;
-
-        anchors.left: long_.right
-        anchors.leftMargin: metrix.gamePt
-
-        anchors.top: parent.top
-        anchors.topMargin: metrix.gamePt
-        z: returnToMenu.z
-
-        visible: !showMenu
-
     }
 }
