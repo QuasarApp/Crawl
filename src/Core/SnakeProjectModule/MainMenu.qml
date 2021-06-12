@@ -100,7 +100,10 @@ Item {
         height: 8 * metrix.controlPtMaterial;
 
         onAccepted: {
-            item1.newGame(view.selectedLvl)
+            if (!item1.model)
+                return;
+
+            item1.model.newGame(view.selectedLvl)
         }
     }
 }
