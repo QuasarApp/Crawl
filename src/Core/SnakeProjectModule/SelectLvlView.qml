@@ -1,24 +1,54 @@
 import QtQuick 2.15
 import ViewSolutionsModule 1.0
+import QtQuick.Controls 2.15
+import QtQuick.Controls.Material 2.15
+import QtQuick.Layouts 1.15
 
-ListView {
+ColumnLayout {
     id: root
 
+    property alias model: list.model
     property string selectedLvl: ""
-    orientation: ListView.Horizontal
-    clip: true
 
-    delegate: ImageView {
-        property var data : modelData
+    signal start(var lvlName)
 
-        source: data.image
-        text: data.name
+    ListView {
+        id: list
+        Layout.fillHeight: true
+        Layout.fillWidth: true
+        orientation: ListView.Horizontal
+        clip: true
 
-        width: root.height * 1.5
-        height: root.height * 0.9
+        delegate: ImageView {
+            property var data : modelData
+            hoverColor: "#90f6ff"
+            selectedColor: "#90f6ff"
 
-        onClicked:  {
-            selectedLvl = text
+            source: data.image
+            text: data.name
+
+            width: list.height * 1.5
+            height: list.height * 0.9
+            selected: selectedLvl === data.name
+
+            onClicked:  {
+                selectedLvl = text
+            }
         }
     }
+
+    Button {
+
+        Layout.alignment: Layout.right
+
+        text: qsTr("Start")
+        enabled: selectedLvl.length
+
+        onClicked: {
+            root.start(selectedLvl)
+        }
+
+    }
 }
+
+

@@ -154,6 +154,12 @@ public:
      */
     IControl *userInterface() const;
 
+    /**
+     * @brief isInit This method return true if the object initialized correctly else false.
+     * @return true if the object initialized correctly else false.
+     */
+    bool isInit() const;
+
 signals:
     /**
      * @brief sigGameFinished This signal emit when game are finished
@@ -185,6 +191,11 @@ protected:
     void setCameraReleativePosition(const QVector3D &newCameraReleativePosition);
 
 private:
+    /**
+     * @brief init This method initialize world object.
+     * @note If object alredy initalize then this method do nothing.
+     * @return
+     */
     bool init();
     void deinit();
 

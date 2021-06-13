@@ -46,6 +46,9 @@ const IWorldItem *IWorld::getItem(int id) const {
 
 bool IWorld::init() {
 
+    if (isInit())
+        return true;
+
     _worldRules = initWorldRules();
     _hdrMap = initHdrBackGround();
     _player = initPlayer();
@@ -54,8 +57,11 @@ bool IWorld::init() {
 
     setCameraReleativePosition(initCameraPosition());
 
-    if (!_worldRules->size())
+    if (!_worldRules->size()) {
+        deinit();
         return false;
+
+    }
 
     worldChanged(*_worldRules->begin());
 
@@ -71,12 +77,24 @@ void IWorld::clearItems() {
 }
 
 void IWorld::deinit() {
-    delete _player;
+    if (_player) {
+        delete _player;
+        _player = nullptr;
+    }
+
+    if (_worldRules) {
+        delete _worldRules;
+        _worldRules = nullptr;
+    }
+
+    if (_userInterface) {
+        delete _userInterface;
+        _userInterface = nullptr;
+    }
 
     clearItems();
     _hdrMap = "";
 
-    delete  _worldRules;
 }
 
 void IWorld::generateGround() {
@@ -122,6 +140,10 @@ bool IWorld::removeAnyItemFromGroup(const QString &group) {
 
 IControl *IWorld::userInterface() const {
     return _userInterface;
+}
+
+bool IWorld::isInit() const {
+    return _userInterface && _player && _worldRules;
 }
 
 void IWorld::setCameraReleativePosition(const QVector3D &newCameraReleativePosition) {

@@ -24,17 +24,6 @@
     </message>
 </context>
 <context>
-    <name>Scene</name>
-    <message>
-        <source>lvl long: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>general long: </source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>SettingsView</name>
     <message>
         <source>Use Them</source>

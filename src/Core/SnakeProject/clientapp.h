@@ -28,9 +28,9 @@ struct WordlData {
 /**
  * @brief The ClientApp class This is main class of the Game engine.
  */
-class SNAKEPROJECT_EXPORT ClientApp
+class SNAKEPROJECT_EXPORT ClientApp : public QObject
 {
-
+    Q_OBJECT
 public:
     ClientApp();
     virtual ~ClientApp();

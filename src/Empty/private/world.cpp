@@ -14,7 +14,7 @@ IPlayer *World::initPlayer() const {
 }
 
 WorldRule *World::initWorldRules() const {
-    return {};
+    return new WorldRule{};
 }
 
 QString World::initHdrBackGround() const {
