@@ -172,7 +172,16 @@ signals:
      */
     void sigOBjctsListChanged(Diff);
 
+    /**
+     * @brief cameraReleativePositionChanged This signal emot when releative position of camera cahged.
+     */
     void cameraReleativePositionChanged();
+
+    /**
+     * @brief sigLoadProgressChanged This signal emit when progress of the loading lvl changed.
+     * @brief progress - This is integer value of the loading progress. (availabel ranges: 0% - 100%)
+     */
+    void sigLoadProgressChanged(int progress);
 
 
 protected:
@@ -203,8 +212,21 @@ private:
     void worldChanged(const WorldObjects& objects);
     void clearItems();
     void addItem(const QString &group, IWorldItem *obj);
+
+    /**
+     * @brief removeItem This method remove object with @a id.
+     * @param id This is id of removed objects.
+     * @return return true if object remove successul
+     */
     bool removeItem(int id);
-    bool removeAnyItemFromGroup(const QString &group);
+
+    /**
+     * @brief removeAnyItemFromGroup This method remove any object from group and return id of removed object.
+     * @param group This is name of the objects group
+     * @return id of removed object.
+     * @note if object not removed return 0
+     */
+    int removeAnyItemFromGroup(const QString &group);
 
     QHash<int, WorldObjectWraper> _items;
     QMultiHash<QString, int> _itemsGroup;

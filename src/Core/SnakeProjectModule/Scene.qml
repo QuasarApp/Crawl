@@ -24,12 +24,12 @@ View3D {
         model.scane = mainScane
     }
 
-    onGameMenuChanged: {
+    onGameMenuModelChanged: {
         if (!gameMenuModel) {
             return;
         }
 
-        const comp = Qt.createComponent(gameMenu.view);
+        const comp = Qt.createComponent(gameMenuModel.view);
         if (comp.status === Component.Ready) {
             if (gameMenu)
                 gameMenu.destroy()

@@ -89,6 +89,9 @@ void Engine::setWorld(IWorld *world) {
         return;
     }
 
+    if (!_currentWorld->userInterface()->init()) {
+        return;
+    }
 
     setMenu(_currentWorld->userInterface());
 
@@ -134,4 +137,8 @@ void Engine::setMenu(QObject *newMenu) {
 
     _menu = newMenu;
     emit menuChanged();
+}
+
+int Engine::prepareLvlProgress() const {
+    return _prepareLvlProgress;
 }

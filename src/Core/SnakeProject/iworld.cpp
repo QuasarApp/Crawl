@@ -55,13 +55,21 @@ bool IWorld::init() {
     _player->initOnWorld(this, _player);
     _userInterface = initUserInterface();
 
+
+    if (!isInit()) {
+        QuasarAppUtils::Params::log("Failed to init world implementation.");
+        deinit();
+        return false;
+    }
+
     setCameraReleativePosition(initCameraPosition());
 
     if (!_worldRules->size()) {
         deinit();
         return false;
-
     }
+
+    generateGround();
 
     worldChanged(*_worldRules->begin());
 
@@ -133,9 +141,13 @@ bool IWorld::removeItem(int id) {
     return true;
 }
 
-bool IWorld::removeAnyItemFromGroup(const QString &group) {
-    auto anyObject = _itemsGroup.value(group);
-    return removeItem(anyObject);
+int IWorld::removeAnyItemFromGroup(const QString &group) {
+    int anyObjectId = _itemsGroup.value(group);
+    if (!removeItem(anyObjectId)) {
+        return 0;
+    }
+
+    return anyObjectId;
 }
 
 IControl *IWorld::userInterface() const {
@@ -164,6 +176,7 @@ const QString &IWorld::hdrMap() const {
 
 void IWorld::worldChanged(const WorldObjects &objects) {
 
+    Diff diff;
     for (auto it = objects.begin(); it != objects.end(); ++it) {
 
         int count = it.value() - _itemsGroup.count(it.key());
@@ -182,16 +195,22 @@ void IWorld::worldChanged(const WorldObjects &objects) {
                 }
 
                 addItem(it.key(), obj);
+                diff.addedIds.append(obj);
             }
         } else {
             for (; count < 0; ++count ) {
-                if (!removeAnyItemFromGroup(it.key())) {
+                int removedObjectId = removeAnyItemFromGroup(it.key());
+                if (!removedObjectId) {
                     QuasarAppUtils::Params::log("World::changeCountObjects error delete object!",
                                                 QuasarAppUtils::Warning);
                     break;
                 }
+                diff.removeIds.append(removedObjectId);
             }
         }
     }
+
+    if (diff.addedIds.size() || diff.removeIds.size())
+        emit sigOBjctsListChanged(diff);
 }
 

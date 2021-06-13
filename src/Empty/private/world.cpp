@@ -1,9 +1,8 @@
 #include "box.h"
 #include "plate.h"
 #include "world.h"
-
 #include <snake.h>
-
+#include "SnakeProject/iworlditem.h"
 
 IGround *World::generateGroundTile() {
     return new Plate();
@@ -14,7 +13,9 @@ IPlayer *World::initPlayer() const {
 }
 
 WorldRule *World::initWorldRules() const {
-    return new WorldRule{};
+    return new WorldRule {
+        {0, {{"Box", 10}}}
+    };
 }
 
 QString World::initHdrBackGround() const {

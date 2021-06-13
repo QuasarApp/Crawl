@@ -39,7 +39,7 @@ ColumnLayout {
 
     Button {
 
-        Layout.alignment: Layout.right
+        Layout.alignment: Qt.AlignRight
 
         text: qsTr("Start")
         enabled: selectedLvl.length
