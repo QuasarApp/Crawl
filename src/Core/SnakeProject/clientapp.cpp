@@ -14,6 +14,7 @@
 #include <QDir>
 #include "pluginloader.h"
 #include <viewsolutions.h>
+#include "worldstatus.h"
 
 #define PLUGINS_DIR QStandardPaths::
 
@@ -81,6 +82,16 @@ void ClientApp::initLvls() {
 
 }
 
+IWorld *ClientApp::getLastWorld() {
+    for (const auto &data : qAsConst(_availableLvls)) {
+        if (data.viewModel && data.viewModel->unlocked()) {
+            return data.model;
+        }
+    }
+
+    return nullptr;
+}
+
 void ClientApp::start(const QString &lvl) {
     WordlData data = _availableLvls.value(lvl);
 
@@ -120,11 +131,19 @@ bool ClientApp::init(QQmlApplicationEngine *engine) {
     root->setContextProperty("engine", QVariant::fromValue(_engine));
     root->setContextProperty("mainmenu", QVariant::fromValue(_menu));
 
+    qmlRegisterUncreatableMetaObject(
+                WorldStatus::staticMetaObject,
+                "engine.worldstatus",
+                1, 0,
+                "WorldStatus",
+                "Error: only enums");
+
     initSnakeProjectResources();
     initLang();
     initLvls();
 
     engine->addImportPath(":/SnakeProjectModule/");
+
 
     if (!QmlNotificationService::init(engine)) {
         return false;
@@ -137,6 +156,8 @@ bool ClientApp::init(QQmlApplicationEngine *engine) {
     engine->load("qrc:/SnakeProjectModule/SnakeProject.qml");
     if (engine->rootObjects().isEmpty())
         return false;
+
+    _engine->setWorld(getLastWorld());
 
     return true;
 }

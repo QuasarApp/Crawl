@@ -16,12 +16,19 @@ QObject *Engine::scane() {
 
 void Engine::handleGameObjectsChanged(Diff diff) {
 
+    int count = diff.addedIds.size() + diff.removeIds.size();
+    int currentCount = 0;
+
     for (const auto &item: qAsConst(diff.addedIds)) {
         add(item);
+        currentCount++;
+        setPrepareLvlProgress((count / currentCount) * 100);
     }
 
     for (int id: qAsConst(diff.removeIds)) {
         remove(id);
+        currentCount++;
+        setPrepareLvlProgress((count / currentCount) * 100);
     }
 }
 
@@ -81,6 +88,10 @@ void Engine::setWorld(IWorld *world) {
 
     _currentWorld = world;
 
+    connect(_currentWorld, &IWorld::sigOBjctsListChanged,
+            this, &Engine::handleGameObjectsChanged,
+            Qt::QueuedConnection);
+
     if (!_currentWorld->init()) {
         QuasarAppUtils::Params::log("Failed to init world. World name: " + _currentWorld->name(),
                                     QuasarAppUtils::Error);
@@ -95,9 +106,7 @@ void Engine::setWorld(IWorld *world) {
 
     setMenu(_currentWorld->userInterface());
 
-    connect(_currentWorld, &IWorld::sigOBjctsListChanged,
-            this, &Engine::handleGameObjectsChanged,
-            Qt::QueuedConnection);
+    emit worldChanged();
 
 }
 
@@ -141,4 +150,11 @@ void Engine::setMenu(QObject *newMenu) {
 
 int Engine::prepareLvlProgress() const {
     return _prepareLvlProgress;
+}
+
+void Engine::setPrepareLvlProgress(int newPrepareLvlProgress) {
+    if (_prepareLvlProgress == newPrepareLvlProgress)
+        return;
+    _prepareLvlProgress = newPrepareLvlProgress;
+    emit prepareLvlProgressChanged();
 }

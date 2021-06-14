@@ -15,6 +15,7 @@ class IWorldItem;
 class IPlayer;
 class IGround;
 class IControl;
+class IAI;
 
 /**
  * @brief WorldObjects This is map list of the avalable objects and its count on a lvl-long point.
@@ -41,6 +42,8 @@ class IWorld : public QObject, public IRender
 {
     Q_OBJECT
     Q_PROPERTY(QVector3D cameraReleativePosition READ cameraReleativePosition WRITE setCameraReleativePosition NOTIFY cameraReleativePositionChanged)
+
+    Q_PROPERTY(int worldStatus READ wordlStatus WRITE setWorldStatus NOTIFY worldStatusChanged)
 
 public:
     IWorld();
@@ -129,6 +132,19 @@ public:
     virtual bool start();
 
     /**
+     * @brief stop This methos will be invoked when user click to return to main menu button.
+     * @note The default implementation sets new status of the world WordlStatus::Background.
+     * @return true if aworld stoped successful
+     */
+    virtual bool stop();
+
+    /**
+     * @brief backGroundAI This method shuld be return pointer to control object for background AI.
+     * @return raw pointer of backgroundAI.
+     */
+    virtual IAI *initBackGroundAI() const;
+
+    /**
      * @brief getItem This method return raw pointer to object by id.
      * @param id This is id of a required object.
      * @return pointe to requaried object.
@@ -160,6 +176,18 @@ public:
      */
     bool isInit() const;
 
+    /**
+     * @brief wordlStatus This method return current world status.
+     * @return integer code of the status.
+     */
+    int wordlStatus() const;
+
+    /**
+     * @brief setWorldStatus This method sets new status of world.
+     * @param newWorldStatus new status of world
+     */
+    void setWorldStatus(int newWorldStatus);
+
 signals:
     /**
      * @brief sigGameFinished This signal emit when game are finished
@@ -183,6 +211,10 @@ signals:
      */
     void sigLoadProgressChanged(int progress);
 
+    /**
+     * @brief worldStatusChanged This signal emited when world status has been changed
+     */
+    void worldStatusChanged();
 
 protected:
     /**
@@ -198,6 +230,16 @@ protected:
      * @param newCameraReleativePosition This is new camera position releative of player.
      */
     void setCameraReleativePosition(const QVector3D &newCameraReleativePosition);
+
+    /**
+     * @brief takeTap This method return true if user the tap on screen.
+     * @return true if user tap on screen.
+     */
+    bool takeTap();
+
+private slots:
+    void handleTap();
+    void handleStop();
 
 private:
     /**
@@ -228,6 +270,8 @@ private:
      */
     int removeAnyItemFromGroup(const QString &group);
 
+    void setTap(bool newTap);
+
     QHash<int, WorldObjectWraper> _items;
     QMultiHash<QString, int> _itemsGroup;
     QVector3D _cameraReleativePosition;
@@ -236,8 +280,11 @@ private:
     WorldRule *_worldRules = nullptr;
     IPlayer *_player = nullptr;
     IControl *_userInterface = nullptr;
+    IAI *_backgroundAI = nullptr;
 
     friend class Engine;
+    int _worldStatus = 0;
+    bool _tap = false;
 };
 
 #endif // IWORLD_H

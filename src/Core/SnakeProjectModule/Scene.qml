@@ -4,6 +4,8 @@ import QtQuick.Controls.Material 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 
+// https://doc.qt.io/qt-5/qqmlengine.html#qmlRegisterUncreatableMetaObject
+import engine.worldstatus 1.0
 
 View3D {
     id: scene;
@@ -12,10 +14,11 @@ View3D {
     property var player: (model)? model.player: null
     property var world: (model)? model.world: null
     property var gameMenuModel: (model)? model.menu: null
-    property var releativeCameraPosition: (world)? model.cameraReleativePosition: null
-    property bool showMenu: false
-    property bool isPause: false
+    property var releativeCameraPosition: (model)? model.cameraReleativePosition: null
+    property var progress: (model)? model.prepareLvlProgress: null
+
     property var gameMenu: null
+    property bool showMenu: (world)? WorldStatus.Game !== world.worldStatus : false;
 
     onModelChanged: {
         if (!model)
@@ -46,6 +49,11 @@ View3D {
             // Error Handling
             console.log("Error loading component:", component.errorString());
         }
+    }
+
+    onShowMenuChanged: {
+        if (gameMenu)
+            gameMenu.visible = !showMenu
     }
 
     PerspectiveCamera {

@@ -30,7 +30,7 @@ int WorldViewData::cost() const {
 }
 
 bool WorldViewData::unlocked() const {
-    return m_unlocked;
+    return m_unlocked || !cost();
 }
 
 void WorldViewData::setUnlocked(bool newUnlocked) {

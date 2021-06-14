@@ -19,7 +19,7 @@ class Engine : public QObject {
 
     Q_PROPERTY(QObject* scane READ scane WRITE setScane NOTIFY scaneChanged)
     Q_PROPERTY(QObject* menu READ menu WRITE setMenu NOTIFY menuChanged)
-    Q_PROPERTY(int _prepareLvlProgress READ prepareLvlProgress NOTIFY prepareLvlProgressChanged)
+    Q_PROPERTY(int _prepareLvlProgress READ prepareLvlProgress WRITE setPrepareLvlProgress NOTIFY prepareLvlProgressChanged)
 
 public:
     Engine(QObject * parent = nullptr);
@@ -91,6 +91,7 @@ public:
      */
     int prepareLvlProgress() const;
 
+
 private slots:
 
     /**
@@ -111,6 +112,8 @@ signals:
 private:
     bool add(GuiObject* obj);
     bool remove(int id);
+    void setPrepareLvlProgress(int newPrepareLvlProgress);
+
 
     QObject *_scane = nullptr;
     QQmlEngine *_engine = nullptr;

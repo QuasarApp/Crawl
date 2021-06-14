@@ -1,8 +1,11 @@
+#include "iai.h"
 #include "iworld.h"
 #include "iworlditem.h"
+#include <defaultbackgroundai.h>
 #include <quasarapp.h>
 #include "iground.h"
 #include "defaultcontrol.h"
+#include "worldstatus.h"
 
 IWorld::IWorld() {
 
@@ -36,8 +39,26 @@ bool IWorld::start() {
     _player->setposition({0,0,0});
     _player->setSpeed(0);
 
+    setWorldStatus(WorldStatus::Game);
+    _backgroundAI->stopAI();
+    _player->setControl(_userInterface);
 
     return true;
+}
+
+bool IWorld::stop() {
+    start();
+
+    setWorldStatus(WorldStatus::Background);
+    _player->setControl(dynamic_cast<IControl*>(_backgroundAI));
+
+    _backgroundAI->startAI();
+
+    return true;
+}
+
+IAI *IWorld::initBackGroundAI() const {
+    return new DefaultBackgroundAI();
 }
 
 const IWorldItem *IWorld::getItem(int id) const {
@@ -54,6 +75,7 @@ bool IWorld::init() {
     _player = initPlayer();
     _player->initOnWorld(this, _player);
     _userInterface = initUserInterface();
+    _backgroundAI = initBackGroundAI();
 
 
     if (!isInit()) {
@@ -150,12 +172,22 @@ int IWorld::removeAnyItemFromGroup(const QString &group) {
     return anyObjectId;
 }
 
+bool IWorld::takeTap() {
+    bool result = _tap;
+    _tap = false;
+    return result;
+}
+
+void IWorld::setTap(bool newTap) {
+    _tap = newTap;
+}
+
 IControl *IWorld::userInterface() const {
     return _userInterface;
 }
 
 bool IWorld::isInit() const {
-    return _userInterface && _player && _worldRules;
+    return _userInterface && _player && _worldRules && _backgroundAI;
 }
 
 void IWorld::setCameraReleativePosition(const QVector3D &newCameraReleativePosition) {
@@ -164,6 +196,14 @@ void IWorld::setCameraReleativePosition(const QVector3D &newCameraReleativePosit
 
     _cameraReleativePosition = newCameraReleativePosition;
     emit cameraReleativePositionChanged();
+}
+
+void IWorld::handleTap() {
+    _tap = true;
+}
+
+void IWorld::handleStop() {
+    stop();
 }
 
 const QVector3D &IWorld::cameraReleativePosition() const {
@@ -214,3 +254,14 @@ void IWorld::worldChanged(const WorldObjects &objects) {
         emit sigOBjctsListChanged(diff);
 }
 
+
+int IWorld::wordlStatus() const {
+    return _worldStatus;
+}
+
+void IWorld::setWorldStatus(int newWorldStatus) {
+    if (_worldStatus == newWorldStatus)
+        return;
+    _worldStatus = newWorldStatus;
+    emit worldStatusChanged();
+}

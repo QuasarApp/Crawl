@@ -4,6 +4,8 @@
 #include "gameresult.h"
 #include "iworlditem.h"
 
+class IControl;
+
 /**
  * @brief The IPlayer class This is base class of the player functions.
  */
@@ -36,6 +38,13 @@ public:
      * @param newSpead This is a new value of a snake speed.
      */
     void setSpeed(float newSpead);
+
+    /**
+     * @brief setControl This method should be connect player object with control object.
+     * @param control This is control object.
+     * @note This method can invoked two or more times, for example connect with AI control object and player control object. So your implementation should be contains disconnect methods.
+     */
+    virtual void setControl(const IControl* control) = 0;
 
 protected:
 

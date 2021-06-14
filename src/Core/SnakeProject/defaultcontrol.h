@@ -18,7 +18,15 @@ public:
     QString initQmlView() const;
 
 signals:
+    /**
+     * @brief backToMenu Emit when user click the return to main menu button.
+     */
     void backToMenu();
+
+    /**
+     * @brief userTap Emitet when user tap to screen on any position..
+     */
+    void userTap();
 };
 
 #endif // DEFAULTCONTROL_H

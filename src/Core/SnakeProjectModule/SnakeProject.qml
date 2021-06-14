@@ -23,7 +23,7 @@ ApplicationWindow {
 
         model: (mainmenu)? mainmenu: null;
         anchors.fill: parent;
-
+        visible: scane.showMenu
     }
 
     NotificationServiceView {

@@ -46,6 +46,7 @@ private:
     QByteArray initTheme();
     void initLang();
     void initLvls();
+    IWorld* getLastWorld();
 
     /**
      * @brief start This method star new game in @a lvl

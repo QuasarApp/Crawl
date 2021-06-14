@@ -24,6 +24,13 @@
     </message>
 </context>
 <context>
+    <name>SelectLvlView</name>
+    <message>
+        <source>Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SettingsView</name>
     <message>
         <source>Use Them</source>
@@ -45,7 +52,7 @@
 <context>
     <name>SnakeProject</name>
     <message>
-        <source>SnakeOnTheRoad</source>
+        <source>SnakeProject</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
