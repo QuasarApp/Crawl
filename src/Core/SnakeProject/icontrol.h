@@ -1,6 +1,8 @@
 #ifndef ICONTROL_H
 #define ICONTROL_H
+
 #include <QObject>
+#include "global.h"
 
 /**
  * @brief The IControl class This interface should be contains implementation of custom user interface
@@ -11,7 +13,7 @@
  *  For more information see the DefaultControl class.
  *
  */
-class IControl : public QObject
+class SNAKEPROJECT_EXPORT IControl : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString view READ view NOTIFY viewChanged)

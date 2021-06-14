@@ -1,6 +1,8 @@
 #ifndef IAI_H
 #define IAI_H
 
+#include "global.h"
+
 /**
  * @brief The IAI class Is default interface for ai classes.
  * @note example of use :
@@ -11,8 +13,7 @@
  * }
  * ```
  */
-class IAI
-{
+class SNAKEPROJECT_EXPORT IAI {
 public:
     IAI();
 

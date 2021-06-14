@@ -10,6 +10,7 @@
 #include <QString>
 #include "irender.h"
 #include "diff.h"
+#include "global.h"
 
 class IWorldItem;
 class IPlayer;
@@ -38,7 +39,7 @@ struct WorldObjectWraper {
 /**
  * @brief The IWorld class use this interface for implementation your own game levels
  */
-class IWorld : public QObject, public IRender
+class SNAKEPROJECT_EXPORT IWorld : public QObject, public IRender
 {
     Q_OBJECT
     Q_PROPERTY(QVector3D cameraReleativePosition READ cameraReleativePosition WRITE setCameraReleativePosition NOTIFY cameraReleativePositionChanged)
