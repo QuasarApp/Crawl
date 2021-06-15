@@ -10,7 +10,6 @@ set(CURRENT_PROJECT "${PROJECT_NAME}Core")
 
 add_definitions(-DSnakeProject_LIBRARY)
 
-
 file(GLOB SOURCE_CPP
     "*SnakeProject/*.cpp"
      "private/*.cpp"
