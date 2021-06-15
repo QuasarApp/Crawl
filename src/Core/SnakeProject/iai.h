@@ -15,7 +15,7 @@ class IAI
 {
 public:
     IAI();
-
+    virtual ~IAI() = default;
 
     /**
      * @brief startAI This method must be run ai.

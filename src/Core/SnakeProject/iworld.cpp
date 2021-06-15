@@ -6,6 +6,7 @@
 #include "iground.h"
 #include "defaultcontrol.h"
 #include "worldstatus.h"
+#include "iai.h"
 
 IWorld::IWorld() {
 
@@ -32,6 +33,14 @@ void IWorld::render(unsigned int tbfMsec) {
 
     if (_player->isDead()) {
         emit sigGameFinished(_player->getCurrentStatus());
+    }
+}
+
+void IWorld::initPlayerControl(IControl *control) {
+    auto controlObject = dynamic_cast<DefaultControl*>(control);
+
+    if (controlObject) {
+        connect(controlObject, &DefaultControl::backToMenu, this, &IWorld::handleStop);
     }
 }
 
@@ -77,7 +86,6 @@ bool IWorld::init() {
     _userInterface = initUserInterface();
     _backgroundAI = initBackGroundAI();
 
-
     if (!isInit()) {
         QuasarAppUtils::Params::log("Failed to init world implementation.");
         deinit();
@@ -90,6 +98,9 @@ bool IWorld::init() {
         deinit();
         return false;
     }
+
+    initPlayerControl(_userInterface);
+    initPlayerControl(dynamic_cast<IControl*>(_backgroundAI));
 
     generateGround();
 
@@ -120,6 +131,11 @@ void IWorld::deinit() {
     if (_userInterface) {
         delete _userInterface;
         _userInterface = nullptr;
+    }
+
+    if (_backgroundAI) {
+        delete _backgroundAI;
+        _backgroundAI = nullptr;
     }
 
     clearItems();
@@ -180,6 +196,10 @@ bool IWorld::takeTap() {
 
 void IWorld::setTap(bool newTap) {
     _tap = newTap;
+}
+
+IAI *IWorld::backgroundAI() const {
+    return _backgroundAI;
 }
 
 IControl *IWorld::userInterface() const {

@@ -152,6 +152,16 @@ int Engine::prepareLvlProgress() const {
     return _prepareLvlProgress;
 }
 
+bool Engine::start() const {
+    if (!_currentWorld)
+        return false;
+
+    if (!_currentWorld->isInit())
+        return false;
+
+    return _currentWorld->start();
+}
+
 void Engine::setPrepareLvlProgress(int newPrepareLvlProgress) {
     if (_prepareLvlProgress == newPrepareLvlProgress)
         return;

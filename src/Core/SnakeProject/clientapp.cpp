@@ -108,6 +108,7 @@ void ClientApp::start(const QString &lvl) {
     }
 
     _engine->setWorld(data.model);
+    _engine->start();
 }
 
 QList<QFileInfo> ClientApp::availablePlugins() const {

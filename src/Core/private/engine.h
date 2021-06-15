@@ -91,6 +91,11 @@ public:
      */
     int prepareLvlProgress() const;
 
+    /**
+     * @brief start This method run current lvl
+     * @return true if lvl started successful.
+     */
+    bool start() const;
 
 private slots:
 
