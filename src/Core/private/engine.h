@@ -13,7 +13,7 @@ class IWorld;
 class Engine : public QObject {
 
     Q_OBJECT
-    Q_PROPERTY(QString hdr READ hdr NOTIFY hdrChanged)
+    Q_PROPERTY(QString hdr READ hdr NOTIFY worldChanged)
     Q_PROPERTY(QObject* player READ player NOTIFY playerChanged)
     Q_PROPERTY(QObject* world READ world NOTIFY worldChanged)
 
@@ -106,7 +106,6 @@ private slots:
     void handleGameObjectsChanged(Diff diff);
 
 signals:
-    void hdrChanged();
     void scaneChanged();
     void playerChanged();
     void worldChanged();

@@ -14,7 +14,7 @@ View3D {
     property var player: (model)? model.player: null
     property var world: (model)? model.world: null
     property var gameMenuModel: (model)? model.menu: null
-    property var releativeCameraPosition: (model)? model.cameraReleativePosition: null
+    property var releativeCameraPosition: (world)? world.cameraReleativePosition: null
     property var progress: (model)? model.prepareLvlProgress: null
 
     property var gameMenu: null
@@ -25,6 +25,10 @@ View3D {
             return;
 
         model.scane = mainScane
+    }
+
+    onReleativeCameraPositionChanged: {
+        console.log(releativeCameraPosition)
     }
 
     onGameMenuModelChanged: {
@@ -69,6 +73,9 @@ View3D {
     }
 
     DirectionalLight {
+        position: Qt.vector3d(0,0,100)
+        eulerRotation.z: 90
+
     }
 
     Node {

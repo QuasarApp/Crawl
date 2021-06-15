@@ -159,6 +159,7 @@ bool ClientApp::init(QQmlApplicationEngine *engine) {
         return false;
 
     _engine->setWorld(getLastWorld());
+    _engine->setQmlEngine(engine);
 
     return true;
 }

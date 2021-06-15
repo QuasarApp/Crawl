@@ -32,7 +32,7 @@ class GuiObject: public QObject, public IRender
 
 
 public:
-    GuiObject(const QString& viewTempalte = "GraphicItem", QObject *ptr = nullptr);
+    GuiObject(const QString& viewTempalte = ":/SnakeProjectModule/GraphicItem.qml", QObject *ptr = nullptr);
 
     QString color() const;
     void setColor(QString color);

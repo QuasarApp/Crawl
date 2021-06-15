@@ -7,3 +7,6 @@
 [submodule "submodules/ViewSolutions"]
 	path = submodules/ViewSolutions
 	url = https://github.com/QuasarApp/ViewSolutions.git
+[submodule "src/CrawlTestLvl"]
+	path = src/CrawlTestLvl
+	url = ssh://web@quasarapp.ddns.net:2022/QuasarApp/CrawlTestLvl.git

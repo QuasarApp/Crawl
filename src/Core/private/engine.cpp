@@ -42,12 +42,15 @@ bool Engine::add(GuiObject *obj) {
 
     // Using QQmlComponent
     QQmlComponent component(_engine,
-            QUrl::fromLocalFile("MyItem.qml"),
+            QUrl::fromLocalFile(obj->viewTemplate()),
                             _scane);
     QObject *object = component.create();
 
-    if (!object)
+    if (!object) {
+        QuasarAppUtils::Params::log("Failed to create gui object: " + obj->viewTemplate(),
+                                    QuasarAppUtils::Error);
         return false;
+    }
 
     if (!object->setProperty("model", QVariant::fromValue(obj)))
         return false;
