@@ -32,7 +32,7 @@ ClientApp::ClientApp() {
     _engine = new Engine();
     _menu = new MainMenuModel();
 
-    connect(_menu, &MainMenuModel::sigNewGame, this , &ClientApp::start);
+    connect(_menu, &MainMenuModel::sigNewGame, this, &ClientApp::start);
 }
 
 ClientApp::~ClientApp() {

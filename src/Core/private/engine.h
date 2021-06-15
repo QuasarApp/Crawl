@@ -87,7 +87,7 @@ public:
 
     /**
      * @brief prepareLvlProgress This method return rurrent progress of the loading lvl.
-     * @return
+     * @return current progress of loading new level on the world. progress range is 0 - 100 
      */
     int prepareLvlProgress() const;
 
