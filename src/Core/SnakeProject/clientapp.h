@@ -11,6 +11,7 @@ class IWorld;
 class WorldViewData;
 class QQmlApplicationEngine;
 class MainMenuModel;
+class IControl;
 
 inline void initSnakeProjectResources() { Q_INIT_RESOURCE(SnakeProject); }
 
@@ -27,9 +28,9 @@ struct WordlData {
 /**
  * @brief The ClientApp class This is main class of the Game engine.
  */
-class SNAKEPROJECT_EXPORT ClientApp
+class SNAKEPROJECT_EXPORT ClientApp : public QObject
 {
-
+    Q_OBJECT
 public:
     ClientApp();
     virtual ~ClientApp();
@@ -45,6 +46,7 @@ private:
     QByteArray initTheme();
     void initLang();
     void initLvls();
+    IWorld* getLastWorld();
 
     /**
      * @brief start This method star new game in @a lvl

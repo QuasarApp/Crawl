@@ -64,7 +64,7 @@ add_subdirectory(submodules/SimpleQmlNotify)
 add_subdirectory(submodules/ViewSolutions)
 
 add_subdirectory(src/Core)
-add_subdirectory(src/Empty)
+add_subdirectory(src/CrawlTestLvl)
 
 add_subdirectory(src/Client)
 

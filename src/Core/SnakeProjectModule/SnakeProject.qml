@@ -9,12 +9,7 @@ ApplicationWindow {
     visible: true;
     width: 640;
     height: 480;
-    title: qsTr("SnakeOnTheRoad");
-
-//    Component.onCompleted: {
-//        mainWindow.showFullScreen();
-//    }
-
+    title: qsTr("SnakeProject");
 
     Metrix {id: metrix}
 
@@ -28,7 +23,7 @@ ApplicationWindow {
 
         model: (mainmenu)? mainmenu: null;
         anchors.fill: parent;
-
+        visible: scane.showMenu
     }
 
     NotificationServiceView {

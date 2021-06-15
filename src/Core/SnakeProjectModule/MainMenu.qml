@@ -36,7 +36,6 @@ Item {
             onClicked: {
                 selectLvl.open()
             }
-
         }
 
         MainMenuButton {
@@ -47,7 +46,6 @@ Item {
                 settingsPopUp.open();
 
             }
-
         }
 
         MainMenuButton {
@@ -92,16 +90,19 @@ Item {
         source: SelectLvlView {
             id: view
             model: item1.model ? item1.model.availableLvlsModel: null
+
+            onStart: {
+                if (!item1.model)
+                    return;
+
+                item1.model.newGame(view.selectedLvl)
+            }
         }
 
-        standardButtons: Dialog.Cancel | Dialog.Ok
         modal: false;
         width: 12 * metrix.controlPtMaterial
         height: 8 * metrix.controlPtMaterial;
 
-        onAccepted: {
-            item1.newGame(view.selectedLvl)
-        }
     }
 }
 

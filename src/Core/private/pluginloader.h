@@ -3,7 +3,6 @@
 
 #include <QString>
 
-
 class IWorld;
 
 /**

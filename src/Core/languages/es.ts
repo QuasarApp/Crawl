@@ -2,6 +2,13 @@
 <!DOCTYPE TS>
 <TS version="2.1">
 <context>
+    <name>DefaultMenu</name>
+    <message>
+        <source>Back to menu.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>MainMenu</name>
     <message>
         <source>Play game</source>
@@ -17,13 +24,9 @@
     </message>
 </context>
 <context>
-    <name>Scene</name>
+    <name>SelectLvlView</name>
     <message>
-        <source>lvl long: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>general long: </source>
+        <source>Start</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -49,7 +52,7 @@
 <context>
     <name>SnakeProject</name>
     <message>
-        <source>SnakeOnTheRoad</source>
+        <source>SnakeProject</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

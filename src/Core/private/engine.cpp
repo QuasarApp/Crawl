@@ -4,6 +4,7 @@
 #include <SnakeProject/guiobject.h>
 #include "SnakeProject/iworld.h"
 #include <quasarapp.h>
+#include "SnakeProject/icontrol.h"
 
 Engine::Engine(QObject *parent): QObject(parent) {
 
@@ -15,12 +16,19 @@ QObject *Engine::scane() {
 
 void Engine::handleGameObjectsChanged(Diff diff) {
 
+    int count = diff.addedIds.size() + diff.removeIds.size();
+    int currentCount = 0;
+
     for (const auto &item: qAsConst(diff.addedIds)) {
         add(item);
+        currentCount++;
+        setPrepareLvlProgress((count / currentCount) * 100);
     }
 
     for (int id: qAsConst(diff.removeIds)) {
         remove(id);
+        currentCount++;
+        setPrepareLvlProgress((count / currentCount) * 100);
     }
 }
 
@@ -34,12 +42,15 @@ bool Engine::add(GuiObject *obj) {
 
     // Using QQmlComponent
     QQmlComponent component(_engine,
-            QUrl::fromLocalFile("MyItem.qml"),
+            QUrl::fromLocalFile(obj->viewTemplate()),
                             _scane);
     QObject *object = component.create();
 
-    if (!object)
+    if (!object) {
+        QuasarAppUtils::Params::log("Failed to create gui object: " + obj->viewTemplate(),
+                                    QuasarAppUtils::Error);
         return false;
+    }
 
     if (!object->setProperty("model", QVariant::fromValue(obj)))
         return false;
@@ -80,6 +91,10 @@ void Engine::setWorld(IWorld *world) {
 
     _currentWorld = world;
 
+    connect(_currentWorld, &IWorld::sigOBjctsListChanged,
+            this, &Engine::handleGameObjectsChanged,
+            Qt::QueuedConnection);
+
     if (!_currentWorld->init()) {
         QuasarAppUtils::Params::log("Failed to init world. World name: " + _currentWorld->name(),
                                     QuasarAppUtils::Error);
@@ -88,9 +103,13 @@ void Engine::setWorld(IWorld *world) {
         return;
     }
 
-    connect(_currentWorld, &IWorld::sigOBjctsListChanged,
-            this, &Engine::handleGameObjectsChanged,
-            Qt::QueuedConnection);
+    if (!_currentWorld->userInterface()->init()) {
+        return;
+    }
+
+    setMenu(_currentWorld->userInterface());
+
+    emit worldChanged();
 
 }
 
@@ -119,3 +138,38 @@ QObject *Engine::world() const {
     return _currentWorld;
 }
 
+
+QObject *Engine::menu() const {
+    return _menu;
+}
+
+void Engine::setMenu(QObject *newMenu) {
+    if (_menu == newMenu) {
+        return;
+    }
+
+    _menu = newMenu;
+    emit menuChanged();
+}
+
+int Engine::prepareLvlProgress() const {
+    return _prepareLvlProgress;
+}
+
+bool Engine::start() const {
+    if (!_currentWorld)
+        return false;
+
+    if (!_currentWorld->isInit())
+        return false;
+
+    return _currentWorld->start();
+}
+
+void Engine::setPrepareLvlProgress(int newPrepareLvlProgress) {
+    if (_prepareLvlProgress == newPrepareLvlProgress) {
+        return;
+    }
+    _prepareLvlProgress = newPrepareLvlProgress;
+    emit prepareLvlProgressChanged();
+}

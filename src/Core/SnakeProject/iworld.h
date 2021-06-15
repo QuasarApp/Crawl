@@ -10,10 +10,13 @@
 #include <QString>
 #include "irender.h"
 #include "diff.h"
+#include "global.h"
 
 class IWorldItem;
 class IPlayer;
 class IGround;
+class IControl;
+class IAI;
 
 /**
  * @brief WorldObjects This is map list of the avalable objects and its count on a lvl-long point.
@@ -36,10 +39,12 @@ struct WorldObjectWraper {
 /**
  * @brief The IWorld class use this interface for implementation your own game levels
  */
-class IWorld : public QObject, public IRender
+class SNAKEPROJECT_EXPORT IWorld : public QObject, public IRender
 {
     Q_OBJECT
     Q_PROPERTY(QVector3D cameraReleativePosition READ cameraReleativePosition WRITE setCameraReleativePosition NOTIFY cameraReleativePositionChanged)
+
+    Q_PROPERTY(int worldStatus READ wordlStatus WRITE setWorldStatus NOTIFY worldStatusChanged)
 
 public:
     IWorld();
@@ -69,6 +74,13 @@ public:
      *  So do not delete your created player pbject yuorself.
      */
     virtual WorldRule* initWorldRules() const = 0;
+
+    /**
+     * @brief initUserInterface This method should be return point to userInterface object.
+     * @note The base implementation return default user interface.
+     * @return pointer to userInterface.
+     */
+    virtual IControl* initUserInterface() const;
 
     /**
      * @brief initHdrBackGround The implementation of this method must be return valid path to the hdr image map.
@@ -114,11 +126,31 @@ public:
     virtual QVector3D initCameraPosition() = 0;
 
     /**
+     * @brief initPlayerControl This method should be configure all connections of @a control object.
+     * @brief control This is control object
+     * @note override this method if you have own IControl object.
+     */
+    virtual void initPlayerControl(IControl* control);
+
+    /**
      * @brief start This method will be invoked when user click start button.
      * @note The Default implementation reset all positions for all objects.
      * @return true if game started successful.
      */
     virtual bool start();
+
+    /**
+     * @brief stop This methos will be invoked when user click to return to main menu button.
+     * @note The default implementation sets new status of the world WordlStatus::Background.
+     * @return true if aworld stoped successful
+     */
+    virtual bool stop();
+
+    /**
+     * @brief backGroundAI This method shuld be return pointer to control object for background AI.
+     * @return raw pointer of backgroundAI.
+     */
+    virtual IAI *initBackGroundAI() const;
 
     /**
      * @brief getItem This method return raw pointer to object by id.
@@ -140,6 +172,35 @@ public:
      */
     const QVector3D &cameraReleativePosition() const;
 
+    /**
+     * @brief userInterface This method return pointer to userinterface.
+     * @return pointer to user interface
+     */
+    IControl *userInterface() const;
+
+    /**
+     * @brief isInit This method return true if the object initialized correctly else false.
+     * @return true if the object initialized correctly else false.
+     */
+    bool isInit() const;
+
+    /**
+     * @brief wordlStatus This method return current world status.
+     * @return integer code of the status.
+     */
+    int wordlStatus() const;
+
+    /**
+     * @brief setWorldStatus This method sets new status of world.
+     * @param newWorldStatus new status of world
+     */
+    void setWorldStatus(int newWorldStatus);
+
+    /**
+     * @brief backgroundAI This method return current backgroundAI.
+     * @return Raw pointer to background AI object
+     */
+    IAI *backgroundAI() const;
 
 signals:
     /**
@@ -153,7 +214,21 @@ signals:
      */
     void sigOBjctsListChanged(Diff);
 
+    /**
+     * @brief cameraReleativePositionChanged This signal emot when releative position of camera cahged.
+     */
     void cameraReleativePositionChanged();
+
+    /**
+     * @brief sigLoadProgressChanged This signal emit when progress of the loading lvl changed.
+     * @brief progress - This is integer value of the loading progress. (availabel ranges: 0% - 100%)
+     */
+    void sigLoadProgressChanged(int progress);
+
+    /**
+     * @brief worldStatusChanged This signal emited when world status has been changed
+     */
+    void worldStatusChanged();
 
 protected:
     /**
@@ -170,7 +245,22 @@ protected:
      */
     void setCameraReleativePosition(const QVector3D &newCameraReleativePosition);
 
+    /**
+     * @brief takeTap This method return true if user the tap on screen.
+     * @return true if user tap on screen.
+     */
+    bool takeTap();
+
+private slots:
+    void handleTap();
+    void handleStop();
+
 private:
+    /**
+     * @brief init This method initialize world object.
+     * @note If object alredy initalize then this method do nothing.
+     * @return
+     */
     bool init();
     void deinit();
 
@@ -178,8 +268,23 @@ private:
     void worldChanged(const WorldObjects& objects);
     void clearItems();
     void addItem(const QString &group, IWorldItem *obj);
+
+    /**
+     * @brief removeItem This method remove object with @a id.
+     * @param id This is id of removed objects.
+     * @return return true if object remove successul
+     */
     bool removeItem(int id);
-    bool removeAnyItemFromGroup(const QString &group);
+
+    /**
+     * @brief removeAnyItemFromGroup This method remove any object from group and return id of removed object.
+     * @param group This is name of the objects group
+     * @return id of removed object.
+     * @note if object not removed return 0
+     */
+    int removeAnyItemFromGroup(const QString &group);
+
+    void setTap(bool newTap);
 
     QHash<int, WorldObjectWraper> _items;
     QMultiHash<QString, int> _itemsGroup;
@@ -188,10 +293,12 @@ private:
     QString _hdrMap;
     WorldRule *_worldRules = nullptr;
     IPlayer *_player = nullptr;
+    IControl *_userInterface = nullptr;
+    IAI *_backgroundAI = nullptr;
 
     friend class Engine;
-
-
+    int _worldStatus = 0;
+    bool _tap = false;
 };
 
 #endif // IWORLD_H

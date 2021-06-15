@@ -2,13 +2,14 @@
 #include <QLibrary>
 #include <quasarapp.h>
 
-typedef IWorld* (*instance)();
+typedef IWorld* (*worldInstance)();
+
 
 PluginLoader::PluginLoader() {
 
 }
 
-IWorld *PluginLoader::load(const QString &pluginPath) {
+IWorld* PluginLoader::load(const QString &pluginPath) {
     QLibrary lib(pluginPath);
 
     if (!lib.load()) {
@@ -19,9 +20,9 @@ IWorld *PluginLoader::load(const QString &pluginPath) {
         return nullptr;
     }
 
-    instance func = (instance)lib.resolve("instance");
+    worldInstance worldFunc = (worldInstance)lib.resolve("worldInstance");
 
-    if (!func) {
+    if (!worldFunc) {
         QuasarAppUtils::Params::log("Fail to load game module."
                                     " Message: Failed to find a instance function in the %0 module",
                                     QuasarAppUtils::Error);
@@ -30,5 +31,5 @@ IWorld *PluginLoader::load(const QString &pluginPath) {
         return nullptr;
     }
 
-    return func();
+    return worldFunc();
 }

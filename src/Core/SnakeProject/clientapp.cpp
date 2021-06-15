@@ -3,6 +3,7 @@
 #include "iworld.h"
 #include "mainmenumodel.h"
 
+#include <QCoreApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <quasarapp.h>
@@ -13,6 +14,7 @@
 #include <QDir>
 #include "pluginloader.h"
 #include <viewsolutions.h>
+#include "worldstatus.h"
 
 #define PLUGINS_DIR QStandardPaths::
 
@@ -29,6 +31,8 @@ QByteArray ClientApp::initTheme() {
 ClientApp::ClientApp() {
     _engine = new Engine();
     _menu = new MainMenuModel();
+
+    connect(_menu, &MainMenuModel::sigNewGame, this, &ClientApp::start);
 }
 
 ClientApp::~ClientApp() {
@@ -63,9 +67,11 @@ void ClientApp::initLvls() {
     QList<QObject*> _availableWorlds;
     for (const auto& lvl: plugins) {
         WordlData data;
+        IWorld* pluginData = PluginLoader::load(lvl.absoluteFilePath());
 
-        data.model = PluginLoader::load(lvl.absoluteFilePath());
-        if (data.model) {
+        if (pluginData) {
+
+            data.model = pluginData;
             data.viewModel = new WorldViewData(data.model);
             _availableWorlds.push_back(data.viewModel);
             _availableLvls.insert(data.model->name(), data);
@@ -74,6 +80,16 @@ void ClientApp::initLvls() {
 
     _menu->setAvailableLvls(_availableWorlds);
 
+}
+
+IWorld *ClientApp::getLastWorld() {
+    for (const auto &data : qAsConst(_availableLvls)) {
+        if (data.viewModel && data.viewModel->unlocked()) {
+            return data.model;
+        }
+    }
+
+    return nullptr;
 }
 
 void ClientApp::start(const QString &lvl) {
@@ -92,10 +108,11 @@ void ClientApp::start(const QString &lvl) {
     }
 
     _engine->setWorld(data.model);
+    _engine->start();
 }
 
 QList<QFileInfo> ClientApp::availablePlugins() const {
-    QDir dir(QStandardPaths::writableLocation(QStandardPaths::DataLocation));
+    QDir dir(QCoreApplication::applicationDirPath() + "/modules");
     auto list = dir.entryInfoList(QStringList() << "*.so" << "*.dll", QDir::Files);
 
     return list;
@@ -115,11 +132,19 @@ bool ClientApp::init(QQmlApplicationEngine *engine) {
     root->setContextProperty("engine", QVariant::fromValue(_engine));
     root->setContextProperty("mainmenu", QVariant::fromValue(_menu));
 
+    qmlRegisterUncreatableMetaObject(
+                WorldStatus::staticMetaObject,
+                "engine.worldstatus",
+                1, 0,
+                "WorldStatus",
+                "Error: only enums");
+
     initSnakeProjectResources();
     initLang();
     initLvls();
 
     engine->addImportPath(":/SnakeProjectModule/");
+
 
     if (!QmlNotificationService::init(engine)) {
         return false;
@@ -132,6 +157,9 @@ bool ClientApp::init(QQmlApplicationEngine *engine) {
     engine->load("qrc:/SnakeProjectModule/SnakeProject.qml");
     if (engine->rootObjects().isEmpty())
         return false;
+
+    _engine->setWorld(getLastWorld());
+    _engine->setQmlEngine(engine);
 
     return true;
 }

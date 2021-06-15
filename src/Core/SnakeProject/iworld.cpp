@@ -1,7 +1,12 @@
+#include "iai.h"
 #include "iworld.h"
 #include "iworlditem.h"
+#include <defaultbackgroundai.h>
 #include <quasarapp.h>
 #include "iground.h"
+#include "defaultcontrol.h"
+#include "worldstatus.h"
+#include "iai.h"
 
 IWorld::IWorld() {
 
@@ -9,6 +14,10 @@ IWorld::IWorld() {
 
 IWorld::~IWorld() {
     deinit();
+}
+
+IControl *IWorld::initUserInterface() const {
+    return new DefaultControl;
 }
 
 void IWorld::render(unsigned int tbfMsec) {
@@ -27,12 +36,38 @@ void IWorld::render(unsigned int tbfMsec) {
     }
 }
 
+void IWorld::initPlayerControl(IControl *control) {
+    auto controlObject = dynamic_cast<DefaultControl*>(control);
+
+    if (controlObject) {
+        connect(controlObject, &DefaultControl::backToMenu, this, &IWorld::handleStop);
+    }
+}
+
 bool IWorld::start() {
     _player->setposition({0,0,0});
     _player->setSpeed(0);
 
+    setWorldStatus(WorldStatus::Game);
+    _backgroundAI->stopAI();
+    _player->setControl(_userInterface);
 
     return true;
+}
+
+bool IWorld::stop() {
+    start();
+
+    setWorldStatus(WorldStatus::Background);
+    _player->setControl(dynamic_cast<IControl*>(_backgroundAI));
+
+    _backgroundAI->startAI();
+
+    return true;
+}
+
+IAI *IWorld::initBackGroundAI() const {
+    return new DefaultBackgroundAI();
 }
 
 const IWorldItem *IWorld::getItem(int id) const {
@@ -41,15 +76,33 @@ const IWorldItem *IWorld::getItem(int id) const {
 
 bool IWorld::init() {
 
+    if (isInit())
+        return true;
+
     _worldRules = initWorldRules();
     _hdrMap = initHdrBackGround();
     _player = initPlayer();
     _player->initOnWorld(this, _player);
+    _userInterface = initUserInterface();
+    _backgroundAI = initBackGroundAI();
+
+    if (!isInit()) {
+        QuasarAppUtils::Params::log("Failed to init world implementation.");
+        deinit();
+        return false;
+    }
 
     setCameraReleativePosition(initCameraPosition());
 
-    if (!_worldRules->size())
+    if (!_worldRules->size()) {
+        deinit();
         return false;
+    }
+
+    initPlayerControl(_userInterface);
+    initPlayerControl(dynamic_cast<IControl*>(_backgroundAI));
+
+    generateGround();
 
     worldChanged(*_worldRules->begin());
 
@@ -65,12 +118,29 @@ void IWorld::clearItems() {
 }
 
 void IWorld::deinit() {
-    delete _player;
+    if (_player) {
+        delete _player;
+        _player = nullptr;
+    }
+
+    if (_worldRules) {
+        delete _worldRules;
+        _worldRules = nullptr;
+    }
+
+    if (_userInterface) {
+        delete _userInterface;
+        _userInterface = nullptr;
+    }
+
+    if (_backgroundAI) {
+        delete _backgroundAI;
+        _backgroundAI = nullptr;
+    }
 
     clearItems();
     _hdrMap = "";
 
-    delete  _worldRules;
 }
 
 void IWorld::generateGround() {
@@ -109,9 +179,35 @@ bool IWorld::removeItem(int id) {
     return true;
 }
 
-bool IWorld::removeAnyItemFromGroup(const QString &group) {
-    auto anyObject = _itemsGroup.value(group);
-    return removeItem(anyObject);
+int IWorld::removeAnyItemFromGroup(const QString &group) {
+    int anyObjectId = _itemsGroup.value(group);
+    if (!removeItem(anyObjectId)) {
+        return false;
+    }
+
+    return anyObjectId;
+}
+
+bool IWorld::takeTap() {
+    bool result = _tap;
+    _tap = false;
+    return result;
+}
+
+void IWorld::setTap(bool newTap) {
+    _tap = newTap;
+}
+
+IAI *IWorld::backgroundAI() const {
+    return _backgroundAI;
+}
+
+IControl *IWorld::userInterface() const {
+    return _userInterface;
+}
+
+bool IWorld::isInit() const {
+    return _userInterface && _player && _worldRules && _backgroundAI;
 }
 
 void IWorld::setCameraReleativePosition(const QVector3D &newCameraReleativePosition) {
@@ -120,6 +216,14 @@ void IWorld::setCameraReleativePosition(const QVector3D &newCameraReleativePosit
 
     _cameraReleativePosition = newCameraReleativePosition;
     emit cameraReleativePositionChanged();
+}
+
+void IWorld::handleTap() {
+    _tap = true;
+}
+
+void IWorld::handleStop() {
+    stop();
 }
 
 const QVector3D &IWorld::cameraReleativePosition() const {
@@ -132,6 +236,7 @@ const QString &IWorld::hdrMap() const {
 
 void IWorld::worldChanged(const WorldObjects &objects) {
 
+    Diff diff;
     for (auto it = objects.begin(); it != objects.end(); ++it) {
 
         int count = it.value() - _itemsGroup.count(it.key());
@@ -150,16 +255,34 @@ void IWorld::worldChanged(const WorldObjects &objects) {
                 }
 
                 addItem(it.key(), obj);
+                diff.addedIds.append(obj);
             }
         } else {
             for (; count < 0; ++count ) {
-                if (!removeAnyItemFromGroup(it.key())) {
+                int removedObjectId = removeAnyItemFromGroup(it.key());
+                if (!removedObjectId) {
                     QuasarAppUtils::Params::log("World::changeCountObjects error delete object!",
                                                 QuasarAppUtils::Warning);
                     break;
                 }
+                diff.removeIds.append(removedObjectId);
             }
         }
     }
+
+    if (diff.addedIds.size() || diff.removeIds.size())
+        emit sigOBjctsListChanged(diff);
 }
 
+
+int IWorld::wordlStatus() const {
+    return _worldStatus;
+}
+
+void IWorld::setWorldStatus(int newWorldStatus) {
+    if (_worldStatus == newWorldStatus) {
+        return;
+    }
+    _worldStatus = newWorldStatus;
+    emit worldStatusChanged();
+}

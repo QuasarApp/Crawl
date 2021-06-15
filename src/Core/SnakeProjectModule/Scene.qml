@@ -4,6 +4,8 @@ import QtQuick.Controls.Material 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 
+// https://doc.qt.io/qt-5/qqmlengine.html#qmlRegisterUncreatableMetaObject
+import engine.worldstatus 1.0
 
 View3D {
     id: scene;
@@ -11,15 +13,53 @@ View3D {
     property var model: null;
     property var player: (model)? model.player: null
     property var world: (model)? model.world: null
-    property var releativeCameraPosition: (world)? model.cameraReleativePosition: null
-    property bool showMenu: false
-    property bool isPause: false
+    property var gameMenuModel: (model)? model.menu: null
+    property var releativeCameraPosition: (world)? world.cameraReleativePosition: null
+    property var progress: (model)? model.prepareLvlProgress: null
+
+    property var gameMenu: null
+    property bool showMenu: (world)? WorldStatus.Game !== world.worldStatus : false;
 
     onModelChanged: {
         if (!model)
             return;
 
         model.scane = mainScane
+    }
+
+    onReleativeCameraPositionChanged: {
+        console.log(releativeCameraPosition)
+    }
+
+    onGameMenuModelChanged: {
+        if (!gameMenuModel) {
+            return;
+        }
+
+        const comp = Qt.createComponent(gameMenuModel.view);
+        if (comp.status === Component.Ready) {
+            if (gameMenu) {
+                gameMenu.destroy()
+            }
+
+            gameMenu = comp.createObject(scene);
+            if (gameMenu === null) {
+                // Error Handling
+                console.log("Error creating object");
+            }
+
+            gameMenu.model = gameMenuModel;
+
+        } else if (component.status === Component.Error) {
+            // Error Handling
+            console.log("Error loading component:", component.errorString());
+        }
+    }
+
+    onShowMenuChanged: {
+        if (gameMenu) {
+            gameMenu.visible = !showMenu
+        }
     }
 
     PerspectiveCamera {
@@ -35,6 +75,9 @@ View3D {
     }
 
     DirectionalLight {
+        position: Qt.vector3d(0,0,100)
+        eulerRotation.z: 90
+
     }
 
     Node {
@@ -48,111 +91,5 @@ View3D {
         lightProbe: Texture {
             source: (model)? model.hdr: ""
         }
-    }
-
-//    MouseArea {
-//        anchors.fill: parent;
-
-//        onClicked: {
-//            if (!model || showMenu) {
-//                return;
-//            }
-
-//            model.buttonPress();
-//        }
-//    }
-
-    Button {
-        id: returnToMenu;
-
-        text: "<<"
-
-        anchors.left: parent.left
-        anchors.leftMargin: metrix.gamePt
-
-        anchors.top: parent.top
-        anchors.topMargin: metrix.gamePt
-        z: 1
-
-        onClicked: {
-            if (model)
-                model.showMenu = true;
-        }
-
-        visible: !showMenu
-    }
-
-    Button {
-        id: pause
-
-        text: (isPause)?  "▶" :"||"
-
-        anchors.left: returnToMenu.right
-        anchors.leftMargin: metrix.gamePt
-
-        anchors.top: parent.top
-        anchors.topMargin: metrix.gamePt
-        z: returnToMenu.z
-
-        onClicked: {
-            isPause = !isPause;
-            if (model) model.setPause(isPause);
-        }
-
-        visible: !showMenu
-
-    }
-
-    Button {
-        id: long_
-        Label {
-            anchors.fill: parent;
-
-            textFormat: Text.AutoText
-            verticalAlignment: Text.AlignVCenter
-            horizontalAlignment: Text.AlignHCenter
-            wrapMode: Text.WordWrap
-
-            text: qsTr("lvl long: ") + ((model)? model.long_: "0")
-        }
-
-        width: 35 * metrix.gamePt;
-        height: pause.height;
-
-        anchors.left: pause.right
-        anchors.leftMargin: metrix.gamePt
-
-        anchors.top: parent.top
-        anchors.topMargin: metrix.gamePt
-        z: returnToMenu.z
-
-        visible: !showMenu
-
-    }
-
-    Button {
-        Label {
-            anchors.fill: parent;
-
-            textFormat: Text.AutoText
-            verticalAlignment: Text.AlignVCenter
-            horizontalAlignment: Text.AlignHCenter
-            wrapMode: Text.WordWrap
-
-            text: qsTr("general long: ") + ((model)? model.generalLong: "0")
-        }
-
-        width: 35 * metrix.gamePt;
-        height: long_.height;
-
-        anchors.left: long_.right
-        anchors.leftMargin: metrix.gamePt
-
-        anchors.top: parent.top
-        anchors.topMargin: metrix.gamePt
-        z: returnToMenu.z
-
-        visible: !showMenu
-
     }
 }

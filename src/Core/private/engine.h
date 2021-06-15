@@ -13,11 +13,13 @@ class IWorld;
 class Engine : public QObject {
 
     Q_OBJECT
-    Q_PROPERTY(QString hdr READ hdr NOTIFY hdrChanged)
+    Q_PROPERTY(QString hdr READ hdr NOTIFY worldChanged)
     Q_PROPERTY(QObject* player READ player NOTIFY playerChanged)
     Q_PROPERTY(QObject* world READ world NOTIFY worldChanged)
 
     Q_PROPERTY(QObject* scane READ scane WRITE setScane NOTIFY scaneChanged)
+    Q_PROPERTY(QObject* menu READ menu WRITE setMenu NOTIFY menuChanged)
+    Q_PROPERTY(int _prepareLvlProgress READ prepareLvlProgress WRITE setPrepareLvlProgress NOTIFY prepareLvlProgressChanged)
 
 public:
     Engine(QObject * parent = nullptr);
@@ -70,6 +72,31 @@ public:
      */
     QObject* world() const;
 
+    /**
+     * @brief menu This method return pointer to cistom menu.
+     * @return pointer to custom menu.
+     * @note menu creating in the Wolrld object.
+     */
+    QObject *menu() const;
+
+    /**
+     * @brief setMenu This method sets new menu object.
+     * @param newMenu
+     */
+    void setMenu(QObject *newMenu);
+
+    /**
+     * @brief prepareLvlProgress This method return rurrent progress of the loading lvl.
+     * @return current progress of loading new level on the world. progress range is 0 - 100 
+     */
+    int prepareLvlProgress() const;
+
+    /**
+     * @brief start This method run current lvl
+     * @return true if lvl started successful.
+     */
+    bool start() const;
+
 private slots:
 
     /**
@@ -79,19 +106,25 @@ private slots:
     void handleGameObjectsChanged(Diff diff);
 
 signals:
-    void hdrChanged();
     void scaneChanged();
     void playerChanged();
     void worldChanged();
 
+    void menuChanged();
+    void prepareLvlProgressChanged();
+
 private:
     bool add(GuiObject* obj);
     bool remove(int id);
+    void setPrepareLvlProgress(int newPrepareLvlProgress);
+
 
     QObject *_scane = nullptr;
     QQmlEngine *_engine = nullptr;
     QHash<int, QObject*> _qmlObjects;
     IWorld* _currentWorld = nullptr;
+    QObject *_menu = nullptr;
+    int _prepareLvlProgress;
 };
 
 #endif // ENGINE_H
