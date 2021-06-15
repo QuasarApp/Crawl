@@ -1,6 +1,5 @@
 #include "iai.h"
 
-IAI::IAI()
-{
+IAI::IAI() {
 
 }

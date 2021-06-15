@@ -11,8 +11,7 @@
  * }
  * ```
  */
-class IAI
-{
+class IAI {
 public:
     IAI();
     virtual ~IAI() = default;

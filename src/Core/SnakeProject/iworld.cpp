@@ -182,7 +182,7 @@ bool IWorld::removeItem(int id) {
 int IWorld::removeAnyItemFromGroup(const QString &group) {
     int anyObjectId = _itemsGroup.value(group);
     if (!removeItem(anyObjectId)) {
-        return 0;
+        return false;
     }
 
     return anyObjectId;
@@ -280,8 +280,9 @@ int IWorld::wordlStatus() const {
 }
 
 void IWorld::setWorldStatus(int newWorldStatus) {
-    if (_worldStatus == newWorldStatus)
+    if (_worldStatus == newWorldStatus) {
         return;
+    }
     _worldStatus = newWorldStatus;
     emit worldStatusChanged();
 }

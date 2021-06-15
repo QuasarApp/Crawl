@@ -144,8 +144,9 @@ QObject *Engine::menu() const {
 }
 
 void Engine::setMenu(QObject *newMenu) {
-    if (_menu == newMenu)
+    if (_menu == newMenu) {
         return;
+    }
 
     _menu = newMenu;
     emit menuChanged();
@@ -166,8 +167,9 @@ bool Engine::start() const {
 }
 
 void Engine::setPrepareLvlProgress(int newPrepareLvlProgress) {
-    if (_prepareLvlProgress == newPrepareLvlProgress)
+    if (_prepareLvlProgress == newPrepareLvlProgress) {
         return;
+    }
     _prepareLvlProgress = newPrepareLvlProgress;
     emit prepareLvlProgressChanged();
 }

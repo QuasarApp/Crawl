@@ -38,8 +38,9 @@ View3D {
 
         const comp = Qt.createComponent(gameMenuModel.view);
         if (comp.status === Component.Ready) {
-            if (gameMenu)
+            if (gameMenu) {
                 gameMenu.destroy()
+            }
 
             gameMenu = comp.createObject(scene);
             if (gameMenu === null) {
@@ -56,8 +57,9 @@ View3D {
     }
 
     onShowMenuChanged: {
-        if (gameMenu)
+        if (gameMenu) {
             gameMenu.visible = !showMenu
+        }
     }
 
     PerspectiveCamera {
