@@ -25,7 +25,7 @@ signals:
     void backToMenu();
 
     /**
-     * @brief userTap Emitet when user tap to screen on any position..
+     * @brief userTap Emit when user tap to screen on any position.
      */
     void userTap();
 };

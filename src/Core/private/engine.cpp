@@ -42,12 +42,15 @@ bool Engine::add(GuiObject *obj) {
 
     // Using QQmlComponent
     QQmlComponent component(_engine,
-            QUrl::fromLocalFile("MyItem.qml"),
+            QUrl::fromLocalFile(obj->viewTemplate()),
                             _scane);
     QObject *object = component.create();
 
-    if (!object)
+    if (!object) {
+        QuasarAppUtils::Params::log("Failed to create gui object: " + obj->viewTemplate(),
+                                    QuasarAppUtils::Error);
         return false;
+    }
 
     if (!object->setProperty("model", QVariant::fromValue(obj)))
         return false;
@@ -141,8 +144,9 @@ QObject *Engine::menu() const {
 }
 
 void Engine::setMenu(QObject *newMenu) {
-    if (_menu == newMenu)
+    if (_menu == newMenu) {
         return;
+    }
 
     _menu = newMenu;
     emit menuChanged();
@@ -152,9 +156,20 @@ int Engine::prepareLvlProgress() const {
     return _prepareLvlProgress;
 }
 
+bool Engine::start() const {
+    if (!_currentWorld)
+        return false;
+
+    if (!_currentWorld->isInit())
+        return false;
+
+    return _currentWorld->start();
+}
+
 void Engine::setPrepareLvlProgress(int newPrepareLvlProgress) {
-    if (_prepareLvlProgress == newPrepareLvlProgress)
+    if (_prepareLvlProgress == newPrepareLvlProgress) {
         return;
+    }
     _prepareLvlProgress = newPrepareLvlProgress;
     emit prepareLvlProgressChanged();
 }

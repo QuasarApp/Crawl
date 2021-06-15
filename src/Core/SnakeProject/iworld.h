@@ -126,6 +126,13 @@ public:
     virtual QVector3D initCameraPosition() = 0;
 
     /**
+     * @brief initPlayerControl This method should be configure all connections of @a control object.
+     * @brief control This is control object
+     * @note override this method if you have own IControl object.
+     */
+    virtual void initPlayerControl(IControl* control);
+
+    /**
      * @brief start This method will be invoked when user click start button.
      * @note The Default implementation reset all positions for all objects.
      * @return true if game started successful.
@@ -188,6 +195,12 @@ public:
      * @param newWorldStatus new status of world
      */
     void setWorldStatus(int newWorldStatus);
+
+    /**
+     * @brief backgroundAI This method return current backgroundAI.
+     * @return Raw pointer to background AI object
+     */
+    IAI *backgroundAI() const;
 
 signals:
     /**

@@ -13,8 +13,7 @@
  *  For more information see the DefaultControl class.
  *
  */
-class SNAKEPROJECT_EXPORT IControl : public QObject
-{
+class SNAKEPROJECT_EXPORT IControl : public QObject {
     Q_OBJECT
     Q_PROPERTY(QString view READ view NOTIFY viewChanged)
 
@@ -41,12 +40,12 @@ private:
     /**
      * @brief init This method intialize this object.
      * @note do not invoke this method monualy.
-     * @return true if initialize finished succesfful
+     * @return True if initialize finished succesfful.
      */
     bool init();
 
     /**
-     * @brief setView This method sets new value of qml view element
+     * @brief setView This method sets new value of qml view element.
      * @param newView path to qml view.
      */
     void setView(const QString &newView);

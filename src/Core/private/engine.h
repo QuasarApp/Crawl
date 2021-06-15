@@ -13,7 +13,7 @@ class IWorld;
 class Engine : public QObject {
 
     Q_OBJECT
-    Q_PROPERTY(QString hdr READ hdr NOTIFY hdrChanged)
+    Q_PROPERTY(QString hdr READ hdr NOTIFY worldChanged)
     Q_PROPERTY(QObject* player READ player NOTIFY playerChanged)
     Q_PROPERTY(QObject* world READ world NOTIFY worldChanged)
 
@@ -87,10 +87,15 @@ public:
 
     /**
      * @brief prepareLvlProgress This method return rurrent progress of the loading lvl.
-     * @return
+     * @return current progress of loading new level on the world. progress range is 0 - 100 
      */
     int prepareLvlProgress() const;
 
+    /**
+     * @brief start This method run current lvl
+     * @return true if lvl started successful.
+     */
+    bool start() const;
 
 private slots:
 
@@ -101,7 +106,6 @@ private slots:
     void handleGameObjectsChanged(Diff diff);
 
 signals:
-    void hdrChanged();
     void scaneChanged();
     void playerChanged();
     void worldChanged();

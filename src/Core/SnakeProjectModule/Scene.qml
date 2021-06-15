@@ -14,7 +14,7 @@ View3D {
     property var player: (model)? model.player: null
     property var world: (model)? model.world: null
     property var gameMenuModel: (model)? model.menu: null
-    property var releativeCameraPosition: (model)? model.cameraReleativePosition: null
+    property var releativeCameraPosition: (world)? world.cameraReleativePosition: null
     property var progress: (model)? model.prepareLvlProgress: null
 
     property var gameMenu: null
@@ -27,6 +27,10 @@ View3D {
         model.scane = mainScane
     }
 
+    onReleativeCameraPositionChanged: {
+        console.log(releativeCameraPosition)
+    }
+
     onGameMenuModelChanged: {
         if (!gameMenuModel) {
             return;
@@ -34,8 +38,9 @@ View3D {
 
         const comp = Qt.createComponent(gameMenuModel.view);
         if (comp.status === Component.Ready) {
-            if (gameMenu)
+            if (gameMenu) {
                 gameMenu.destroy()
+            }
 
             gameMenu = comp.createObject(scene);
             if (gameMenu === null) {
@@ -52,8 +57,9 @@ View3D {
     }
 
     onShowMenuChanged: {
-        if (gameMenu)
+        if (gameMenu) {
             gameMenu.visible = !showMenu
+        }
     }
 
     PerspectiveCamera {
@@ -69,6 +75,9 @@ View3D {
     }
 
     DirectionalLight {
+        position: Qt.vector3d(0,0,100)
+        eulerRotation.z: 90
+
     }
 
     Node {

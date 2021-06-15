@@ -32,7 +32,7 @@ ClientApp::ClientApp() {
     _engine = new Engine();
     _menu = new MainMenuModel();
 
-    connect(_menu, &MainMenuModel::sigNewGame, this , &ClientApp::start);
+    connect(_menu, &MainMenuModel::sigNewGame, this, &ClientApp::start);
 }
 
 ClientApp::~ClientApp() {
@@ -108,6 +108,7 @@ void ClientApp::start(const QString &lvl) {
     }
 
     _engine->setWorld(data.model);
+    _engine->start();
 }
 
 QList<QFileInfo> ClientApp::availablePlugins() const {
@@ -158,6 +159,7 @@ bool ClientApp::init(QQmlApplicationEngine *engine) {
         return false;
 
     _engine->setWorld(getLastWorld());
+    _engine->setQmlEngine(engine);
 
     return true;
 }

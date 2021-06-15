@@ -6,14 +6,23 @@ Model {
 
     property var model: null
     property int guiId: (model) ? model.guiId : -1;
+    property bool fMapColor: model && (model.baseColorMap.length || model.emissiveMap.length || model.roughnessMap.length || model.normalMap.length)
 
     DefaultMaterial {
-        id: material_001_material
-        diffuseColor: "#ffcccccc"
+        id: defaultMaterial
+        diffuseColor: (model)? model.color: "#ffcccccc"
+    }
+
+    PrincipledMaterial {
+        id:  objMaterial
+        baseColorMap: Texture { source: (model)? model.baseColorMap: "" }
+        emissiveMap: Texture  { source: (model)? model.emissiveMap: "" }
+        roughnessMap: Texture { source: (model)? model.roughnessMap: "" }
+        normalMap: Texture    { source: (model)? model.normalMap: "" }
     }
 
     materials: [
-        material_001_material
+        (fMapColor)? objectMaterial: defaultMaterial
     ]
 
     rotation: (model)? model.ratation: Qt.quaternion(0, 0, 0, 0)
