@@ -50,8 +50,8 @@ if (ANDROID)
 
     addDeployAPK(${CURRENT_PROJECT}
                 "${CMAKE_CURRENT_LIST_DIR}/android"
-                "SnakeProject"
-                "${SIGPATH}/SnakeProject.keystore"
+                "Crawl"
+                "${SIGPATH}/Crawl.keystore"
                 "${SIGPASS_SNAKE}"
                 "${TARGET_DIR}"
                 "${SNAKE_EXTRA_LIBS}")
@@ -60,8 +60,8 @@ if (ANDROID)
 
 else()
     # Desctop deploying
-    addDeployFromCustomFile("SnakeProject"
-                            "${CMAKE_CURRENT_SOURCE_DIR}/../../Deploy/SnakeProject.json")
+    addDeployFromCustomFile("Crawl"
+                            "${CMAKE_CURRENT_SOURCE_DIR}/../../Deploy/Crawl.json")
 endif()
 
 

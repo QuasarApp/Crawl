@@ -6,7 +6,7 @@
 //#
 
 #include "worldviewdata.h"
-#include "SnakeProject/iworld.h"
+#include "Crawl/iworld.h"
 
 WorldViewData::WorldViewData(const IWorld *data) {
     setWorldObject(data);

@@ -17,7 +17,7 @@ Model {
 
     DefaultMaterial {
         id: defaultMaterial
-        diffuseColor: (model)? model.color: "#ffcccccc"
+        diffuseColor: (model)? model.color: "#ff1111"
     }
 
     PrincipledMaterial {

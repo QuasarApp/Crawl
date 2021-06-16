@@ -20,7 +20,7 @@ class QQmlApplicationEngine;
 class MainMenuModel;
 class IControl;
 
-inline void initSnakeProjectResources() { Q_INIT_RESOURCE(SnakeProject); }
+inline void initCrawlResources() { Q_INIT_RESOURCE(Crawl); }
 
 
 /**
@@ -35,12 +35,12 @@ struct WordlData {
 /**
  * @brief The ClientApp class This is main class of the Game engine.
  */
-class SNAKEPROJECT_EXPORT ClientApp : public QObject
+class CRAWL_EXPORT ClientApp : public QObject
 {
     Q_OBJECT
 public:
     ClientApp();
-    virtual ~ClientApp();
+    ~ClientApp();
 
     /**
      * @brief init This method initialize engine on application.

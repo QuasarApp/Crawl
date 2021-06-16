@@ -13,12 +13,12 @@
 #include <QQuaternion>
 #include <QRectF>
 #include <QVector3D>
-#include "SnakeProject/irender.h"
+#include "Crawl/irender.h"
 
 /**
  * @brief The GuiObject class This base model for gui objects.
  */
-class SNAKEPROJECT_EXPORT GuiObject: public QObject, public IRender {
+class CRAWL_EXPORT GuiObject: public QObject, public IRender {
     Q_OBJECT
     Q_PROPERTY(QString color READ color WRITE setColor NOTIFY colorChanged)
     Q_PROPERTY(int guiId READ guiId NOTIFY guiIdChanged)
@@ -38,7 +38,7 @@ class SNAKEPROJECT_EXPORT GuiObject: public QObject, public IRender {
 
 
 public:
-    GuiObject(const QString& viewTempalte = ":/SnakeProjectModule/GraphicItem.qml", QObject *ptr = nullptr);
+    GuiObject(const QString& viewTempalte = "qrc:/CrawlModule/GraphicItem.qml", QObject *ptr = nullptr);
 
     QString color() const;
     void setColor(QString color);
@@ -115,7 +115,7 @@ signals:
 
 protected:
     int _guiId = -1;
-    QString _color = "";
+    QString _color = "#ff1111";
 
 
 private:

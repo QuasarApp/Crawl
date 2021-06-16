@@ -14,7 +14,7 @@
  * @brief The IRender class This interface provide render functionality for all objects.
  * @note Override the render method.
  */
-class SNAKEPROJECT_EXPORT IRender {
+class CRAWL_EXPORT IRender {
 public:
     IRender();
 

@@ -14,6 +14,7 @@
 #include <QMap>
 #include <QMultiHash>
 #include <QObject>
+#include <QQuaternion>
 #include <QString>
 #include "irender.h"
 #include "diff.h"
@@ -46,10 +47,11 @@ struct WorldObjectWraper {
 /**
  * @brief The IWorld class use this interface for implementation your own game levels
  */
-class SNAKEPROJECT_EXPORT IWorld : public QObject, public IRender
+class CRAWL_EXPORT IWorld : public QObject, public IRender
 {
     Q_OBJECT
-    Q_PROPERTY(QVector3D cameraReleativePosition READ cameraReleativePosition WRITE setCameraReleativePosition NOTIFY cameraReleativePositionChanged)
+    Q_PROPERTY(QVector3D cameraReleativePosition READ cameraReleativePosition NOTIFY cameraReleativePositionChanged)
+    Q_PROPERTY(QQuaternion cameraRatation READ cameraRatation NOTIFY cameraRatationChanged)
 
     Q_PROPERTY(int worldStatus READ wordlStatus WRITE setWorldStatus NOTIFY worldStatusChanged)
 
@@ -127,12 +129,6 @@ public:
     virtual void render(unsigned int tbfMsec) override;
 
     /**
-     * @brief cameraPosition This method should be return relative position of camera. position should be relative of player object.
-     * @return camera releative position
-     */
-    virtual QVector3D initCameraPosition() = 0;
-
-    /**
      * @brief initPlayerControl This method should be configure all connections of @a control object.
      * @brief control This is control object
      * @note override this method if you have own IControl object.
@@ -165,7 +161,7 @@ public:
      * @return pointe to requaried object.
      * @note if you want to get ovject in the render function of another ItemWorld object then use the IWorldItem::getItem method.
      */
-    const IWorldItem * getItem(int id) const;
+    IWorldItem *getItem(int id) const;
 
     /**
      * @brief hdrMap This method return path to hdr map of world.
@@ -209,6 +205,12 @@ public:
      */
     IAI *backgroundAI() const;
 
+    /**
+     * @brief cameraRatation This method return curent camera ratation.
+     * @return Quaternion of camera ratation
+     */
+    const QQuaternion &cameraRatation() const;
+
 signals:
     /**
      * @brief sigGameFinished This signal emit when game are finished
@@ -218,8 +220,9 @@ signals:
 
     /**
      * @brief sigOBjctsListChanged This signal emited when lvel status are changed.
+     * @brief diff This is list of removed and addeds items
      */
-    void sigOBjctsListChanged(Diff);
+    void sigOBjctsListChanged(Diff diff);
 
     /**
      * @brief cameraReleativePositionChanged This signal emot when releative position of camera cahged.
@@ -237,7 +240,13 @@ signals:
      */
     void worldStatusChanged();
 
+    /**
+     * @brief cameraRatationChanged This method emited when ratation of the camera cahnged
+     */
+    void cameraRatationChanged();
+
 protected:
+
     /**
      * @brief generate This method shold be generate object from the  @a objectType.
      *  Override this method for add support yourown objects.
@@ -253,13 +262,12 @@ protected:
     void setCameraReleativePosition(const QVector3D &newCameraReleativePosition);
 
     /**
-     * @brief takeTap This method return true if user the tap on screen.
-     * @return true if user tap on screen.
+     * @brief setCameraRatation This method sets new ratation of the camera.
+     * @param newCameraRatation new ratation of the camera.
      */
-    bool takeTap();
+    void setCameraRatation(const QQuaternion &newCameraRatation);
 
 private slots:
-    void handleTap();
     void handleStop();
 
 private:
@@ -291,11 +299,10 @@ private:
      */
     int removeAnyItemFromGroup(const QString &group);
 
-    void setTap(bool newTap);
-
     QHash<int, WorldObjectWraper> _items;
     QMultiHash<QString, int> _itemsGroup;
     QVector3D _cameraReleativePosition;
+    QQuaternion _cameraRatation;
 
     QString _hdrMap;
     WorldRule *_worldRules = nullptr;
@@ -305,7 +312,6 @@ private:
 
     friend class Engine;
     int _worldStatus = 0;
-    bool _tap = false;
 };
 
 #endif // IWORLD_H
