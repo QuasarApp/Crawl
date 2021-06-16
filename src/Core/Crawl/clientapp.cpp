@@ -139,11 +139,11 @@ bool ClientApp::init(QQmlApplicationEngine *engine) {
                 "WorldStatus",
                 "Error: only enums");
 
-    initSnakeProjectResources();
+    initCrawlResources();
     initLang();
     initLvls();
 
-    engine->addImportPath(":/SnakeProjectModule/");
+    engine->addImportPath(":/CrawlModule/");
 
 
     if (!QmlNotificationService::init(engine)) {
@@ -154,7 +154,7 @@ bool ClientApp::init(QQmlApplicationEngine *engine) {
         return false;
     }
 
-    engine->load("qrc:/SnakeProjectModule/SnakeProject.qml");
+    engine->load("qrc:/CrawlModule/Crawl.qml");
     if (engine->rootObjects().isEmpty())
         return false;
 

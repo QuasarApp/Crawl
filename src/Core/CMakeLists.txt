@@ -8,13 +8,13 @@
 cmake_minimum_required(VERSION 3.14)
 set(CURRENT_PROJECT "${PROJECT_NAME}Core")
 
-add_definitions(-DSnakeProject_LIBRARY)
+add_definitions(-DCrawl_LIBRARY)
 
 file(GLOB SOURCE_CPP
-    "*SnakeProject/*.cpp"
+    "*Crawl/*.cpp"
      "private/*.cpp"
      "*.qrc"
-     "SnakeProject/*.qrc"
+     "Crawl/*.qrc"
      "private/*.qrc"
 )
 

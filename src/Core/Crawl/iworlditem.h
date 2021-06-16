@@ -1,14 +1,14 @@
 #ifndef IWORLDITEM_H
 #define IWORLDITEM_H
 
-#include <SnakeProject/guiobject.h>
+#include <Crawl/guiobject.h>
 #include "global.h"
 
 class IWorld;
 /**
  * @brief The IWorldItem class This is World item. This class contains functions for control event system.
  */
-class SNAKEPROJECT_EXPORT IWorldItem: public GuiObject {
+class Crawl_EXPORT IWorldItem: public GuiObject {
     Q_OBJECT
 public:
     IWorldItem();

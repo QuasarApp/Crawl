@@ -6,7 +6,7 @@
 #
 
 cmake_minimum_required(VERSION 3.14)
-project(SnakeProject)
+project(Crawl)
 if(TARGET ${PROJECT_NAME})
   message("The ${PROJECT_NAME} arledy included in main Project")
   return()
@@ -33,22 +33,22 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(QT_VERSION_MAJOR 5)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Test REQUIRED)
 
-if (NOT DEFINED SNAKEPROJECT_TESTS)
-    set(SNAKEPROJECT_TESTS ON)
+if (NOT DEFINED Crawl_TESTS)
+    set(Crawl_TESTS ON)
     message(1)
 
     if (DEFINED TARGET_PLATFORM_TOOLCHAIN)
         if (${TARGET_PLATFORM_TOOLCHAIN} STREQUAL "wasm32")
-            set(SNAKEPROJECT_TESTS OFF)
+            set(Crawl_TESTS OFF)
         endif()
     endif()
 
     if (ANDROID)
-        set(SNAKEPROJECT_TESTS OFF)
+        set(Crawl_TESTS OFF)
     endif()
 
     if (NOT QT_VERSION_MAJOR)
-        set(SNAKEPROJECT_TESTS OFF)
+        set(Crawl_TESTS OFF)
         message(2)
     endif()
 endif()
@@ -69,7 +69,7 @@ add_subdirectory(src/CrawlTestLvl)
 add_subdirectory(src/Client)
 
 
-if (SNAKEPROJECT_TESTS)
+if (Crawl_TESTS)
     add_subdirectory(tests)
 else()
     message("The ${PROJECT_NAME} tests is disabled.")

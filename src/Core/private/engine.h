@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include <QQmlEngine>
-#include <SnakeProject/diff.h>
+#include <Crawl/diff.h>
 
 class IWorld;
 

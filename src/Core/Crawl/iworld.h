@@ -40,7 +40,7 @@ struct WorldObjectWraper {
 /**
  * @brief The IWorld class use this interface for implementation your own game levels
  */
-class SNAKEPROJECT_EXPORT IWorld : public QObject, public IRender
+class Crawl_EXPORT IWorld : public QObject, public IRender
 {
     Q_OBJECT
     Q_PROPERTY(QVector3D cameraReleativePosition READ cameraReleativePosition NOTIFY cameraReleativePositionChanged)

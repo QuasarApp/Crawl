@@ -1,0 +1,32 @@
+<RCC>
+    <qresource prefix="/">
+        <file>CrawlModule/qmldir</file>
+        <file>CrawlModule/Crawl.qml</file>
+        <file>CrawlModule/GraphicItem.qml</file>
+        <file>CrawlModule/MainMenu.qml</file>
+        <file>CrawlModule/MainMenuButton.qml</file>
+        <file>CrawlModule/Metrix.qml</file>
+        <file>CrawlModule/PagePopUp.qml</file>
+        <file>CrawlModule/Scene.qml</file>
+        <file>CrawlModule/SettingsView.qml</file>
+        <file>CrawlModule/SnakeItem.qml</file>
+        <file>CrawlModule/SelectLvlView.qml</file>
+        <file>CrawlModule/DefaultMenu.qml</file>
+        <file>CrawlModule/AbstractMenuView.qml</file>
+    </qresource>
+    <qresource prefix="/SnakeTr">
+        <file>languages/de.qm</file>
+        <file>languages/en.qm</file>
+        <file>languages/es.qm</file>
+        <file>languages/fr.qm</file>
+        <file>languages/ja.qm</file>
+        <file>languages/pl.qm</file>
+        <file>languages/ru.qm</file>
+        <file>languages/tr.qm</file>
+        <file>languages/zh.qm</file>
+        <file>languages/uk.qm</file>
+    </qresource>
+    <qresource prefix="/images"/>
+    <qresource prefix="/mesh"/>
+    <qresource prefix="/hdr"/>
+</RCC>

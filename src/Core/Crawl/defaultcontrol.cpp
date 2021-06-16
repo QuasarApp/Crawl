@@ -5,5 +5,5 @@ DefaultControl::DefaultControl() {
 }
 
 QString DefaultControl::initQmlView() const {
-    return "qrc:/SnakeProjectModule/DefaultMenu.qml";
+    return "qrc:/CrawlModule/DefaultMenu.qml";
 }

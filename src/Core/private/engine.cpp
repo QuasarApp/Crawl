@@ -1,10 +1,10 @@
 #include "engine.h"
 
 #include <QQmlComponent>
-#include <SnakeProject/guiobject.h>
-#include "SnakeProject/iworld.h"
+#include <Crawl/guiobject.h>
+#include "Crawl/iworld.h"
 #include <quasarapp.h>
-#include "SnakeProject/icontrol.h"
+#include "Crawl/icontrol.h"
 
 Engine::Engine(QObject *parent): QObject(parent) {
 
