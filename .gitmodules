@@ -10,3 +10,6 @@
 [submodule "src/CrawlTestLvl"]
 	path = src/CrawlTestLvl
 	url = ssh://web@quasarapp.ddns.net:2022/QuasarApp/CrawlTestLvl.git
+[submodule "src/CrawlAbstractLvl"]
+	path = src/CrawlAbstractLvl
+	url = ssh://web@quasarapp.ddns.net:2022/QuasarApp/CrawlAbstractLvl.git
