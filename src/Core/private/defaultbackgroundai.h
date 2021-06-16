@@ -1,8 +1,8 @@
 #ifndef DEFAULTBACKGROUNDAI_H
 #define DEFAULTBACKGROUNDAI_H
 
-#include "SnakeProject/defaultcontrol.h"
-#include <SnakeProject/iai.h>
+#include "Crawl/defaultcontrol.h"
+#include <Crawl/iai.h>
 
 class QTimer;
 

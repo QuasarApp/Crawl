@@ -16,7 +16,6 @@
 #include <viewsolutions.h>
 #include "worldstatus.h"
 
-#define PLUGINS_DIR QStandardPaths::
 
 QByteArray ClientApp::initTheme() {
     int themeIndex = Settings::instance()->getValue(THEME, THEME_DEFAULT).toInt();
@@ -39,9 +38,9 @@ ClientApp::~ClientApp() {
     delete _menu;
     delete _engine;
 
-    for (const auto& item : qAsConst(_availableLvls)) {
-        delete item.viewModel;
-        delete item.model;
+    for (auto it = _availableLvls.begin(); it != _availableLvls.end(); ++it) {
+        delete it.value().viewModel;
+        delete it.value().model;
     }
 
     _availableLvls.clear();
@@ -139,11 +138,11 @@ bool ClientApp::init(QQmlApplicationEngine *engine) {
                 "WorldStatus",
                 "Error: only enums");
 
-    initSnakeProjectResources();
+    initCrawlResources();
     initLang();
     initLvls();
 
-    engine->addImportPath(":/SnakeProjectModule/");
+    engine->addImportPath(":/CrawlModule/");
 
 
     if (!QmlNotificationService::init(engine)) {
@@ -154,7 +153,7 @@ bool ClientApp::init(QQmlApplicationEngine *engine) {
         return false;
     }
 
-    engine->load("qrc:/SnakeProjectModule/SnakeProject.qml");
+    engine->load("qrc:/CrawlModule/Crawl.qml");
     if (engine->rootObjects().isEmpty())
         return false;
 

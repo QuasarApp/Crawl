@@ -13,7 +13,7 @@
  *  For more information see the DefaultControl class.
  *
  */
-class SNAKEPROJECT_EXPORT IControl : public QObject {
+class CRAWL_EXPORT IControl : public QObject {
     Q_OBJECT
     Q_PROPERTY(QString view READ view NOTIFY viewChanged)
 

@@ -13,7 +13,7 @@
  * }
  * ```
  */
-class SNAKEPROJECT_EXPORT IAI {
+class CRAWL_EXPORT IAI {
 public:
     IAI();
     virtual ~IAI() = default;

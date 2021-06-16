@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include <QQmlEngine>
-#include <SnakeProject/diff.h>
+#include <Crawl/diff.h>
 
 class IWorld;
 
@@ -97,13 +97,13 @@ public:
      */
     bool start() const;
 
-private slots:
-
     /**
-     * @brief handleGameObjectsChanged This slot invoked when games objects changed.
-     * @brief diff this is changes of the lvl.
+     * @brief getGameObject This method using in qml for getting main model of the gui objects.
+     * @param id This is id of the gui object.
+     * @return pointer to game object model
      */
-    void handleGameObjectsChanged(Diff diff);
+    Q_INVOKABLE QObject *getGameObject(int id) const;
+
 
 signals:
     void scaneChanged();
@@ -114,14 +114,11 @@ signals:
     void prepareLvlProgressChanged();
 
 private:
-    bool add(GuiObject* obj);
-    bool remove(int id);
     void setPrepareLvlProgress(int newPrepareLvlProgress);
 
 
     QObject *_scane = nullptr;
     QQmlEngine *_engine = nullptr;
-    QHash<int, QObject*> _qmlObjects;
     IWorld* _currentWorld = nullptr;
     QObject *_menu = nullptr;
     int _prepareLvlProgress;

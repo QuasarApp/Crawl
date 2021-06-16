@@ -1,10 +1,10 @@
 #include "engine.h"
 
 #include <QQmlComponent>
-#include <SnakeProject/guiobject.h>
-#include "SnakeProject/iworld.h"
+#include <Crawl/guiobject.h>
+#include "Crawl/iworld.h"
 #include <quasarapp.h>
-#include "SnakeProject/icontrol.h"
+#include "Crawl/icontrol.h"
 
 Engine::Engine(QObject *parent): QObject(parent) {
 
@@ -12,63 +12,6 @@ Engine::Engine(QObject *parent): QObject(parent) {
 
 QObject *Engine::scane() {
     return _scane;
-}
-
-void Engine::handleGameObjectsChanged(Diff diff) {
-
-    int count = diff.addedIds.size() + diff.removeIds.size();
-    int currentCount = 0;
-
-    for (const auto &item: qAsConst(diff.addedIds)) {
-        add(item);
-        currentCount++;
-        setPrepareLvlProgress((count / currentCount) * 100);
-    }
-
-    for (int id: qAsConst(diff.removeIds)) {
-        remove(id);
-        currentCount++;
-        setPrepareLvlProgress((count / currentCount) * 100);
-    }
-}
-
-bool Engine::add(GuiObject *obj) {
-
-    if (!_engine)
-        return false;
-
-    if (!_scane)
-        return false;
-
-    // Using QQmlComponent
-    QQmlComponent component(_engine,
-            QUrl::fromLocalFile(obj->viewTemplate()),
-                            _scane);
-    QObject *object = component.create();
-
-    if (!object) {
-        QuasarAppUtils::Params::log("Failed to create gui object: " + obj->viewTemplate(),
-                                    QuasarAppUtils::Error);
-        return false;
-    }
-
-    if (!object->setProperty("model", QVariant::fromValue(obj)))
-        return false;
-
-    _qmlObjects.insert(obj->guiId(), object);
-
-    return true;
-}
-
-bool Engine::remove(int id) {
-    if (!_qmlObjects.contains(id)) {
-        return false;
-    }
-
-    _qmlObjects[id]->deleteLater();
-    _qmlObjects.remove(id);
-
-    return true;
 }
 
 void Engine::setQmlEngine(QQmlEngine *newEngine) {
@@ -83,17 +26,10 @@ void Engine::setWorld(IWorld *world) {
         return ;
 
     if (_currentWorld) {
-        disconnect(_currentWorld, &IWorld::sigOBjctsListChanged,
-                   this, &Engine::handleGameObjectsChanged);
-
         _currentWorld->deinit();
     }
 
     _currentWorld = world;
-
-    connect(_currentWorld, &IWorld::sigOBjctsListChanged,
-            this, &Engine::handleGameObjectsChanged,
-            Qt::QueuedConnection);
 
     if (!_currentWorld->init()) {
         QuasarAppUtils::Params::log("Failed to init world. World name: " + _currentWorld->name(),
@@ -164,6 +100,13 @@ bool Engine::start() const {
         return false;
 
     return _currentWorld->start();
+}
+
+QObject *Engine::getGameObject(int id) const {
+    if (!_currentWorld)
+        return nullptr;
+
+    return _currentWorld->getItem(id);
 }
 
 void Engine::setPrepareLvlProgress(int newPrepareLvlProgress) {

@@ -57,7 +57,7 @@ tstMain::tstMain() {
     char * argv[] = {nullptr};
 
     _app = new QCoreApplication(argc, argv);
-    QCoreApplication::setApplicationName("testSnakeProject");
+    QCoreApplication::setApplicationName("testCrawl");
     QCoreApplication::setOrganizationName("QuasarApp");
 
     auto path = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);

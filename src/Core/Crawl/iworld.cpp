@@ -52,6 +52,9 @@ bool IWorld::start() {
     _backgroundAI->stopAI();
     _player->setControl(_userInterface);
 
+
+    worldChanged(*_worldRules->begin());
+
     return true;
 }
 
@@ -70,7 +73,7 @@ IAI *IWorld::initBackGroundAI() const {
     return new DefaultBackgroundAI();
 }
 
-const IWorldItem *IWorld::getItem(int id) const {
+IWorldItem *IWorld::getItem(int id) const {
     return _items.value(id, {}).objectPtr;
 }
 
@@ -92,8 +95,6 @@ bool IWorld::init() {
         return false;
     }
 
-    setCameraReleativePosition(initCameraPosition());
-
     if (!_worldRules->size()) {
         deinit();
         return false;
@@ -101,10 +102,7 @@ bool IWorld::init() {
 
     initPlayerControl(_userInterface);
     initPlayerControl(dynamic_cast<IControl*>(_backgroundAI));
-
     generateGround();
-
-    worldChanged(*_worldRules->begin());
 
     return true;
 }
@@ -188,14 +186,15 @@ int IWorld::removeAnyItemFromGroup(const QString &group) {
     return anyObjectId;
 }
 
-bool IWorld::takeTap() {
-    bool result = _tap;
-    _tap = false;
-    return result;
+const QQuaternion &IWorld::cameraRatation() const {
+    return _cameraRatation;
 }
 
-void IWorld::setTap(bool newTap) {
-    _tap = newTap;
+void IWorld::setCameraRatation(const QQuaternion &newCameraRatation) {
+    if (_cameraRatation == newCameraRatation)
+        return;
+    _cameraRatation = newCameraRatation;
+    emit cameraRatationChanged();
 }
 
 IAI *IWorld::backgroundAI() const {
@@ -216,10 +215,6 @@ void IWorld::setCameraReleativePosition(const QVector3D &newCameraReleativePosit
 
     _cameraReleativePosition = newCameraReleativePosition;
     emit cameraReleativePositionChanged();
-}
-
-void IWorld::handleTap() {
-    _tap = true;
 }
 
 void IWorld::handleStop() {
@@ -255,7 +250,7 @@ void IWorld::worldChanged(const WorldObjects &objects) {
                 }
 
                 addItem(it.key(), obj);
-                diff.addedIds.append(obj);
+                diff.addedIds.append(obj->guiId());
             }
         } else {
             for (; count < 0; ++count ) {

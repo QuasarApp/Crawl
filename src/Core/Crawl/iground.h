@@ -7,7 +7,7 @@
 /**
  * @brief The IGround class This is one tile of the world. Any objects of this type created automatically for filing ground plain.
  */
-class SNAKEPROJECT_EXPORT IGround: public IWorldItem {
+class CRAWL_EXPORT IGround: public IWorldItem {
 public:
     IGround();
 

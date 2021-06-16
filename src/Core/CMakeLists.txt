@@ -8,13 +8,13 @@
 cmake_minimum_required(VERSION 3.14)
 set(CURRENT_PROJECT "${PROJECT_NAME}Core")
 
-add_definitions(-DSnakeProject_LIBRARY)
+add_definitions(-DCRAWL_LIBRARY)
 
 file(GLOB SOURCE_CPP
-    "*SnakeProject/*.cpp"
+    "*Crawl/*.cpp"
      "private/*.cpp"
      "*.qrc"
-     "SnakeProject/*.qrc"
+     "Crawl/*.qrc"
      "private/*.qrc"
 )
 
@@ -47,4 +47,4 @@ set(LANGS ${CMAKE_CURRENT_SOURCE_DIR}/languages/en.ts
 
 prepareQM(${CURRENT_PROJECT} ${CMAKE_CURRENT_SOURCE_DIR}/../ "${LANGS}")
 
-set(QML_IMPORT_PATH ${QML_IMPORT_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/src" CACHE STRING "" FORCE)
+set(QML_IMPORT_PATH ${QML_IMPORT_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/" CACHE STRING "" FORCE)

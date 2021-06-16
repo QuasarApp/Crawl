@@ -2,6 +2,13 @@
 <!DOCTYPE TS>
 <TS version="2.1">
 <context>
+    <name>Crawl</name>
+    <message>
+        <source>Crawl</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>DefaultMenu</name>
     <message>
         <source>Back to menu.</source>
@@ -46,13 +53,6 @@
     </message>
     <message>
         <source>In order for the new theme to take effect, you need to reload the game.</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>SnakeProject</name>
-    <message>
-        <source>SnakeProject</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
