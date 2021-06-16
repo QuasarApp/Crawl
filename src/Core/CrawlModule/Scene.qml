@@ -11,66 +11,19 @@ View3D {
     id: scene;
 
     property var model: null;
-    property var player: (model)? model.player: null
-    property var world: (model)? model.world: null
-    property var gameMenuModel: (model)? model.menu: null
-    property var releativeCameraPosition: (world)? world.cameraReleativePosition: null
-    property var progress: (model)? model.prepareLvlProgress: null
-
-    property var gameMenu: null
-    property bool showMenu: (world)? WorldStatus.Game !== world.worldStatus : false;
-
-    onModelChanged: {
-        if (!model)
-            return;
-
-        model.scane = mainScane
-    }
-
-    onReleativeCameraPositionChanged: {
-        console.log(releativeCameraPosition)
-    }
-
-    onGameMenuModelChanged: {
-        if (!gameMenuModel) {
-            return;
-        }
-
-        const comp = Qt.createComponent(gameMenuModel.view);
-        if (comp.status === Component.Ready) {
-            if (gameMenu) {
-                gameMenu.destroy()
-            }
-
-            gameMenu = comp.createObject(scene);
-            if (gameMenu === null) {
-                // Error Handling
-                console.log("Error creating object");
-            }
-
-            gameMenu.model = gameMenuModel;
-
-        } else if (comp.status === Component.Error) {
-            // Error Handling
-            console.log("Error loading component: " + gameMenuModel.view, comp.errorString());
-        }
-    }
-
-    onShowMenuChanged: {
-        if (gameMenu) {
-            gameMenu.visible = !showMenu
-        }
-    }
+    property alias showMenu: privateRoot.showMenu
 
     PerspectiveCamera {
         id: camera
-        position: (player)? Qt.vector3d(player.position.x + releativeCameraPosition.x,
-                              player.position.y + releativeCameraPosition.y,
-                              player.position.z + releativeCameraPosition.z)
+        position: (privateRoot.player)? Qt.vector3d(
+                                            privateRoot.player.position.x + privateRoot.releativeCameraPosition.x,
+                                            privateRoot.player.position.y + privateRoot.releativeCameraPosition.y,
+                                            privateRoot.player.position.z + privateRoot.releativeCameraPosition.z
+                                            )
                           :
                             Qt.vector3d(0,0,0)
 
-        rotation: (world)? world.cameraRatation: Qt.quaternion(0,0,0,0)
+        rotation: (privateRoot.world)? privateRoot.world.cameraRatation: Qt.quaternion(0,0,0,0)
 
     }
 
@@ -90,6 +43,115 @@ View3D {
 
         lightProbe: Texture {
             source: (model)? model.hdr: ""
+        }
+    }
+
+    Item {
+        id: privateRoot
+
+        property var arrayObjects: []
+        property var player: (model)? model.player: null
+        property var world: (model)? model.world: null
+        property var gameMenuModel: (model)? model.menu: null
+        property var releativeCameraPosition: (world)? world.cameraReleativePosition: null
+        property var progress: (model)? model.prepareLvlProgress: null
+
+        property var gameMenu: null
+        property bool showMenu: (world)? WorldStatus.Game !== world.worldStatus : false;
+
+        function add (cppObjId) {
+            if (!model) {
+                console.log("create object fail")
+                return;
+            }
+            const objModel = model.getGameObject(cppObjId);
+
+            if (!objModel) {
+                console.log("object model not found");
+                return;
+            }
+
+            var viewTemplate = objModel.viewTemplate;
+
+            var temp = Qt.createComponent(viewTemplate)
+            if (temp.status === Component.Ready) {
+                var obj = temp.createObject(mainScane) // mainScane - это обьект на который будет помещен соззданный элемент
+                obj.model = model.getGameObject(cppObjId);
+                arrayObjects.push(obj)
+            } else {
+                console.log("wrong viewTemplate in model");
+            }
+        }
+
+        function remove(id) {
+            if (typeof id !== "number" || id < 0) {
+                console.log("id not found");
+                return;
+            }
+
+            for (var i = 0; i < arrayObjects.length; ++i) {
+                if (id === arrayObjects[i].guiId) {
+                    arrayObjects.splice(i,1);
+                }
+            }
+        }
+
+        Connections {
+            target: privateRoot.world;
+            function onSigOBjctsListChanged(diff) {
+                if (!diff) {
+                    console.log("dif not found");
+                    return;
+                }
+
+                let tempDifRem = [];
+                tempDifRem = diff.getRemoveIds();
+                let tempDifAdd = [];
+                tempDifAdd = diff.getAddedIds();
+
+                for (let i = 0; i < tempDifAdd.length; ++i) {
+                    privateRoot.add(tempDifAdd[i]);
+                }
+
+                for (let j = 0; j < tempDifRem.length; ++j) {
+                    privateRoot.remove(tempDifRem[j]);
+                }
+            }
+        }
+
+        Connections {
+            target: privateRoot;
+
+            function onGameMenuModelChanged() {
+                if (!privateRoot.gameMenuModel) {
+                    return;
+                }
+
+                const comp = Qt.createComponent(privateRoot.gameMenuModel.view);
+                if (comp.status === Component.Ready) {
+                    if (privateRoot.gameMenu) {
+                        privateRoot.gameMenu.destroy()
+                    }
+
+                    privateRoot.gameMenu = comp.createObject(scene);
+                    if (privateRoot.gameMenu === null) {
+                        // Error Handling
+                        console.log("Error creating object");
+                    }
+
+                    privateRoot.gameMenu.model = privateRoot.gameMenuModel;
+
+                } else if (comp.status === Component.Error) {
+                    // Error Handling
+                    console.log("Error loading component: " + privateRoot.gameMenuModel.view, comp.errorString());
+                }
+            }
+
+            function onShowMenuChanged() {
+                if (privateRoot.gameMenu) {
+                    privateRoot.gameMenu.visible = !showMenu
+                }
+            }
         }
     }
 }

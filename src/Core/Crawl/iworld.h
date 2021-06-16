@@ -40,7 +40,7 @@ struct WorldObjectWraper {
 /**
  * @brief The IWorld class use this interface for implementation your own game levels
  */
-class Crawl_EXPORT IWorld : public QObject, public IRender
+class CRAWL_EXPORT IWorld : public QObject, public IRender
 {
     Q_OBJECT
     Q_PROPERTY(QVector3D cameraReleativePosition READ cameraReleativePosition NOTIFY cameraReleativePositionChanged)
@@ -154,7 +154,7 @@ public:
      * @return pointe to requaried object.
      * @note if you want to get ovject in the render function of another ItemWorld object then use the IWorldItem::getItem method.
      */
-    const IWorldItem * getItem(int id) const;
+    IWorldItem *getItem(int id) const;
 
     /**
      * @brief hdrMap This method return path to hdr map of world.
@@ -213,8 +213,9 @@ signals:
 
     /**
      * @brief sigOBjctsListChanged This signal emited when lvel status are changed.
+     * @brief diff This is list of removed and addeds items
      */
-    void sigOBjctsListChanged(Diff);
+    void sigOBjctsListChanged(Diff diff);
 
     /**
      * @brief cameraReleativePositionChanged This signal emot when releative position of camera cahged.

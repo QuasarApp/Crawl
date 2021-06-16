@@ -8,7 +8,7 @@ class IWorld;
 /**
  * @brief The IWorldItem class This is World item. This class contains functions for control event system.
  */
-class Crawl_EXPORT IWorldItem: public GuiObject {
+class CRAWL_EXPORT IWorldItem: public GuiObject {
     Q_OBJECT
 public:
     IWorldItem();

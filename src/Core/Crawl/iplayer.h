@@ -10,7 +10,7 @@ class IControl;
 /**
  * @brief The IPlayer class This is base class of the player functions.
  */
-class Crawl_EXPORT IPlayer: public IWorldItem {
+class CRAWL_EXPORT IPlayer: public IWorldItem {
     Q_OBJECT
 public:
     IPlayer();

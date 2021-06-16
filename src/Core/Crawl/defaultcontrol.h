@@ -7,7 +7,7 @@
 /**
  * @brief The DefaultControl class This class contains default implementation of the game menu.
  */
-class Crawl_EXPORT DefaultControl : public IControl {
+class CRAWL_EXPORT DefaultControl : public IControl {
     Q_OBJECT
 public:
     DefaultControl();

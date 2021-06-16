@@ -1,6 +1,7 @@
 #ifndef DIFF_H
 #define DIFF_H
 
+#include <QList>
 #include <QObject>
 
 class GuiObject;
@@ -8,9 +9,15 @@ class GuiObject;
 /**
  * @brief The Diff class contains list of the last changes on a game world.
  */
-struct Diff {
+class Diff {
+    Q_GADGET
+
+public:
+    Q_INVOKABLE QList<int> getRemoveIds() const;
+    Q_INVOKABLE QList<int> getAddedIds() const;
+
     QList<int> removeIds;
-    QList<GuiObject*> addedIds;
+    QList<int> addedIds;
 };
 
 Q_DECLARE_METATYPE(Diff)
