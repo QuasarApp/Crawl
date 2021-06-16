@@ -2,11 +2,12 @@
 #define DEFAULTCONTROL_H
 
 #include "icontrol.h"
+#include "global.h"
 
 /**
  * @brief The DefaultControl class This class contains default implementation of the game menu.
  */
-class DefaultControl : public IControl {
+class SNAKEPROJECT_EXPORT DefaultControl : public IControl {
     Q_OBJECT
 public:
     DefaultControl();

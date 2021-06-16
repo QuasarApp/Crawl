@@ -11,8 +11,7 @@
 /**
  * @brief The GuiObject class This base model for gui objects.
  */
-class GuiObject: public QObject, public IRender
-{
+class SNAKEPROJECT_EXPORT GuiObject: public QObject, public IRender {
     Q_OBJECT
     Q_PROPERTY(QString color READ color WRITE setColor NOTIFY colorChanged)
     Q_PROPERTY(int guiId READ guiId NOTIFY guiIdChanged)

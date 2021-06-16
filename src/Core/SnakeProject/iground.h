@@ -2,12 +2,12 @@
 #define IGROUND_H
 
 #include "iworlditem.h"
+#include "global.h"
 
 /**
  * @brief The IGround class This is one tile of the world. Any objects of this type created automatically for filing ground plain.
  */
-class IGround: public IWorldItem
-{
+class SNAKEPROJECT_EXPORT IGround: public IWorldItem {
 public:
     IGround();
 

@@ -1,13 +1,13 @@
 #ifndef IRENDER_H
 #define IRENDER_H
 
+#include "global.h"
 
 /**
  * @brief The IRender class This interface provide render functionality for all objects.
  * @note Override the render method.
  */
-class IRender
-{
+class SNAKEPROJECT_EXPORT IRender {
 public:
     IRender();
 

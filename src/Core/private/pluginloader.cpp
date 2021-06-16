@@ -17,7 +17,7 @@ IWorld* PluginLoader::load(const QString &pluginPath) {
         QuasarAppUtils::Params::log("Fail to load game module. Message: " + lib.errorString(),
                                     QuasarAppUtils::Error);
 
-        return {};
+        return nullptr;
     }
 
     worldInstance worldFunc = (worldInstance)lib.resolve("worldInstance");
@@ -28,7 +28,7 @@ IWorld* PluginLoader::load(const QString &pluginPath) {
                                     QuasarAppUtils::Error);
 
         lib.unload();
-        return {};
+        return nullptr;
     }
 
     return worldFunc();

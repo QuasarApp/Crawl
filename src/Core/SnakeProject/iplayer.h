@@ -3,14 +3,14 @@
 
 #include "gameresult.h"
 #include "iworlditem.h"
+#include "global.h"
 
 class IControl;
 
 /**
  * @brief The IPlayer class This is base class of the player functions.
  */
-class IPlayer: public IWorldItem
-{
+class SNAKEPROJECT_EXPORT IPlayer: public IWorldItem {
     Q_OBJECT
 public:
     IPlayer();
