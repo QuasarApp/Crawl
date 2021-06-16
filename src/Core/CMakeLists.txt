@@ -8,7 +8,7 @@
 cmake_minimum_required(VERSION 3.14)
 set(CURRENT_PROJECT "${PROJECT_NAME}Core")
 
-add_definitions(-DCrawl_LIBRARY)
+add_definitions(-DCRAWL_LIBRARY)
 
 file(GLOB SOURCE_CPP
     "*Crawl/*.cpp"
