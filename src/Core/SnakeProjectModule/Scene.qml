@@ -50,9 +50,9 @@ View3D {
 
             gameMenu.model = gameMenuModel;
 
-        } else if (component.status === Component.Error) {
+        } else if (comp.status === Component.Error) {
             // Error Handling
-            console.log("Error loading component:", component.errorString());
+            console.log("Error loading component: " + gameMenuModel.view, comp.errorString());
         }
     }
 
@@ -70,7 +70,7 @@ View3D {
                           :
                             Qt.vector3d(0,0,0)
 
-        eulerRotation.z: -90
+        rotation: (world)? world.cameraRatation: Qt.quaternion(0,0,0,0)
 
     }
 
