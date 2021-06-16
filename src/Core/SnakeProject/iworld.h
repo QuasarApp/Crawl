@@ -7,6 +7,7 @@
 #include <QMap>
 #include <QMultiHash>
 #include <QObject>
+#include <QQuaternion>
 #include <QString>
 #include "irender.h"
 #include "diff.h"
@@ -41,7 +42,8 @@ struct WorldObjectWraper {
 class IWorld : public QObject, public IRender
 {
     Q_OBJECT
-    Q_PROPERTY(QVector3D cameraReleativePosition READ cameraReleativePosition WRITE setCameraReleativePosition NOTIFY cameraReleativePositionChanged)
+    Q_PROPERTY(QVector3D cameraReleativePosition READ cameraReleativePosition NOTIFY cameraReleativePositionChanged)
+    Q_PROPERTY(QQuaternion cameraRatation READ cameraRatation NOTIFY cameraRatationChanged)
 
     Q_PROPERTY(int worldStatus READ wordlStatus WRITE setWorldStatus NOTIFY worldStatusChanged)
 
@@ -117,12 +119,6 @@ public:
      *  The render function is main function of the SnakeEngine This method recal all propertyes of all objects.
      */
     virtual void render(unsigned int tbfMsec) override;
-
-    /**
-     * @brief cameraPosition This method should be return relative position of camera. position should be relative of player object.
-     * @return camera releative position
-     */
-    virtual QVector3D initCameraPosition() = 0;
 
     /**
      * @brief initPlayerControl This method should be configure all connections of @a control object.
@@ -201,6 +197,12 @@ public:
      */
     IAI *backgroundAI() const;
 
+    /**
+     * @brief cameraRatation This method return curent camera ratation.
+     * @return Quaternion of camera ratation
+     */
+    const QQuaternion &cameraRatation() const;
+
 signals:
     /**
      * @brief sigGameFinished This signal emit when game are finished
@@ -229,7 +231,13 @@ signals:
      */
     void worldStatusChanged();
 
+    /**
+     * @brief cameraRatationChanged This method emited when ratation of the camera cahnged
+     */
+    void cameraRatationChanged();
+
 protected:
+
     /**
      * @brief generate This method shold be generate object from the  @a objectType.
      *  Override this method for add support yourown objects.
@@ -245,13 +253,12 @@ protected:
     void setCameraReleativePosition(const QVector3D &newCameraReleativePosition);
 
     /**
-     * @brief takeTap This method return true if user the tap on screen.
-     * @return true if user tap on screen.
+     * @brief setCameraRatation This method sets new ratation of the camera.
+     * @param newCameraRatation new ratation of the camera.
      */
-    bool takeTap();
+    void setCameraRatation(const QQuaternion &newCameraRatation);
 
 private slots:
-    void handleTap();
     void handleStop();
 
 private:
@@ -283,11 +290,10 @@ private:
      */
     int removeAnyItemFromGroup(const QString &group);
 
-    void setTap(bool newTap);
-
     QHash<int, WorldObjectWraper> _items;
     QMultiHash<QString, int> _itemsGroup;
     QVector3D _cameraReleativePosition;
+    QQuaternion _cameraRatation;
 
     QString _hdrMap;
     WorldRule *_worldRules = nullptr;
@@ -297,7 +303,6 @@ private:
 
     friend class Engine;
     int _worldStatus = 0;
-    bool _tap = false;
 };
 
 #endif // IWORLD_H

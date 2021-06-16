@@ -92,8 +92,6 @@ bool IWorld::init() {
         return false;
     }
 
-    setCameraReleativePosition(initCameraPosition());
-
     if (!_worldRules->size()) {
         deinit();
         return false;
@@ -188,14 +186,15 @@ int IWorld::removeAnyItemFromGroup(const QString &group) {
     return anyObjectId;
 }
 
-bool IWorld::takeTap() {
-    bool result = _tap;
-    _tap = false;
-    return result;
+const QQuaternion &IWorld::cameraRatation() const {
+    return _cameraRatation;
 }
 
-void IWorld::setTap(bool newTap) {
-    _tap = newTap;
+void IWorld::setCameraRatation(const QQuaternion &newCameraRatation) {
+    if (_cameraRatation == newCameraRatation)
+        return;
+    _cameraRatation = newCameraRatation;
+    emit cameraRatationChanged();
 }
 
 IAI *IWorld::backgroundAI() const {
@@ -216,10 +215,6 @@ void IWorld::setCameraReleativePosition(const QVector3D &newCameraReleativePosit
 
     _cameraReleativePosition = newCameraReleativePosition;
     emit cameraReleativePositionChanged();
-}
-
-void IWorld::handleTap() {
-    _tap = true;
 }
 
 void IWorld::handleStop() {
