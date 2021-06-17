@@ -50,8 +50,8 @@ if (ANDROID)
 
     addDeployAPK(${CURRENT_PROJECT}
                 "${CMAKE_CURRENT_LIST_DIR}/android"
-                "Crawl"
-                "${SIGPATH}/Crawl.keystore"
+                "Snake"
+                "${SIGPATH}/Snake.keystore"
                 "${SIGPASS_SNAKE}"
                 "${TARGET_DIR}"
                 "${SNAKE_EXTRA_LIBS}")

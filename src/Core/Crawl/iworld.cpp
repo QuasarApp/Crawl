@@ -61,8 +61,32 @@ bool IWorld::start() {
 
 
     worldChanged(*_worldRules->begin());
-
     return true;
+}
+
+QObject *IWorld::player() const {
+    return _player;
+}
+
+void IWorld::setPlayer(QObject *newPlayer) {
+    if (_player == newPlayer)
+        return;
+
+    auto newPlayerObject = dynamic_cast<IPlayer*>(newPlayer);
+    if (!newPlayerObject) {
+        QuasarAppUtils::Params::log("Failed to set player object. The input object is not player.",
+                                    QuasarAppUtils::Error);
+        return;
+    }
+
+    if (_player) {
+        removeItem(_player->guiId());
+    }
+
+    _player = newPlayerObject;
+    addItem("player", _player);
+
+    emit playerChanged();
 }
 
 bool IWorld::stop() {
@@ -90,8 +114,9 @@ bool IWorld::init() {
         return true;
 
     _worldRules = initWorldRules();
+
     _hdrMap = initHdrBackGround();
-    _player = initPlayer();
+    setPlayer(initPlayer());
     _player->initOnWorld(this, _player);
     _userInterface = initUserInterface();
     _backgroundAI = initBackGroundAI();
@@ -109,7 +134,6 @@ bool IWorld::init() {
 
     initPlayerControl(_userInterface);
     initPlayerControl(dynamic_cast<IControl*>(_backgroundAI));
-    generateGround();
 
     return true;
 }
@@ -148,21 +172,6 @@ void IWorld::deinit() {
 
 }
 
-void IWorld::generateGround() {
-    int count = 10;
-
-    QVector3D position = {0,0,0};
-    float increment = cameraReleativePosition().z() * 2;
-
-    while (count--) {
-        auto item = generateGroundTile();
-        item->initOnWorld(this, _player);
-
-        position.setX(position.x() + increment);
-        item->setposition(position);
-        addItem("groundTile", item);
-    }
-}
 
 void IWorld::addItem(const QString& group, IWorldItem* obj) {
     _items.insert(obj->guiId(), WorldObjectWraper{obj, group});
@@ -188,6 +197,7 @@ int IWorld::removeAnyItemFromGroup(const QString &group) {
     int anyObjectId = _itemsGroup.value(group);
     if (!removeItem(anyObjectId)) {
         return false;
+
     }
 
     return anyObjectId;

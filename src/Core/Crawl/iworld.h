@@ -52,20 +52,13 @@ class CRAWL_EXPORT IWorld : public QObject, public IRender
     Q_OBJECT
     Q_PROPERTY(QVector3D cameraReleativePosition READ cameraReleativePosition NOTIFY cameraReleativePositionChanged)
     Q_PROPERTY(QQuaternion cameraRatation READ cameraRatation NOTIFY cameraRatationChanged)
+    Q_PROPERTY(QObject * player READ player WRITE setPlayer NOTIFY playerChanged)
 
     Q_PROPERTY(int worldStatus READ wordlStatus WRITE setWorldStatus NOTIFY worldStatusChanged)
 
 public:
     IWorld();
     virtual ~IWorld();
-
-    /**
-     * @brief generateGroundTile This method should be generate a new tile of the world.
-     * @return raw pointer to tile of the world ground.
-     * @note The tile count sets automaticly.
-     * @note All generated objects will be distroed automaticaly.
-     */
-    virtual IGround* generateGroundTile() = 0;
 
     /**
      * @brief initPlayer The implementation of This interface must be return playerObject.
@@ -211,6 +204,12 @@ public:
      */
     const QQuaternion &cameraRatation() const;
 
+    /**
+     * @brief player This method return player object
+     * @return player object
+     */
+    QObject *player() const;
+
 signals:
     /**
      * @brief sigGameFinished This signal emit when game are finished
@@ -245,13 +244,37 @@ signals:
      */
     void cameraRatationChanged();
 
+    void playerChanged();
+
 protected:
+
+    /**
+     * @brief setPlayer This method sets new player object
+     * @param newPlayer This is new player object.
+     * @note This method remove old player object if it exists
+     */
+    void setPlayer(QObject *newPlayer);
 
     /**
      * @brief generate This method shold be generate object from the  @a objectType.
      *  Override this method for add support yourown objects.
      * @param objectType This is string type name of the object,
      * @return pointer to the object.
+     *
+     * **Example**
+     * ```cpp
+     * IWorldItem* generate(const QString& objectType)) const {
+     *     if (auto obj = IWorld::generate(objectType)) {
+     *         return obj;
+     *     }
+     *
+     *     ...
+     *     // custom implementation
+     *     ...
+     *
+     *     return nullptr;
+     * }
+     * ```
      */
     virtual IWorldItem* generate(const QString& objectType) const = 0;
 
@@ -279,7 +302,6 @@ private:
     bool init();
     void deinit();
 
-    void generateGround();
     void worldChanged(const WorldObjects& objects);
     void clearItems();
     void addItem(const QString &group, IWorldItem *obj);
