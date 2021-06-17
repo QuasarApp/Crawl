@@ -257,6 +257,8 @@ void IWorld::worldChanged(const WorldObjects &objects) {
             for ( int i = 0; i < count; ++i ) {
                 IWorldItem *obj = generate(it.key());
 
+                TO-Do Add support of clasters.
+
                 obj->initOnWorld(this, _player);
 
                 if (!obj) {

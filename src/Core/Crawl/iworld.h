@@ -244,6 +244,9 @@ signals:
      */
     void cameraRatationChanged();
 
+    /**
+     * @brief playerChanged This signal eited when player are changed.
+     */
     void playerChanged();
 
 protected:
@@ -291,6 +294,10 @@ protected:
     void setCameraRatation(const QQuaternion &newCameraRatation);
 
 private slots:
+
+    /**
+     * @brief handleStop This slot invoked when user click return main menu button.
+     */
     void handleStop();
 
 private:

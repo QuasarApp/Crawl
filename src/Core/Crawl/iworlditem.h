@@ -22,6 +22,13 @@ public:
 
     const IWorld *world() const;
 
+    /**
+     * @brief render This implementation move objects from end of scane to begin.
+     * @param tbfMsec
+     * @note new position = playerPosition + scaneSize;
+     */
+    void render(unsigned int tbfMsec) override;
+
 protected:
 
     /**
@@ -42,12 +49,7 @@ protected:
      */
     const IWorldItem * getPlayer() const;
 
-    /**
-     * @brief render This implementation move objects from end of scane to begin.
-     * @param tbfMsec
-     * @note new position = playerPosition + scaneSize;
-     */
-    void render(unsigned int tbfMsec) override;
+
 
 private:
     void initOnWorld(const IWorld* world, const IWorldItem *player);
