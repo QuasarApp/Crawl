@@ -311,22 +311,39 @@ private:
 
     void worldChanged(const WorldObjects& objects);
     void clearItems();
-    void addItem(const QString &group, IWorldItem *obj);
 
     /**
-     * @brief removeItem This method remove object with @a id.
+     * @brief addItem This method remove object from the scane. If object are calster then this method remove all child objects.
+     * @param obj pointer to any engine object.
+     */
+    void addItem(IWorldItem *obj);
+
+    /**
+     * @brief removeItem This method remove item from the world. If the @a id are id of the claster object then its child object will be removed too.
+     */
+    void removeItem(int id);
+
+    /**
+     * @brief addAtomicItem This method execure atomic operation of add new item. This method support only atomic objects. (not clasters)
+     * @param group This is group of the atomic object.
+     * @param obj This is pointer to the atomic object. If the object are claster then it will be added without childs objects.
+     */
+    void addAtomicItem(const QString &group, IWorldItem *obj);
+
+    /**
+     * @brief removeIAtomictem This method remove object with @a id. This method work with atomic objects only. If you rty remove claster objects then it will be ramoved witohout child objects.
      * @param id This is id of removed objects.
      * @return return true if object remove successul
      */
-    bool removeItem(int id);
+    bool removeIAtomictem(int id);
 
     /**
-     * @brief removeAnyItemFromGroup This method remove any object from group and return id of removed object.
+     * @brief removeAnyAtomicItemFromGroup This method remove any object from group and return id of removed object.
      * @param group This is name of the objects group
      * @return id of removed object.
      * @note if object not removed return 0
      */
-    int removeAnyItemFromGroup(const QString &group);
+    int removeAnyAtomicItemFromGroup(const QString &group);
 
     QHash<int, WorldObjectWraper> _items;
     QMultiHash<QString, int> _itemsGroup;

@@ -9,7 +9,7 @@
 #ifndef SINGLECLASTERWORLDITEM_H
 #define SINGLECLASTERWORLDITEM_H
 
-#include "iworlditem.h"
+#include "clasteritem.h"
 
 class Claster;
 
@@ -17,8 +17,9 @@ class Claster;
  * @brief The SingleClasterWorldItem class This is wraper of the OWorldOitem for the controll parent clasters.
  * This object can belong to only one cluster in one time
  */
-class CRAWL_EXPORT SingleClasterWorldItem: public IWorldItem
+class CRAWL_EXPORT SingleClasterWorldItem: public ClasterItem
 {
+    Q_OBJECT
 public:
     SingleClasterWorldItem();
 
@@ -27,10 +28,9 @@ private:
     /**
      * @brief setClaster invoked when object added to new claster.
      * @param claster pointer to invoker claster object.
+     * @note This implementation can be sets only one object as a parent.
      */
-    void setClaster(Claster *claster);
-
-    Claster* _parentClaster = nullptr;
+    void setClaster(Claster *claster) override;
 
     friend class Claster;
 };

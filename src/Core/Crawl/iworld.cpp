@@ -5,6 +5,7 @@
 //# of this license document, but changing it is not allowed.
 //#
 
+#include "claster.h"
 #include "iai.h"
 #include "iworld.h"
 #include "iworlditem.h"
@@ -80,11 +81,11 @@ void IWorld::setPlayer(QObject *newPlayer) {
     }
 
     if (_player) {
-        removeItem(_player->guiId());
+        removeIAtomictem(_player->guiId());
     }
 
     _player = newPlayerObject;
-    addItem("player", _player);
+    addAtomicItem("player", _player);
 
     emit playerChanged();
 }
@@ -146,6 +147,22 @@ void IWorld::clearItems() {
     _items.clear();
 }
 
+void IWorld::addItem(IWorldItem *obj) {
+    // Work wih claster
+    if (auto claster = dynamic_cast<Claster*>(obj)) {
+
+        return;
+    }
+    // Work With atomic items
+
+}
+
+void IWorld::removeItem(int id) {
+    // Work wih claster
+
+    // Work With atomic items
+}
+
 void IWorld::deinit() {
     if (_player) {
         delete _player;
@@ -173,12 +190,12 @@ void IWorld::deinit() {
 }
 
 
-void IWorld::addItem(const QString& group, IWorldItem* obj) {
+void IWorld::addAtomicItem(const QString& group, IWorldItem* obj) {
     _items.insert(obj->guiId(), WorldObjectWraper{obj, group});
     _itemsGroup.insert(group, obj->guiId());
 }
 
-bool IWorld::removeItem(int id) {
+bool IWorld::removeIAtomictem(int id) {
     auto obj = _items.value(id);
 
     if (!obj.objectPtr) {
@@ -193,9 +210,9 @@ bool IWorld::removeItem(int id) {
     return true;
 }
 
-int IWorld::removeAnyItemFromGroup(const QString &group) {
+int IWorld::removeAnyAtomicItemFromGroup(const QString &group) {
     int anyObjectId = _itemsGroup.value(group);
-    if (!removeItem(anyObjectId)) {
+    if (!removeIAtomictem(anyObjectId)) {
         return false;
 
     }
@@ -268,12 +285,12 @@ void IWorld::worldChanged(const WorldObjects &objects) {
                     break;
                 }
 
-                addItem(it.key(), obj);
+                addAtomicItem(it.key(), obj);
                 diff.addedIds.append(obj->guiId());
             }
         } else {
             for (; count < 0; ++count ) {
-                int removedObjectId = removeAnyItemFromGroup(it.key());
+                int removedObjectId = removeAnyAtomicItemFromGroup(it.key());
                 if (!removedObjectId) {
                     QuasarAppUtils::Params::log("World::changeCountObjects error delete object!",
                                                 QuasarAppUtils::Warning);
