@@ -10,6 +10,7 @@
 
 #include "Crawl/iworlditem.h"
 
+class ClasterItem;
 
 /**
  * @brief The Claster class are object with support multiple objects render.
@@ -19,19 +20,23 @@ class CRAWL_EXPORT Claster: public IWorldItem
 {
     Q_OBJECT
 public:
-    Claster();
+    Claster(const QString& name,
+            const QString& viewTempalte = DEFAULT_VIEW_TEMPLATE,
+            QObject *ptr = nullptr);
+
+    ~Claster();
 
     /**
      * @brief add This method added new object to claster.
      * @param object This is model of added object
      */
-    void add(IWorldItem* object);
+    void add(ClasterItem* object);
 
     /**
      * @brief remove This method remove object from claster
      * @param object poiter of removed object
      */
-    void remove(IWorldItem* object);
+    void remove(ClasterItem* object);
 
     /**
      * @brief remove some as a Claster::remove(IWorldItem* object) but by id.
@@ -43,10 +48,10 @@ public:
      * @brief objects This method return list of collected objects.
      * @return return const reference to objects list .
      */
-    const QHash<int, IWorldItem*> &objects() const;
+    const QHash<int, ClasterItem*> &objects() const;
 
 private:
-    QHash<int, IWorldItem*> _objects;
+    QHash<int, ClasterItem*> _objects;
 };
 
 #endif // CLASTER_H

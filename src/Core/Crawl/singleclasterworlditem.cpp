@@ -10,7 +10,10 @@
 #include "singleclasterworlditem.h"
 #include "quasarapp.h"
 
-SingleClasterWorldItem::SingleClasterWorldItem() {
+SingleClasterWorldItem::SingleClasterWorldItem(const QString &name,
+                                               const QString &viewTempalte,
+                                               QObject *ptr):
+    ClasterItem(name, viewTempalte, ptr) {
 
 }
 

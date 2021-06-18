@@ -9,7 +9,10 @@
 #include "iworld.h"
 #include "quasarapp.h"
 
-IWorldItem::IWorldItem() {
+IWorldItem::IWorldItem(const QString& name,
+                       const QString& viewTempalte,
+                       QObject *ptr):
+    GuiObject(name, viewTempalte, ptr) {
 
 }
 

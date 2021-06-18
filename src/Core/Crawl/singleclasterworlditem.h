@@ -21,7 +21,9 @@ class CRAWL_EXPORT SingleClasterWorldItem: public ClasterItem
 {
     Q_OBJECT
 public:
-    SingleClasterWorldItem();
+    SingleClasterWorldItem(const QString& name,
+                           const QString& viewTempalte = DEFAULT_VIEW_TEMPLATE,
+                           QObject *ptr = nullptr);
 
 private:
 

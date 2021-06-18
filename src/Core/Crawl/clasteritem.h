@@ -23,8 +23,16 @@ class ClasterItem: public IWorldItem
 {
     Q_OBJECT
 public:
-    ClasterItem();
+    ClasterItem(const QString& name,
+                const QString& viewTempalte = DEFAULT_VIEW_TEMPLATE,
+                QObject *ptr = nullptr);
     ~ClasterItem();
+
+    /**
+     * @brief parentClastersCount This method return count of the parent clasters.
+     * @return parent clasters count
+     */
+    int parentClastersCount() const;
 
 protected:
     /**

@@ -7,7 +7,10 @@
 
 #include "iplayer.h"
 
-IPlayer::IPlayer() {
+IPlayer::IPlayer(const QString &name,
+                 const QString &viewTempalte,
+                 QObject *ptr):
+    IWorldItem(name, viewTempalte, ptr) {
 
 }
 

@@ -8,7 +8,10 @@
 #include "claster.h"
 #include "clasteritem.h"
 
-ClasterItem::ClasterItem() {
+ClasterItem::ClasterItem(const QString &name,
+                         const QString &viewTempalte,
+                         QObject *ptr):
+    IWorldItem(name, viewTempalte, ptr) {
 
 }
 
@@ -18,8 +21,16 @@ ClasterItem::~ClasterItem() {
     }
 }
 
+int ClasterItem::parentClastersCount() const {
+    return _parentClasters.size();
+}
+
 void ClasterItem::setClaster(Claster *claster) {
     _parentClasters += claster;
+}
+
+void ClasterItem::removeClaster(Claster *claster) {
+    _parentClasters -= claster;
 }
 
 const QSet<Claster *> &ClasterItem::parentClasters() const {

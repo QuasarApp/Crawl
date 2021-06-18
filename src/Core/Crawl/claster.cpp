@@ -8,18 +8,27 @@
 #include "claster.h"
 #include "singleclasterworlditem.h"
 
-Claster::Claster() {
+Claster::Claster(const QString &name,
+                 const QString &viewTempalte,
+                 QObject *ptr):
+    IWorldItem(name, viewTempalte, ptr) {
 
 }
 
-void Claster::add(IWorldItem *object) {
+Claster::~Claster() {
+    for (auto child : qAsConst(_objects)) {
+        child->removeClaster(this);
+    }
+}
+
+void Claster::add(ClasterItem *object) {
     _objects.insert(object->guiId(), object);
     if (auto singlClasterObject = dynamic_cast<SingleClasterWorldItem*>(object)) {
         singlClasterObject->setClaster(this);
     }
 }
 
-void Claster::remove(IWorldItem *object) {
+void Claster::remove(ClasterItem *object) {
     _objects.remove(object->guiId());
 }
 
@@ -27,6 +36,6 @@ void Claster::remove(int id) {
     _objects.remove(id);
 }
 
-const QHash<int, IWorldItem *> &Claster::objects() const {
+const QHash<int, ClasterItem *> &Claster::objects() const {
     return _objects;
 }

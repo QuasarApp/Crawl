@@ -20,7 +20,9 @@ class IControl;
 class CRAWL_EXPORT IPlayer: public IWorldItem {
     Q_OBJECT
 public:
-    IPlayer();
+    IPlayer(const QString& name,
+            const QString& viewTempalte = DEFAULT_VIEW_TEMPLATE,
+            QObject *ptr = nullptr);
 
     /**
      * @brief getCurrentStatus This method return current game state of the player.
@@ -51,7 +53,7 @@ public:
      * @param control This is control object.
      * @note This method can invoked two or more times, for example connect with AI control object and player control object. So your implementation should be contains disconnect methods.
      */
-    virtual void setControl(const IControl* control);
+    virtual void setControl(const IControl* control) = 0;
 
 protected:
 

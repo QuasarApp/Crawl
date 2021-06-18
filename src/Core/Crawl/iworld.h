@@ -37,14 +37,6 @@ typedef QMap<QString, int> WorldObjects;
 typedef QMap<int, WorldObjects> WorldRule;
 
 /**
- * @brief The WorldObjectWraper struct This is simple wraper structure for the internal functionality of the IWorld objects.
- */
-struct WorldObjectWraper {
-    IWorldItem* objectPtr = nullptr;
-    QString groupName = "";
-};
-
-/**
  * @brief The IWorld class use this interface for implementation your own game levels
  */
 class CRAWL_EXPORT IWorld : public QObject, public IRender
@@ -315,20 +307,24 @@ private:
     /**
      * @brief addItem This method remove object from the scane. If object are calster then this method remove all child objects.
      * @param obj pointer to any engine object.
+     * @param addedObjectsList This is list of added items into world.
      */
-    void addItem(IWorldItem *obj);
+    void addItem(IWorldItem *obj,
+                 QList<int>* addedObjectsList = nullptr);
 
     /**
      * @brief removeItem This method remove item from the world. If the @a id are id of the claster object then its child object will be removed too.
+     * @param id This is id of removed object.
+     * @param removedObjectsList This is list of removed objects. Leave this argument nullptr for ignore this argument.
      */
-    void removeItem(int id);
+    void removeItem(int id,
+                    QList<int>* removedObjectsList = nullptr);
 
     /**
      * @brief addAtomicItem This method execure atomic operation of add new item. This method support only atomic objects. (not clasters)
-     * @param group This is group of the atomic object.
      * @param obj This is pointer to the atomic object. If the object are claster then it will be added without childs objects.
      */
-    void addAtomicItem(const QString &group, IWorldItem *obj);
+    void addAtomicItem(IWorldItem *obj);
 
     /**
      * @brief removeIAtomictem This method remove object with @a id. This method work with atomic objects only. If you rty remove claster objects then it will be ramoved witohout child objects.
@@ -338,14 +334,22 @@ private:
     bool removeIAtomictem(int id);
 
     /**
-     * @brief removeAnyAtomicItemFromGroup This method remove any object from group and return id of removed object.
-     * @param group This is name of the objects group
-     * @return id of removed object.
-     * @note if object not removed return 0
+     * @brief removeIAtomictem This method remove object @a obj. This method work with atomic objects only. If you rty remove claster objects then it will be ramoved witohout child objects.
+     * @param obj This is id of removed objects.
+     * @return return true if object remove successul
      */
-    int removeAnyAtomicItemFromGroup(const QString &group);
+    bool removeIAtomictem(IWorldItem *obj);
 
-    QHash<int, WorldObjectWraper> _items;
+    /**
+     * @brief removeAnyItemFromGroup This method remove any object from group and return id of removed object. If The objec are claster then this method remove all child objects.
+     * @param group This is name of the objects group
+     * @param removedObjectsList This is list of removed objcts.
+     * @return id of removed object.
+     */
+    void removeAnyItemFromGroup(const QString &group,
+                                QList<int>* removedObjectsList = nullptr);
+
+    QHash<int, IWorldItem*> _items;
     QMultiHash<QString, int> _itemsGroup;
     QVector3D _cameraReleativePosition;
     QQuaternion _cameraRatation;

@@ -15,6 +15,8 @@
 #include <QVector3D>
 #include "Crawl/irender.h"
 
+#define DEFAULT_VIEW_TEMPLATE "qrc:/CrawlModule/GraphicItem.qml"
+
 /**
  * @brief The GuiObject class This base model for gui objects.
  */
@@ -38,7 +40,9 @@ class CRAWL_EXPORT GuiObject: public QObject, public IRender {
 
 
 public:
-    GuiObject(const QString& viewTempalte = "qrc:/CrawlModule/GraphicItem.qml", QObject *ptr = nullptr);
+    GuiObject(const QString& name,
+              const QString& viewTempalte = DEFAULT_VIEW_TEMPLATE,
+              QObject *ptr = nullptr);
 
     QString color() const;
     void setColor(QString color);
@@ -97,6 +101,14 @@ public:
     const QString &mash() const;
     void setMash(const QString &newMash);
 
+    /**
+     * @brief className This method return class name.
+     * The class name using as a group of objects on thw world.
+     * @return class name;
+     * @note the class name should be sets on the consturctor of child classes of this class.
+     */
+    const QString &className() const;
+
 signals:
     void guiIdChanged(int guiId);
     void colorChanged(QString color);
@@ -131,6 +143,7 @@ private:
     QVector3D _size;
     QQuaternion _ratation;
     QString _mash;
+    QString _className;
 };
 
 #endif // GUIOBJECT_H

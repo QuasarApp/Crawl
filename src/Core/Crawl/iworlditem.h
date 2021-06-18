@@ -17,8 +17,11 @@ class IWorld;
  */
 class CRAWL_EXPORT IWorldItem: public GuiObject {
     Q_OBJECT
+
 public:
-    IWorldItem();
+    IWorldItem(const QString& name,
+               const QString& viewTempalte = DEFAULT_VIEW_TEMPLATE,
+               QObject *ptr = nullptr);
 
     const IWorld *world() const;
 
