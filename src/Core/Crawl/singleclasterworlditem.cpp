@@ -19,8 +19,6 @@ SingleClasterWorldItem::SingleClasterWorldItem(const QString &name,
 
 void SingleClasterWorldItem::setClaster(Claster *claster) {
     if (parentClasters().size() > 0) {
-        debug_assert(parentClasters().size() > 1, "Internal error occured, The singleClaster object have multiple claster parents!!");
-
         Claster* parent = *parentClasters().begin();
         parent->remove(this);
         removeClaster(parent);

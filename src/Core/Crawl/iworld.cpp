@@ -82,13 +82,17 @@ void IWorld::setPlayer(QObject *newPlayer) {
     }
 
     if (_player) {
-        removeIAtomictem(_player->guiId());
+        removeIAtomicItem(_player->guiId());
     }
 
     _player = newPlayerObject;
     addAtomicItem(_player);
 
     emit playerChanged();
+}
+
+IWorldItem *IWorld::generate(const QString &objectType) const {
+    return _registeredTypes.value(objectType, [](){return nullptr;}).operator()();
 }
 
 bool IWorld::stop() {
@@ -177,13 +181,14 @@ void IWorld::removeItem(int id, QList<int> *removedObjectsList) {
 
     // Work wih claster
     if (auto claster = dynamic_cast<Claster*>(obj)) {
-        for (auto item : claster->objects()) {
-            if (!item || item->parentClastersCount())
+        auto copyOfObjectsList = claster->objects();
+        for (auto item : copyOfObjectsList) {
+            if (!item || !item->parentClastersCount())
                 continue;
 
             int id = item->guiId();
 
-            removeIAtomictem(item);
+            removeIAtomicItem(item);
             if (removedObjectsList)
                 removedObjectsList->push_back(id);
 
@@ -191,7 +196,8 @@ void IWorld::removeItem(int id, QList<int> *removedObjectsList) {
     }
 
     addAtomicItem(obj);
-    removedObjectsList->push_back(obj->guiId());
+    if (removedObjectsList)
+        removedObjectsList->push_back(obj->guiId());
 
 }
 
@@ -230,7 +236,7 @@ void IWorld::addAtomicItem(IWorldItem* obj) {
     _itemsGroup.insert(obj->className(), obj->guiId());
 }
 
-bool IWorld::removeIAtomictem(int id) {
+bool IWorld::removeIAtomicItem(int id) {
     auto obj = _items.value(id);
 
     if (!obj) {
@@ -245,7 +251,7 @@ bool IWorld::removeIAtomictem(int id) {
     return true;
 }
 
-bool IWorld::removeIAtomictem(IWorldItem *obj) {
+bool IWorld::removeIAtomicItem(IWorldItem *obj) {
     if (!obj) {
         return false;
     }
@@ -341,3 +347,4 @@ void IWorld::setWorldStatus(int newWorldStatus) {
     _worldStatus = newWorldStatus;
     emit worldStatusChanged();
 }
+

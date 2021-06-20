@@ -18,10 +18,18 @@ class ClastersTest: public Test, protected TestUtils
 {
 public:
     ClastersTest();
-
-    // Test interface
-public:
     void test() override;
+private:
+
+    /**
+     * @brief testOneClaster This test check functionality of the claster class.
+     */
+    void testOneClaster() const;
+
+    /**
+     * @brief testClastersWithWorld This test check clasters integrarion on the world
+     */
+    void testClastersWithWorld() const;
 };
 
 #endif // CLASTERSTEST_H

@@ -23,7 +23,7 @@ Claster::~Claster() {
 
 void Claster::add(ClasterItem *object) {
     _objects.insert(object->guiId(), object);
-    if (auto singlClasterObject = dynamic_cast<SingleClasterWorldItem*>(object)) {
+    if (auto singlClasterObject = dynamic_cast<ClasterItem*>(object)) {
         singlClasterObject->setClaster(this);
     }
 }

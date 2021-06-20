@@ -16,8 +16,8 @@ ClasterItem::ClasterItem(const QString &name,
 }
 
 ClasterItem::~ClasterItem() {
-    if (parentClasters().size() && *parentClasters().begin()) {
-        (*parentClasters().begin())->remove(this);
+    for (auto claster : qAsConst(_parentClasters)) {
+        claster->remove(this);
     }
 }
 

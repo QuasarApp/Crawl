@@ -63,11 +63,27 @@ public:
     /**
      * @brief initWorldRules The implementation of this interface must be retun initialized list of the world rules.
      *  For more information see the WorldRules map.
+     *
+     *  Example of use :
+     *
+     *  ```cpp
+     *  WorldRule *World::initWorldRules() {
+     *      return new WorldRule {
+     *            {
+     *              0, {{registerObject<Box>(), 10}},
+     *              100, {{registerObject<Box>(), 10}, {registerObject<Round>(), 1}},
+     *            }
+     *      };
+     *  }
+     *  ```
+     *
      * @return a raw pointer to world a rules map.
      * @note The Palyer object will be deleted when wold distroed.
      *  So do not delete your created player pbject yuorself.
+     *
+     *
      */
-    virtual WorldRule* initWorldRules() const = 0;
+    virtual WorldRule* initWorldRules() = 0;
 
     /**
      * @brief initUserInterface This method should be return point to userInterface object.
@@ -253,25 +269,22 @@ protected:
     /**
      * @brief generate This method shold be generate object from the  @a objectType.
      *  Override this method for add support yourown objects.
+     *  @note If your objects not requre custom setting then use the default implementation of the generate method.
      * @param objectType This is string type name of the object,
      * @return pointer to the object.
      *
      * **Example**
      * ```cpp
      * IWorldItem* generate(const QString& objectType)) const {
-     *     if (auto obj = IWorld::generate(objectType)) {
-     *         return obj;
+     *     auto registeredObject = IWorld::generate(objectType);
+     *     if (registeredObject) {
+     *     // process creating of object.
      *     }
-     *
-     *     ...
-     *     // custom implementation
-     *     ...
-     *
-     *     return nullptr;
+     *     return registeredObject;
      * }
      * ```
      */
-    virtual IWorldItem* generate(const QString& objectType) const = 0;
+    virtual IWorldItem* generate(const QString& objectType) const;
 
     /**
      * @brief setCameraReleativePosition This method update camera position
@@ -284,6 +297,40 @@ protected:
      * @param newCameraRatation new ratation of the camera.
      */
     void setCameraRatation(const QQuaternion &newCameraRatation);
+
+    template<class Type>
+
+    /**
+     * @brief registerObject This method will register object type for generation on the world.
+     *
+     * Example of use:
+     *
+     * ```cpp
+     * ...
+     * QString className = registerObject<MyType>();
+     * ...
+     * ```
+     *
+     * @return name of registered class.
+     */
+    QString registerObject() {
+
+        static_assert(std::is_base_of_v<IWorldItem, Type>,
+                "You try register no IWorldItem class. Please inherit of IWorldItem class and try again");
+
+        QString type = Type().className();
+
+        if (!_registeredTypes.contains(type)) {
+
+            auto wraper = []() {
+                return new Type();
+            };
+
+            _registeredTypes.insert(type, wraper);
+        }
+
+        return type;
+    }
 
 private slots:
 
@@ -331,14 +378,14 @@ private:
      * @param id This is id of removed objects.
      * @return return true if object remove successul
      */
-    bool removeIAtomictem(int id);
+    bool removeIAtomicItem(int id);
 
     /**
-     * @brief removeIAtomictem This method remove object @a obj. This method work with atomic objects only. If you rty remove claster objects then it will be ramoved witohout child objects.
+     * @brief removeIAtomicItem This method remove object @a obj. This method work with atomic objects only. If you rty remove claster objects then it will be ramoved witohout child objects.
      * @param obj This is id of removed objects.
      * @return return true if object remove successul
      */
-    bool removeIAtomictem(IWorldItem *obj);
+    bool removeIAtomicItem(IWorldItem *obj);
 
     /**
      * @brief removeAnyItemFromGroup This method remove any object from group and return id of removed object. If The objec are claster then this method remove all child objects.
@@ -359,9 +406,15 @@ private:
     IPlayer *_player = nullptr;
     IControl *_userInterface = nullptr;
     IAI *_backgroundAI = nullptr;
-
-    friend class Engine;
     int _worldStatus = 0;
+    QHash<QString, std::function<IWorldItem*()>> _registeredTypes;
+
+    // engine
+    friend class Engine;
+
+    // testing
+    friend class ClastersTest;
+
 };
 
 #endif // IWORLD_H
