@@ -19,7 +19,7 @@ class Claster;
  * @brief The ClasterItem class This is item of the claster object. Thi class can be used as a one element of the claster class.
  * @note This object invoke the Claster::remove method in destructor.
  */
-class ClasterItem: public IWorldItem
+class CRAWL_EXPORT ClasterItem: public IWorldItem
 {
     Q_OBJECT
 public:
