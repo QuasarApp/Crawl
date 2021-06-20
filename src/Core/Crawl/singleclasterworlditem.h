@@ -24,7 +24,6 @@ public:
     SingleClasterWorldItem(const QString& name,
                            const QString& viewTempalte = DEFAULT_VIEW_TEMPLATE,
                            QObject *ptr = nullptr);
-
 private:
 
     /**
