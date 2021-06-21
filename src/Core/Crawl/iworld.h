@@ -19,6 +19,7 @@
 #include "irender.h"
 #include "diff.h"
 #include "global.h"
+#include <QMutex>
 
 class IWorldItem;
 class IPlayer;
@@ -298,6 +299,18 @@ protected:
      */
     void setCameraRatation(const QQuaternion &newCameraRatation);
 
+    /**
+     * @brief targetFps This method return current targetFps;
+     * @return current target FPS.
+     */
+    int targetFps() const;
+
+    /**
+     * @brief setTargetFps This method sets new targetFps.
+     * @param newTargetFps This is new value of target Fps;
+     */
+    void setTargetFps(int newTargetFps);
+
     template<class Type>
 
     /**
@@ -398,6 +411,9 @@ private:
 
     QHash<int, IWorldItem*> _items;
     QMultiHash<QString, int> _itemsGroup;
+
+    mutable QMutex _ItemsMutex;
+
     QVector3D _cameraReleativePosition;
     QQuaternion _cameraRatation;
 
@@ -408,6 +424,8 @@ private:
     IAI *_backgroundAI = nullptr;
     int _worldStatus = 0;
     QHash<QString, std::function<IWorldItem*()>> _registeredTypes;
+
+    int _targetFps = 60;
 
     // engine
     friend class Engine;

@@ -16,6 +16,8 @@
 #include "worldstatus.h"
 #include "iai.h"
 #include "clasteritem.h"
+#include "thread"
+#include "chrono"
 
 IWorld::IWorld() {
 
@@ -31,6 +33,8 @@ IControl *IWorld::initUserInterface() const {
 
 void IWorld::render(unsigned int tbfMsec) {
 
+    _ItemsMutex.lock();
+
     for (auto i = _items.begin(); i != _items.end(); ++i) {
         (*i)->render(tbfMsec);
 
@@ -43,6 +47,12 @@ void IWorld::render(unsigned int tbfMsec) {
     if (_player->isDead()) {
         emit sigGameFinished(_player->getCurrentStatus());
     }
+
+    _ItemsMutex.unlock();
+
+    int waitTime = 1000 / _targetFps - tbfMsec;
+    if (waitTime > 0)
+        std::this_thread::sleep_for(std::chrono::milliseconds(waitTime));
 }
 
 void IWorld::initPlayerControl(IControl *control) {
@@ -63,6 +73,7 @@ bool IWorld::start() {
 
 
     worldChanged(*_worldRules->begin());
+    setTargetFps(60);
     return true;
 }
 
@@ -103,6 +114,8 @@ bool IWorld::stop() {
 
     _backgroundAI->startAI();
 
+    setTargetFps(30);
+
     return true;
 }
 
@@ -111,6 +124,8 @@ IAI *IWorld::initBackGroundAI() const {
 }
 
 IWorldItem *IWorld::getItem(int id) const {
+    QMutexLocker lock(&_ItemsMutex);
+
     return _items.value(id, nullptr);
 }
 
@@ -145,6 +160,8 @@ bool IWorld::init() {
 }
 
 void IWorld::clearItems() {
+    QMutexLocker lock(&_ItemsMutex);
+
     for (const auto& item : qAsConst(_items)) {
         delete item;
     }
@@ -232,11 +249,17 @@ void IWorld::addAtomicItem(IWorldItem* obj) {
     if (!obj)
         return;
 
+    QMutexLocker lock(&_ItemsMutex);
+
     _items.insert(obj->guiId(), obj);
     _itemsGroup.insert(obj->className(), obj->guiId());
+
+    obj->initOnWorld(this, _player);
 }
 
 bool IWorld::removeIAtomicItem(int id) {
+    QMutexLocker lock(&_ItemsMutex);
+
     auto obj = _items.value(id);
 
     if (!obj) {
@@ -256,6 +279,8 @@ bool IWorld::removeIAtomicItem(IWorldItem *obj) {
         return false;
     }
 
+    QMutexLocker lock(&_ItemsMutex);
+
     _itemsGroup.remove(obj->className(), obj->guiId());
     _items.remove(obj->guiId());
 
@@ -268,6 +293,14 @@ void IWorld::removeAnyItemFromGroup(const QString &group,
                                     QList<int> *removedObjectsList) {
     int anyObjectId = _itemsGroup.value(group);
     removeItem(anyObjectId, removedObjectsList);
+}
+
+int IWorld::targetFps() const {
+    return _targetFps;
+}
+
+void IWorld::setTargetFps(int newTargetFps) {
+    _targetFps = newTargetFps;
 }
 
 const QQuaternion &IWorld::cameraRatation() const {
