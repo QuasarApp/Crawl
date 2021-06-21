@@ -22,10 +22,10 @@ void MovableObject::render(unsigned int tbfMsec) {
     // calc change on this iteration for new moveble vector
     float delta = std::min(_angularVelocity * tbfMsec, tempVector.length());
 
-    // change temp vector
-    tempVector *= delta;
+    // resize temp vector for calc changes of the movableVector
+    tempVector = tempVector.normalized() * delta;
 
-    // recalc new currentMovable vector
+    // recalc new currentMovable vector (applay changes)
     _currentMovableVector += tempVector;
 
 }
