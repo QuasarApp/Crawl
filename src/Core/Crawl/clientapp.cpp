@@ -85,7 +85,6 @@ void ClientApp::initLvls() {
     }
 
     _menu->setAvailableLvls(_availableWorlds);
-
 }
 
 IWorld *ClientApp::getLastWorld() {
