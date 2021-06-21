@@ -7,6 +7,7 @@
 
 #include <QtTest>
 #include "pluginloadertest.h"
+#include "clasterstest.h"
 
 // Use This macros for initialize your own test classes.
 // Check exampletests
@@ -33,6 +34,8 @@ private slots:
 
     // BEGIN TESTS CASES
     TestCase(exampleTest, PluginLoaderTest)
+    TestCase(clastersTest, ClastersTest)
+
     // END TEST CASES
 
 private:

@@ -40,7 +40,7 @@ class CRAWL_EXPORT ClientApp : public QObject
     Q_OBJECT
 public:
     ClientApp();
-    ~ClientApp();
+    ~ClientApp() override;
 
     /**
      * @brief init This method initialize engine on application.

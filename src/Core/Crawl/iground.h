@@ -16,7 +16,9 @@
  */
 class CRAWL_EXPORT IGround: public IWorldItem {
 public:
-    IGround();
+    IGround(const QString& name,
+            const QString& viewTempalte = DEFAULT_VIEW_TEMPLATE,
+            QObject *ptr = nullptr);
 
     // IRender interface
 public:

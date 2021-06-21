@@ -9,11 +9,11 @@
 
 #include <QVector3D>
 
-GuiObject::GuiObject(const QString &viewTempalte, QObject *ptr):
+GuiObject::GuiObject(const QString &name, const QString &viewTempalte, QObject *ptr):
     QObject (ptr) {
     _viewTemplate = viewTempalte;
+    _className = name;
     generateId();
-
 }
 
 QString GuiObject::color() const {
@@ -31,6 +31,10 @@ void GuiObject::setColor(QString color) {
 void GuiObject::generateId() {
     static int id = 0;
     _guiId = id++;
+}
+
+const QString &GuiObject::className() const {
+    return _className;
 }
 
 void GuiObject::reset() {

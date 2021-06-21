@@ -12,47 +12,47 @@ View3D {
 
     property var model: null;
     property alias showMenu: privateRoot.showMenu
+    renderMode: View3D.Underlay
 
     PerspectiveCamera {
         id: camera
-        position: (privateRoot.player)? Qt.vector3d(
-                                            privateRoot.player.position.x + privateRoot.releativeCameraPosition.x,
-                                            privateRoot.player.position.y + privateRoot.releativeCameraPosition.y,
-                                            privateRoot.player.position.z + privateRoot.releativeCameraPosition.z
-                                            )
+        position: (privateRoot.player && privateRoot.releativeCameraPosition)?
+                      Qt.vector3d(privateRoot.player.position.x + privateRoot.releativeCameraPosition.x,
+                                  privateRoot.player.position.y + privateRoot.releativeCameraPosition.y,
+                                  privateRoot.player.position.z + privateRoot.releativeCameraPosition.z)
                           :
-                            Qt.vector3d(0,0,0)
+                      Qt.vector3d(0,0,100)
+
+        onPositionChanged: {
+            console.log(position)
+        }
 
         rotation: (privateRoot.world)? privateRoot.world.cameraRatation: Qt.quaternion(0,0,0,0)
 
     }
 
-    DirectionalLight {
-        position: Qt.vector3d(0,0,100)
-        eulerRotation.z: 90
-
-    }
-
-    Node {
-        id: mainScane
+    PointLight {
+        position: camera.position
+        brightness: 1500
     }
 
     environment: SceneEnvironment {
         id: background
         backgroundMode: SceneEnvironment.SkyBox
-
         lightProbe: Texture {
             source: (model)? model.hdr: ""
         }
     }
 
-    Item {
+    Node {
         id: privateRoot
 
         property var arrayObjects: []
-        property var player: (model)? model.player: null
         property var world: (model)? model.world: null
+        property int oldPlayerId: -1
+
         property var gameMenuModel: (model)? model.menu: null
+        property var player: (world)? world.player: null
         property var releativeCameraPosition: (world)? world.cameraReleativePosition: null
         property var progress: (model)? model.prepareLvlProgress: null
 
@@ -75,7 +75,7 @@ View3D {
 
             var temp = Qt.createComponent(viewTemplate)
             if (temp.status === Component.Ready) {
-                var obj = temp.createObject(mainScane) // mainScane - это обьект на который будет помещен соззданный элемент
+                var obj = temp.createObject(privateRoot)
                 obj.model = model.getGameObject(cppObjId);
                 arrayObjects.push(obj)
             } else {
@@ -121,6 +121,19 @@ View3D {
 
         Connections {
             target: privateRoot;
+
+            function onPlayerChanged() {
+
+                if (!privateRoot.player)
+                    return
+
+                if (privateRoot.oldPlayerId >= 0) {
+                    privateRoot.remove(privateRoot.oldPlayerId);
+                }
+
+                privateRoot.add(privateRoot.player.guiId);
+                privateRoot.oldPlayerId = privateRoot.player.guiId
+            }
 
             function onGameMenuModelChanged() {
                 if (!privateRoot.gameMenuModel) {

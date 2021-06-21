@@ -37,14 +37,6 @@ typedef QMap<QString, int> WorldObjects;
 typedef QMap<int, WorldObjects> WorldRule;
 
 /**
- * @brief The WorldObjectWraper struct This is simple wraper structure for the internal functionality of the IWorld objects.
- */
-struct WorldObjectWraper {
-    IWorldItem* objectPtr = nullptr;
-    QString groupName = "";
-};
-
-/**
  * @brief The IWorld class use this interface for implementation your own game levels
  */
 class CRAWL_EXPORT IWorld : public QObject, public IRender
@@ -52,20 +44,13 @@ class CRAWL_EXPORT IWorld : public QObject, public IRender
     Q_OBJECT
     Q_PROPERTY(QVector3D cameraReleativePosition READ cameraReleativePosition NOTIFY cameraReleativePositionChanged)
     Q_PROPERTY(QQuaternion cameraRatation READ cameraRatation NOTIFY cameraRatationChanged)
+    Q_PROPERTY(QObject * player READ player WRITE setPlayer NOTIFY playerChanged)
 
     Q_PROPERTY(int worldStatus READ wordlStatus WRITE setWorldStatus NOTIFY worldStatusChanged)
 
 public:
     IWorld();
     virtual ~IWorld();
-
-    /**
-     * @brief generateGroundTile This method should be generate a new tile of the world.
-     * @return raw pointer to tile of the world ground.
-     * @note The tile count sets automaticly.
-     * @note All generated objects will be distroed automaticaly.
-     */
-    virtual IGround* generateGroundTile() = 0;
 
     /**
      * @brief initPlayer The implementation of This interface must be return playerObject.
@@ -78,11 +63,27 @@ public:
     /**
      * @brief initWorldRules The implementation of this interface must be retun initialized list of the world rules.
      *  For more information see the WorldRules map.
+     *
+     *  Example of use :
+     *
+     *  ```cpp
+     *  WorldRule *World::initWorldRules() {
+     *      return new WorldRule {
+     *            {
+     *              0, {{registerObject<Box>(), 10}},
+     *              100, {{registerObject<Box>(), 10}, {registerObject<Round>(), 1}},
+     *            }
+     *      };
+     *  }
+     *  ```
+     *
      * @return a raw pointer to world a rules map.
      * @note The Palyer object will be deleted when wold distroed.
      *  So do not delete your created player pbject yuorself.
+     *
+     *
      */
-    virtual WorldRule* initWorldRules() const = 0;
+    virtual WorldRule* initWorldRules() = 0;
 
     /**
      * @brief initUserInterface This method should be return point to userInterface object.
@@ -211,6 +212,12 @@ public:
      */
     const QQuaternion &cameraRatation() const;
 
+    /**
+     * @brief player This method return player object
+     * @return player object
+     */
+    QObject *player() const;
+
 signals:
     /**
      * @brief sigGameFinished This signal emit when game are finished
@@ -245,15 +252,39 @@ signals:
      */
     void cameraRatationChanged();
 
+    /**
+     * @brief playerChanged This signal eited when player are changed.
+     */
+    void playerChanged();
+
 protected:
+
+    /**
+     * @brief setPlayer This method sets new player object
+     * @param newPlayer This is new player object.
+     * @note This method remove old player object if it exists
+     */
+    void setPlayer(QObject *newPlayer);
 
     /**
      * @brief generate This method shold be generate object from the  @a objectType.
      *  Override this method for add support yourown objects.
+     *  @note If your objects not requre custom setting then use the default implementation of the generate method.
      * @param objectType This is string type name of the object,
      * @return pointer to the object.
+     *
+     * **Example**
+     * ```cpp
+     * IWorldItem* generate(const QString& objectType)) const {
+     *     auto registeredObject = IWorld::generate(objectType);
+     *     if (registeredObject) {
+     *     // process creating of object.
+     *     }
+     *     return registeredObject;
+     * }
+     * ```
      */
-    virtual IWorldItem* generate(const QString& objectType) const = 0;
+    virtual IWorldItem* generate(const QString& objectType) const;
 
     /**
      * @brief setCameraReleativePosition This method update camera position
@@ -267,7 +298,45 @@ protected:
      */
     void setCameraRatation(const QQuaternion &newCameraRatation);
 
+    template<class Type>
+
+    /**
+     * @brief registerObject This method will register object type for generation on the world.
+     *
+     * Example of use:
+     *
+     * ```cpp
+     * ...
+     * QString className = registerObject<MyType>();
+     * ...
+     * ```
+     *
+     * @return name of registered class.
+     */
+    QString registerObject() {
+
+        static_assert(std::is_base_of_v<IWorldItem, Type>,
+                "You try register no IWorldItem class. Please inherit of IWorldItem class and try again");
+
+        QString type = Type().className();
+
+        if (!_registeredTypes.contains(type)) {
+
+            auto wraper = []() {
+                return new Type();
+            };
+
+            _registeredTypes.insert(type, wraper);
+        }
+
+        return type;
+    }
+
 private slots:
+
+    /**
+     * @brief handleStop This slot invoked when user click return main menu button.
+     */
     void handleStop();
 
 private:
@@ -279,27 +348,55 @@ private:
     bool init();
     void deinit();
 
-    void generateGround();
     void worldChanged(const WorldObjects& objects);
     void clearItems();
-    void addItem(const QString &group, IWorldItem *obj);
 
     /**
-     * @brief removeItem This method remove object with @a id.
+     * @brief addItem This method remove object from the scane. If object are calster then this method remove all child objects.
+     * @param obj pointer to any engine object.
+     * @param addedObjectsList This is list of added items into world.
+     */
+    void addItem(IWorldItem *obj,
+                 QList<int>* addedObjectsList = nullptr);
+
+    /**
+     * @brief removeItem This method remove item from the world. If the @a id are id of the claster object then its child object will be removed too.
+     * @param id This is id of removed object.
+     * @param removedObjectsList This is list of removed objects. Leave this argument nullptr for ignore this argument.
+     */
+    void removeItem(int id,
+                    QList<int>* removedObjectsList = nullptr);
+
+    /**
+     * @brief addAtomicItem This method execure atomic operation of add new item. This method support only atomic objects. (not clasters)
+     * @param obj This is pointer to the atomic object. If the object are claster then it will be added without childs objects.
+     */
+    void addAtomicItem(IWorldItem *obj);
+
+    /**
+     * @brief removeIAtomictem This method remove object with @a id. This method work with atomic objects only. If you rty remove claster objects then it will be ramoved witohout child objects.
      * @param id This is id of removed objects.
      * @return return true if object remove successul
      */
-    bool removeItem(int id);
+    bool removeIAtomicItem(int id);
 
     /**
-     * @brief removeAnyItemFromGroup This method remove any object from group and return id of removed object.
-     * @param group This is name of the objects group
-     * @return id of removed object.
-     * @note if object not removed return 0
+     * @brief removeIAtomicItem This method remove object @a obj. This method work with atomic objects only. If you rty remove claster objects then it will be ramoved witohout child objects.
+     * @param obj This is id of removed objects.
+     * @return return true if object remove successul
      */
-    int removeAnyItemFromGroup(const QString &group);
+    bool removeIAtomicItem(IWorldItem *obj);
 
-    QHash<int, WorldObjectWraper> _items;
+    /**
+     * @brief removeAnyItemFromGroup This method remove any object from group and return id of removed object. If The objec are claster then this method remove all child objects.
+     * @param group This is name of the objects group
+     * @param removedObjectsList This is list of removed objcts.
+     * @return id of removed object.
+     */
+    void removeAnyItemFromGroup(const QString &group,
+                                QList<int>* removedObjectsList = nullptr);
+
+    QHash<int, IWorldItem*> _items;
     QMultiHash<QString, int> _itemsGroup;
     QVector3D _cameraReleativePosition;
     QQuaternion _cameraRatation;
@@ -309,9 +406,15 @@ private:
     IPlayer *_player = nullptr;
     IControl *_userInterface = nullptr;
     IAI *_backgroundAI = nullptr;
-
-    friend class Engine;
     int _worldStatus = 0;
+    QHash<QString, std::function<IWorldItem*()>> _registeredTypes;
+
+    // engine
+    friend class Engine;
+
+    // testing
+    friend class ClastersTest;
+
 };
 
 #endif // IWORLD_H

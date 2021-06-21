@@ -5,6 +5,7 @@
 //# of this license document, but changing it is not allowed.
 //#
 
+#include "claster.h"
 #include "iai.h"
 #include "iworld.h"
 #include "iworlditem.h"
@@ -14,6 +15,7 @@
 #include "defaultcontrol.h"
 #include "worldstatus.h"
 #include "iai.h"
+#include "clasteritem.h"
 
 IWorld::IWorld() {
 
@@ -30,11 +32,11 @@ IControl *IWorld::initUserInterface() const {
 void IWorld::render(unsigned int tbfMsec) {
 
     for (auto i = _items.begin(); i != _items.end(); ++i) {
-        (*i).objectPtr->render(tbfMsec);
+        (*i)->render(tbfMsec);
 
         // intersects event.
-        if ((*i).objectPtr->intersects(*_player)) {
-            _player->onIntersects((*i).objectPtr);
+        if ((*i)->intersects(*_player)) {
+            _player->onIntersects((*i));
         }
     }
 
@@ -61,8 +63,36 @@ bool IWorld::start() {
 
 
     worldChanged(*_worldRules->begin());
-
     return true;
+}
+
+QObject *IWorld::player() const {
+    return _player;
+}
+
+void IWorld::setPlayer(QObject *newPlayer) {
+    if (_player == newPlayer)
+        return;
+
+    auto newPlayerObject = dynamic_cast<IPlayer*>(newPlayer);
+    if (!newPlayerObject) {
+        QuasarAppUtils::Params::log("Failed to set player object. The input object is not player.",
+                                    QuasarAppUtils::Error);
+        return;
+    }
+
+    if (_player) {
+        removeIAtomicItem(_player->guiId());
+    }
+
+    _player = newPlayerObject;
+    addAtomicItem(_player);
+
+    emit playerChanged();
+}
+
+IWorldItem *IWorld::generate(const QString &objectType) const {
+    return _registeredTypes.value(objectType, [](){return nullptr;}).operator()();
 }
 
 bool IWorld::stop() {
@@ -81,7 +111,7 @@ IAI *IWorld::initBackGroundAI() const {
 }
 
 IWorldItem *IWorld::getItem(int id) const {
-    return _items.value(id, {}).objectPtr;
+    return _items.value(id, nullptr);
 }
 
 bool IWorld::init() {
@@ -90,8 +120,9 @@ bool IWorld::init() {
         return true;
 
     _worldRules = initWorldRules();
+
     _hdrMap = initHdrBackGround();
-    _player = initPlayer();
+    setPlayer(initPlayer());
     _player->initOnWorld(this, _player);
     _userInterface = initUserInterface();
     _backgroundAI = initBackGroundAI();
@@ -109,17 +140,65 @@ bool IWorld::init() {
 
     initPlayerControl(_userInterface);
     initPlayerControl(dynamic_cast<IControl*>(_backgroundAI));
-    generateGround();
 
     return true;
 }
 
 void IWorld::clearItems() {
     for (const auto& item : qAsConst(_items)) {
-        delete item.objectPtr;
+        delete item;
     }
 
     _items.clear();
+}
+
+void IWorld::addItem(IWorldItem *obj, QList<int> *addedObjectsList) {
+    if (!obj)
+        return;
+
+    // Work wih claster
+    if (auto claster = dynamic_cast<Claster*>(obj)) {
+        for (auto item : claster->objects()) {
+            addAtomicItem(item);
+            if (item && addedObjectsList) {
+                addedObjectsList->push_back(item->guiId());
+            }
+        }
+    }
+
+    addAtomicItem(obj);
+    if (addedObjectsList)
+        addedObjectsList->push_back(obj->guiId());
+
+}
+
+void IWorld::removeItem(int id, QList<int> *removedObjectsList) {
+
+    auto obj = getItem(id);
+
+    if (!obj)
+        return;
+
+    // Work wih claster
+    if (auto claster = dynamic_cast<Claster*>(obj)) {
+        auto copyOfObjectsList = claster->objects();
+        for (auto item : copyOfObjectsList) {
+            if (!item || !item->parentClastersCount())
+                continue;
+
+            int id = item->guiId();
+
+            removeIAtomicItem(item);
+            if (removedObjectsList)
+                removedObjectsList->push_back(id);
+
+        }
+    }
+
+    addAtomicItem(obj);
+    if (removedObjectsList)
+        removedObjectsList->push_back(obj->guiId());
+
 }
 
 void IWorld::deinit() {
@@ -148,49 +227,47 @@ void IWorld::deinit() {
 
 }
 
-void IWorld::generateGround() {
-    int count = 10;
 
-    QVector3D position = {0,0,0};
-    float increment = cameraReleativePosition().z() * 2;
+void IWorld::addAtomicItem(IWorldItem* obj) {
+    if (!obj)
+        return;
 
-    while (count--) {
-        auto item = generateGroundTile();
-        item->initOnWorld(this, _player);
-
-        position.setX(position.x() + increment);
-        item->setposition(position);
-        addItem("groundTile", item);
-    }
+    _items.insert(obj->guiId(), obj);
+    _itemsGroup.insert(obj->className(), obj->guiId());
 }
 
-void IWorld::addItem(const QString& group, IWorldItem* obj) {
-    _items.insert(obj->guiId(), WorldObjectWraper{obj, group});
-    _itemsGroup.insert(group, obj->guiId());
-}
-
-bool IWorld::removeItem(int id) {
+bool IWorld::removeIAtomicItem(int id) {
     auto obj = _items.value(id);
 
-    if (!obj.objectPtr) {
+    if (!obj) {
         return false;
     }
 
-    _itemsGroup.remove(obj.groupName, id);
+    _itemsGroup.remove(obj->className(), id);
     _items.remove(id);
 
-    delete obj.objectPtr;
+    delete obj;
 
     return true;
 }
 
-int IWorld::removeAnyItemFromGroup(const QString &group) {
-    int anyObjectId = _itemsGroup.value(group);
-    if (!removeItem(anyObjectId)) {
+bool IWorld::removeIAtomicItem(IWorldItem *obj) {
+    if (!obj) {
         return false;
     }
 
-    return anyObjectId;
+    _itemsGroup.remove(obj->className(), obj->guiId());
+    _items.remove(obj->guiId());
+
+    delete obj;
+
+    return true;
+}
+
+void IWorld::removeAnyItemFromGroup(const QString &group,
+                                    QList<int> *removedObjectsList) {
+    int anyObjectId = _itemsGroup.value(group);
+    removeItem(anyObjectId, removedObjectsList);
 }
 
 const QQuaternion &IWorld::cameraRatation() const {
@@ -245,29 +322,11 @@ void IWorld::worldChanged(const WorldObjects &objects) {
 
         if (count > 0) {
             for ( int i = 0; i < count; ++i ) {
-                IWorldItem *obj = generate(it.key());
-
-                obj->initOnWorld(this, _player);
-
-                if (!obj) {
-                    QuasarAppUtils::Params::log("object not created line:" +
-                                                QString::fromLatin1(Q_FUNC_INFO),
-                                                QuasarAppUtils::Warning);
-                    break;
-                }
-
-                addItem(it.key(), obj);
-                diff.addedIds.append(obj->guiId());
+                addItem(generate(it.key()), &diff.addedIds);
             }
         } else {
             for (; count < 0; ++count ) {
-                int removedObjectId = removeAnyItemFromGroup(it.key());
-                if (!removedObjectId) {
-                    QuasarAppUtils::Params::log("World::changeCountObjects error delete object!",
-                                                QuasarAppUtils::Warning);
-                    break;
-                }
-                diff.removeIds.append(removedObjectId);
+                removeAnyItemFromGroup(it.key(), &diff.removeIds);
             }
         }
     }
@@ -288,3 +347,4 @@ void IWorld::setWorldStatus(int newWorldStatus) {
     _worldStatus = newWorldStatus;
     emit worldStatusChanged();
 }
+

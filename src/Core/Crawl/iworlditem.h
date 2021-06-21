@@ -17,10 +17,20 @@ class IWorld;
  */
 class CRAWL_EXPORT IWorldItem: public GuiObject {
     Q_OBJECT
+
 public:
-    IWorldItem();
+    IWorldItem(const QString& name,
+               const QString& viewTempalte = DEFAULT_VIEW_TEMPLATE,
+               QObject *ptr = nullptr);
 
     const IWorld *world() const;
+
+    /**
+     * @brief render This implementation move objects from end of scane to begin.
+     * @param tbfMsec
+     * @note new position = playerPosition + scaneSize;
+     */
+    void render(unsigned int tbfMsec) override;
 
 protected:
 
@@ -42,12 +52,7 @@ protected:
      */
     const IWorldItem * getPlayer() const;
 
-    /**
-     * @brief render This implementation move objects from end of scane to begin.
-     * @param tbfMsec
-     * @note new position = playerPosition + scaneSize;
-     */
-    void render(unsigned int tbfMsec) override;
+
 
 private:
     void initOnWorld(const IWorld* world, const IWorldItem *player);

@@ -20,7 +20,9 @@ class IControl;
 class CRAWL_EXPORT IPlayer: public IWorldItem {
     Q_OBJECT
 public:
-    IPlayer();
+    IPlayer(const QString& name,
+            const QString& viewTempalte = DEFAULT_VIEW_TEMPLATE,
+            QObject *ptr = nullptr);
 
     /**
      * @brief getCurrentStatus This method return current game state of the player.
@@ -89,6 +91,12 @@ protected:
      * @note This method decriment current points value.
      */
     void fine(int value);
+
+    /**
+     * @brief onTap This method invoked when user tap on screen.
+     * @note method connected in the IPlayer::setControl function. So if you overrid the IPlayer::setControl method then please invoke method of a parent class.
+     */
+    virtual void onTap() = 0;
 
 private:
     bool _fDead = false;

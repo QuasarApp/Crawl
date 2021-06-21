@@ -8,7 +8,10 @@
 #include "iground.h"
 #include "iworld.h"
 
-IGround::IGround() {
+IGround::IGround(const QString &name,
+                 const QString &viewTempalte,
+                 QObject *ptr):
+    IWorldItem(name, viewTempalte, ptr) {
 
 }
 

@@ -17,6 +17,7 @@
 class CRAWL_EXPORT IRender {
 public:
     IRender();
+    virtual ~IRender() = default;
 
     /**
      * @brief render This method should be recalc all properyes of the this object.
