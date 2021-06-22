@@ -31,7 +31,6 @@ QByteArray ClientApp::initTheme() {
     case 1: return "Dark";
     default: return "Light";
     }
-
 }
 
 ClientApp::ClientApp() {

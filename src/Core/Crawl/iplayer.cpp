@@ -5,12 +5,13 @@
 //# of this license document, but changing it is not allowed.
 //#
 
+#include "defaultcontrol.h"
 #include "iplayer.h"
 
 IPlayer::IPlayer(const QString &name,
                  const QString &viewTempalte,
                  QObject *ptr):
-    IWorldItem(name, viewTempalte, ptr) {
+    MovableObject(name, viewTempalte, ptr) {
 
 }
 
@@ -49,6 +50,21 @@ void IPlayer::setSpeed(float newSpead) {
 
     if (_speed < 0) {
         _speed = 0;
+    }
+}
+
+void IPlayer::setControl(const IControl *control) {
+
+
+    if (auto oldControl = dynamic_cast<const DefaultControl*>(_currentControl)) {
+        disconnect(oldControl, &DefaultControl::userTap, this, &IPlayer::onTap);
+    }
+
+    auto defaultControl = dynamic_cast<const DefaultControl*>(control);
+    _currentControl = defaultControl;
+
+    if (_currentControl) {
+        connect(defaultControl, &DefaultControl::userTap, this, &IPlayer::onTap);
     }
 }
 

@@ -12,7 +12,7 @@
  * * **Angular velocity** This property sets spead of the angle moving.
  * * **Braking force** This property are delta decriment the Power of the movable vector on time.
  */
-class MovableObject: public IWorldItem
+class CRAWL_EXPORT MovableObject: public IWorldItem
 {
     Q_OBJECT
 public:
@@ -72,7 +72,7 @@ private:
     QVector3D _currentMovableVector;
 
     float _angularVelocity = 0;
-    float _breakingForce = 0;
+    float _breakingForce = 1;
 
 };
 

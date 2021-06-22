@@ -28,6 +28,9 @@ void MovableObject::render(unsigned int tbfMsec) {
     // recalc new currentMovable vector (applay changes)
     _currentMovableVector += tempVector;
 
+    // update movable vector
+    _movableVector *= _breakingForce;
+
 }
 
 const QVector3D &MovableObject::movableVector() const  {
