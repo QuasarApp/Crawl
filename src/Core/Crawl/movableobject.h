@@ -72,7 +72,7 @@ private:
     QVector3D _currentMovableVector;
 
     float _angularVelocity = 0;
-    float _breakingForce = 1;
+    float _breakingForce = 0;
 
 };
 

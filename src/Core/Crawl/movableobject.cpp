@@ -1,4 +1,5 @@
 #include "movableobject.h"
+#include <QDebug>
 
 MovableObject::MovableObject(const QString &name,
                              const QString &viewTempalte,
@@ -13,14 +14,14 @@ void MovableObject::render(unsigned int tbfMsec) {
     QVector3D currentPosition = position();
 
     // move object to vector
-    currentPosition += (_currentMovableVector * tbfMsec / 1000);
+    currentPosition += (_currentMovableVector * (tbfMsec / 1000.0));
     setposition(currentPosition);
 
     // calc temp vector betvin user moveble vector and real moveble vector
-    QVector3D tempVector = _currentMovableVector - _movableVector;
+    QVector3D tempVector = _movableVector - _currentMovableVector ;
 
     // calc change on this iteration for new moveble vector
-    float delta = std::min(_angularVelocity * tbfMsec, tempVector.length());
+    float delta = std::min(_angularVelocity * (tbfMsec / 1000.0), static_cast<double>(tempVector.length()));
 
     // resize temp vector for calc changes of the movableVector
     tempVector = tempVector.normalized() * delta;
@@ -29,7 +30,7 @@ void MovableObject::render(unsigned int tbfMsec) {
     _currentMovableVector += tempVector;
 
     // update movable vector
-    _movableVector *= _breakingForce;
+    _movableVector *= 1 - (_breakingForce * (tbfMsec / 1000.0));
 
 }
 
