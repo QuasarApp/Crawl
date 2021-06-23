@@ -57,12 +57,11 @@ public:
     /**
      * @brief breakingForce This method return current value of the breaking force.
      * @return urrent value of the breaking force
-     * @note This is resistance coefficient where 0 do not change movable vector and 1 stop moving on one second.
      */
     float breakingForce() const;
 
     /**
-     * @brief setBreakingForce This method sets new value of the breaking force
+     * @brief setBreakingForce This method sets new value of the breaking force.
      * @param newBreakingForce This is new value of the breaking force
      */
     void setBreakingForce(float newBreakingForce);

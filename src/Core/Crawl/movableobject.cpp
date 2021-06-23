@@ -29,8 +29,10 @@ void MovableObject::render(unsigned int tbfMsec) {
     // recalc new currentMovable vector (applay changes)
     _currentMovableVector += tempVector;
 
+    float newMovableVectorLength = std::max(_movableVector.length() - (_breakingForce * (tbfMsec / 1000.0)), 0.0);
+
     // update movable vector
-    _movableVector *= 1 - (_breakingForce * (tbfMsec / 1000.0));
+    _movableVector = _movableVector.normalized() * newMovableVectorLength;
 
 }
 
