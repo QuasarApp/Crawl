@@ -4,7 +4,7 @@
 <context>
     <name>AbsLvlWorld</name>
     <message>
-        <source>This a test lvl</source>
+        <source>This a abstract lvl</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
