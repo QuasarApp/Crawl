@@ -10,11 +10,18 @@
 #include <QQmlComponent>
 #include <Crawl/guiobject.h>
 #include "Crawl/iworld.h"
+#include <QThread>
 #include <quasarapp.h>
 #include "Crawl/icontrol.h"
+#include "QDateTime"
+#include "QtConcurrent"
 
 Engine::Engine(QObject *parent): QObject(parent) {
 
+}
+
+Engine::~Engine() {
+    stopRenderLoop();
 }
 
 QObject *Engine::scane() {
@@ -54,6 +61,7 @@ void Engine::setWorld(IWorld *world) {
 
     emit worldChanged();
 
+    startRenderLoop();
 }
 
 QString Engine::hdr() const {
@@ -116,10 +124,48 @@ QObject *Engine::getGameObject(int id) const {
     return _currentWorld->getItem(id);
 }
 
+void Engine::startRenderLoop() {
+    if (isRendering())
+        return;
+
+    _renderLoop = true;
+    _renderLoopFuture = QtConcurrent::run(this, &Engine::renderLoop);
+}
+
+void Engine::stopRenderLoop() {
+    _renderLoop = false;
+    _renderLoopFuture.waitForFinished();
+}
+
+bool Engine::isRendering() const {
+    return _renderLoopFuture.isRunning();
+}
+
 void Engine::setPrepareLvlProgress(int newPrepareLvlProgress) {
     if (_prepareLvlProgress == newPrepareLvlProgress) {
         return;
     }
     _prepareLvlProgress = newPrepareLvlProgress;
     emit prepareLvlProgressChanged();
+}
+
+void Engine::renderLoop() {
+
+    if (!_currentWorld)
+        return;
+
+    while (_renderLoop) {
+
+        quint64 currentTime = QDateTime::currentMSecsSinceEpoch();
+
+        if (!_oldTimeRender) {
+            _oldTimeRender = currentTime;
+            continue;
+        }
+
+        _currentWorld->render(currentTime - _oldTimeRender);
+        _oldTimeRender = currentTime;
+    }
+
+
 }

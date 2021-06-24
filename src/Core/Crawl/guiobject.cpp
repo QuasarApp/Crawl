@@ -30,7 +30,7 @@ void GuiObject::setColor(QString color) {
 
 void GuiObject::generateId() {
     static int id = 0;
-    _guiId = id++;
+    setGuiId(id++);
 }
 
 const QString &GuiObject::className() const {

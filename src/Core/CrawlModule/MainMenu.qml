@@ -103,6 +103,8 @@ Item {
                     return;
 
                 item1.model.newGame(view.selectedLvl)
+
+                selectLvl.close();
             }
         }
 

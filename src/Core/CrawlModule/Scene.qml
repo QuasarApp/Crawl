@@ -33,7 +33,9 @@ View3D {
 
     PointLight {
         position: camera.position
-        brightness: 1500
+        rotation: camera.rotation
+
+        brightness: 250
     }
 
     environment: SceneEnvironment {
@@ -64,6 +66,7 @@ View3D {
                 console.log("create object fail")
                 return;
             }
+
             const objModel = model.getGameObject(cppObjId);
 
             if (!objModel) {

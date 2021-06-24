@@ -31,7 +31,6 @@ QByteArray ClientApp::initTheme() {
     case 1: return "Dark";
     default: return "Light";
     }
-
 }
 
 ClientApp::ClientApp() {
@@ -85,7 +84,6 @@ void ClientApp::initLvls() {
     }
 
     _menu->setAvailableLvls(_availableWorlds);
-
 }
 
 IWorld *ClientApp::getLastWorld() {

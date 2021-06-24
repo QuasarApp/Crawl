@@ -8,6 +8,7 @@
 #ifndef ENGINE_H
 #define ENGINE_H
 
+#include <QFuture>
 #include <QObject>
 #include <QQmlEngine>
 #include <Crawl/diff.h>
@@ -30,6 +31,7 @@ class Engine : public QObject {
 
 public:
     Engine(QObject * parent = nullptr);
+    ~Engine();
 
     /**
      * @brief scane This method return main scane of the game.
@@ -111,6 +113,21 @@ public:
      */
     Q_INVOKABLE QObject *getGameObject(int id) const;
 
+    /**
+     * @brief startRenderLoop This method start render loop in engine.
+     */
+    void startRenderLoop();
+
+    /**
+     * @brief stopRenderLoop This method stop render loop in engine.
+     */
+    void stopRenderLoop();
+
+    /**
+     * @brief isRendering This method erturn true if the render loop is working else false.
+     * @return true if the render loop is working else false.
+     */
+    bool isRendering() const;
 
 signals:
     void scaneChanged();
@@ -123,12 +140,19 @@ signals:
 private:
     void setPrepareLvlProgress(int newPrepareLvlProgress);
 
+    void renderLoop();
+
 
     QObject *_scane = nullptr;
     QQmlEngine *_engine = nullptr;
     IWorld* _currentWorld = nullptr;
     QObject *_menu = nullptr;
     int _prepareLvlProgress;
+
+    quint64 _oldTimeRender = 0;
+
+    QFuture<void> _renderLoopFuture;
+    bool _renderLoop = false;
 };
 
 #endif // ENGINE_H

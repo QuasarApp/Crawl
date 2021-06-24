@@ -9,15 +9,15 @@
 #define IPLAYER_H
 
 #include "gameresult.h"
-#include "iworlditem.h"
 #include "global.h"
+#include "movableobject.h"
 
 class IControl;
 
 /**
  * @brief The IPlayer class This is base class of the player functions.
  */
-class CRAWL_EXPORT IPlayer: public IWorldItem {
+class CRAWL_EXPORT IPlayer: public MovableObject {
     Q_OBJECT
 public:
     IPlayer(const QString& name,
@@ -53,7 +53,7 @@ public:
      * @param control This is control object.
      * @note This method can invoked two or more times, for example connect with AI control object and player control object. So your implementation should be contains disconnect methods.
      */
-    virtual void setControl(const IControl* control) = 0;
+    virtual void setControl(const IControl* control);
 
 protected:
 
@@ -92,6 +92,7 @@ protected:
      */
     void fine(int value);
 
+protected slots:
     /**
      * @brief onTap This method invoked when user tap on screen.
      * @note method connected in the IPlayer::setControl function. So if you overrid the IPlayer::setControl method then please invoke method of a parent class.
@@ -102,6 +103,7 @@ private:
     bool _fDead = false;
     int _currentPoints = 0;
     float _speed = 0;
+    const IControl * _currentControl = nullptr;
 };
 
 #endif // IPLAYER_H
