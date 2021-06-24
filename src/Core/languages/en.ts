@@ -4,15 +4,11 @@
 <context>
     <name>AbsLvlWorld</name>
     <message>
-<<<<<<< HEAD
-        <source>AbstractLvl</source>
-=======
         <source>This a abstract lvl</source>
->>>>>>> ref #55 Fixing: added new change abstractlvl.
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>This a abstract lvl</source>
+        <source>AbstractLvl</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
