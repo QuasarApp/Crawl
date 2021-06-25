@@ -34,7 +34,7 @@
  *
  * ### Example:
  *
- * Create a new qnl file **OwnView.qml**
+ * Create a new qml file **OwnView.qml**
  * ```qml
  *  import CrawlModule 1.0
  *
