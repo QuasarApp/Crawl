@@ -11,7 +11,7 @@
 IPlayer::IPlayer(const QString &name,
                  const QString &viewTempalte,
                  QObject *ptr):
-    MovableObject(name, viewTempalte, ptr) {
+    IWorldItem(name, viewTempalte, ptr) {
 
 }
 
@@ -39,6 +39,10 @@ float IPlayer::setSpeedDown(float decrement) {
 
 void IPlayer::fine(int value) {
     _currentPoints -= value;
+}
+
+void IPlayer::render(unsigned int tbfMsec) {
+    MovableObject::render(tbfMsec);
 }
 
 float IPlayer::speed() const {
