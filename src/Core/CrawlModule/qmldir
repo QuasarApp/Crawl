@@ -1,3 +1,4 @@
 module CrawlModule
 Crawl 1.0 Crawl.qml
 DefaultMenu 1.0 DefaultMenu.qml
+GraphicItem 1.0 GraphicItem.qml

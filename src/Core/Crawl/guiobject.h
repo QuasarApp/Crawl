@@ -19,6 +19,39 @@
 
 /**
  * @brief The GuiObject class This base model for gui objects.
+ *
+ * # Overriding Own gui objects.
+ *
+ * The gui objct contains base properties for drow objects on scane
+ * * position
+ * * ratation
+ * * mash
+ * * and map textures
+ *
+ * All properies implemented on the GraphicItem.qml file.
+ *
+ * If you want to change view for your own object then you need to ooverride the GuiObject::viewTemplate property and create a own qml file for view your changes.
+ *
+ * ### Example:
+ *
+ * Create a new qnl file **OwnView.qml**
+ * ```qml
+ *  import CrawlModule 1.0
+ *
+ *  GraphicItem {
+ *      // your own implementation
+ *  }
+ * ```
+ *
+ * Override property in cpp object.
+ *
+ * ```cpp
+ * class MyObject: public IWorldItem {
+ *     MyObject(): IWorldItem("name", "qrc:/path/to/OwnView.qml") {
+ *         set
+ *     }
+ * }
+ * ```
  */
 class CRAWL_EXPORT GuiObject: public QObject, public IRender {
     Q_OBJECT
@@ -126,6 +159,7 @@ signals:
     void mashChanged();
 
 protected:
+
     int _guiId = -1;
     QString _color = "#ff1111";
 
