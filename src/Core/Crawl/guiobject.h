@@ -20,7 +20,7 @@
 /**
  * @brief The GuiObject class This base model for gui objects.
  */
-class CRAWL_EXPORT GuiObject: public QObject, public IRender {
+class CRAWL_EXPORT GuiObject: public QObject, virtual public IRender {
     Q_OBJECT
     Q_PROPERTY(QString color READ color WRITE setColor NOTIFY colorChanged)
     Q_PROPERTY(int guiId READ guiId NOTIFY guiIdChanged)

@@ -10,14 +10,15 @@
 
 #include "gameresult.h"
 #include "global.h"
-#include "movableobject.h"
+#include "iworlditem.h"
+#include "Extensions/movableobject.h"
 
 class IControl;
 
 /**
  * @brief The IPlayer class This is base class of the player functions.
  */
-class CRAWL_EXPORT IPlayer: public MovableObject {
+class CRAWL_EXPORT IPlayer: public IWorldItem, protected MovableObject {
     Q_OBJECT
 public:
     IPlayer(const QString& name,
@@ -92,6 +93,8 @@ protected:
      */
     void fine(int value);
 
+    void render(unsigned int tbfMsec) override;
+
 protected slots:
     /**
      * @brief onTap This method invoked when user tap on screen.
@@ -99,11 +102,13 @@ protected slots:
      */
     virtual void onTap() = 0;
 
+
 private:
     bool _fDead = false;
     int _currentPoints = 0;
     float _speed = 0;
     const IControl * _currentControl = nullptr;
+
 };
 
 #endif // IPLAYER_H

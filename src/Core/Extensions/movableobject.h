@@ -1,7 +1,17 @@
+//#
+//# Copyright (C) 2021-2021 QuasarApp.
+//# Distributed under the GPLv3 software license, see the accompanying
+//# Everyone is permitted to copy and distribute verbatim copies
+//# of this license document, but changing it is not allowed.
+//#
+
+
 #ifndef MOVABLEOBJECT_H
 #define MOVABLEOBJECT_H
 
-#include "iworlditem.h"
+#include "Crawl/irender.h"
+
+#include <QVector3D>
 
 /**
  * @brief The MovableObject class contains functions for moving object on the world.
@@ -12,13 +22,11 @@
  * * **Angular velocity** This property sets spead of the angle moving.
  * * **Braking force** This property are delta decriment the Power of the movable vector on time.
  */
-class CRAWL_EXPORT MovableObject: public IWorldItem
+class CRAWL_EXPORT MovableObject: public virtual IRender
 {
-    Q_OBJECT
+
 public:
-    MovableObject(const QString& name,
-                  const QString& viewTempalte = DEFAULT_VIEW_TEMPLATE,
-                  QObject *ptr = nullptr);
+    MovableObject();
 
     /**
      * @brief render This impplementation of the render method add simulation of the physics in the vacuum space.
@@ -72,7 +80,6 @@ private:
 
     float _angularVelocity = 0;
     float _breakingForce = 0;
-
 };
 
 #endif // MOVABLEOBJECT_H

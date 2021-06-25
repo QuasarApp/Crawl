@@ -5,7 +5,7 @@
 //# of this license document, but changing it is not allowed.
 //#
 
-#include "claster.h"
+#include "Extensions/claster.h"
 #include "clasteritem.h"
 
 ClasterItem::ClasterItem(const QString &name,

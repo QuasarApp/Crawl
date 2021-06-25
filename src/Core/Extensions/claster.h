@@ -15,34 +15,33 @@ class ClasterItem;
 /**
  * @brief The Claster class are object with support multiple objects render.
  * For example snake with 20 points of the snake blocks.
+ * @note The claster object is extansion for the IWorldItems objects.
  */
-class CRAWL_EXPORT Claster: public IWorldItem
+class CRAWL_EXPORT Claster
 {
-    Q_OBJECT
 public:
-    Claster(const QString& name,
-            const QString& viewTempalte = DEFAULT_VIEW_TEMPLATE,
-            QObject *ptr = nullptr);
+    Claster();
 
-    ~Claster();
+    virtual ~Claster();
 
     /**
      * @brief add This method added new object to claster.
      * @param object This is model of added object
+     * @note if you want you can override this methods for extend functionality of this class.
      */
-    void add(ClasterItem* object);
+    virtual void add(ClasterItem* object);
 
     /**
      * @brief remove This method remove object from claster
      * @param object poiter of removed object
      */
-    void remove(ClasterItem* object);
+    virtual void remove(ClasterItem* object);
 
     /**
      * @brief remove some as a Claster::remove(IWorldItem* object) but by id.
      * @param id of the remved object.
      */
-    void remove(int id);
+     virtual void remove(int id);
 
     /**
      * @brief objects This method return list of collected objects.
@@ -52,6 +51,7 @@ public:
 
 private:
     QHash<int, ClasterItem*> _objects;
+
 };
 
 #endif // CLASTER_H
