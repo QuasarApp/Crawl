@@ -48,7 +48,6 @@
  * ```cpp
  * class MyObject: public IWorldItem {
  *     MyObject(): IWorldItem("name", "qrc:/path/to/OwnView.qml") {
- *         set
  *     }
  * }
  * ```
