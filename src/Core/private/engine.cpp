@@ -40,12 +40,12 @@ void Engine::setWorld(IWorld *world) {
         return ;
 
     if (_currentWorld) {
-        _currentWorld->deinit();
+        _currentWorld->reset();
     }
 
     _currentWorld = world;
 
-    if (!_currentWorld->init()) {
+    if (!_currentWorld->prepare()) {
         QuasarAppUtils::Params::log("Failed to init world. World name: " + _currentWorld->name(),
                                     QuasarAppUtils::Error);
 

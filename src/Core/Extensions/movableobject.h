@@ -10,8 +10,9 @@
 #define MOVABLEOBJECT_H
 
 #include "Crawl/irender.h"
-
 #include <QVector3D>
+
+class GuiObject;
 
 /**
  * @brief The MovableObject class contains functions for moving object on the world.
@@ -45,7 +46,8 @@ public:
 
     /**
      * @brief setMovableVector This method sets new value of the mvable vector.
-     * @param newMovableVector - this is a new value ofthe movable vector
+     * @param newMovableVector this is a new value ofthe movable vector
+     * @note The movable vector will be changed in time if you set the MovableObject::breakingForce propertye to non 0 value.
      */
     void setMovableVector(const QVector3D &newMovableVector);
 
@@ -73,6 +75,22 @@ public:
      * @param newBreakingForce This is new value of the breaking force
      */
     void setBreakingForce(float newBreakingForce);
+
+protected:
+
+    /**
+     * @brief renderRatation This method recalc raration for an @a object. The Default implementation converts movableVector to ratation of an @a object.
+     * @param object This is provessing object. Usually @a an object is casted pointer of this to GuiObject type.
+     * @param tbfMsec This is time betwin frames argument. soame as in the IRender::render function.
+     */
+    virtual void renderRatation(GuiObject* object, unsigned int tbfMsec);
+
+    /**
+     * @brief renderRatation This method recalc position for an @a object. The Default implementation move the current movable vector to setts movable vector. For example if you invoke the MovableObject::setMovableVector method then object change current movable vector with spead MovableObject::angularVelocity. If you sets
+     * @param object This is provessing object. Usually @a an object is casted pointer of this to GuiObject type.
+     * @param tbfMsec This is time betwin frames argument. soame as in the IRender::render function.
+     */
+    virtual void renderPosition(GuiObject* object, unsigned int tbfMsec);
 
 private:
     QVector3D _movableVector;

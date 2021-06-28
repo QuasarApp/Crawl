@@ -21,12 +21,15 @@ public:
     Snake(const QString& name,
           const QString& viewTempalte = DEFAULT_VIEW_TEMPLATE,
           QObject *ptr = nullptr);
+    ~Snake() override;
 
     void render(unsigned int tbfMsec) override;
 
     void add(ClasterItem *object) override;
     void remove(ClasterItem *object) override;
     void remove(int id) override;
+    void init() override;
+
 
     // IPlayer interface
     /**
@@ -41,12 +44,62 @@ public:
      */
     void setLengthBetwinItems(float newLengthBetwinItems);
 
+    template<class Type>
+    /**
+     * @brief registerBodyitem This method register snake body item type. The body items will be generated in the generateBody method. The size of body companents calc from the Snake::scales property.
+     */
+    void registerBodyitem() {
+        _factory = [](){
+            return new Type;
+        };
+    }
+
+    /**
+     * @brief scales This method return the map of the snake body scales.
+     *  The key of map are position of snake Body and the value are scale factor of current body item.
+     *  The default scales map of snake are:
+     *  ```
+     *  0.1 - 0.7
+     *  0.6 - 1
+     *  1   - 0.1
+     *  ```
+     * @return scales map of snake body.
+     */
+    const QMap<float, float> &scales() const;
+
+    /**
+     * @brief setScales This method sets new scales map for snake body.
+     * @param newScales This is new value of the scales map.
+     */
+    void setScales(const QMap<float, float> &newScales);
+
+    /**
+     * @brief bodyCount This method return count of the body items of this snake.
+     * @return count of body items of the snake.
+     */
+    int bodyCount() const;
+
+    /**
+     * @brief setBodyCount This method sets new size of snake.
+     * @param newBodyCount this is new value of the body count.
+     * @note Use This method in the constructor of your child snake class.
+     */
+    void setBodyCount(int newBodyCount);
+
 protected slots:
     void onTap() override;
 
 private:
-    float _lengthBetwinItems = 0;
+    void generateBody();
+
+    QMap<float, float> _scales;
+    std::function<ClasterItem*()> _factory = nullptr;
+
+    float _lengthBetwinItems = 10;
+    int _bodyCount = 10;
     const IWorldItem* _lastSnakeItem = nullptr;
+    unsigned int _clickIndex = 0;
+    QVector3D* _vectors;
 
 };
 

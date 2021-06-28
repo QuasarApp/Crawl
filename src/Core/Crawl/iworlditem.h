@@ -31,6 +31,7 @@ public:
      * @note new position = playerPosition + scaneSize;
      */
     void render(unsigned int tbfMsec) override;
+    void init() override;
 
 protected:
 
@@ -60,7 +61,6 @@ private:
     const IWorld* _world = nullptr;
     const IWorldItem *_playerObject = nullptr;
     friend class IWorld;
-
 };
 
 #endif // IWORLDITEM_H

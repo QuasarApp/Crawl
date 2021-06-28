@@ -7,7 +7,7 @@
 
 
 #include "movableobject.h"
-
+#include <math.h>
 #include <Crawl/guiobject.h>
 
 MovableObject::MovableObject() {
@@ -16,31 +16,9 @@ MovableObject::MovableObject() {
 
 void MovableObject::render(unsigned int tbfMsec) {
 
-
     if (auto _this = checkminimumRequariedType<GuiObject>()) {
-        // get object center position
-        QVector3D currentPosition = _this->position();
-
-        // move object to vector
-        currentPosition += (_currentMovableVector * (tbfMsec / 1000.0));
-        _this->setposition(currentPosition);
-
-        // calc temp vector betvin user moveble vector and real moveble vector
-        QVector3D tempVector = _movableVector - _currentMovableVector ;
-
-        // calc change on this iteration for new moveble vector
-        float delta = std::min(_angularVelocity * (tbfMsec / 1000.0), static_cast<double>(tempVector.length()));
-
-        // resize temp vector for calc changes of the movableVector
-        tempVector = tempVector.normalized() * delta;
-
-        // recalc new currentMovable vector (applay changes)
-        _currentMovableVector += tempVector;
-
-        float newMovableVectorLength = std::max(_movableVector.length() - (_breakingForce * (tbfMsec / 1000.0)), 0.0);
-
-        // update movable vector
-        _movableVector = _movableVector.normalized() * newMovableVectorLength;
+        renderPosition(_this, tbfMsec);
+        renderRatation(_this, tbfMsec);
     }
 }
 
@@ -66,4 +44,37 @@ float MovableObject::breakingForce() const {
 
 void MovableObject::setBreakingForce(float newBreakingForce) {
     _breakingForce = newBreakingForce;
+}
+
+void MovableObject::renderRatation(GuiObject *object, unsigned int) {
+    if (_currentMovableVector.length() > 0) {
+        object->setRatation(QQuaternion::rotationTo({1.0f, 0.0, 0.0}, _currentMovableVector));
+    }
+}
+
+void MovableObject::renderPosition(GuiObject *object, unsigned int tbfMsec) {
+    // get object center position
+    QVector3D currentPosition = object->position();
+
+    // move object to vector
+    currentPosition += (_currentMovableVector * (tbfMsec / 1000.0));
+    object->setposition(currentPosition);
+
+    // calc temp vector betvin user moveble vector and real moveble vector
+    QVector3D tempVector = _movableVector - _currentMovableVector ;
+
+    // calc change on this iteration for new moveble vector
+    float delta = std::min(_angularVelocity * (tbfMsec / 1000.0), static_cast<double>(tempVector.length()));
+
+    // resize temp vector for calc changes of the movableVector
+    tempVector = tempVector.normalized() * delta;
+
+    // recalc new currentMovable vector (applay changes)
+    _currentMovableVector += tempVector;
+
+    float newMovableVectorLength = std::max(_movableVector.length() - (_breakingForce * (tbfMsec / 1000.0)), 0.0);
+
+    // update movable vector
+    _movableVector = _movableVector.normalized() * newMovableVectorLength;
+
 }

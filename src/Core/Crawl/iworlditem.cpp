@@ -42,6 +42,8 @@ void IWorldItem::render(unsigned int) {
     }
 }
 
+void IWorldItem::init() {}
+
 void IWorldItem::initOnWorld(const IWorld *world, const IWorldItem * player) {
     _world = world;
     _playerObject = player;

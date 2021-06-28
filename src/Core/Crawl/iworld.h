@@ -51,7 +51,9 @@ class CRAWL_EXPORT IWorld : public QObject, public IRender
 
 public:
     IWorld();
-    virtual ~IWorld();
+    ~IWorld() override;
+
+    void init() override;
 
     /**
      * @brief initPlayer The implementation of This interface must be return playerObject.
@@ -354,12 +356,12 @@ private slots:
 
 private:
     /**
-     * @brief init This method initialize world object.
+     * @brief prepare This method initialize world object.
      * @note If object alredy initalize then this method do nothing.
-     * @return
+     * @return true if world initialized successful
      */
-    bool init();
-    void deinit();
+    bool prepare();
+    void reset();
 
     void worldChanged(const WorldObjects& objects);
     void clearItems();

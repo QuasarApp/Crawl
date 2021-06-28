@@ -23,10 +23,6 @@ View3D {
                           :
                       Qt.vector3d(0,0,100)
 
-        onPositionChanged: {
-            console.log(position)
-        }
-
         rotation: (privateRoot.world)? privateRoot.world.cameraRatation: Qt.quaternion(0,0,0,0)
 
     }
@@ -82,7 +78,7 @@ View3D {
                 obj.model = model.getGameObject(cppObjId);
                 arrayObjects.push(obj)
             } else {
-                console.log("wrong viewTemplate in model");
+                console.log("wrong viewTemplate in model " + temp.errorString());
             }
         }
 

@@ -14,6 +14,7 @@ GuiObject::GuiObject(const QString &name, const QString &viewTempalte, QObject *
     _viewTemplate = viewTempalte;
     _className = name;
     generateId();
+    setRatation({1,1,0,0});
 }
 
 QString GuiObject::color() const {

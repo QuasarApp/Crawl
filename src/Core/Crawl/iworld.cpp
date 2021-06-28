@@ -24,8 +24,10 @@ IWorld::IWorld() {
 }
 
 IWorld::~IWorld() {
-    deinit();
+    reset();
 }
+
+void IWorld::init() {prepare();}
 
 IControl *IWorld::initUserInterface() const {
     return new DefaultControl;
@@ -97,7 +99,7 @@ void IWorld::setPlayer(QObject *newPlayer) {
     }
 
     _player = newPlayerObject;
-    addAtomicItem(_player);
+    addItem(_player);
 
     emit playerChanged();
 }
@@ -129,7 +131,7 @@ IWorldItem *IWorld::getItem(int id) const {
     return _items.value(id, nullptr);
 }
 
-bool IWorld::init() {
+bool IWorld::prepare() {
 
     if (isInit())
         return true;
@@ -144,12 +146,12 @@ bool IWorld::init() {
 
     if (!isInit()) {
         QuasarAppUtils::Params::log("Failed to init world implementation.");
-        deinit();
+        reset();
         return false;
     }
 
     if (!_worldRules->size()) {
-        deinit();
+        reset();
         return false;
     }
 
@@ -172,6 +174,8 @@ void IWorld::clearItems() {
 void IWorld::addItem(IWorldItem *obj, QList<int> *addedObjectsList) {
     if (!obj)
         return;
+
+    obj->init();
 
     // Work wih claster
     if (auto claster = dynamic_cast<Claster*>(obj)) {
@@ -218,7 +222,7 @@ void IWorld::removeItem(int id, QList<int> *removedObjectsList) {
 
 }
 
-void IWorld::deinit() {
+void IWorld::reset() {
     if (_player) {
         delete _player;
         _player = nullptr;

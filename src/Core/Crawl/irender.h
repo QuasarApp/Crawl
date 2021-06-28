@@ -32,6 +32,11 @@ public:
     virtual void render(unsigned int tbfMsec) = 0;
 
     /**
+     * @brief init This method should be invoked after create object.
+     */
+    virtual void init() = 0;
+
+    /**
      * @brief checkminimumRequariedType This method check
      * @return This object casted to Requared type this objct.
      *
