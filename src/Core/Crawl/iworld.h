@@ -46,6 +46,7 @@ class CRAWL_EXPORT IWorld : public QObject, public IRender
     Q_PROPERTY(QVector3D cameraReleativePosition READ cameraReleativePosition NOTIFY cameraReleativePositionChanged)
     Q_PROPERTY(QQuaternion cameraRatation READ cameraRatation NOTIFY cameraRatationChanged)
     Q_PROPERTY(QObject * player READ player WRITE setPlayer NOTIFY playerChanged)
+    Q_PROPERTY(QString hdr READ hdr NOTIFY hdrChanged)
 
     Q_PROPERTY(int worldStatus READ wordlStatus WRITE setWorldStatus NOTIFY worldStatusChanged)
 
@@ -168,12 +169,6 @@ public:
     IWorldItem *getItem(int id) const;
 
     /**
-     * @brief hdrMap This method return path to hdr map of world.
-     * @return
-     */
-    const QString &hdrMap() const;
-
-    /**
      * @brief cameraReleativePosition return  a releative of player camera position.
      * @return
      */
@@ -221,6 +216,12 @@ public:
      */
     QObject *player() const;
 
+    /**
+     * @brief hdr This method return path to hdr map of the lvl.
+     * @return path to hdr map of this lvl.
+     */
+    const QString &hdr() const;
+
 signals:
     /**
      * @brief sigGameFinished This signal emit when game are finished
@@ -259,6 +260,11 @@ signals:
      * @brief playerChanged This signal eited when player are changed.
      */
     void playerChanged();
+
+    /**
+     * @brief hdrChanged This signal emited when the hdr map are changed.
+     */
+    void hdrChanged();
 
 protected:
 
@@ -313,6 +319,12 @@ protected:
      */
     void setTargetFps(int newTargetFps);
 
+    /**
+     * @brief setHdr This method sets new path to hdr map of this lvl.
+     * @param hdr path to hdr map.
+     */
+    void setHdr(const QString& hdr);
+
     template<class Type>
 
     /**
@@ -363,7 +375,13 @@ private:
     bool prepare();
     void reset();
 
-    void worldChanged(const WorldObjects& objects);
+    /**
+     * @brief worldChanged This method generate diff for the qml
+     * @param objects This is list of object on lvl
+     * @note This method addd player object to this list.
+     */
+    void worldChanged(WorldObjects objects);
+
     void clearItems();
 
     /**
@@ -389,18 +407,18 @@ private:
     void addAtomicItem(IWorldItem *obj);
 
     /**
-     * @brief removeIAtomictem This method remove object with @a id. This method work with atomic objects only. If you rty remove claster objects then it will be ramoved witohout child objects.
+     * @brief removeAtomicItem This method remove object with @a id. This method work with atomic objects only. If you rty remove claster objects then it will be ramoved witohout child objects.
      * @param id This is id of removed objects.
      * @return return true if object remove successul
      */
-    bool removeIAtomicItem(int id);
+    bool removeAtomicItem(int id);
 
     /**
-     * @brief removeIAtomicItem This method remove object @a obj. This method work with atomic objects only. If you rty remove claster objects then it will be ramoved witohout child objects.
+     * @brief removeAtomicItem This method remove object @a obj. This method work with atomic objects only. If you rty remove claster objects then it will be ramoved witohout child objects.
      * @param obj This is id of removed objects.
      * @return return true if object remove successul
      */
-    bool removeIAtomicItem(IWorldItem *obj);
+    bool removeAtomicItem(IWorldItem *obj);
 
     /**
      * @brief removeAnyItemFromGroup This method remove any object from group and return id of removed object. If The objec are claster then this method remove all child objects.
@@ -413,6 +431,7 @@ private:
 
     QHash<int, IWorldItem*> _items;
     QMultiHash<QString, int> _itemsGroup;
+    QMultiHash<QString, int> _lastItemsGroup;
 
     mutable QMutex _ItemsMutex;
 
@@ -434,7 +453,6 @@ private:
 
     // testing
     friend class ClastersTest;
-
 };
 
 #endif // IWORLD_H

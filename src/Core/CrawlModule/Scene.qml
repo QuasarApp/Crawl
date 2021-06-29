@@ -38,7 +38,7 @@ View3D {
         id: background
         backgroundMode: SceneEnvironment.SkyBox
         lightProbe: Texture {
-            source: (model)? model.hdr: ""
+            source: (privateRoot.world)? privateRoot.world.hdr: ""
         }
     }
 
@@ -47,7 +47,6 @@ View3D {
 
         property var arrayObjects: []
         property var world: (model)? model.world: null
-        property int oldPlayerId: -1
 
         property var gameMenuModel: (model)? model.menu: null
         property var player: (world)? world.player: null
@@ -120,19 +119,6 @@ View3D {
 
         Connections {
             target: privateRoot;
-
-            function onPlayerChanged() {
-
-                if (!privateRoot.player)
-                    return
-
-                if (privateRoot.oldPlayerId >= 0) {
-                    privateRoot.remove(privateRoot.oldPlayerId);
-                }
-
-                privateRoot.add(privateRoot.player.guiId);
-                privateRoot.oldPlayerId = privateRoot.player.guiId
-            }
 
             function onGameMenuModelChanged() {
                 if (!privateRoot.gameMenuModel) {

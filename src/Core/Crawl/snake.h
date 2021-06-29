@@ -11,6 +11,8 @@
 #include "iplayer.h"
 #include "Extensions/claster.h"
 
+class SnakeItem;
+
 /**
  * @brief The Snake class This class implement render mehod for snake object.
  */
@@ -59,9 +61,9 @@ public:
      *  The key of map are position of snake Body and the value are scale factor of current body item.
      *  The default scales map of snake are:
      *  ```
-     *  0.1 - 0.7
-     *  0.6 - 1
-     *  1   - 0.1
+     *  0.0 - 0.8
+     *  0.6 - 1.2
+     *  1   - 0.5
      *  ```
      * @return scales map of snake body.
      */
@@ -86,6 +88,18 @@ public:
      */
     void setBodyCount(int newBodyCount);
 
+    /**
+     * @brief speed This method return current speed snake speed.
+     * @return snake speed
+     */
+    float speed() const;
+
+    /**
+     * @brief setSpeed This method sets new current speed of the snake.
+     * @param newSpeed new value of the snake speed.
+     */
+    void setSpeed(float newSpeed);
+
 protected slots:
     void onTap() override;
 
@@ -95,11 +109,12 @@ private:
     QMap<float, float> _scales;
     std::function<ClasterItem*()> _factory = nullptr;
 
-    float _lengthBetwinItems = 10;
-    int _bodyCount = 10;
+    float _lengthBetwinItems;
+    int _bodyCount;
     const IWorldItem* _lastSnakeItem = nullptr;
-    unsigned int _clickIndex = 0;
+    unsigned int _clickIndex;
     QVector3D* _vectors;
+    float _speed;
 
 };
 

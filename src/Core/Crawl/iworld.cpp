@@ -46,11 +46,13 @@ void IWorld::render(unsigned int tbfMsec) {
         }
     }
 
+    _ItemsMutex.unlock();
+
+
     if (_player->isDead()) {
         emit sigGameFinished(_player->getCurrentStatus());
     }
 
-    _ItemsMutex.unlock();
 
     int waitTime = 1000 / _targetFps - tbfMsec;
     if (waitTime > 0)
@@ -67,7 +69,6 @@ void IWorld::initPlayerControl(IControl *control) {
 
 bool IWorld::start() {
     _player->setposition({0,0,0});
-    _player->setSpeed(0);
 
     setWorldStatus(WorldStatus::Game);
     _backgroundAI->stopAI();
@@ -94,9 +95,8 @@ void IWorld::setPlayer(QObject *newPlayer) {
         return;
     }
 
-    if (_player) {
-        removeIAtomicItem(_player->guiId());
-    }
+    if (_player)
+        removeItem(_player->guiId());
 
     _player = newPlayerObject;
     addItem(_player);
@@ -138,7 +138,7 @@ bool IWorld::prepare() {
 
     _worldRules = initWorldRules();
 
-    _hdrMap = initHdrBackGround();
+    setHdr(initHdrBackGround());
     setPlayer(initPlayer());
     _player->initOnWorld(this, _player);
     _userInterface = initUserInterface();
@@ -176,20 +176,25 @@ void IWorld::addItem(IWorldItem *obj, QList<int> *addedObjectsList) {
         return;
 
     obj->init();
+    Diff diff;
 
     // Work wih claster
     if (auto claster = dynamic_cast<Claster*>(obj)) {
         for (auto item : claster->objects()) {
             addAtomicItem(item);
-            if (item && addedObjectsList) {
-                addedObjectsList->push_back(item->guiId());
+            if (item) {
+                diff.addedIds.push_back(item->guiId());
             }
         }
     }
 
     addAtomicItem(obj);
+    diff.addedIds.push_back(obj->guiId());
+
     if (addedObjectsList)
-        addedObjectsList->push_back(obj->guiId());
+        *addedObjectsList = diff.addedIds;
+
+    emit sigOBjctsListChanged(diff);
 
 }
 
@@ -200,26 +205,31 @@ void IWorld::removeItem(int id, QList<int> *removedObjectsList) {
     if (!obj)
         return;
 
+    Diff diff;
+
     // Work wih claster
     if (auto claster = dynamic_cast<Claster*>(obj)) {
-        auto copyOfObjectsList = claster->objects();
+        const auto copyOfObjectsList = claster->objects();
         for (auto item : copyOfObjectsList) {
             if (!item || !item->parentClastersCount())
                 continue;
 
             int id = item->guiId();
 
-            removeIAtomicItem(item);
+            removeAtomicItem(item);
             if (removedObjectsList)
-                removedObjectsList->push_back(id);
+                diff.removeIds.push_back(id);
 
         }
     }
 
-    addAtomicItem(obj);
-    if (removedObjectsList)
-        removedObjectsList->push_back(obj->guiId());
+    removeAtomicItem(obj);
+    diff.removeIds.push_back(id);
 
+    if (removedObjectsList)
+        *removedObjectsList = diff.removeIds;
+
+    emit sigOBjctsListChanged(diff);
 }
 
 void IWorld::reset() {
@@ -244,7 +254,7 @@ void IWorld::reset() {
     }
 
     clearItems();
-    _hdrMap = "";
+    setHdr("");
 
 }
 
@@ -261,7 +271,7 @@ void IWorld::addAtomicItem(IWorldItem* obj) {
     obj->initOnWorld(this, _player);
 }
 
-bool IWorld::removeIAtomicItem(int id) {
+bool IWorld::removeAtomicItem(int id) {
     QMutexLocker lock(&_ItemsMutex);
 
     auto obj = _items.value(id);
@@ -278,7 +288,7 @@ bool IWorld::removeIAtomicItem(int id) {
     return true;
 }
 
-bool IWorld::removeIAtomicItem(IWorldItem *obj) {
+bool IWorld::removeAtomicItem(IWorldItem *obj) {
     if (!obj) {
         return false;
     }
@@ -305,6 +315,14 @@ int IWorld::targetFps() const {
 
 void IWorld::setTargetFps(int newTargetFps) {
     _targetFps = newTargetFps;
+}
+
+void IWorld::setHdr(const QString &hdr) {
+    if (hdr == _hdrMap)
+        return;
+
+    _hdrMap = hdr;
+    emit hdrChanged();
 }
 
 const QQuaternion &IWorld::cameraRatation() const {
@@ -346,32 +364,25 @@ const QVector3D &IWorld::cameraReleativePosition() const {
     return _cameraReleativePosition;
 }
 
-const QString &IWorld::hdrMap() const {
-    return _hdrMap;
-}
+void IWorld::worldChanged(WorldObjects objects) {
 
-void IWorld::worldChanged(const WorldObjects &objects) {
+    objects[_player->className()] = 1;
 
-    Diff diff;
     for (auto it = objects.begin(); it != objects.end(); ++it) {
 
         int count = it.value() - _itemsGroup.count(it.key());
 
         if (count > 0) {
             for ( int i = 0; i < count; ++i ) {
-                addItem(generate(it.key()), &diff.addedIds);
+                addItem(generate(it.key()));
             }
         } else {
             for (; count < 0; ++count ) {
-                removeAnyItemFromGroup(it.key(), &diff.removeIds);
+                removeAnyItemFromGroup(it.key());
             }
         }
     }
-
-    if (diff.addedIds.size() || diff.removeIds.size())
-        emit sigOBjctsListChanged(diff);
 }
-
 
 int IWorld::wordlStatus() const {
     return _worldStatus;
@@ -385,3 +396,7 @@ void IWorld::setWorldStatus(int newWorldStatus) {
     emit worldStatusChanged();
 }
 
+
+const QString &IWorld::hdr() const {
+    return _hdrMap;
+}

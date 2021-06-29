@@ -12,7 +12,7 @@
 #include "singleclasterworlditem.h"
 #include "Extensions/movableobject.h"
 
-class CRAWL_EXPORT SnakeItem: public SingleClasterWorldItem, protected MovableObject
+class CRAWL_EXPORT SnakeItem: public SingleClasterWorldItem, public MovableObject
 {
     Q_OBJECT
 public:
@@ -20,19 +20,19 @@ public:
 
     /**
      * @brief setPrev This method sets id of the previous snake item.
-     * @param newPrev this is new value of the id of previous snake item.
+     * @param newPrev this is new value of the previous snake item.
      */
-    void setPrev(int newPrev);
+    void setPrev(const IWorldItem * newPrev);
     void render(unsigned int tbfMsec) override;
 
     /**
      * @brief prev This method return prev object of snake
-     * @return id of the prev objects of the snake
+     * @return the prev objects of the snake
      */
-    int prev() const;
+    const IWorldItem * prev() const;
 
 private:
-    int _prev = -1;
+    const IWorldItem *_prevObject = nullptr;
 };
 
 #endif // SNAKEITEM_H

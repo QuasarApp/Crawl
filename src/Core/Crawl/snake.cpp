@@ -10,14 +10,24 @@
 #include "snakeitem.h"
 #include <QQuaternion>
 #include <quasarapp.h>
+#include <cmath>
 
 Snake::Snake(const QString &name, const QString &viewTempalte, QObject *ptr):
     IPlayer (name, viewTempalte, ptr) {
 
     _vectors = new QVector3D[2];
-    _vectors[0] = QVector3D(50,50,0); // left tap
-    _vectors[1] = QVector3D(50,-50,0); // right tap
+    setAngularVelocity(100);
+    setSpeed(100);
 
+    setLengthBetwinItems(1);
+    setBodyCount(50);
+    setSpeed(100);
+
+    _clickIndex = 0;
+
+    setScales({{0, 0.8},
+              {0.4, 1.2},
+              {1, 0.5}});
 }
 
 Snake::~Snake( ){
@@ -32,10 +42,12 @@ void Snake::add(ClasterItem *object) {
     if (auto snakeItem = dynamic_cast<SnakeItem*>(object)) {
 
         if (_lastSnakeItem) {
-            snakeItem->setPrev(_lastSnakeItem->guiId());
+            snakeItem->setPrev(_lastSnakeItem);
         } else {
-            snakeItem->setPrev(guiId());
+            snakeItem->setPrev(this);
         }
+
+        snakeItem->setBreakingForce(breakingForce());
 
         _lastSnakeItem = static_cast<IWorldItem*>(snakeItem);
 
@@ -51,7 +63,7 @@ void Snake::add(ClasterItem *object) {
 void Snake::remove(ClasterItem *object) {
 
     if (_lastSnakeItem == object) {
-        _lastSnakeItem = getItem(static_cast<const SnakeItem*>(_lastSnakeItem)->prev());
+        _lastSnakeItem = static_cast<const SnakeItem*>(_lastSnakeItem)->prev();
     }
 
     return Claster::remove(object);
@@ -59,7 +71,7 @@ void Snake::remove(ClasterItem *object) {
 
 void Snake::remove(int id) {
     if (_lastSnakeItem->guiId() == id) {
-        _lastSnakeItem = getItem(static_cast<const SnakeItem*>(_lastSnakeItem)->prev());
+        _lastSnakeItem = static_cast<const SnakeItem*>(_lastSnakeItem)->prev();
     }
 
     return Claster::remove(id);
@@ -77,6 +89,9 @@ void Snake::generateBody() {
 
     auto scaleIt = _scales.begin();
 
+    float from = 0, fromKey = 0;
+    float to = scaleIt.value(), toKey = scaleIt.key();
+
     for(int i = 0; i < _bodyCount; ++i) {
         if (!_factory) {
             QuasarAppUtils::Params::log("Please use the registerBodyitem method"
@@ -90,29 +105,35 @@ void Snake::generateBody() {
         float scale = 1;
         if (scaleIt != _scales.end()) {
             float position = static_cast<float>(i) / _bodyCount;
-            float from = 0, fromKey = 0;
-            float to = 0, toKey = 0;
-            while (position > scaleIt.value() && scaleIt != _scales.end()) {
+            while (position >= scaleIt.key() && scaleIt != _scales.end()) {
                 scaleIt++;
 
                 if (scaleIt != _scales.end()) {
-                    from = (scaleIt - 1).value();
+                    from = to;
                     to = scaleIt.value();
-                    fromKey = (scaleIt - 1).key();
+                    fromKey = toKey;
                     toKey = scaleIt.key();
                 }
             }
 
             scale = ((position - fromKey) * toKey / (to - from)) + from;
-
-            scaleIt.value();
-
         }
 
         item->setSize(item->size() * scale);
 
         add(item);
     }
+}
+
+float Snake::speed() const {
+    return _speed;
+}
+
+void Snake::setSpeed(float newSpeed) {
+    _speed = newSpeed;
+    float asixPos = std::sqrt(std::pow(_speed, 2.0) / 2);
+    _vectors[0] = QVector3D(asixPos, asixPos,0); // left tap
+    _vectors[1] = QVector3D(asixPos,-asixPos,0); // right tap
 }
 
 int Snake::bodyCount() const {

@@ -9,28 +9,31 @@
 #include "snakeitem.h"
 
 SnakeItem::SnakeItem(const QString itemName): SingleClasterWorldItem(itemName) {
+    setAngularVelocity(-1);
 
 }
 
-void SnakeItem::setPrev(int newPrev) {
-    _prev = newPrev;
+void SnakeItem::setPrev(const IWorldItem * newPrev) {
+    _prevObject = newPrev;
 }
 
 void SnakeItem::render(unsigned int tbfMsec) {
-    auto prev = getItem(_prev);
-    auto ratationVector = (prev->position() - position());
+
+    if (!_prevObject) {
+        return;
+    }
+
+    auto ratationVector = (_prevObject->position() - position());
 
     if (auto claster = static_cast<Snake*>(parentClaster())) {
-        if (ratationVector.length() < claster->lengthBetwinItems()) {
-            setMovableVector({0,0,0});
-        } else {
-            setMovableVector(ratationVector *= claster->speed());
+        if (ratationVector.length() > claster->lengthBetwinItems()) {
+            setMovableVector(ratationVector.normalized() * claster->currentMovableVector().length());
         }
     }
 
     MovableObject::render(tbfMsec);
 }
 
-int SnakeItem::prev() const {
-    return _prev;
+const IWorldItem * SnakeItem::prev() const {
+    return _prevObject;
 }

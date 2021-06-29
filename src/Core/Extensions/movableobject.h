@@ -76,6 +76,12 @@ public:
      */
     void setBreakingForce(float newBreakingForce);
 
+    /**
+     * @brief currentMovableVector This method return current movable vector.
+     * @return current movable vector.
+     */
+    const QVector3D &currentMovableVector() const;
+
 protected:
 
     /**

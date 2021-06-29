@@ -21,7 +21,6 @@ class IWorld;
 class Engine : public QObject {
 
     Q_OBJECT
-    Q_PROPERTY(QString hdr READ hdr NOTIFY worldChanged)
     Q_PROPERTY(QObject* player READ player NOTIFY playerChanged)
     Q_PROPERTY(QObject* world READ world NOTIFY worldChanged)
 
@@ -50,12 +49,6 @@ public:
      * @param world This is pointer to new world.
      */
     void setWorld(IWorld *world);
-
-    /**
-     * @brief hdr This method should return hdr map of the lvl
-     * @return path to hdr map.
-     */
-    QString hdr() const;
 
     /**
      * @brief setScane This method sets new scane object. The scane object are
@@ -139,7 +132,7 @@ signals:
 
 private:
     void setPrepareLvlProgress(int newPrepareLvlProgress);
-
+    void prepareNewWorld();
     void renderLoop();
 
 

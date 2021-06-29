@@ -64,7 +64,12 @@ void MovableObject::renderPosition(GuiObject *object, unsigned int tbfMsec) {
     QVector3D tempVector = _movableVector - _currentMovableVector ;
 
     // calc change on this iteration for new moveble vector
-    float delta = std::min(_angularVelocity * (tbfMsec / 1000.0), static_cast<double>(tempVector.length()));
+    float delta = 0.0;
+    if (_angularVelocity <= 0) {
+        delta = tempVector.length();
+    } else {
+        delta = std::min(_angularVelocity * (tbfMsec / 1000.0), static_cast<double>(tempVector.length()));
+    }
 
     // resize temp vector for calc changes of the movableVector
     tempVector = tempVector.normalized() * delta;
@@ -77,4 +82,8 @@ void MovableObject::renderPosition(GuiObject *object, unsigned int tbfMsec) {
     // update movable vector
     _movableVector = _movableVector.normalized() * newMovableVectorLength;
 
+}
+
+const QVector3D &MovableObject::currentMovableVector() const {
+    return _currentMovableVector;
 }
