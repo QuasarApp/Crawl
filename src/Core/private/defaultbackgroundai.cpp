@@ -11,6 +11,8 @@
 DefaultBackgroundAI::DefaultBackgroundAI() {
     _timer = new QTimer();
     _timer->setInterval(1000);
+
+    connect(_timer, &QTimer::timeout, this, &DefaultBackgroundAI::handleTimerTriger);
 }
 
 DefaultBackgroundAI::~DefaultBackgroundAI() {
@@ -27,7 +29,7 @@ void DefaultBackgroundAI::stopAI() {
 }
 
 void DefaultBackgroundAI::handleTimerTriger() {
-    _timer->setInterval(rand() % 1000  + 10);
+    _timer->setInterval(rand() % 2000  + 200);
 
     emit userTap();
 }

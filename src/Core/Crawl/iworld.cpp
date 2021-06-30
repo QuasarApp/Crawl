@@ -35,6 +35,11 @@ IControl *IWorld::initUserInterface() const {
 
 void IWorld::render(unsigned int tbfMsec) {
 
+    if (!_running) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        return;
+    }
+
     _ItemsMutex.lock();
 
     for (auto i = _items.begin(); i != _items.end(); ++i) {
@@ -77,6 +82,8 @@ bool IWorld::start() {
 
     worldChanged(*_worldRules->begin());
     setTargetFps(60);
+    setRunning(true);
+
     return true;
 }
 
@@ -109,15 +116,7 @@ IWorldItem *IWorld::generate(const QString &objectType) const {
 }
 
 bool IWorld::stop() {
-    start();
-
-    setWorldStatus(WorldStatus::Background);
-    _player->setControl(dynamic_cast<IControl*>(_backgroundAI));
-
-    _backgroundAI->startAI();
-
-    setTargetFps(30);
-
+    setRunning(false);
     return true;
 }
 
@@ -233,6 +232,7 @@ void IWorld::removeItem(int id, QList<int> *removedObjectsList) {
 }
 
 void IWorld::reset() {
+
     if (_player) {
         delete _player;
         _player = nullptr;
@@ -309,6 +309,14 @@ void IWorld::removeAnyItemFromGroup(const QString &group,
     removeItem(anyObjectId, removedObjectsList);
 }
 
+bool IWorld::running() const {
+    return _running;
+}
+
+void IWorld::setRunning(bool newRunning) {
+    _running = newRunning;
+}
+
 int IWorld::targetFps() const {
     return _targetFps;
 }
@@ -357,7 +365,7 @@ void IWorld::setCameraReleativePosition(const QVector3D &newCameraReleativePosit
 }
 
 void IWorld::handleStop() {
-    stop();
+    runAsBackGround();
 }
 
 const QVector3D &IWorld::cameraReleativePosition() const {
@@ -399,4 +407,15 @@ void IWorld::setWorldStatus(int newWorldStatus) {
 
 const QString &IWorld::hdr() const {
     return _hdrMap;
+}
+
+void IWorld::runAsBackGround() {
+    start();
+
+    setWorldStatus(WorldStatus::Background);
+    _player->setControl(dynamic_cast<IControl*>(_backgroundAI));
+
+    _backgroundAI->startAI();
+
+    setTargetFps(30);
 }

@@ -132,7 +132,7 @@ signals:
 
 private:
     void setPrepareLvlProgress(int newPrepareLvlProgress);
-    void prepareNewWorld();
+    bool prepareNewWorld();
     void renderLoop();
 
 

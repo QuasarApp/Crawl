@@ -46,9 +46,16 @@ void Engine::setWorld(IWorld *world) {
     _currentWorld = world;
     emit worldChanged();
 
-    prepareNewWorld();
+    if (!prepareNewWorld()) {
+        QuasarAppUtils::Params::log("Failed to init world. World name: " + _currentWorld->name(),
+                                    QuasarAppUtils::Error);
+
+        _currentWorld = nullptr;
+        return;
+    }
 
     startRenderLoop();
+    _currentWorld->runAsBackGround();
 }
 
 void Engine::setScane(QObject *newScane) {
@@ -129,20 +136,18 @@ void Engine::setPrepareLvlProgress(int newPrepareLvlProgress) {
     emit prepareLvlProgressChanged();
 }
 
-void Engine::prepareNewWorld() {
+bool Engine::prepareNewWorld() {
     if (!_currentWorld->prepare()) {
-        QuasarAppUtils::Params::log("Failed to init world. World name: " + _currentWorld->name(),
-                                    QuasarAppUtils::Error);
-
-        _currentWorld = nullptr;
-        return;
+        return false;
     }
 
     if (!_currentWorld->userInterface()->init()) {
-        return;
+        return false;
     }
 
     setMenu(_currentWorld->userInterface());
+
+    return true;
 }
 
 void Engine::renderLoop() {

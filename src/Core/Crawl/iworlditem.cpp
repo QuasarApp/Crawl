@@ -31,12 +31,16 @@ const IWorldItem *IWorldItem::getPlayer() const {
 }
 
 void IWorldItem::render(unsigned int) {
-    if (_playerObject->position().x() - position().x() >
-            _world->cameraReleativePosition().z() * 2) {
-        setX(_playerObject->position().x() + _world->cameraReleativePosition().z() * 4);
+    if (_playerObject->position().x() - _world->cameraReleativePosition().z() >
+            position().x()) {
 
-        float dY = rand() % static_cast<int>(_world->cameraReleativePosition().z() * 2
-                                             - _world->cameraReleativePosition().z());
+        float dX = _world->cameraReleativePosition().z() * 2 +
+                (rand() % static_cast<int>(_world->cameraReleativePosition().z()));
+
+        setX(_playerObject->position().x() + dX);
+
+        float dY = (rand() % static_cast<int>(_world->cameraReleativePosition().z() * 4)
+                                             - _world->cameraReleativePosition().z() * 2);
 
         setY(_playerObject->position().y() + dY);
     }

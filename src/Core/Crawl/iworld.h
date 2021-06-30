@@ -222,6 +222,12 @@ public:
      */
     const QString &hdr() const;
 
+    /**
+     * @brief runAsBackGround This method run this world as a backgroud.
+     * The player start new game and sets new control from the backgroundAI method.
+     */
+    void runAsBackGround();
+
 signals:
     /**
      * @brief sigGameFinished This signal emit when game are finished
@@ -375,6 +381,19 @@ private:
     bool prepare();
     void reset();
 
+
+    /**
+     * @brief running This varibale check in render function if the running is true then render loop are working correctly
+     * @return
+     */
+    bool running() const;
+
+    /**
+     * @brief setRunning
+     * @param newRunning
+     */
+    void setRunning(bool newRunning);
+
     /**
      * @brief worldChanged This method generate diff for the qml
      * @param objects This is list of object on lvl
@@ -447,6 +466,7 @@ private:
     QHash<QString, std::function<IWorldItem*()>> _registeredTypes;
 
     int _targetFps = 60;
+    bool _running = false;
 
     // engine
     friend class Engine;
