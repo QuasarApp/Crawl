@@ -9,7 +9,7 @@
     "deploySystem": false,
     "qif": true,
     "qifStyle": "quasar",
-    "qifLogo": "./../src/ClientLib/res/logo.png",
+    "qifLogo": "./../Doc/res/logo_Installer.png",
     "deb": true,
     "qmlDir": "./../",
     "ignoreEnv": [
