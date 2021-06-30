@@ -6,14 +6,9 @@
 //#
 
 #include "claster.h"
-#include "singleclasterworlditem.h"
+#include "Crawl/singleclasterworlditem.h"
 
-Claster::Claster(const QString &name,
-                 const QString &viewTempalte,
-                 QObject *ptr):
-    IWorldItem(name, viewTempalte, ptr) {
-
-}
+Claster::Claster() {}
 
 Claster::~Claster() {
     for (auto child : qAsConst(_objects)) {

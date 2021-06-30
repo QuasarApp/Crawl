@@ -1,7 +1,18 @@
+//#
+//# Copyright (C) 2021-2021 QuasarApp.
+//# Distributed under the GPLv3 software license, see the accompanying
+//# Everyone is permitted to copy and distribute verbatim copies
+//# of this license document, but changing it is not allowed.
+//#
+
+
 #ifndef MOVABLEOBJECT_H
 #define MOVABLEOBJECT_H
 
-#include "iworlditem.h"
+#include "Crawl/irender.h"
+#include <QVector3D>
+
+class GuiObject;
 
 /**
  * @brief The MovableObject class contains functions for moving object on the world.
@@ -12,13 +23,11 @@
  * * **Angular velocity** This property sets spead of the angle moving.
  * * **Braking force** This property are delta decriment the Power of the movable vector on time.
  */
-class CRAWL_EXPORT MovableObject: public IWorldItem
+class CRAWL_EXPORT MovableObject: public virtual IRender
 {
-    Q_OBJECT
+
 public:
-    MovableObject(const QString& name,
-                  const QString& viewTempalte = DEFAULT_VIEW_TEMPLATE,
-                  QObject *ptr = nullptr);
+    MovableObject();
 
     /**
      * @brief render This impplementation of the render method add simulation of the physics in the vacuum space.
@@ -37,7 +46,8 @@ public:
 
     /**
      * @brief setMovableVector This method sets new value of the mvable vector.
-     * @param newMovableVector - this is a new value ofthe movable vector
+     * @param newMovableVector this is a new value ofthe movable vector
+     * @note The movable vector will be changed in time if you set the MovableObject::breakingForce propertye to non 0 value.
      */
     void setMovableVector(const QVector3D &newMovableVector);
 
@@ -66,13 +76,34 @@ public:
      */
     void setBreakingForce(float newBreakingForce);
 
+    /**
+     * @brief currentMovableVector This method return current movable vector.
+     * @return current movable vector.
+     */
+    const QVector3D &currentMovableVector() const;
+
+protected:
+
+    /**
+     * @brief renderRatation This method recalc raration for an @a object. The Default implementation converts movableVector to ratation of an @a object.
+     * @param object This is provessing object. Usually @a an object is casted pointer of this to GuiObject type.
+     * @param tbfMsec This is time betwin frames argument. soame as in the IRender::render function.
+     */
+    virtual void renderRatation(GuiObject* object, unsigned int tbfMsec);
+
+    /**
+     * @brief renderRatation This method recalc position for an @a object. The Default implementation move the current movable vector to setts movable vector. For example if you invoke the MovableObject::setMovableVector method then object change current movable vector with spead MovableObject::angularVelocity. If you sets
+     * @param object This is provessing object. Usually @a an object is casted pointer of this to GuiObject type.
+     * @param tbfMsec This is time betwin frames argument. soame as in the IRender::render function.
+     */
+    virtual void renderPosition(GuiObject* object, unsigned int tbfMsec);
+
 private:
     QVector3D _movableVector;
     QVector3D _currentMovableVector;
 
     float _angularVelocity = 0;
     float _breakingForce = 0;
-
 };
 
 #endif // MOVABLEOBJECT_H

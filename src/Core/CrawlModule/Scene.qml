@@ -23,10 +23,6 @@ View3D {
                           :
                       Qt.vector3d(0,0,100)
 
-        onPositionChanged: {
-            console.log(position)
-        }
-
         rotation: (privateRoot.world)? privateRoot.world.cameraRatation: Qt.quaternion(0,0,0,0)
 
     }
@@ -42,7 +38,7 @@ View3D {
         id: background
         backgroundMode: SceneEnvironment.SkyBox
         lightProbe: Texture {
-            source: (model)? model.hdr: ""
+            source: (privateRoot.world)? privateRoot.world.hdr: ""
         }
     }
 
@@ -51,7 +47,6 @@ View3D {
 
         property var arrayObjects: []
         property var world: (model)? model.world: null
-        property int oldPlayerId: -1
 
         property var gameMenuModel: (model)? model.menu: null
         property var player: (world)? world.player: null
@@ -82,7 +77,7 @@ View3D {
                 obj.model = model.getGameObject(cppObjId);
                 arrayObjects.push(obj)
             } else {
-                console.log("wrong viewTemplate in model");
+                console.log("wrong viewTemplate in model " + temp.errorString());
             }
         }
 
@@ -124,19 +119,6 @@ View3D {
 
         Connections {
             target: privateRoot;
-
-            function onPlayerChanged() {
-
-                if (!privateRoot.player)
-                    return
-
-                if (privateRoot.oldPlayerId >= 0) {
-                    privateRoot.remove(privateRoot.oldPlayerId);
-                }
-
-                privateRoot.add(privateRoot.player.guiId);
-                privateRoot.oldPlayerId = privateRoot.player.guiId
-            }
 
             function onGameMenuModelChanged() {
                 if (!privateRoot.gameMenuModel) {
