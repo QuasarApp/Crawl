@@ -1,6 +1,6 @@
 # CRAWL
 
-# ![CRAWL_BANNER](Doc/res/Snake_banner_web.jpg)
+# ![CRAWL_BANNER](Doc/res/banner.jpg)
 
 ## About this game
 
