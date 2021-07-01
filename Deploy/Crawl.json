@@ -22,7 +22,7 @@
         ],
     "extraLib": "crypto",
     "targetDir": "./../Distro",
-    "extraData": "src/Client/modules",
+    "extraData": "src/Client/modules/",
     "extraDataOut": "bin",
     "binOut": "bin",
     "libOut": "lib"
