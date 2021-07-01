@@ -21,6 +21,11 @@
         "./../stage"
         ],
     "extraLib": "crypto",
-    "targetDir": "./../Distro"
+    "targetDir": "./../Distro",
+    "extraData": "src/Client/modules",
+    "extraDataOut": "bin",
+    "binOut": "bin",
+    "libOut": "lib"
+
 }
 
