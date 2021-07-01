@@ -13,7 +13,10 @@ Model {
 
     property var model: null
     property int guiId: (model) ? model.guiId : -1;
-    property bool fMapColor: model && (model.baseColorMap.length || model.emissiveMap.length || model.roughnessMap.length || model.normalMap.length)
+    property bool fMapColor: model && (model.baseColorMap.length ||
+                                       model.emissiveMap.length ||
+                                       model.roughnessMap.length ||
+                                       model.normalMap.length)
 
     DefaultMaterial {
         id: defaultMaterial
@@ -38,15 +41,3 @@ Model {
     position: (model) ? model.position: Qt.vector3d(0,0,0);
 
 }
-
-//Model {
-//    source: "#Cube";
-//    property var model: null
-//    property int guiId: (model) ? model.guiId : -1;
-//    materials: [
-//        DefaultMaterial {
-//            id: defaultMaterial
-//            diffuseColor: "#ff1111"
-//        }
-//    ]
-//}

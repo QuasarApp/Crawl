@@ -7,16 +7,16 @@
 
 #include "clasterstest.h"
 #include <QtTest>
-#include <Crawl/claster.h>
+#include <Extensions/claster.h>
 #include <Crawl/clasteritem.h>
 #include <Crawl/singleclasterworlditem.h>
 #include <Crawl/iworld.h>
 
 // Test claster object.
-class TestClasterObject: public Claster {
+class TestClasterObject: public IWorldItem, public Claster {
 
 public:
-    TestClasterObject(): Claster("TestClaster"){};
+    TestClasterObject(): IWorldItem("TestClaster"){};
 protected:
     void onIntersects(const IWorldItem *) {};
 };

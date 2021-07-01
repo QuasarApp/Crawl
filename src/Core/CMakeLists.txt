@@ -12,6 +12,7 @@ add_definitions(-DCRAWL_LIBRARY)
 
 file(GLOB SOURCE_CPP
     "*Crawl/*.cpp"
+    "*Extensions/*.cpp"
      "private/*.cpp"
      "*.qrc"
      "Crawl/*.qrc"

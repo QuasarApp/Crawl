@@ -6,7 +6,7 @@
 //#
 
 
-#include "claster.h"
+#include "Extensions/claster.h"
 #include "singleclasterworlditem.h"
 #include "quasarapp.h"
 
@@ -25,4 +25,12 @@ void SingleClasterWorldItem::setClaster(Claster *claster) {
     }
 
     ClasterItem::setClaster(claster);
+}
+
+Claster *SingleClasterWorldItem::parentClaster() const {
+    if (parentClastersCount() <= 0 ) {
+        return nullptr;
+    }
+
+    return *ClasterItem::parentClasters().begin();
 }

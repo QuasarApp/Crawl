@@ -24,7 +24,7 @@ public:
     SingleClasterWorldItem(const QString& name,
                            const QString& viewTempalte = DEFAULT_VIEW_TEMPLATE,
                            QObject *ptr = nullptr);
-private:
+protected:
 
     /**
      * @brief setClaster invoked when object added to new claster.
@@ -32,6 +32,12 @@ private:
      * @note This implementation can be sets only one object as a parent.
      */
     void setClaster(Claster *claster) override;
+
+    /**
+     * @brief parentClaster This method is wraper of the ClasterItem::parentClasters method.
+     * @return pointer  to the parent claster object.
+     */
+    Claster* parentClaster() const;
 
     friend class Claster;
 };

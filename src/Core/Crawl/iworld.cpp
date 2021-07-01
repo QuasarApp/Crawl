@@ -5,7 +5,7 @@
 //# of this license document, but changing it is not allowed.
 //#
 
-#include "claster.h"
+#include "Extensions/claster.h"
 #include "iai.h"
 #include "iworld.h"
 #include "iworlditem.h"
@@ -24,14 +24,21 @@ IWorld::IWorld() {
 }
 
 IWorld::~IWorld() {
-    deinit();
+    reset();
 }
+
+void IWorld::init() {prepare();}
 
 IControl *IWorld::initUserInterface() const {
     return new DefaultControl;
 }
 
 void IWorld::render(unsigned int tbfMsec) {
+
+    if (!_running) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        return;
+    }
 
     _ItemsMutex.lock();
 
@@ -44,11 +51,13 @@ void IWorld::render(unsigned int tbfMsec) {
         }
     }
 
+    _ItemsMutex.unlock();
+
+
     if (_player->isDead()) {
         emit sigGameFinished(_player->getCurrentStatus());
     }
 
-    _ItemsMutex.unlock();
 
     int waitTime = 1000 / _targetFps - tbfMsec;
     if (waitTime > 0)
@@ -65,7 +74,6 @@ void IWorld::initPlayerControl(IControl *control) {
 
 bool IWorld::start() {
     _player->setposition({0,0,0});
-    _player->setSpeed(0);
 
     setWorldStatus(WorldStatus::Game);
     _backgroundAI->stopAI();
@@ -74,6 +82,8 @@ bool IWorld::start() {
 
     worldChanged(*_worldRules->begin());
     setTargetFps(60);
+    setRunning(true);
+
     return true;
 }
 
@@ -92,12 +102,11 @@ void IWorld::setPlayer(QObject *newPlayer) {
         return;
     }
 
-    if (_player) {
-        removeIAtomicItem(_player->guiId());
-    }
+    if (_player)
+        removeItem(_player->guiId());
 
     _player = newPlayerObject;
-    addAtomicItem(_player);
+    addItem(_player);
 
     emit playerChanged();
 }
@@ -107,15 +116,7 @@ IWorldItem *IWorld::generate(const QString &objectType) const {
 }
 
 bool IWorld::stop() {
-    start();
-
-    setWorldStatus(WorldStatus::Background);
-    _player->setControl(dynamic_cast<IControl*>(_backgroundAI));
-
-    _backgroundAI->startAI();
-
-    setTargetFps(30);
-
+    setRunning(false);
     return true;
 }
 
@@ -129,14 +130,14 @@ IWorldItem *IWorld::getItem(int id) const {
     return _items.value(id, nullptr);
 }
 
-bool IWorld::init() {
+bool IWorld::prepare() {
 
     if (isInit())
         return true;
 
     _worldRules = initWorldRules();
 
-    _hdrMap = initHdrBackGround();
+    setHdr(initHdrBackGround());
     setPlayer(initPlayer());
     _player->initOnWorld(this, _player);
     _userInterface = initUserInterface();
@@ -144,12 +145,12 @@ bool IWorld::init() {
 
     if (!isInit()) {
         QuasarAppUtils::Params::log("Failed to init world implementation.");
-        deinit();
+        reset();
         return false;
     }
 
     if (!_worldRules->size()) {
-        deinit();
+        reset();
         return false;
     }
 
@@ -173,19 +174,26 @@ void IWorld::addItem(IWorldItem *obj, QList<int> *addedObjectsList) {
     if (!obj)
         return;
 
+    obj->init();
+    Diff diff;
+
     // Work wih claster
     if (auto claster = dynamic_cast<Claster*>(obj)) {
         for (auto item : claster->objects()) {
             addAtomicItem(item);
-            if (item && addedObjectsList) {
-                addedObjectsList->push_back(item->guiId());
+            if (item) {
+                diff.addedIds.push_back(item->guiId());
             }
         }
     }
 
     addAtomicItem(obj);
+    diff.addedIds.push_back(obj->guiId());
+
     if (addedObjectsList)
-        addedObjectsList->push_back(obj->guiId());
+        *addedObjectsList = diff.addedIds;
+
+    emit sigOBjctsListChanged(diff);
 
 }
 
@@ -196,29 +204,35 @@ void IWorld::removeItem(int id, QList<int> *removedObjectsList) {
     if (!obj)
         return;
 
+    Diff diff;
+
     // Work wih claster
     if (auto claster = dynamic_cast<Claster*>(obj)) {
-        auto copyOfObjectsList = claster->objects();
+        const auto copyOfObjectsList = claster->objects();
         for (auto item : copyOfObjectsList) {
-            if (!item || !item->parentClastersCount())
+            if (!item || item->parentClastersCount() > 1)
                 continue;
 
             int id = item->guiId();
 
-            removeIAtomicItem(item);
+            removeAtomicItem(item);
             if (removedObjectsList)
-                removedObjectsList->push_back(id);
+                diff.removeIds.push_back(id);
 
         }
     }
 
-    addAtomicItem(obj);
-    if (removedObjectsList)
-        removedObjectsList->push_back(obj->guiId());
+    removeAtomicItem(obj);
+    diff.removeIds.push_back(id);
 
+    if (removedObjectsList)
+        *removedObjectsList = diff.removeIds;
+
+    emit sigOBjctsListChanged(diff);
 }
 
-void IWorld::deinit() {
+void IWorld::reset() {
+
     if (_player) {
         delete _player;
         _player = nullptr;
@@ -240,7 +254,7 @@ void IWorld::deinit() {
     }
 
     clearItems();
-    _hdrMap = "";
+    setHdr("");
 
 }
 
@@ -257,7 +271,7 @@ void IWorld::addAtomicItem(IWorldItem* obj) {
     obj->initOnWorld(this, _player);
 }
 
-bool IWorld::removeIAtomicItem(int id) {
+bool IWorld::removeAtomicItem(int id) {
     QMutexLocker lock(&_ItemsMutex);
 
     auto obj = _items.value(id);
@@ -274,7 +288,7 @@ bool IWorld::removeIAtomicItem(int id) {
     return true;
 }
 
-bool IWorld::removeIAtomicItem(IWorldItem *obj) {
+bool IWorld::removeAtomicItem(IWorldItem *obj) {
     if (!obj) {
         return false;
     }
@@ -295,12 +309,28 @@ void IWorld::removeAnyItemFromGroup(const QString &group,
     removeItem(anyObjectId, removedObjectsList);
 }
 
+bool IWorld::running() const {
+    return _running;
+}
+
+void IWorld::setRunning(bool newRunning) {
+    _running = newRunning;
+}
+
 int IWorld::targetFps() const {
     return _targetFps;
 }
 
 void IWorld::setTargetFps(int newTargetFps) {
     _targetFps = newTargetFps;
+}
+
+void IWorld::setHdr(const QString &hdr) {
+    if (hdr == _hdrMap)
+        return;
+
+    _hdrMap = hdr;
+    emit hdrChanged();
 }
 
 const QQuaternion &IWorld::cameraRatation() const {
@@ -335,39 +365,32 @@ void IWorld::setCameraReleativePosition(const QVector3D &newCameraReleativePosit
 }
 
 void IWorld::handleStop() {
-    stop();
+    runAsBackGround();
 }
 
 const QVector3D &IWorld::cameraReleativePosition() const {
     return _cameraReleativePosition;
 }
 
-const QString &IWorld::hdrMap() const {
-    return _hdrMap;
-}
+void IWorld::worldChanged(WorldObjects objects) {
 
-void IWorld::worldChanged(const WorldObjects &objects) {
+    objects[_player->className()] = 1;
 
-    Diff diff;
     for (auto it = objects.begin(); it != objects.end(); ++it) {
 
         int count = it.value() - _itemsGroup.count(it.key());
 
         if (count > 0) {
             for ( int i = 0; i < count; ++i ) {
-                addItem(generate(it.key()), &diff.addedIds);
+                addItem(generate(it.key()));
             }
         } else {
             for (; count < 0; ++count ) {
-                removeAnyItemFromGroup(it.key(), &diff.removeIds);
+                removeAnyItemFromGroup(it.key());
             }
         }
     }
-
-    if (diff.addedIds.size() || diff.removeIds.size())
-        emit sigOBjctsListChanged(diff);
 }
-
 
 int IWorld::wordlStatus() const {
     return _worldStatus;
@@ -381,3 +404,18 @@ void IWorld::setWorldStatus(int newWorldStatus) {
     emit worldStatusChanged();
 }
 
+
+const QString &IWorld::hdr() const {
+    return _hdrMap;
+}
+
+void IWorld::runAsBackGround() {
+    start();
+
+    setWorldStatus(WorldStatus::Background);
+    _player->setControl(dynamic_cast<IControl*>(_backgroundAI));
+
+    _backgroundAI->startAI();
+
+    setTargetFps(30);
+}
