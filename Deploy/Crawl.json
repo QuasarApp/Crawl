@@ -8,8 +8,8 @@
     "recursiveDepth": "10",
     "deploySystem": false,
     "qif": true,
-    "qifStyle": "quasar",
-    "qifLogo": "./../src/ClientLib/res/logo.png",
+    "qifStyle": "quasarDark",
+    "qifLogo": "./../Doc/res/logo_Installer.png",
     "deb": true,
     "qmlDir": "./../",
     "ignoreEnv": [
@@ -21,6 +21,11 @@
         "./../stage"
         ],
     "extraLib": "crypto",
-    "targetDir": "./../Distro"
+    "targetDir": "./../Distro",
+    "extraData": "src/Client/modules",
+    "extraDataOut": "bin",
+    "binOut": "bin",
+    "libOut": "lib"
+
 }
 
