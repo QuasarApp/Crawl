@@ -8,7 +8,7 @@
     "recursiveDepth": "10",
     "deploySystem": false,
     "qif": true,
-    "qifStyle": "quasar",
+    "qifStyle": "quasarDark",
     "qifLogo": "./../Doc/res/logo_Installer.png",
     "deb": true,
     "qmlDir": "./../",
