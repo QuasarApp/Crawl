@@ -12,24 +12,18 @@ set(CURRENT_PROJECT "${PROJECT_NAME}")
 file(GLOB SOURCE_CPP
     "*.cpp"
      "private/*.cpp"
+     "*.qrc"
+     "private/*.qrc"
 )
-
-if (${QT_VERSION_MAJOR})
-    file(GLOB SOURCE_QRC
-        "*.qrc"
-        "private/*.qrc"
-    )
-
-endif()
 
 set(PUBLIC_INCUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 
 set(PRIVATE_INCUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/private")
 
 if (ANDROID)
-    add_library(${CURRENT_PROJECT} ${SOURCE_CPP} ${SOURCE_QRC})
+    add_library(${CURRENT_PROJECT} ${SOURCE_CPP})
 else()
-    add_executable(${CURRENT_PROJECT} ${SOURCE_CPP} ${SOURCE_QRC})
+    add_executable(${CURRENT_PROJECT} ${SOURCE_CPP})
 endif()
 
 target_link_libraries(${CURRENT_PROJECT} PUBLIC ${PROJECT_NAME}Core)
