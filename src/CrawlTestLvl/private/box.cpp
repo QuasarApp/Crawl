@@ -11,7 +11,7 @@
 
 
 Box::Box(): IWorldItem("Box") {
-    setMash("qrc:/mesh/res/meshes/cube.mesh");
+    setMash("qrc:/mesh/meshes/cube.mesh");
     setSize({2,2,2});
     setColor(QColor::fromRgb(rand()).name());
 

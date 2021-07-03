@@ -27,6 +27,10 @@ QObject *MainMenuModel::availableLvlsModel() const {
     return _availableLvlsModel;
 }
 
+void MainMenuModel::addWorldViewModel(QObject * data) {
+    _availableLvlsModel->addSource(data);
+}
+
 void MainMenuModel::setAvailableLvls(const QList<QObject*> &newData) {
     _availableLvlsModel->setSource(newData);
 }

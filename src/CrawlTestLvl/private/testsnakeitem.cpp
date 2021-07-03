@@ -9,7 +9,7 @@
 #include "testsnakeitem.h"
 
 TestSnakeItem::TestSnakeItem() {
-    setMash("qrc:/mesh/res/meshes/cube.mesh");
+    setMash("qrc:/mesh/meshes/cube.mesh");
     setColor("#20aa9a");
     setSize({1,1,1});
 

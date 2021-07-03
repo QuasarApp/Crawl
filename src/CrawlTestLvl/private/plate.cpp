@@ -9,7 +9,7 @@
 
 Plate::Plate(): IGround("plate")
 {
-    setMash("qrc:/mesh/res/meshes/cube.mesh");
+    setMash("qrc:/mesh/meshes/cube.mesh");
     setSize({100,100,0});
     setZ(0);
 }

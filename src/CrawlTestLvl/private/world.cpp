@@ -24,7 +24,7 @@ WorldRule *World::initWorldRules() {
 }
 
 QString World::initHdrBackGround() const {
-    return "qrc:/hdr/res/hdr/testHDR.hdr";
+    return "qrc:/hdr/hdr/testHDR.hdr";
 }
 
 QString World::description() const {
@@ -32,7 +32,7 @@ QString World::description() const {
 }
 
 QString World::imagePreview() const {
-    return "qrc:/hdr/res/hdr/testHDR.jpg";
+    return "qrc:/hdr/hdr/testHDR.jpg";
 }
 
 QString World::name() const {

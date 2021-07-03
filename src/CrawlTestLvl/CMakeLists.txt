@@ -15,12 +15,11 @@ file(GLOB SOURCE_CPP
      "private/*.cpp"
      "*.qrc"
      "private/*.qrc"
+     "CrawlTestLvlAssets/*.qrc"
 )
 
 set(PUBLIC_INCUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 set(PRIVATE_INCUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/private")
-
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ../Client/modules)
 
 add_library(${CURRENT_PROJECT} ${SOURCE_CPP})
 

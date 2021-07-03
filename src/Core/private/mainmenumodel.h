@@ -32,6 +32,7 @@ public:
     MainMenuModel(QObject *ptr = nullptr);
     QObject* userSettingsModel() const;
     QObject* availableLvlsModel() const;
+    void addWorldViewModel(QObject *);
     void setAvailableLvls(const QList<QObject *> &newData);
     Q_INVOKABLE void newGame(const QString& lvl);
 

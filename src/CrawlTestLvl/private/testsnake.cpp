@@ -12,7 +12,7 @@ TestSnake::TestSnake(): Snake("Snake") {
     setBreakingForce(50);
     setAngularVelocity(100);
     setColor("#90faaa");
-    setMash("qrc:/mesh/res/meshes/cube.mesh");
+    setMash("qrc:/mesh/meshes/cube.mesh");
     setSize({2,1,1});
 
     registerBodyitem<TestSnakeItem>();

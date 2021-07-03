@@ -5,12 +5,4 @@
 //# of this license document, but changing it is not allowed.
 //#
 
-#include "Crawl/iworld.h"
-#include "world.h"
-
-inline void initResources() { Q_INIT_RESOURCE(Empty); }
-
-extern "C" IWorld* worldInstance() {
-    initResources();
-    return new World();
-}
+#include "ilevel.h"

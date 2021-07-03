@@ -9,6 +9,7 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <Crawl/clientapp.h>
+#include <testlvl.h>
 
 
 int main(int argc, char *argv[])
@@ -21,9 +22,10 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
     ClientApp client;
 
+    client.registerLevel<TestLvl>();
+
     if (!client.init(&engine)) {
         return 1;
     }
-
     return app.exec();
 }

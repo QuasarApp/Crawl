@@ -1,11 +1,4 @@
 <RCC>
-    <qresource prefix="/mesh">
-        <file>res/meshes/cube.mesh</file>
-    </qresource>
-    <qresource prefix="/hdr">
-        <file>res/hdr/testHDR.jpg</file>
-        <file>res/hdr/testHDR.hdr</file>
-    </qresource>
     <qresource prefix="/qml">
         <file>TestControl.qml</file>
     </qresource>
