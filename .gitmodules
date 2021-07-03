@@ -10,3 +10,6 @@
 [submodule "src/Core/CrawlCoreAssets"]
 	path = src/Core/CrawlCoreAssets
 	url = ssh://web@quasarapp.ddns.net:2022/QuasarApp/CrawlCoreAssets.git
+[submodule "src/CrawlTestLvl/CrawlTestLvlAssets"]
+	path = src/CrawlTestLvl/CrawlTestLvlAssets
+	url = ssh://web@quasarapp.ddns.net:2022/QuasarApp/CrawlTestLvlAssets.git
