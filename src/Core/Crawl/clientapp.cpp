@@ -118,8 +118,18 @@ void ClientApp::start(const QString &lvl) {
 QList<QFileInfo> ClientApp::availablePlugins() const {
     QDir dir(QCoreApplication::applicationDirPath() + "/modules");
     auto list = dir.entryInfoList(QStringList() << "*.so" << "*.dll", QDir::Files);
+#ifdef Q_OS_ANDROID
+    dir.setPath(QCoreApplication::applicationDirPath());
+    list += dir.entryInfoList(registeredLvls(), QDir::Files);
+#endif
 
     return list;
+}
+
+QList<QString> ClientApp::registeredLvls() const {
+    return {
+        "*TestLvl.*"
+    };
 }
 
 bool ClientApp::init(QQmlApplicationEngine *engine) {

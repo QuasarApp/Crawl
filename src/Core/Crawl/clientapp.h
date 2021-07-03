@@ -67,6 +67,12 @@ private:
      */
     QList<QFileInfo> availablePlugins() const;
 
+    /**
+     * @brief registeredLvls This method should be return names of the lvl plugins. This method prepare data for loading plugins on android platform.
+     * @return list of the plugins names.
+     */
+    QList<QString> registeredLvls() const;
+
     QHash<QString, WordlData> _availableLvls;
     MainMenuModel *_menu = nullptr;
     Engine *_engine = nullptr;
