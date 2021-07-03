@@ -12,6 +12,9 @@ if(TARGET ${PROJECT_NAME})
   return()
 endif()
 
+set(QT_VERSION_MAJOR 5)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Test REQUIRED)
+
 include(submodules/QuasarAppLib/CMake/QuasarApp.cmake)
 
 if (DEFINED TARGET_PLATFORM_TOOLCHAIN)
@@ -20,9 +23,6 @@ if (DEFINED TARGET_PLATFORM_TOOLCHAIN)
         return()
     endif()
 endif()
-
-set(QT_VERSION_MAJOR 5)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Test REQUIRED)
 
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
