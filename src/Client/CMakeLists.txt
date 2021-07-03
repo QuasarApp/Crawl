@@ -42,6 +42,7 @@ file(MAKE_DIRECTORY ${TARGET_DIR})
 
 if (ANDROID)
     set(SNAKE_EXTRA_LIBS "${PROJECT_NAME}Core"
+                         TestLvl
                          QuasarApp
                          QmlNotyfyService
                          ViewSolutions)
@@ -57,6 +58,14 @@ if (ANDROID)
                 "${SNAKE_EXTRA_LIBS}")
 
     target_link_libraries(${CURRENT_PROJECT} PRIVATE Qt${QT_VERSION_MAJOR}::AndroidExtras)
+
+    file(GLOB java_files
+       "android/src/com/quasarapp/androidtools/*.java"
+    )
+
+    add_custom_target(${name}Android
+        SOURCES ${java_files}
+    )
 
 else()
     # Desctop deploying
