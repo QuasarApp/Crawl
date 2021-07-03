@@ -8,7 +8,7 @@
 cmake_minimum_required(VERSION 3.14)
 set(CURRENT_PROJECT "TestLvl")
 
-add_definitions(-DCRAWL_LIBRARY)
+add_definitions(-DCRAWL_TEST_LEVEL_LIBRARY)
 
 file(GLOB SOURCE_CPP
     "*.cpp"

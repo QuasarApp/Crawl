@@ -10,14 +10,14 @@
 #define TESTLVL_H
 
 #include <Crawl/ilevel.h>
-#include <QObject>
+#include "testlevel_global.h"
 
 inline void initTestLvlResources() { Q_INIT_RESOURCE(Empty);
                                      Q_INIT_RESOURCE(testLvl);}
 /**
  * @brief The TestLvl class This is test lvlv wraper of the crawl
  */
-class TestLvl: public ILevel
+class CRAWL_TEST_LEVEL_EXPORT TestLvl: public ILevel
 {
 public:
     TestLvl();
