@@ -48,7 +48,6 @@ IControl *World::initUserInterface() const {
 }
 
 void World::initPlayerControl(IControl *control) {
-
     if (auto test = dynamic_cast<TestControl*>(control)) {
         connect(test, &TestControl::xChanged, this, &World::handleXViewChanged);
         connect(test, &TestControl::yChanged, this, &World::handleYViewChanged);
