@@ -67,25 +67,6 @@ void ClientApp::initLang() {
     }
 }
 
-void ClientApp::initLvls() {
-    auto plugins = availablePlugins();
-    QList<QObject*> _availableWorlds;
-    for (const auto& lvl: plugins) {
-        WordlData data;
-        IWorld* pluginData = PluginLoader::load(lvl.absoluteFilePath());
-
-        if (pluginData) {
-
-            data.model = pluginData;
-            data.viewModel = new WorldViewData(data.model);
-            _availableWorlds.push_back(data.viewModel);
-            _availableLvls.insert(data.model->name(), data);
-        }
-    }
-
-    _menu->setAvailableLvls(_availableWorlds);
-}
-
 IWorld *ClientApp::getLastWorld() {
     for (const auto &data : qAsConst(_availableLvls)) {
         if (data.viewModel && data.viewModel->unlocked()) {
@@ -115,13 +96,6 @@ void ClientApp::start(const QString &lvl) {
     _engine->start();
 }
 
-QList<QFileInfo> ClientApp::availablePlugins() const {
-    QDir dir(QCoreApplication::applicationDirPath() + "/modules");
-    auto list = dir.entryInfoList(QStringList() << "*.so" << "*.dll", QDir::Files);
-
-    return list;
-}
-
 bool ClientApp::init(QQmlApplicationEngine *engine) {
 
     qputenv("QT_QUICK_CONTROLS_MATERIAL_THEME", initTheme());
@@ -145,7 +119,6 @@ bool ClientApp::init(QQmlApplicationEngine *engine) {
 
     initCrawlResources();
     initLang();
-    initLvls();
 
     engine->addImportPath(":/CrawlModule/");
 
@@ -166,4 +139,13 @@ bool ClientApp::init(QQmlApplicationEngine *engine) {
     _engine->setQmlEngine(engine);
 
     return true;
+}
+
+void ClientApp::addLvl(IWorld *levelWordl) {
+    WordlData data;
+
+    data.model = levelWordl;
+    data.viewModel = new WorldViewData(data.model);
+    _availableLvls.insert(data.model->name(), data);
+    _menu->addWorldViewModel(data.viewModel);
 }

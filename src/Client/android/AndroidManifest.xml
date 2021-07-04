@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<manifest package="qa.core.snake" xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="0.0.0.0" android:versionCode="1" android:installLocation="auto">
+<manifest package="qa.core.crawl" xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="0.0.0.0" android:versionCode="1" android:installLocation="auto">
     <!-- The following comment will be replaced upon deployment with default permissions based on the dependencies of the application.
          Remove the comment if you do not require these default permissions. -->
     <!-- %%INSERT_PERMISSIONS -->
@@ -12,7 +12,7 @@
     <application android:hardwareAccelerated="true" android:name="org.qtproject.qt5.android.bindings.QtApplication" android:label="-- %%INSERT_APP_NAME%% --" android:extractNativeLibs="true" android:icon="@drawable/icon">
         <!-- Sample AdMob app ID: ca-app-pub-5799112356811682~1226170116 -->
         <meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="ca-app-pub-5799112356811682~1226170116"/>
-        <activity android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|layoutDirection|locale|fontScale|keyboard|keyboardHidden|navigation|mcc|mnc|density" android:name="com.quasarapp.androidtools.MainActivity" android:label="-- %%INSERT_APP_NAME%% --" android:screenOrientation="landscape" android:launchMode="singleTop">
+        <activity android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|layoutDirection|locale|fontScale|keyboard|keyboardHidden|navigation|mcc|mnc|density" android:name="com.quasarapp.androidtools.MainActivity" android:label="-- %%INSERT_APP_NAME%% --" android:screenOrientation="landscape" android:launchMode="singleTop" android:theme="@style/splashScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -70,6 +70,7 @@
                 -->
             <meta-data android:name="android.app.extract_android_style" android:value="default"/>
             <!-- extract android style -->
+            <meta-data android:name="android.app.splash_screen_drawable" android:resource="@drawable/splashscreen"/>
         </activity>
         <!-- For adding service(s) please check: https://wiki.qt.io/AndroidServices -->
     </application>

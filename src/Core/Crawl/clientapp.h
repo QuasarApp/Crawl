@@ -12,6 +12,7 @@
 #include <QFileInfo>
 #include <QStringList>
 #include "global.h"
+#include "ilevel.h"
 
 class Engine;
 class IWorld;
@@ -49,23 +50,35 @@ public:
      */
     bool init(QQmlApplicationEngine* engine);
 
+    template<class LevelType>
+
+    /**
+     * @brief registerLevel This method register new levels in game.
+     */
+    void registerLevel() {
+
+        static_assert(std::is_base_of_v<ILevel, LevelType>,
+                "Plrease use the child classes of the ILevel interface for tegistering new levels in the crawl game.");
+
+        addLvl(LevelType().world());
+    }
+
 private:
     QByteArray initTheme();
     void initLang();
-    void initLvls();
     IWorld* getLastWorld();
+
+    /**
+     * @brief addLvl This method should be add level to game.
+     * @param levelWordl This is world instance
+     */
+    void addLvl(IWorld* levelWordl);
 
     /**
      * @brief start This method star new game in @a lvl
      * @param lvl This is lvl name
      */
     void start(const QString& lvl);
-
-    /**
-     * @brief availablePlugins This method read all available plugins.
-     * @return list of the available plugins.
-     */
-    QList<QFileInfo> availablePlugins() const;
 
     QHash<QString, WordlData> _availableLvls;
     MainMenuModel *_menu = nullptr;

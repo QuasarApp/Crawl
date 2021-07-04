@@ -12,27 +12,21 @@ set(CURRENT_PROJECT "${PROJECT_NAME}")
 file(GLOB SOURCE_CPP
     "*.cpp"
      "private/*.cpp"
+     "*.qrc"
+     "private/*.qrc"
 )
-
-if (${QT_VERSION_MAJOR})
-    file(GLOB SOURCE_QRC
-        "*.qrc"
-        "private/*.qrc"
-    )
-
-endif()
 
 set(PUBLIC_INCUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 
 set(PRIVATE_INCUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/private")
 
 if (ANDROID)
-    add_library(${CURRENT_PROJECT} ${SOURCE_CPP} ${SOURCE_QRC})
+    add_library(${CURRENT_PROJECT} ${SOURCE_CPP})
 else()
-    add_executable(${CURRENT_PROJECT} ${SOURCE_CPP} ${SOURCE_QRC})
+    add_executable(${CURRENT_PROJECT} ${SOURCE_CPP})
 endif()
 
-target_link_libraries(${CURRENT_PROJECT} PUBLIC ${PROJECT_NAME}Core)
+target_link_libraries(${CURRENT_PROJECT} PUBLIC ${PROJECT_NAME}Core TestLvl)
 
 target_include_directories(${CURRENT_PROJECT} PUBLIC ${PUBLIC_INCUDE_DIR})
 target_include_directories(${CURRENT_PROJECT} PRIVATE ${PRIVATE_INCUDE_DIR})
@@ -42,6 +36,7 @@ file(MAKE_DIRECTORY ${TARGET_DIR})
 
 if (ANDROID)
     set(SNAKE_EXTRA_LIBS "${PROJECT_NAME}Core"
+                         TestLvl
                          QuasarApp
                          QmlNotyfyService
                          ViewSolutions)
@@ -50,13 +45,21 @@ if (ANDROID)
 
     addDeployAPK(${CURRENT_PROJECT}
                 "${CMAKE_CURRENT_LIST_DIR}/android"
-                "Snake"
-                "${SIGPATH}/Snake.keystore"
+                "SnakeProject"
+                "${SIGPATH}/Crawl.keystore"
                 "${SIGPASS_SNAKE}"
                 "${TARGET_DIR}"
                 "${SNAKE_EXTRA_LIBS}")
 
     target_link_libraries(${CURRENT_PROJECT} PRIVATE Qt${QT_VERSION_MAJOR}::AndroidExtras)
+
+    file(GLOB java_files
+       "android/src/com/quasarapp/androidtools/*.java"
+    )
+
+    add_custom_target(${name}Android
+        SOURCES ${java_files}
+    )
 
 else()
     # Desctop deploying

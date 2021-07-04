@@ -12,6 +12,9 @@ if(TARGET ${PROJECT_NAME})
   return()
 endif()
 
+set(QT_VERSION_MAJOR 5)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Test REQUIRED)
+
 include(submodules/QuasarAppLib/CMake/QuasarApp.cmake)
 
 if (DEFINED TARGET_PLATFORM_TOOLCHAIN)
@@ -20,6 +23,7 @@ if (DEFINED TARGET_PLATFORM_TOOLCHAIN)
         return()
     endif()
 endif()
+
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
@@ -30,12 +34,9 @@ set(BUILD_SHARED_LIBS ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(QT_VERSION_MAJOR 5)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Test REQUIRED)
 
 if (NOT DEFINED CRAWL_TESTS)
     set(CRAWL_TESTS ON)
-    message(1)
 
     if (DEFINED TARGET_PLATFORM_TOOLCHAIN)
         if (${TARGET_PLATFORM_TOOLCHAIN} STREQUAL "wasm32")
@@ -49,7 +50,6 @@ if (NOT DEFINED CRAWL_TESTS)
 
     if (NOT QT_VERSION_MAJOR)
         set(CRAWL_TESTS OFF)
-        message(2)
     endif()
 endif()
 
