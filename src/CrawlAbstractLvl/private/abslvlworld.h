@@ -5,8 +5,8 @@
 //# of this license document, but changing it is not allowed.
 //#
 
-#ifndef WORLD_H
-#define WORLD_H
+#ifndef ABSLEVELWORLD_H
+#define ABSLEVELWORLD_H
 
 #include "Crawl/iworld.h"
 
@@ -29,4 +29,4 @@ public:
 
 };
 
-#endif // WORLD_H
+#endif // ABSLEVELWORLD_H

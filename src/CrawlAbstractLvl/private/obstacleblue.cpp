@@ -9,7 +9,7 @@
 
 ObstacleBlue::ObstacleBlue() : IWorldItem("OstacleBlue") {
     setMash("qrc:/mesh/meshes/ObstacleBlue.mesh");
-    setSize({10,10,10});
+    setSize({1,1,1});
     setZ(0);
 }
 

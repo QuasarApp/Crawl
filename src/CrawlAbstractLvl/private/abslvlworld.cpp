@@ -10,7 +10,7 @@
 #include "obstaclered.h"
 #include "abslvlcontrol.h"
 #include "abslvlworld.h"
-#include <snake.h>
+#include <abslvlsnake.h>
 #include "Crawl/iworlditem.h"
 
 
@@ -19,14 +19,14 @@ AbsLvlWorld::AbsLvlWorld() {
 }
 
 IPlayer *AbsLvlWorld::initPlayer() const {
-    return new Snake();
+    return new AbsLvlSnake();
 }
 
 WorldRule *AbsLvlWorld::initWorldRules() {
     return new WorldRule {
         {0, {{registerObject<Baff>(), 1}}},
-        {100, {{registerObject<ObstacleBlue>(), 1}}},
-        {200, {{registerObject<ObstacleRed>(), 1}}}
+        {10, {{registerObject<ObstacleBlue>(), 1}}},
+        {20, {{registerObject<ObstacleRed>(), 1}}}
     };
 }
 

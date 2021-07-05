@@ -9,7 +9,7 @@
 
 Baff::Baff() : IWorldItem("Baff") {
     setMash("qrc:/mesh/meshes/Baff.mesh");
-    setSize({10,10,10});
+    setSize({1,1,1});
     setZ(0);
 }
 

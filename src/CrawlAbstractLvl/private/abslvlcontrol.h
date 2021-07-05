@@ -5,12 +5,12 @@
 //# of this license document, but changing it is not allowed.
 //#
 
-#ifndef TESTCONTROL_H
-#define TESTCONTROL_H
+#ifndef ABSLVLCONTROL_H
+#define ABSLVLCONTROL_H
 #include "Crawl/defaultcontrol.h"
 
 /**
- * @brief The TestControl class This controll support custom camera-ratation functions.
+ * @brief The AbsLvlControl class This controll support custom camera-ratation functions.
  */
 class AbsLvlControl: public DefaultControl
 {
@@ -21,4 +21,4 @@ public:
 
 };
 
-#endif // TESTCONTROL_H
+#endif // ABSLVLCONTROL_H

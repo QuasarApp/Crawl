@@ -5,20 +5,15 @@
 //# of this license document, but changing it is not allowed.
 //#
 
-#include "snake.h"
+#include "abslvlsnakeitem.h"
 
-void Snake::onIntersects(const IWorldItem *item) {
+AbsLvlSnakeItem::AbsLvlSnakeItem() {
+    setMash("qrc:/mesh/meshes/SnakePatternBody.mesh");
+    setColor("#20aa9a");
+    setSize({1,1,1});
+}
+
+void AbsLvlSnakeItem::onIntersects(const IWorldItem *item) {
     Q_UNUSED(item);
-}
 
-void Snake::onTap() {
-
-}
-
-Snake::Snake(): IPlayer("Snake") {
-
-}
-
-void Snake::setControl(const IControl *control) {
-    Q_UNUSED(control);
 }

@@ -8,7 +8,7 @@
 cmake_minimum_required(VERSION 3.14)
 set(CURRENT_PROJECT "AbstractLvl")
 
-add_definitions(-DSnakeProject_LIBRARY)
+add_definitions(-DCRAWL_ABSTRACT_LEVEL_LIBRARY)
 
 
 file(GLOB SOURCE_CPP
