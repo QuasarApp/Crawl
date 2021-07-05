@@ -65,6 +65,7 @@ add_subdirectory(submodules/ViewSolutions)
 
 add_subdirectory(src/Core)
 add_subdirectory(src/CrawlTestLvl)
+add_subdirectory(src/JungleLvl)
 
 add_subdirectory(src/Client)
 
