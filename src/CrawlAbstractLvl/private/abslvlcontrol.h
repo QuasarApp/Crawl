@@ -12,7 +12,7 @@
 /**
  * @brief The AbsLvlControl class This controll support custom camera-ratation functions.
  */
-class AbsLvlControl: public DefaultControl
+class AbsLvlControl: public CRAWL::DefaultControl
 {
     Q_OBJECT
 public:

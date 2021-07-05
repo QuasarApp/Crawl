@@ -12,7 +12,7 @@ AbstractLvl::AbstractLvl() {
 
 }
 
-IWorld *AbstractLvl::world() {
+CRAWL::IWorld *AbstractLvl::world() {
     initAbstractLvlResources();
     return new AbsLvlWorld();
 }

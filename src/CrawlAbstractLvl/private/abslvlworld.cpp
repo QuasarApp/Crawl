@@ -18,12 +18,12 @@ AbsLvlWorld::AbsLvlWorld() {
 
 }
 
-IPlayer *AbsLvlWorld::initPlayer() const {
+CRAWL::IPlayer *AbsLvlWorld::initPlayer() const {
     return new AbsLvlSnake();
 }
 
-WorldRule *AbsLvlWorld::initWorldRules() {
-    return new WorldRule {
+CRAWL::WorldRule *AbsLvlWorld::initWorldRules() {
+    return new CRAWL::WorldRule {
         {0, {{registerObject<Baff>(), 1}}},
         {10, {{registerObject<ObstacleBlue>(), 1}}},
         {20, {{registerObject<ObstacleRed>(), 1}}}
@@ -51,10 +51,10 @@ int AbsLvlWorld::costToUnlock() const {
     return 0;
 }
 
-IControl *AbsLvlWorld::initUserInterface() const {
+CRAWL::IControl *AbsLvlWorld::initUserInterface() const {
     return new AbsLvlControl();
 }
 
-void AbsLvlWorld::initPlayerControl(IControl *control) {
+void AbsLvlWorld::initPlayerControl(CRAWL::IControl *control) {
     return IWorld::initPlayerControl(control);
 }

@@ -10,22 +10,22 @@
 
 #include "Crawl/iworld.h"
 
-class AbsLvlWorld : public IWorld {
+class AbsLvlWorld : public CRAWL::IWorld {
 
     // IWorld interface
 public:
 
     AbsLvlWorld();
 
-    IPlayer *initPlayer() const override;
-    WorldRule *initWorldRules() override;
+    CRAWL::IPlayer *initPlayer() const override;
+    CRAWL::WorldRule *initWorldRules() override;
     QString initHdrBackGround() const override;
     QString description() const override;
     QString imagePreview() const override;
     QString name() const override;
     int costToUnlock() const override;
-    IControl *initUserInterface() const override;
-    void initPlayerControl(IControl *control) override;
+    CRAWL::IControl *initUserInterface() const override;
+    void initPlayerControl(CRAWL::IControl *control) override;
 
 };
 

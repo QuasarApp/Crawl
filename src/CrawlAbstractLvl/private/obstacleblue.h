@@ -10,7 +10,7 @@
 #include "Crawl/iworlditem.h"
 
 
-class ObstacleBlue: public IWorldItem {
+class ObstacleBlue: public CRAWL::IWorldItem {
 public:
     ObstacleBlue();
 

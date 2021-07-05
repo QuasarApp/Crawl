@@ -10,7 +10,7 @@
 #include "Crawl/iworlditem.h"
 
 
-class Baff: public IWorldItem {
+class Baff: public CRAWL::IWorldItem {
 public:
     Baff();
 

@@ -16,14 +16,13 @@ inline void initAbstractLvlResources() { Q_INIT_RESOURCE(AbstractLvl);
 /**
  * @brief The AbstractLvl class This is test lvlv wraper of the crawl
  */
-class CRAWL_ABSTRACT_LEVEL_EXPORT AbstractLvl: public ILevel
-{
+class CRAWL_ABSTRACT_LEVEL_EXPORT AbstractLvl: public CRAWL::ILevel {
 public:
     AbstractLvl();
 
     // ILevel interface
 public:
-    IWorld *world() override;
+    CRAWL::IWorld *world() override;
 };
 
 #endif // ABSTRACTLVL_H

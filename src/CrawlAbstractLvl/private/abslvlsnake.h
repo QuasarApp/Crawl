@@ -10,7 +10,7 @@
 
 #include "Crawl/snake.h"
 
-class AbsLvlSnake : public Snake {
+class AbsLvlSnake : public CRAWL::Snake {
 
     Q_OBJECT
 
