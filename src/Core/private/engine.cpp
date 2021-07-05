@@ -16,6 +16,8 @@
 #include "QDateTime"
 #include "QtConcurrent"
 
+namespace CRAWL {
+
 Engine::Engine(QObject *parent): QObject(parent) {
 
 }
@@ -168,5 +170,7 @@ void Engine::renderLoop() {
         _oldTimeRender = currentTime;
     }
 
+
+}
 
 }

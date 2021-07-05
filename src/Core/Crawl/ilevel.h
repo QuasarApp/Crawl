@@ -8,6 +8,9 @@
 #ifndef LEVEL_H
 #define LEVEL_H
 
+namespace CRAWL {
+
+
 class IWorld;
 
 /**
@@ -26,5 +29,7 @@ public:
      */
     virtual IWorld* world() = 0;
 };
+
+}
 
 #endif // LEVEL_H

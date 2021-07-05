@@ -10,6 +10,8 @@
 
 #include <QObject>
 
+namespace CRAWL {
+
 class IWorld;
 
 /**
@@ -46,5 +48,5 @@ signals:
     void dataChanged();
     void unlockedChanged();
 };
-
+}
 #endif // WORLDVIEWDATA_H

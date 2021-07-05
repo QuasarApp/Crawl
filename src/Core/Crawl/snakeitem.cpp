@@ -8,6 +8,9 @@
 #include "snake.h"
 #include "snakeitem.h"
 
+namespace CRAWL {
+
+
 SnakeItem::SnakeItem(const QString itemName): SingleClasterWorldItem(itemName) {
     setAngularVelocity(-1);
 
@@ -40,4 +43,5 @@ void SnakeItem::render(unsigned int tbfMsec) {
 
 const IWorldItem * SnakeItem::prev() const {
     return _prevObject;
+}
 }

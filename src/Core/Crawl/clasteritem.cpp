@@ -8,6 +8,9 @@
 #include "Extensions/claster.h"
 #include "clasteritem.h"
 
+namespace CRAWL {
+
+
 ClasterItem::ClasterItem(const QString &name,
                          const QString &viewTempalte,
                          QObject *ptr):
@@ -35,4 +38,6 @@ void ClasterItem::removeClaster(Claster *claster) {
 
 const QSet<Claster *> &ClasterItem::parentClasters() const {
     return _parentClasters;
+}
+
 }

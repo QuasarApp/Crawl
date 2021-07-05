@@ -12,7 +12,7 @@ TestLvl::TestLvl() {
 
 }
 
-IWorld *TestLvl::world() {
+CRAWL::IWorld *TestLvl::world() {
     initTestLvlResources();
     return new World();
 }

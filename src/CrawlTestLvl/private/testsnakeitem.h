@@ -11,7 +11,7 @@
 
 #include "Crawl/snakeitem.h"
 
-class TestSnakeItem: public SnakeItem
+class TestSnakeItem: public CRAWL::SnakeItem
 {
     Q_OBJECT
 public:

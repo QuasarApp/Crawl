@@ -7,6 +7,10 @@
 
 #include "iai.h"
 
+namespace CRAWL {
+
 IAI::IAI() {
+
+}
 
 }

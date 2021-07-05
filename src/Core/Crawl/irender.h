@@ -11,6 +11,8 @@
 #include "global.h"
 #include "quasarapp.h"
 
+namespace CRAWL {
+
 /**
  * @brief The IRender class This interface provide render functionality for all objects.
  * @note Override the render method.
@@ -57,4 +59,5 @@ public:
     };
 };
 
+}
 #endif // IRENDER_H

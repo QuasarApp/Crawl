@@ -11,6 +11,9 @@
 #include <QObject>
 #include "global.h"
 
+namespace CRAWL {
+
+
 /**
  * @brief The IControl class This interface should be contains implementation of custom user interface
  *  How to use this class:
@@ -61,5 +64,7 @@ private:
 
     friend class Engine;
 };
+
+}
 
 #endif // ICONTROL_H

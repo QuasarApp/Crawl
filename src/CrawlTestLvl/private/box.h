@@ -9,7 +9,7 @@
 #define BOX_H
 #include "Crawl/iworlditem.h"
 
-class Box: public IWorldItem {
+class Box: public CRAWL::IWorldItem {
 
 public:
     Box();
