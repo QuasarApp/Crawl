@@ -5,6 +5,7 @@
 //# of this license document, but changing it is not allowed.
 //#
 
+#include "snake.h"
 #include "world.h"
 #include "Crawl/iworlditem.h"
 
@@ -15,8 +16,8 @@ World::World() {
     setCameraRatation(QQuaternion::fromEulerAngles({0,0,-90}));
 }
 
-WorldRule *World::initWorldRules() {
-    return new WorldRule {
+CRAWL::WorldRule *World::initWorldRules() {
+    return new CRAWL::WorldRule {
         {}
     };
 }
@@ -41,19 +42,19 @@ int World::costToUnlock() const {
     return 0;
 }
 
-IControl *World::initUserInterface() const {
+CRAWL::IControl *World::initUserInterface() const {
     return IWorld::initUserInterface();
 }
 
-void World::initPlayerControl(IControl *control) {
+void World::initPlayerControl(CRAWL::IControl *control) {
     return IWorld::initPlayerControl(control);
 }
 
-IPlayer *World::initPlayer() const {
+CRAWL::IPlayer *World::initPlayer() const {
     return new Snake();
 }
 
-IAI *World::initBackGroundAI() const {
+CRAWL::IAI *World::initBackGroundAI() const {
     return IWorld::initBackGroundAI();
 }
 

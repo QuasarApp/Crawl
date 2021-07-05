@@ -5,8 +5,8 @@
 //# of this license document, but changing it is not allowed.
 //#
 
-#ifndef IWORLD_H
-#define IWORLD_H
+#ifndef CRAWL_IWORLD_H
+#define CRAWL_IWORLD_H
 
 #include "iplayer.h"
 
@@ -480,4 +480,4 @@ private:
 };
 
 }
-#endif // IWORLD_H
+#endif // CRAWL_IWORLD_H

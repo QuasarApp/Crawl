@@ -5,16 +5,24 @@
 //# of this license document, but changing it is not allowed.
 //#
 
+#include <Crawl/snake.h>
+
 #ifndef SNAKE_H
 #define SNAKE_H
 
 /**
  * @brief The Snake class this is main player class of the jungle level
  */
-class Snake
+class Snake: public CRAWL::Snake
 {
+    Q_OBJECT
+
 public:
     Snake();
+
+    // IWorldItem interface
+protected:
+    void onIntersects(const IWorldItem *) override;
 };
 
 #endif // SNAKE_H

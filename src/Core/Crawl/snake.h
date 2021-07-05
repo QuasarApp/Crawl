@@ -5,8 +5,8 @@
 //# of this license document, but changing it is not allowed.
 //#
 
-#ifndef SNAKE_H
-#define SNAKE_H
+#ifndef CRAWL_SNAKE_H
+#define CRAWL_SNAKE_H
 
 #include "iplayer.h"
 #include "Extensions/claster.h"
@@ -122,4 +122,4 @@ private:
 
 }
 
-#endif // SNAKE_H
+#endif // CRAWL_SNAKE_H

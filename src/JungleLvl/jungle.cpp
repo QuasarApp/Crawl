@@ -12,6 +12,6 @@ Jungle::Jungle() {
 
 }
 
-IWorld *Jungle::world() {
+CRAWL::IWorld *Jungle::world() {
     return nullptr;
 }

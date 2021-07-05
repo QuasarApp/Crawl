@@ -18,14 +18,14 @@ inline void initTestLvlResources() { Q_INIT_RESOURCE(jungle);
 /**
  * @brief The Jungle class This is main class of the jungle lvl
  */
-class CRAWL_JUNGLE_LEVEL_EXPORT Jungle: public ILevel
+class CRAWL_JUNGLE_LEVEL_EXPORT Jungle: public CRAWL::ILevel
 {
 public:
     Jungle();
 
     // ILevel interface
 public:
-    IWorld *world() override;
+    CRAWL::IWorld *world() override;
 };
 
 #endif // JUNGLE_H

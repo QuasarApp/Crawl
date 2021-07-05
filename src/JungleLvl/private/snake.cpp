@@ -1,6 +1,6 @@
 #include "snake.h"
 
-Snake::Snake()
-{
+
+void Snake::onIntersects(const IWorldItem *) {
 
 }
