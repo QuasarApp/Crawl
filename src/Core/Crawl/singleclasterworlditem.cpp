@@ -10,6 +10,9 @@
 #include "singleclasterworlditem.h"
 #include "quasarapp.h"
 
+namespace CRAWL {
+
+
 SingleClasterWorldItem::SingleClasterWorldItem(const QString &name,
                                                const QString &viewTempalte,
                                                QObject *ptr):
@@ -33,4 +36,6 @@ Claster *SingleClasterWorldItem::parentClaster() const {
     }
 
     return *ClasterItem::parentClasters().begin();
+}
+
 }

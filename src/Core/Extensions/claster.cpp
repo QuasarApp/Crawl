@@ -8,6 +8,8 @@
 #include "claster.h"
 #include "Crawl/singleclasterworlditem.h"
 
+namespace CRAWL {
+
 Claster::Claster() {}
 
 Claster::~Claster() {
@@ -33,4 +35,6 @@ void Claster::remove(int id) {
 
 const QHash<int, ClasterItem *> &Claster::objects() const {
     return _objects;
+}
+
 }

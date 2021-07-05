@@ -13,6 +13,8 @@
 #include <QQmlEngine>
 #include <Crawl/diff.h>
 
+namespace CRAWL {
+
 class IWorld;
 
 /**
@@ -148,4 +150,5 @@ private:
     bool _renderLoop = false;
 };
 
+}
 #endif // ENGINE_H

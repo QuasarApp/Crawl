@@ -12,6 +12,9 @@
 #include "Crawl/irender.h"
 #include <QVector3D>
 
+namespace CRAWL {
+
+
 class GuiObject;
 
 /**
@@ -105,5 +108,7 @@ private:
     float _angularVelocity = 0;
     float _breakingForce = 0;
 };
+
+}
 
 #endif // MOVABLEOBJECT_H

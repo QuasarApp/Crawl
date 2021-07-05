@@ -10,6 +10,9 @@
 
 #include "Crawl/iworlditem.h"
 
+namespace CRAWL {
+
+
 class ClasterItem;
 
 /**
@@ -54,4 +57,5 @@ private:
 
 };
 
+}
 #endif // CLASTER_H

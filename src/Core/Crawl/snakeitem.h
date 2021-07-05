@@ -12,6 +12,9 @@
 #include "singleclasterworlditem.h"
 #include "Extensions/movableobject.h"
 
+namespace CRAWL {
+
+
 class CRAWL_EXPORT SnakeItem: public SingleClasterWorldItem, public MovableObject
 {
     Q_OBJECT
@@ -34,5 +37,7 @@ public:
 private:
     const IWorldItem *_prevObject = nullptr;
 };
+
+}
 
 #endif // SNAKEITEM_H

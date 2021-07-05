@@ -6,8 +6,10 @@
 //#
 
 #include "irender.h"
+namespace CRAWL {
 
 IRender::IRender()
 {
 
+}
 }

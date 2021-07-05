@@ -11,6 +11,8 @@
 
 #include <quasarapp.h>
 
+namespace CRAWL {
+
 MainMenuModel::MainMenuModel(QObject *ptr): QObject (ptr) {
 
     _conf = QuasarAppUtils::Settings::instance();
@@ -39,3 +41,4 @@ void MainMenuModel::newGame(const QString &lvl) {
     emit sigNewGame(lvl);
 }
 
+}

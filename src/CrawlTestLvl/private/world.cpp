@@ -17,8 +17,8 @@ World::World() {
     setCameraRatation(QQuaternion::fromEulerAngles({0,0,-90}));
 }
 
-WorldRule *World::initWorldRules() {
-    return new WorldRule {
+CRAWL::WorldRule *World::initWorldRules() {
+    return new CRAWL::WorldRule {
         {0, {{registerObject<Box>(), 1000}}}
     };
 }
@@ -43,11 +43,11 @@ int World::costToUnlock() const {
     return 0;
 }
 
-IControl *World::initUserInterface() const {
+CRAWL::IControl *World::initUserInterface() const {
     return new TestControl();
 }
 
-void World::initPlayerControl(IControl *control) {
+void World::initPlayerControl(CRAWL::IControl *control) {
     if (auto test = dynamic_cast<TestControl*>(control)) {
         connect(test, &TestControl::xChanged, this, &World::handleXViewChanged);
         connect(test, &TestControl::yChanged, this, &World::handleYViewChanged);
@@ -56,11 +56,11 @@ void World::initPlayerControl(IControl *control) {
     return IWorld::initPlayerControl(control);
 }
 
-IPlayer *World::initPlayer() const {
+CRAWL::IPlayer *World::initPlayer() const {
     return new TestSnake();
 }
 
-IAI *World::initBackGroundAI() const {
+CRAWL::IAI *World::initBackGroundAI() const {
     return IWorld::initBackGroundAI();
 }
 

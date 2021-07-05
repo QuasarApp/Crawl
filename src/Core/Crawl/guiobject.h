@@ -17,6 +17,9 @@
 
 #define DEFAULT_VIEW_TEMPLATE "qrc:/CrawlModule/GraphicItem.qml"
 
+namespace CRAWL {
+
+
 /**
  * @brief The GuiObject class This base model for gui objects.
  *
@@ -162,7 +165,6 @@ protected:
     int _guiId = -1;
     QString _color = "#ff1111";
 
-
 private:
     void generateId();
 
@@ -179,4 +181,5 @@ private:
     QString _className;
 };
 
+}
 #endif // GUIOBJECT_H

@@ -17,14 +17,14 @@ inline void initTestLvlResources() { Q_INIT_RESOURCE(Empty);
 /**
  * @brief The TestLvl class This is test lvlv wraper of the crawl
  */
-class CRAWL_TEST_LEVEL_EXPORT TestLvl: public ILevel
+class CRAWL_TEST_LEVEL_EXPORT TestLvl: public CRAWL::ILevel
 {
 public:
     TestLvl();
 
     // ILevel interface
 public:
-    IWorld *world() override;
+    CRAWL::IWorld *world() override;
 };
 
 #endif // TESTLVL_H

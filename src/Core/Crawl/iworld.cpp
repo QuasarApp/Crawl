@@ -18,6 +18,10 @@
 #include "clasteritem.h"
 #include "thread"
 #include "chrono"
+#include "diff.h"
+
+namespace CRAWL {
+
 
 IWorld::IWorld() {
 
@@ -418,4 +422,6 @@ void IWorld::runAsBackGround() {
     _backgroundAI->startAI();
 
     setTargetFps(30);
+}
+
 }
