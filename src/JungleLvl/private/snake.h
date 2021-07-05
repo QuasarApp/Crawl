@@ -6,6 +6,7 @@
 //#
 
 #include <Crawl/snake.h>
+#include "jungle_global.h"
 
 #ifndef SNAKE_H
 #define SNAKE_H
@@ -13,7 +14,7 @@
 /**
  * @brief The Snake class this is main player class of the jungle level
  */
-class Snake: public CRAWL::Snake
+class CRAWL_JUNGLE_LEVEL_EXPORT Snake: public CRAWL::Snake
 {
     Q_OBJECT
 
