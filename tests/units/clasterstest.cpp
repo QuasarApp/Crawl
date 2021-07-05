@@ -13,7 +13,8 @@
 #include <Crawl/iworld.h>
 
 // Test claster object.
-class TestClasterObject: public IWorldItem, public Claster {
+class TestClasterObject: public CRAWL::IWorldItem,
+        public CRAWL::Claster {
 
 public:
     TestClasterObject(): IWorldItem("TestClaster"){};
@@ -22,7 +23,7 @@ protected:
 };
 
 // Test single claster item
-class TestClasterSingleItem: public SingleClasterWorldItem {
+class TestClasterSingleItem: public CRAWL::SingleClasterWorldItem {
 public:
     TestClasterSingleItem(): SingleClasterWorldItem("TestClasterSingleItem"){};
 protected:
@@ -30,7 +31,7 @@ protected:
 };
 
 // Test claster item
-class TestClasterItem: public ClasterItem {
+class TestClasterItem: public CRAWL::ClasterItem {
 public:
     TestClasterItem(): ClasterItem("TestClasterItem"){};
 protected:
@@ -38,14 +39,14 @@ protected:
 };
 
 // Test world of clasters
-class TestWorld: public IWorld {
+class TestWorld: public CRAWL::IWorld {
 public:
     TestWorld(): IWorld(){};
 
     // IWorld interface
 public:
-    IPlayer *initPlayer() const {return nullptr;};
-    WorldRule *initWorldRules() {return nullptr;};
+    CRAWL::IPlayer *initPlayer() const {return nullptr;};
+    CRAWL::WorldRule *initWorldRules() {return nullptr;};
     QString initHdrBackGround() const {return "";};
     QString description() const {return "";};
     QString imagePreview() const {return "";};

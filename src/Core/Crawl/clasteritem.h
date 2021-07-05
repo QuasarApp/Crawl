@@ -13,6 +13,8 @@
 #ifndef CLASTERITEM_H
 #define CLASTERITEM_H
 
+namespace CRAWL {
+
 class Claster;
 
 /**
@@ -59,4 +61,5 @@ private:
     friend class Claster;
 };
 
+}
 #endif // CLASTERITEM_H

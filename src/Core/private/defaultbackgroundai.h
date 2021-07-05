@@ -10,8 +10,9 @@
 
 #include "Crawl/defaultcontrol.h"
 #include <Crawl/iai.h>
-
 class QTimer;
+
+namespace CRAWL {
 
 class DefaultBackgroundAI: public DefaultControl, public IAI {
     Q_OBJECT
@@ -31,4 +32,5 @@ private:
     QTimer *_timer = nullptr;
 };
 
+}
 #endif // DEFAULTBACKGROUNDAI_H

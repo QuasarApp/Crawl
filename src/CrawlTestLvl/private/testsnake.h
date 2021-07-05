@@ -10,7 +10,7 @@
 
 #include "Crawl/snake.h"
 
-class TestSnake : public Snake {
+class TestSnake : public CRAWL::Snake {
 
     Q_OBJECT
 

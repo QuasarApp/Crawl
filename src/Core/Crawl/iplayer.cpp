@@ -8,6 +8,9 @@
 #include "defaultcontrol.h"
 #include "iplayer.h"
 
+namespace CRAWL {
+
+
 IPlayer::IPlayer(const QString &name,
                  const QString &viewTempalte,
                  QObject *ptr):
@@ -52,4 +55,6 @@ void IPlayer::setControl(const IControl *control) {
 
 void IPlayer::kill() {
     _fDead = true;
+}
+
 }

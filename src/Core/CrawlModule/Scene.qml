@@ -98,7 +98,7 @@ View3D {
             target: privateRoot.world;
             function onSigOBjctsListChanged(diff) {
                 if (!diff) {
-                    console.log("dif not found");
+                    console.log("diff not found");
                     return;
                 }
 

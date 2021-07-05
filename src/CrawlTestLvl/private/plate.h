@@ -9,7 +9,7 @@
 #define PLATE_H
 #include "Crawl/iground.h"
 
-class Plate: public IGround {
+class Plate: public CRAWL::IGround {
 public:
     Plate();
 

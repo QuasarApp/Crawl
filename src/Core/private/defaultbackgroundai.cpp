@@ -8,6 +8,8 @@
 #include "defaultbackgroundai.h"
 #include <QTimer>
 
+namespace CRAWL {
+
 DefaultBackgroundAI::DefaultBackgroundAI() {
     _timer = new QTimer();
     _timer->setInterval(1000);
@@ -32,4 +34,6 @@ void DefaultBackgroundAI::handleTimerTriger() {
     _timer->setInterval(rand() % 2000  + 200);
 
     emit userTap();
+}
+
 }

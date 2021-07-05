@@ -14,14 +14,17 @@
 #include "global.h"
 #include "ilevel.h"
 
+class QQmlApplicationEngine;
+inline void initCrawlResources() { Q_INIT_RESOURCE(Crawl); }
+
+namespace CRAWL {
+
+
 class Engine;
 class IWorld;
 class WorldViewData;
-class QQmlApplicationEngine;
 class MainMenuModel;
 class IControl;
-
-inline void initCrawlResources() { Q_INIT_RESOURCE(Crawl); }
 
 
 /**
@@ -31,7 +34,6 @@ struct WordlData {
     WorldViewData* viewModel = nullptr;
     IWorld * model = nullptr;
 };
-
 
 /**
  * @brief The ClientApp class This is main class of the Game engine.
@@ -84,5 +86,7 @@ private:
     MainMenuModel *_menu = nullptr;
     Engine *_engine = nullptr;
 };
+
+}
 
 #endif // CLIENTAPP_H

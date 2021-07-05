@@ -17,9 +17,13 @@
 #include <QQuaternion>
 #include <QString>
 #include "irender.h"
-#include "diff.h"
 #include "global.h"
 #include <QMutex>
+#include "Crawl/diff.h"
+
+class ClastersTest;
+
+namespace CRAWL {
 
 class IWorldItem;
 class IPlayer;
@@ -239,7 +243,7 @@ signals:
      * @brief sigOBjctsListChanged This signal emited when lvel status are changed.
      * @brief diff This is list of removed and addeds items
      */
-    void sigOBjctsListChanged(Diff diff);
+    void sigOBjctsListChanged(CRAWL::Diff diff);
 
     /**
      * @brief cameraReleativePositionChanged This signal emot when releative position of camera cahged.
@@ -472,7 +476,8 @@ private:
     friend class Engine;
 
     // testing
-    friend class ClastersTest;
+    friend ClastersTest;
 };
 
+}
 #endif // IWORLD_H

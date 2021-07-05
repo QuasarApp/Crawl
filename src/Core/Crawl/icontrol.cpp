@@ -7,6 +7,9 @@
 
 #include "icontrol.h"
 
+namespace CRAWL {
+
+
 IControl::IControl() {
 
 }
@@ -29,4 +32,6 @@ void IControl::setView(const QString &newView) {
         return;
     _view = newView;
     emit viewChanged();
+}
+
 }

@@ -11,6 +11,8 @@
 
 #include "clasteritem.h"
 
+namespace CRAWL {
+
 class Claster;
 
 /**
@@ -41,5 +43,6 @@ protected:
 
     friend class Claster;
 };
+}
 
 #endif // SINGLECLASTERWORLDITEM_H

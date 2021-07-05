@@ -9,6 +9,9 @@
 
 #include <QVector3D>
 
+namespace CRAWL {
+
+
 GuiObject::GuiObject(const QString &name, const QString &viewTempalte, QObject *ptr):
     QObject (ptr) {
     _viewTemplate = viewTempalte;
@@ -179,4 +182,6 @@ void GuiObject::setMash(const QString &newMash) {
         return;
     _mash = newMash;
     emit mashChanged();
+}
+
 }

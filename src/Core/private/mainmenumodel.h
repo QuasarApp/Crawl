@@ -16,6 +16,8 @@ namespace ViewSolutions {
 class ListViewModel;
 }
 
+namespace CRAWL {
+
 class WorldInfo;
 
 /**
@@ -49,4 +51,5 @@ private:
 
 };
 
+}
 #endif // NETWORKPROFILEMAINMODEL_H

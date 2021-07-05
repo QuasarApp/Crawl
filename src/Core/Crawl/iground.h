@@ -11,6 +11,8 @@
 #include "iworlditem.h"
 #include "global.h"
 
+namespace CRAWL {
+
 /**
  * @brief The IGround class This is one tile of the world. Any objects of this type created automatically for filing ground plain.
  */
@@ -24,5 +26,7 @@ public:
 public:
     void render(unsigned int tbfMsec) override;
 };
+
+}
 
 #endif // IGROUND_H
