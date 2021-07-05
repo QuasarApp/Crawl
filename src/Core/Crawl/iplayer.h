@@ -13,6 +13,9 @@
 #include "iworlditem.h"
 #include "Extensions/movableobject.h"
 
+namespace CRAWL {
+
+
 class IControl;
 
 /**
@@ -82,5 +85,7 @@ private:
     const IControl * _currentControl = nullptr;
 
 };
+
+}
 
 #endif // IPLAYER_H

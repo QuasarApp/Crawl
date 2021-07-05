@@ -11,6 +11,8 @@
 #include "iplayer.h"
 #include "Extensions/claster.h"
 
+namespace CRAWL {
+
 class SnakeItem;
 
 /**
@@ -117,5 +119,7 @@ private:
     float _speed;
 
 };
+
+}
 
 #endif // SNAKE_H

@@ -11,6 +11,8 @@
 #include <QList>
 #include <QObject>
 
+namespace CRAWL {
+
 class GuiObject;
 
 /**
@@ -27,6 +29,7 @@ public:
     QList<int> addedIds;
 };
 
-Q_DECLARE_METATYPE(Diff)
+}
+Q_DECLARE_METATYPE(CRAWL::Diff)
 
 #endif // DIFF_H

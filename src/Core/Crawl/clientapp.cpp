@@ -23,6 +23,8 @@
 #include <viewsolutions.h>
 #include "worldstatus.h"
 
+namespace CRAWL {
+
 
 QByteArray ClientApp::initTheme() {
     int themeIndex = Settings::instance()->getValue(THEME, THEME_DEFAULT).toInt();
@@ -148,4 +150,6 @@ void ClientApp::addLvl(IWorld *levelWordl) {
     data.viewModel = new WorldViewData(data.model);
     _availableLvls.insert(data.model->name(), data);
     _menu->addWorldViewModel(data.viewModel);
+}
+
 }

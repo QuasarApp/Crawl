@@ -8,6 +8,8 @@
 #ifndef GAMERESULT_H
 #define GAMERESULT_H
 
+namespace CRAWL {
+
 /**
  * @brief The GameResult struct This is simple structure with game statistic.
  */
@@ -23,5 +25,7 @@ struct GameResult
      */
     int distance = 0;
 };
+
+}
 
 #endif // GAMERESULT_H

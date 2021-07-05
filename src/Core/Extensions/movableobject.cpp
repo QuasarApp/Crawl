@@ -10,6 +10,9 @@
 #include <math.h>
 #include <Crawl/guiobject.h>
 
+namespace CRAWL {
+
+
 MovableObject::MovableObject() {
 
 }
@@ -86,4 +89,6 @@ void MovableObject::renderPosition(GuiObject *object, unsigned int tbfMsec) {
 
 const QVector3D &MovableObject::currentMovableVector() const {
     return _currentMovableVector;
+}
+
 }

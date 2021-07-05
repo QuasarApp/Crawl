@@ -9,6 +9,9 @@
 #include "iworld.h"
 #include "quasarapp.h"
 
+namespace CRAWL {
+
+
 IWorldItem::IWorldItem(const QString& name,
                        const QString& viewTempalte,
                        QObject *ptr):
@@ -55,4 +58,6 @@ void IWorldItem::initOnWorld(const IWorld *world, const IWorldItem * player) {
 
 const IWorld *IWorldItem::world() const {
     return _world;
+}
+
 }

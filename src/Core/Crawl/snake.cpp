@@ -12,6 +12,9 @@
 #include <quasarapp.h>
 #include <cmath>
 
+namespace CRAWL {
+
+
 Snake::Snake(const QString &name, const QString &viewTempalte, QObject *ptr):
     IPlayer (name, viewTempalte, ptr) {
 
@@ -158,4 +161,6 @@ float Snake::lengthBetwinItems() const{
 
 void Snake::setLengthBetwinItems(float newLengthBetwinItems) {
     _lengthBetwinItems = newLengthBetwinItems;
+}
+
 }

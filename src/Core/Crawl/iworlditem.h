@@ -11,6 +11,9 @@
 #include <Crawl/guiobject.h>
 #include "global.h"
 
+namespace CRAWL {
+
+
 class IWorld;
 /**
  * @brief The IWorldItem class This is World item. This class contains functions for control event system.
@@ -62,5 +65,5 @@ private:
     const IWorldItem *_playerObject = nullptr;
     friend class IWorld;
 };
-
+}
 #endif // IWORLDITEM_H

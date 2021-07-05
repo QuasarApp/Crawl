@@ -7,6 +7,7 @@
 
 #include "worldviewdata.h"
 #include "Crawl/iworld.h"
+namespace CRAWL {
 
 WorldViewData::WorldViewData(const IWorld *data) {
     setWorldObject(data);
@@ -62,4 +63,5 @@ void WorldViewData::setWorldObject(const IWorld *newWorldObject) {
     _worldObject = newWorldObject;
     emit dataChanged();
 
+}
 }

@@ -10,6 +10,8 @@
 
 #include "global.h"
 
+namespace CRAWL {
+
 /**
  * @brief The IAI class Is default interface for ai classes.
  * @note example of use :
@@ -36,4 +38,5 @@ public:
     virtual void stopAI() = 0;
 };
 
+}
 #endif // IAI_H

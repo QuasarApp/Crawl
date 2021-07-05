@@ -8,6 +8,9 @@
 #include "iground.h"
 #include "iworld.h"
 
+namespace CRAWL {
+
+
 IGround::IGround(const QString &name,
                  const QString &viewTempalte,
                  QObject *ptr):
@@ -23,4 +26,6 @@ void IGround::render(unsigned int ) {
             camera.z() * 2) {
         setX(playerObject->position().x() + camera.z() * 4);
     }
+}
+
 }

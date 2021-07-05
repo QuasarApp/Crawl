@@ -5,7 +5,7 @@
 /**
  * @brief The TestControl class This controll support custom camera-ratation functions.
  */
-class TestControl: public DefaultControl
+class TestControl: public CRAWL::DefaultControl
 {
     Q_OBJECT
 public:

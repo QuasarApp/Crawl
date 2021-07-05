@@ -69,7 +69,6 @@ Item {
                     themeWarning.visible = true;
                 }
             }
-
         }
 
         Item {

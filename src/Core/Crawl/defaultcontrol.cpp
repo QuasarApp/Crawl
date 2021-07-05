@@ -7,10 +7,13 @@
 
 #include "defaultcontrol.h"
 
+namespace CRAWL {
+
 DefaultControl::DefaultControl() {
 
 }
 
 QString DefaultControl::initQmlView() const {
     return "qrc:/CrawlModule/DefaultMenu.qml";
+}
 }
