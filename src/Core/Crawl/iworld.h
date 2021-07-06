@@ -419,8 +419,17 @@ private:
      * @brief removeItem This method remove item from the world. If the @a id are id of the claster object then its child object will be removed too.
      * @param id This is id of removed object.
      * @param removedObjectsList This is list of removed objects. Leave this argument nullptr for ignore this argument.
+     * @note this is wrapper of the removeItem(IWorldItem*, QList<int>*);
      */
     void removeItem(int id,
+                    QList<int>* removedObjectsList = nullptr);
+
+    /**
+     * @brief removeItem This method remove item from the world. If the @a id are id of the claster object then its child object will be removed too.
+     * @param item This is object than will be removed.
+     * @param removedObjectsList This is list of removed objects. Leave this argument nullptr for ignore this argument.
+     */
+    void removeItem(IWorldItem* item,
                     QList<int>* removedObjectsList = nullptr);
 
     /**
