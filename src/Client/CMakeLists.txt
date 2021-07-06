@@ -26,7 +26,7 @@ else()
     add_executable(${CURRENT_PROJECT} ${SOURCE_CPP})
 endif()
 
-target_link_libraries(${CURRENT_PROJECT} PUBLIC ${PROJECT_NAME}Core TestLvl JungleLvl)
+target_link_libraries(${CURRENT_PROJECT} PUBLIC ${PROJECT_NAME}Core TestLvl)
 
 target_include_directories(${CURRENT_PROJECT} PUBLIC ${PUBLIC_INCUDE_DIR})
 target_include_directories(${CURRENT_PROJECT} PRIVATE ${PRIVATE_INCUDE_DIR})
@@ -72,17 +72,3 @@ if(QT_VERSION_MAJOR EQUAL 6)
     qt_import_qml_plugins(${CURRENT_PROJECT})
     qt_finalize_executable(${CURRENT_PROJECT})
 endif()
-
-
-set(LANGS ${CMAKE_CURRENT_SOURCE_DIR}/languages/en.ts
-          ${CMAKE_CURRENT_SOURCE_DIR}/languages/ru.ts
-          ${CMAKE_CURRENT_SOURCE_DIR}/languages/uk.ts
-          ${CMAKE_CURRENT_SOURCE_DIR}/languages/ja.ts
-          ${CMAKE_CURRENT_SOURCE_DIR}/languages/tr.ts
-          ${CMAKE_CURRENT_SOURCE_DIR}/languages/zh.ts
-          ${CMAKE_CURRENT_SOURCE_DIR}/languages/de.ts
-          ${CMAKE_CURRENT_SOURCE_DIR}/languages/fr.ts
-          ${CMAKE_CURRENT_SOURCE_DIR}/languages/es.ts
-          ${CMAKE_CURRENT_SOURCE_DIR}/languages/pl.ts)
-
-prepareQM(${CURRENT_PROJECT} ${CMAKE_CURRENT_SOURCE_DIR}/../ "${LANGS}")

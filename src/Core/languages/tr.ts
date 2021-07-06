@@ -16,17 +16,6 @@
     </message>
 </context>
 <context>
-    <name>JungleLvl::World</name>
-    <message>
-        <source>Jungle world.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Jungle</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>MainMenu</name>
     <message>
         <source>Play game</source>
