@@ -67,7 +67,6 @@ public:
 
 private:
     QByteArray initTheme();
-    void initLang();
     IWorld* getLastWorld();
 
     /**
