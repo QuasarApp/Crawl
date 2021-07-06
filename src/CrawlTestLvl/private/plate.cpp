@@ -7,6 +7,9 @@
 
 #include "plate.h"
 
+namespace TestLvl {
+
+
 Plate::Plate(): IGround("plate")
 {
     setMash("qrc:/mesh/meshes/cube.mesh");
@@ -16,4 +19,5 @@ Plate::Plate(): IGround("plate")
 
 void Plate::onIntersects(const IWorldItem *item) {
     Q_UNUSED(item)
+}
 }

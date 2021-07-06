@@ -10,6 +10,9 @@
 
 #include "Crawl/iworld.h"
 
+namespace TestLvl {
+
+
 class World : public CRAWL::IWorld {
 
     // IWorld interface
@@ -34,4 +37,6 @@ private slots:
 
 };
 
+
+}
 #endif // WORLD_H

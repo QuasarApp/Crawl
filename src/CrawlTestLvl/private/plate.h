@@ -8,6 +8,8 @@
 #ifndef PLATE_H
 #define PLATE_H
 #include "Crawl/iground.h"
+namespace TestLvl {
+
 
 class Plate: public CRAWL::IGround {
 public:
@@ -17,5 +19,5 @@ public:
 protected:
     void onIntersects(const IWorldItem *item) override;
 };
-
+}
 #endif // PLATE_H

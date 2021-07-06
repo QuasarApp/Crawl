@@ -2,6 +2,8 @@
 #define TESTCONTROL_H
 #include "Crawl/defaultcontrol.h"
 
+namespace TestLvl {
+
 /**
  * @brief The TestControl class This controll support custom camera-ratation functions.
  */
@@ -16,5 +18,7 @@ signals:
     void xChanged(double);
     void yChanged(double);
 };
+
+}
 
 #endif // TESTCONTROL_H

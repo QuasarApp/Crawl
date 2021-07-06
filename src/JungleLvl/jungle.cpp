@@ -14,5 +14,6 @@ Jungle::Jungle() {
 }
 
 CRAWL::IWorld *Jungle::world() {
-    return new World();
+    initJungleLvlResources();
+    return new JungleLvl::World();
 }

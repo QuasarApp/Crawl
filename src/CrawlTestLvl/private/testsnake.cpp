@@ -8,6 +8,8 @@
 #include "testsnake.h"
 #include <testsnakeitem.h>
 
+namespace TestLvl {
+
 TestSnake::TestSnake(): Snake("Snake") {
     setBreakingForce(50);
     setAngularVelocity(100);
@@ -22,4 +24,5 @@ TestSnake::TestSnake(): Snake("Snake") {
 void TestSnake::onIntersects(const IWorldItem *item) {
     Q_UNUSED(item);
 
+}
 }

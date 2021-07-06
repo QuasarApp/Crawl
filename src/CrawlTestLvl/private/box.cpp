@@ -9,6 +9,7 @@
 
 #include <QColor>
 
+namespace TestLvl {
 
 Box::Box(): IWorldItem("Box") {
     setMash("qrc:/mesh/meshes/cube.mesh");
@@ -27,4 +28,5 @@ Box::Box(): IWorldItem("Box") {
 
 void Box::onIntersects(const IWorldItem *item) {
     Q_UNUSED(item);
+}
 }

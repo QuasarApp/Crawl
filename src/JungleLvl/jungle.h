@@ -12,11 +12,11 @@
 #include "jungle_global.h"
 #include <Crawl/ilevel.h>
 
-inline void initTestLvlResources() { Q_INIT_RESOURCE(jungleHDR);
-                                     Q_INIT_RESOURCE(jungleMash);
-                                     Q_INIT_RESOURCE(jungleIntro);
-                                     Q_INIT_RESOURCE(jungleSound);
-                                     Q_INIT_RESOURCE(jungle);}
+inline void initJungleLvlResources() {   Q_INIT_RESOURCE(jungleHDR);
+                                         Q_INIT_RESOURCE(jungleMash);
+                                         Q_INIT_RESOURCE(jungleIntro);
+                                         Q_INIT_RESOURCE(jungleSound);
+                                         Q_INIT_RESOURCE(jungle);}
 
 /**
  * @brief The Jungle class This is main class of the jungle lvl

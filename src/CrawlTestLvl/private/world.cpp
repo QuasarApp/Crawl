@@ -12,6 +12,9 @@
 #include <testsnake.h>
 #include "Crawl/iworlditem.h"
 
+namespace TestLvl {
+
+
 World::World() {
     setCameraReleativePosition({0,0,100});
     setCameraRatation(QQuaternion::fromEulerAngles({0,0,-90}));
@@ -74,4 +77,5 @@ void World::handleYViewChanged(double dy) {
     auto eilorRatation = cameraRatation().toEulerAngles();
     eilorRatation.setY(eilorRatation.y() + dy );
     setCameraRatation(QQuaternion::fromEulerAngles(eilorRatation));
+}
 }

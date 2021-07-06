@@ -10,6 +10,8 @@
 
 #include "Crawl/iworld.h"
 
+namespace JungleLvl {
+
 class World : public CRAWL::IWorld {
 
     // IWorld interface
@@ -33,5 +35,7 @@ private slots:
     void handleYViewChanged(double dy);
 
 };
+
+}
 
 #endif // WORLD_H

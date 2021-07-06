@@ -5,14 +5,14 @@
 //# of this license document, but changing it is not allowed.
 //#
 
-#include "testlvl.h"
+#include "testlevel.h"
 #include "world.h"
 
-TestLvl::TestLvl() {
+TestLevel::TestLevel() {
 
 }
 
-CRAWL::IWorld *TestLvl::world() {
+CRAWL::IWorld *TestLevel::world() {
     initTestLvlResources();
-    return new World();
+    return new TestLvl::World();
 }

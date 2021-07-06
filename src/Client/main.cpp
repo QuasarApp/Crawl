@@ -9,7 +9,8 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <Crawl/clientapp.h>
-#include <testlvl.h>
+#include <testlevel.h>
+#include <jungle.h>
 
 
 int main(int argc, char *argv[])
@@ -22,7 +23,8 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
     CRAWL::ClientApp client;
 
-    client.registerLevel<TestLvl>();
+    client.registerLevel<TestLevel>();
+    client.registerLevel<Jungle>();
 
     if (!client.init(&engine)) {
         return 1;

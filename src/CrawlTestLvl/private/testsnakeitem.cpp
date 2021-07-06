@@ -7,6 +7,7 @@
 
 
 #include "testsnakeitem.h"
+namespace TestLvl {
 
 TestSnakeItem::TestSnakeItem() {
     setMash("qrc:/mesh/meshes/cube.mesh");
@@ -18,4 +19,5 @@ TestSnakeItem::TestSnakeItem() {
 void TestSnakeItem::onIntersects(const IWorldItem *item) {
     Q_UNUSED(item);
 
+}
 }

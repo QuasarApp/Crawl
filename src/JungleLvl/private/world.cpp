@@ -10,6 +10,7 @@
 #include "Crawl/iworlditem.h"
 
 #include <Crawl/snake.h>
+namespace JungleLvl {
 
 World::World() {
     setCameraReleativePosition({0,0,100});
@@ -23,19 +24,19 @@ CRAWL::WorldRule *World::initWorldRules() {
 }
 
 QString World::initHdrBackGround() const {
-    return "qrc:/hdr/hdr/testHDR.hdr";
+    return "qrc:/hdr/hdr/Jungle.hdr";
 }
 
 QString World::description() const {
-    return "This a test lvl";
+    return tr("Jungle world.");
 }
 
 QString World::imagePreview() const {
-    return "qrc:/hdr/hdr/testHDR.jpg";
+    return "qrc:/hdr/hdr/jungleBanner.jpg";
 }
 
 QString World::name() const {
-    return "Test";
+    return tr("Jungle");
 }
 
 int World::costToUnlock() const {
@@ -68,4 +69,6 @@ void World::handleYViewChanged(double dy) {
     auto eilorRatation = cameraRatation().toEulerAngles();
     eilorRatation.setY(eilorRatation.y() + dy );
     setCameraRatation(QQuaternion::fromEulerAngles(eilorRatation));
+}
+
 }

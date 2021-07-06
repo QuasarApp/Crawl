@@ -11,6 +11,9 @@
 #ifndef SNAKE_H
 #define SNAKE_H
 
+namespace JungleLvl {
+
+
 /**
  * @brief The Snake class this is main player class of the jungle level
  */
@@ -26,4 +29,6 @@ protected:
     void onIntersects(const IWorldItem *) override;
 };
 
+
+}
 #endif // SNAKE_H
