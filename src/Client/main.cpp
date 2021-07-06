@@ -9,7 +9,7 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <Crawl/clientapp.h>
-#include <testlvl.h>
+#include <testlevel.h>
 #include <quasarapp.h>
 #include <jungle.h>
 
