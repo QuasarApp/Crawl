@@ -165,10 +165,10 @@ bool IWorld::prepare() {
 }
 
 void IWorld::clearItems() {
-    QMutexLocker lock(&_ItemsMutex);
+    stop();
 
-    for (const auto& item : qAsConst(_items)) {
-        delete item;
+    while (_items.cbegin() != _items.cend()) {
+        removeItem(*_items.cbegin());
     }
 
     _items.clear();
@@ -202,16 +202,18 @@ void IWorld::addItem(IWorldItem *obj, QList<int> *addedObjectsList) {
 }
 
 void IWorld::removeItem(int id, QList<int> *removedObjectsList) {
+    removeItem(getItem(id), removedObjectsList);
+}
 
-    auto obj = getItem(id);
+void IWorld::removeItem(IWorldItem* item, QList<int> *removedObjectsList) {
 
-    if (!obj)
+    if (!item)
         return;
 
     Diff diff;
 
     // Work wih claster
-    if (auto claster = dynamic_cast<Claster*>(obj)) {
+    if (auto claster = dynamic_cast<Claster*>(item)) {
         const auto copyOfObjectsList = claster->objects();
         for (auto item : copyOfObjectsList) {
             if (!item || item->parentClastersCount() > 1)
@@ -226,8 +228,8 @@ void IWorld::removeItem(int id, QList<int> *removedObjectsList) {
         }
     }
 
-    removeAtomicItem(obj);
-    diff.removeIds.push_back(id);
+    removeAtomicItem(item);
+    diff.removeIds.push_back(item->guiId());
 
     if (removedObjectsList)
         *removedObjectsList = diff.removeIds;
@@ -238,7 +240,6 @@ void IWorld::removeItem(int id, QList<int> *removedObjectsList) {
 void IWorld::reset() {
 
     if (_player) {
-        delete _player;
         _player = nullptr;
     }
 
@@ -287,7 +288,7 @@ bool IWorld::removeAtomicItem(int id) {
     _itemsGroup.remove(obj->className(), id);
     _items.remove(id);
 
-    delete obj;
+    obj->deleteLater();
 
     return true;
 }
@@ -302,7 +303,7 @@ bool IWorld::removeAtomicItem(IWorldItem *obj) {
     _itemsGroup.remove(obj->className(), obj->guiId());
     _items.remove(obj->guiId());
 
-    delete obj;
+    obj->deleteLater();
 
     return true;
 }
