@@ -7,11 +7,12 @@
 
 
 #include "jungle.h"
+#include "world.h"
 
 Jungle::Jungle() {
 
 }
 
 CRAWL::IWorld *Jungle::world() {
-    return nullptr;
+    return new World();
 }
