@@ -9,9 +9,24 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <Crawl/clientapp.h>
-#include <testlevel.h>
+#include <testlvl.h>
+#include <quasarapp.h>
 #include <jungle.h>
 
+void initLang() {
+    QLocale locale = QLocale::system();
+    QString customLanguage = QuasarAppUtils::Params::getArg("lang");
+    if(customLanguage.size()) {
+        locale = QLocale(customLanguage);
+    }
+
+    if(!QuasarAppUtils::Locales::init(locale, {":/crawlTranslations/languages/",
+                                               ":/credits_languages/",
+                                               ":/qmlNotify_languages/",
+                                               ":/lv_languages/"})){
+        QuasarAppUtils::Params::log("Error load language : ", QuasarAppUtils::Error);
+    }
+}
 
 int main(int argc, char *argv[])
 {
@@ -29,5 +44,8 @@ int main(int argc, char *argv[])
     if (!client.init(&engine)) {
         return 1;
     }
+
+    initLang();
+
     return app.exec();
 }
