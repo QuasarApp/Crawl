@@ -26,7 +26,7 @@ else()
     add_executable(${CURRENT_PROJECT} ${SOURCE_CPP})
 endif()
 
-target_link_libraries(${CURRENT_PROJECT} PUBLIC ${PROJECT_NAME}Core TestLvl)
+target_link_libraries(${CURRENT_PROJECT} PUBLIC ${PROJECT_NAME}Core TestLvl AbstractLvl)
 
 target_include_directories(${CURRENT_PROJECT} PUBLIC ${PUBLIC_INCUDE_DIR})
 target_include_directories(${CURRENT_PROJECT} PRIVATE ${PRIVATE_INCUDE_DIR})
@@ -37,6 +37,7 @@ file(MAKE_DIRECTORY ${TARGET_DIR})
 if (ANDROID)
     set(SNAKE_EXTRA_LIBS "${PROJECT_NAME}Core"
                          TestLvl
+                         AbstractLvl
                          QuasarApp
                          QmlNotyfyService
                          ViewSolutions)

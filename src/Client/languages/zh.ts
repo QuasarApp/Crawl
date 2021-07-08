@@ -2,6 +2,17 @@
 <!DOCTYPE TS>
 <TS version="2.1">
 <context>
+    <name>AbsLvlWorld</name>
+    <message>
+        <source>This a abstract lvl</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>AbstractLvl</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Crawl</name>
     <message>
         <source>Crawl</source>

@@ -10,6 +10,7 @@
 #include <QQmlContext>
 #include <Crawl/clientapp.h>
 #include <testlvl.h>
+#include <abstractlvl.h>
 #include <quasarapp.h>
 
 void initLang() {
@@ -38,6 +39,7 @@ int main(int argc, char *argv[])
     CRAWL::ClientApp client;
 
     client.registerLevel<TestLvl>();
+    client.registerLevel<AbstractLvl>();
 
     if (!client.init(&engine)) {
         return 1;
