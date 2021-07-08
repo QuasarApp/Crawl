@@ -54,21 +54,6 @@ ClientApp::~ClientApp() {
     _availableLvls.clear();
 }
 
-void ClientApp::initLang() {
-    QLocale locale = QLocale::system();
-    QString customLanguage = QuasarAppUtils::Params::getArg("lang");
-    if(customLanguage.size()) {
-        locale = QLocale(customLanguage);
-    }
-
-    if(!QuasarAppUtils::Locales::init(locale, {":/languages/languages/",
-                                               ":/credits_languages/",
-                                               ":/qmlNotify_languages/",
-                                               ":/lv_languages/"})){
-        QuasarAppUtils::Params::log("Error load language : " , QuasarAppUtils::Error);
-    }
-}
-
 IWorld *ClientApp::getLastWorld() {
     for (const auto &data : qAsConst(_availableLvls)) {
         if (data.viewModel && data.viewModel->unlocked()) {
@@ -120,7 +105,6 @@ bool ClientApp::init(QQmlApplicationEngine *engine) {
                 "Error: only enums");
 
     initCrawlResources();
-    initLang();
 
     engine->addImportPath(":/CrawlModule/");
 
