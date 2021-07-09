@@ -5,15 +5,13 @@
 //# of this license document, but changing it is not allowed.
 //#
 
-#include "testcontrol.h"
+#include "ground.h"
 
-namespace TestLvl {
-
-TestControl::TestControl() {
-
+Ground::Ground() : CRAWL::GroundClaster("JungelGroud") {
+    setMash("#Rectangle");
+    setSize({100,100, 100});
 }
 
-QString TestControl::initQmlView() const {
-    return "qrc:/qml/TestControl.qml";
-}
+void Ground::onIntersects(const IWorldItem *item) {
+
 }

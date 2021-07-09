@@ -22,7 +22,8 @@ World::World() {
 
 CRAWL::WorldRule *World::initWorldRules() {
     return new CRAWL::WorldRule {
-        {0, {{registerObject<Box>(), 1000}}}
+        {0, {{registerObject<Box>(), 1},
+             {registerObject<Plate>(), 1}}}
     };
 }
 

@@ -11,7 +11,7 @@
 #include "iworlditem.h"
 #include <defaultbackgroundai.h>
 #include <quasarapp.h>
-#include "iground.h"
+#include "groundclaster.h"
 #include "defaultcontrol.h"
 #include "worldstatus.h"
 #include "iai.h"

@@ -5,7 +5,6 @@
 //# of this license document, but changing it is not allowed.
 //#
 
-
 #include "testsnakeitem.h"
 namespace TestLvl {
 

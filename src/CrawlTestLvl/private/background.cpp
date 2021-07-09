@@ -5,24 +5,21 @@
 //# of this license document, but changing it is not allowed.
 //#
 
+#include "background.h"
 #include "plate.h"
 
 namespace TestLvl {
 
-
-Plate::Plate(): CRAWL::ClasterItem("TestPlate")
-{
-    setMash("#Cube");
-    setColor("#ff5555");
-    setSize({1,1,0.01});
-    setZ(0);
+Background::Background(): CRAWL::GroundClaster("TestBackground") {
+    registerItemType<Plate>();
 }
 
-void Plate::onIntersects(const IWorldItem *item) {
+void Background::onIntersects(const IWorldItem *item) {
     Q_UNUSED(item)
 }
 
-void Plate::render(unsigned int){
-
+unsigned int Background::itemsCount() const {
+    return 3;
 }
+
 }

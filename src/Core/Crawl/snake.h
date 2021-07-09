@@ -9,7 +9,7 @@
 #define CRAWL_SNAKE_H
 
 #include "iplayer.h"
-#include "Extensions/claster.h"
+#include "Extensions/autogenerateclaster.h"
 
 namespace CRAWL {
 
@@ -18,7 +18,7 @@ class SnakeItem;
 /**
  * @brief The Snake class This class implement render mehod for snake object.
  */
-class CRAWL_EXPORT Snake : public IPlayer, public Claster
+class CRAWL_EXPORT Snake : public IPlayer, public AutoGenerateClaster
 {
     Q_OBJECT
 public:
@@ -48,16 +48,6 @@ public:
      */
     void setLengthBetwinItems(float newLengthBetwinItems);
 
-    template<class Type>
-    /**
-     * @brief registerBodyitem This method register snake body item type. The body items will be generated in the generateBody method. The size of body companents calc from the Snake::scales property.
-     */
-    void registerBodyitem() {
-        _factory = [](){
-            return new Type;
-        };
-    }
-
     /**
      * @brief scales This method return the map of the snake body scales.
      *  The key of map are position of snake Body and the value are scale factor of current body item.
@@ -78,19 +68,6 @@ public:
     void setScales(const QMap<float, float> &newScales);
 
     /**
-     * @brief bodyCount This method return count of the body items of this snake.
-     * @return count of body items of the snake.
-     */
-    int bodyCount() const;
-
-    /**
-     * @brief setBodyCount This method sets new size of snake.
-     * @param newBodyCount this is new value of the body count.
-     * @note Use This method in the constructor of your child snake class.
-     */
-    void setBodyCount(int newBodyCount);
-
-    /**
      * @brief speed This method return current speed snake speed.
      * @return snake speed
      */
@@ -102,17 +79,18 @@ public:
      */
     void setSpeed(float newSpeed);
 
+    unsigned int itemsCount() const override;
+
 protected slots:
     void onTap() override;
 
+
 private:
-    void generateBody();
+    void generateItems() override;
 
     QMap<float, float> _scales;
-    std::function<ClasterItem*()> _factory = nullptr;
 
     float _lengthBetwinItems;
-    int _bodyCount;
     const IWorldItem* _lastSnakeItem = nullptr;
     unsigned int _clickIndex;
     QVector3D* _vectors;

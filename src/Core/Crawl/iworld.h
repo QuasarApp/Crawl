@@ -27,7 +27,7 @@ namespace CRAWL {
 
 class IWorldItem;
 class IPlayer;
-class IGround;
+class GroundClaster;
 class IControl;
 class IAI;
 

@@ -23,6 +23,10 @@ public:
 protected:
     void onIntersects(const IWorldItem *item) override;
 
+
+    // AutoGenerateClaster interface
+public:
+    unsigned int itemsCount() const override;
 };
 
 }

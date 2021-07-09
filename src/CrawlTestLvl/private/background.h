@@ -5,27 +5,29 @@
 //# of this license document, but changing it is not allowed.
 //#
 
-#ifndef PLATE_H
-#define PLATE_H
-#include "Crawl/clasteritem.h"
+#ifndef BACKGROUND_H
+#define BACKGROUND_H
+
+#include "Crawl/groundclaster.h"
+
 namespace TestLvl {
 
-
 /**
- * @brief The Plate class
+ * @brief The Background class
  */
-class Plate: public CRAWL::ClasterItem {
-    Q_OBJECT
+class Background: public CRAWL::GroundClaster
+{
 public:
-    Plate();
+    Background();
 
     // IWorldItem interface
 protected:
     void onIntersects(const IWorldItem *item) override;
 
-    // IRender interface
+    // AutoGenerateClaster interface
 public:
-    void render(unsigned int tbfMsec) override;
+    unsigned int itemsCount() const override;
 };
+
 }
-#endif // PLATE_H
+#endif // BACKGROUND_H
