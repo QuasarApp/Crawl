@@ -15,7 +15,7 @@
 
 
 AbsLvlWorld::AbsLvlWorld() {
-
+    setCameraReleativePosition({0, 0, 100});
 }
 
 CRAWL::IPlayer *AbsLvlWorld::initPlayer() const {
