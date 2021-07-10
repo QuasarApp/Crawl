@@ -15,7 +15,7 @@ AbsLvlSnake::AbsLvlSnake(): Snake("Snake") {
     setMash("qrc:/mesh/meshes/SnakePatternHead.mesh");
     setSize({2,1,1});
 
-    registerBodyitem<AbsLvlSnakeItem>();
+    registerItemType<AbsLvlSnakeItem>();
 }
 
 void AbsLvlSnake::onIntersects(const IWorldItem *item) {

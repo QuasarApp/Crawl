@@ -5,6 +5,7 @@
 //# of this license document, but changing it is not allowed.
 //#
 
+#include "background.h"
 #include "box.h"
 #include "plate.h"
 #include "testcontrol.h"
@@ -22,8 +23,8 @@ World::World() {
 
 CRAWL::WorldRule *World::initWorldRules() {
     return new CRAWL::WorldRule {
-        {0, {{registerObject<Box>(), 1},
-             {registerObject<Plate>(), 1}}}
+        {0, {{registerObject<Box>(), 1000},
+             {registerObject<Background>(), 1}}}
     };
 }
 

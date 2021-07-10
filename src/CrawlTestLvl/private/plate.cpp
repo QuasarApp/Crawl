@@ -13,8 +13,8 @@ namespace TestLvl {
 Plate::Plate(): CRAWL::ClasterItem("TestPlate")
 {
     setMash("#Cube");
-    setColor("#ff5555");
-    setSize({1,1,0.01});
+    setColor("#5c4f45");
+    setSize({10,10,0.01});
     setZ(0);
 }
 

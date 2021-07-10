@@ -27,6 +27,6 @@ void TestSnake::onIntersects(const IWorldItem *item) {
 }
 
 unsigned int TestSnake::itemsCount() const {
-    return 0;
+    return 50;
 }
 }

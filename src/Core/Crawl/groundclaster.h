@@ -47,7 +47,7 @@ protected:
 
 private:
     QList<IWorldItem*> _itemsOrder;
-    int _index = 0;
+    unsigned int _index = 0;
 
 };
 

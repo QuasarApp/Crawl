@@ -28,8 +28,9 @@ void GroundClaster::render(unsigned int ) {
     if (playerObject->position().x() - object->position().x() >
             camera.z()) {
 
-        setX(playerObject->position().x() + newObjectDistance());
-        setY(playerObject->position().y());
+        auto prewObject = _itemsOrder.at((_index - 1) % _itemsOrder.size());
+        object->setX(prewObject->position().x() + newObjectDistance());
+        object->setY(playerObject->position().y());
 
         _index++;
     }
@@ -37,6 +38,7 @@ void GroundClaster::render(unsigned int ) {
 
 void GroundClaster::add(ClasterItem *object) {
 
+    object->setX(newObjectDistance() * _itemsOrder.count());
     _itemsOrder.push_back(object);
 
     Claster::add(object);
@@ -59,7 +61,7 @@ void GroundClaster::init() {
 }
 
 int GroundClaster::newObjectDistance() const {
-    return 2000;
+    return 500;
 }
 
 unsigned int GroundClaster::itemsCount() const {
