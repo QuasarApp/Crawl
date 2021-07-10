@@ -14,7 +14,8 @@ Snake::Snake(): CRAWL::Snake("JungleSnake") {
     registerItemType<JungleLvl::SnakeItem>();
     setMash("qrc:/mesh/meshes/Other/Snake_head.mesh");
     setBaseColorMap("qrc:/mesh/meshes/Other/Snake_Base.jpg");
-    setSize({1,1,1});
+    setSize({1.5,1.5,1.5});
+    setStaticRotation(QQuaternion::fromEulerAngles(0,90,-90));
 
 }
 

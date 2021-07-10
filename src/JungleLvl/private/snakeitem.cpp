@@ -12,7 +12,7 @@ namespace JungleLvl {
 SnakeItem::SnakeItem(): CRAWL::SnakeItem("JungleSnakeItem") {
     setMash("qrc:/mesh/meshes/Other/Snake_body.mesh");
     setBaseColorMap("qrc:/mesh/meshes/Other/Snake_Base.jpg");
-    setSize({1,1,1});
+    setSize({2,2,2});
 }
 
 void SnakeItem::init() {
