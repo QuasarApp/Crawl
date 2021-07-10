@@ -8,67 +8,65 @@ DefaultMenu {
     columns: 2
     rows: 2
 
-    Button {
-        text: "🌀"
-
-        onClicked: {
-            model.userTap()
-        }
-    }
-
-    MouseArea {
-        property bool track: false
-        property real oldX: 0
-        property real oldY: 0
-        cursorShape: Qt.DragMoveCursor
-
+    Rectangle {
         Layout.fillHeight: true
         Layout.fillWidth: true
         Layout.columnSpan: 2
         Layout.rowSpan: 2
 
-        onPressed: {
-            track = true
-            oldX = mouse.x
-            oldY = mouse.y
+        color: "#22000000"
 
-        }
+        MouseArea {
+            property bool track: false
+            property real oldX: 0
+            property real oldY: 0
+            cursorShape: Qt.DragMoveCursor
+            onPressed: {
+                track = true
+                oldX = mouse.x
+                oldY = mouse.y
 
-        onReleased: {
-            track = false
-        }
-
-        onMouseXChanged: {
-            if (!model) {
-                return;
             }
 
-            if (!track) {
-                return;
+            onReleased: {
+                track = false
             }
 
-            const delta = mouse.x - oldX;
-            const radianDelta = (delta / (parent.width / 2)) * 45
+            onMouseXChanged: {
+                if (!model) {
+                    return;
+                }
 
-            model.xChanged(radianDelta)
-            oldX = mouse.x;
-        }
+                if (!track) {
+                    return;
+                }
 
-        onMouseYChanged:  {
-            if (!model) {
-                return;
+                const delta = mouse.x - oldX;
+                const radianDelta = (delta / (parent.width / 2)) * 45
+
+                model.xChanged(radianDelta)
+                oldX = mouse.x;
             }
 
-            if (!track) {
-                return;
+            onMouseYChanged:  {
+                if (!model) {
+                    return;
+                }
+
+                if (!track) {
+                    return;
+                }
+
+                const delta = mouse.y - oldY;
+                const radianDelta = (delta / (parent.height / 2)) * 45
+
+                model.yChanged(radianDelta)
+                oldY = mouse.y;
             }
 
-            const delta = mouse.y - oldY;
-            const radianDelta = (delta / (parent.height / 2)) * 45
-
-            model.yChanged(radianDelta)
-            oldY = mouse.y;
+            anchors.fill: parent
         }
     }
+
 
 }
