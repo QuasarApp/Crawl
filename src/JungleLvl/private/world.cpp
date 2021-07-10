@@ -5,6 +5,7 @@
 //# of this license document, but changing it is not allowed.
 //#
 
+#include "ground.h"
 #include "snake.h"
 #include "world.h"
 #include "Crawl/iworlditem.h"
@@ -19,7 +20,8 @@ World::World() {
 
 CRAWL::WorldRule *World::initWorldRules() {
     return new CRAWL::WorldRule {
-        {}
+        {0, {
+             {registerObject<Ground>(), 1}}}
     };
 }
 

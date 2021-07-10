@@ -184,4 +184,34 @@ void GuiObject::setMash(const QString &newMash) {
     emit mashChanged();
 }
 
+void GuiObject::setBaseColorMap(const QString &baseColorMap) {
+    if (_baseColorMap == baseColorMap)
+        return;
+    _baseColorMap = baseColorMap;
+    emit baseColorMapChanged();
+}
+
+
+void GuiObject::setRoughnessMap(const QString &roughnessMap) {
+    if (_roughnessMap == roughnessMap)
+        return;
+    _roughnessMap = roughnessMap;
+    emit roughnessMapChanged();
+}
+
+
+void GuiObject::setNormalMap(const QString &normalMap) {
+    if (_normalMap == normalMap)
+        return;
+    _normalMap = normalMap;
+    emit normalMapChanged();
+}
+
+void GuiObject::setEmissiveMap(const QString &emissiveMap) {
+    if (_emissiveMap == emissiveMap)
+        return;
+    _emissiveMap = emissiveMap;
+    emit emissiveMapChanged();
+}
+
 }

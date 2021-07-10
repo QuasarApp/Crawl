@@ -5,30 +5,26 @@
 //# of this license document, but changing it is not allowed.
 //#
 
-#ifndef GROUND_H
-#define GROUND_H
 
-#include "Crawl/groundclaster.h"
+#ifndef GROUNDPLATE_H
+#define GROUNDPLATE_H
+
+#include "Crawl/groundtile.h"
 
 namespace JungleLvl {
 
-
 /**
- * @brief The Ground class This is main ground plate
+ * @brief The GroundPlate class
  */
-class Ground : public CRAWL::GroundClaster
+class GroundPlate: public CRAWL::GroundTile
 {
+    Q_OBJECT
 public:
-    Ground();
+    GroundPlate();
 
     // IWorldItem interface
 protected:
     void onIntersects(const IWorldItem *item) override;
-
-    // AutoGenerateClaster interface
-public:
-    unsigned int itemsCount() const override;
 };
-
 }
-#endif // GROUND_H
+#endif // GROUNDPLATE_H

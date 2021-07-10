@@ -17,6 +17,8 @@ namespace CRAWL {
 /**
  * @brief The GroundClaster class This is main control class for background plates of the world.
  * Default behavior: create the tile grid and move old tiles to end of the world.
+ *
+ * @note use This class with child classes of the GroundTile class.
  */
 class CRAWL_EXPORT GroundClaster: public IWorldItem, public AutoGenerateClaster {
 

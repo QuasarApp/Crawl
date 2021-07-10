@@ -10,7 +10,7 @@
 namespace TestLvl {
 
 
-Plate::Plate(): CRAWL::ClasterItem("TestPlate")
+Plate::Plate(): CRAWL::GroundTile("TestPlate")
 {
     setMash("#Cube");
     setColor("#5c4f45");

@@ -5,19 +5,20 @@
 //# of this license document, but changing it is not allowed.
 //#
 
-#include "ground.h"
+
 #include "groundplate.h"
 namespace JungleLvl {
 
-Ground::Ground() : CRAWL::GroundClaster("JungelGroud") {
-    registerItemType<GroundPlate>();
+GroundPlate::GroundPlate(): CRAWL::GroundTile("JungleGroundTile") {
+    setMash("#Cube");
+    setSize({10, 10, 0.01});
+    setBaseColorMap("qrc:/mesh/meshes/Other/Terrain_Base.jpg");
+    setNormalMap("qrc:/mesh/meshes/Other/Terrain_Normal.jpg");
+
 }
 
-void Ground::onIntersects(const IWorldItem *) {
+void GroundPlate::onIntersects(const IWorldItem *) {
 
 }
 
-unsigned int Ground::itemsCount() const {
-    return 3;
-}
 }

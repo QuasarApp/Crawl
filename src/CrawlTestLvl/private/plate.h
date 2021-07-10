@@ -7,14 +7,14 @@
 
 #ifndef PLATE_H
 #define PLATE_H
-#include "Crawl/clasteritem.h"
+#include "Crawl/groundtile.h"
 namespace TestLvl {
 
 
 /**
  * @brief The Plate class
  */
-class Plate: public CRAWL::ClasterItem {
+class Plate: public CRAWL::GroundTile {
     Q_OBJECT
 public:
     Plate();
