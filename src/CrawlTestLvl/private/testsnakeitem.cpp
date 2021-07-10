@@ -8,7 +8,7 @@
 #include "testsnakeitem.h"
 namespace TestLvl {
 
-TestSnakeItem::TestSnakeItem() {
+TestSnakeItem::TestSnakeItem():CRAWL::SnakeItem("TestSnakeItem") {
     setMash("qrc:/mesh/meshes/cube.mesh");
     setColor("#20aa9a");
     setSize({1,1,1});

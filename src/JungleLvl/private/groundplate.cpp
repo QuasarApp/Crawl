@@ -9,16 +9,29 @@
 #include "groundplate.h"
 namespace JungleLvl {
 
-GroundPlate::GroundPlate(): CRAWL::GroundTile("JungleGroundTile") {
+GroundPlate::GroundPlate(): CRAWL::GroundTile("JungleGroundTile",
+                                              "qrc:/qml/Models/Ground.qml") {
     setMash("#Cube");
-    setSize({10, 10, 0.01});
+    setSize({6, 6, 0.01});
     setBaseColorMap("qrc:/mesh/meshes/Other/Terrain_Base.jpg");
     setNormalMap("qrc:/mesh/meshes/Other/Terrain_Normal.jpg");
+    setTiliesCount(6);
 
 }
 
 void GroundPlate::onIntersects(const IWorldItem *) {
 
+}
+
+int GroundPlate::tiliesCount() const {
+    return _tiliesCount;
+}
+
+void GroundPlate::setTiliesCount(int newTiliesCount) {
+    if (_tiliesCount == newTiliesCount)
+        return;
+    _tiliesCount = newTiliesCount;
+    emit tiliesCountChanged();
 }
 
 }

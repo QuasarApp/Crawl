@@ -5,30 +5,24 @@
 //# of this license document, but changing it is not allowed.
 //#
 
-#include <Crawl/snake.h>
-#include "jungle_global.h"
+#include "Crawl/snakeitem.h"
 
-#ifndef SNAKE_H
-#define SNAKE_H
+#ifndef JUNGLESNAKEITEM_H
+#define JUNGLESNAKEITEM_H
 
 namespace JungleLvl {
 
 
-/**
- * @brief The Snake class this is main player class of the jungle level
- */
-class Snake: public CRAWL::Snake
+class SnakeItem : public CRAWL::SnakeItem
 {
-    Q_OBJECT
-
 public:
-    Snake();
+    SnakeItem();
+    void init() override;
 
     // IWorldItem interface
 protected:
-    void onIntersects(const IWorldItem *) override;
+    void onIntersects(const IWorldItem *item) override;
 };
 
-
 }
-#endif // SNAKE_H
+#endif // JUNGLESNAKEITEM_H

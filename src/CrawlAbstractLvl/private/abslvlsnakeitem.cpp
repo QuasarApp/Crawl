@@ -7,7 +7,7 @@
 
 #include "abslvlsnakeitem.h"
 
-AbsLvlSnakeItem::AbsLvlSnakeItem() {
+AbsLvlSnakeItem::AbsLvlSnakeItem():CRAWL::SnakeItem("AbstractSnakeItem") {
     setMash("qrc:/mesh/meshes/SnakePatternBody.mesh");
     setColor("#20aa9a");
     setSize({1,1,1});

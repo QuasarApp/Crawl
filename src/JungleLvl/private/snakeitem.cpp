@@ -5,20 +5,22 @@
 //# of this license document, but changing it is not allowed.
 //#
 
-#include "snake.h"
 #include "snakeitem.h"
 
 namespace JungleLvl {
 
-Snake::Snake(): CRAWL::Snake("JungleSnake") {
-    registerItemType<JungleLvl::SnakeItem>();
-    setMash("qrc:/mesh/meshes/Other/Snake_head.mesh");
+SnakeItem::SnakeItem(): CRAWL::SnakeItem("JungleSnakeItem") {
+    setMash("qrc:/mesh/meshes/Other/Snake_body.mesh");
     setBaseColorMap("qrc:/mesh/meshes/Other/Snake_Base.jpg");
     setSize({1,1,1});
+}
+
+void SnakeItem::init() {
 
 }
 
-void Snake::onIntersects(const IWorldItem *) {
+void SnakeItem::onIntersects(const IWorldItem *) {
 
 }
+
 }

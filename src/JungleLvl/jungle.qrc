@@ -1,3 +1,5 @@
 <RCC>
-    <qresource prefix="/qml"/>
+    <qresource prefix="/qml">
+        <file>Models/Ground.qml</file>
+    </qresource>
 </RCC>

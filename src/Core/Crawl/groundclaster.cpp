@@ -22,7 +22,6 @@ GroundClaster::GroundClaster(const QString &name,
 
 void GroundClaster::render(unsigned int ) {
     const IWorldItem *playerObject = getPlayer();
-    QVector3D camera = world()->cameraReleativePosition();
 
     if (!_itemsOrder.size()) {
         QuasarAppUtils::Params::log("The GroundClaster do not have any claster items.",
@@ -33,11 +32,13 @@ void GroundClaster::render(unsigned int ) {
     auto object = _itemsOrder.at(_index % _itemsOrder.size());
 
     if (playerObject->position().x() - object->position().x() >
-            camera.z()) {
+            newObjectDistance()) {
 
         auto prewObject = _itemsOrder.at((_index - 1) % _itemsOrder.size());
-        object->setX(prewObject->position().x() + newObjectDistance());
-        object->setY(playerObject->position().y());
+
+        object->setposition({prewObject->position().x() + newObjectDistance(),
+                             playerObject->position().y(),
+                             object->position().z() - static_cast<float>(0.0001)});
 
         _index++;
     }

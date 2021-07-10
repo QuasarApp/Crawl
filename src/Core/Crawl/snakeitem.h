@@ -19,7 +19,9 @@ class CRAWL_EXPORT SnakeItem: public SingleClasterWorldItem, public MovableObjec
 {
     Q_OBJECT
 public:
-    SnakeItem(const QString itemName = "SnakeItem");
+    SnakeItem(const QString& name,
+              const QString& viewTempalte = DEFAULT_VIEW_TEMPLATE,
+              QObject *ptr = nullptr);
 
     /**
      * @brief setPrev This method sets id of the previous snake item.

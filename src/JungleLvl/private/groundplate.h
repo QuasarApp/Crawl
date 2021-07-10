@@ -19,12 +19,22 @@ namespace JungleLvl {
 class GroundPlate: public CRAWL::GroundTile
 {
     Q_OBJECT
+    Q_PROPERTY(int tiliesCount READ tiliesCount WRITE setTiliesCount NOTIFY tiliesCountChanged)
+
 public:
     GroundPlate();
 
-    // IWorldItem interface
+    int tiliesCount() const;
+    void setTiliesCount(int newTiliesCount);
+
+signals:
+    void tiliesCountChanged();
+
 protected:
     void onIntersects(const IWorldItem *item) override;
+
+private:
+    int _tiliesCount = 1;
 };
 }
 #endif // GROUNDPLATE_H

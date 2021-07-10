@@ -17,6 +17,7 @@ Model {
                                        model.emissiveMap.length ||
                                        model.roughnessMap.length ||
                                        model.normalMap.length)
+    property int tilies: 1
 
     DefaultMaterial {
         id: defaultMaterial
@@ -25,10 +26,38 @@ Model {
 
     PrincipledMaterial {
         id:  objMaterial
-        baseColorMap: Texture { source: (model)? model.baseColorMap: "" }
-        emissiveMap: Texture  { source: (model)? model.emissiveMap: "" }
-        roughnessMap: Texture { source: (model)? model.roughnessMap: "" }
-        normalMap: Texture    { source: (model)? model.normalMap: "" }
+        baseColorMap: Texture {
+            source: (model)? model.baseColorMap: ""
+            tilingModeHorizontal: (tilies > 1)? Texture.Repeat : Texture.ClampToEdge
+            tilingModeVertical: (tilies > 1)? Texture.Repeat : Texture.ClampToEdge
+            scaleU: tilies
+            scaleV: tilies
+
+        }
+
+        emissiveMap: Texture  {
+            source: (model)? model.emissiveMap: ""
+            tilingModeHorizontal: (tilies > 1)? Texture.Repeat : Texture.ClampToEdge
+            tilingModeVertical: (tilies > 1)? Texture.Repeat : Texture.ClampToEdge
+            scaleU: tilies
+            scaleV: tilies
+        }
+
+        roughnessMap: Texture {
+            source: (model)? model.roughnessMap: ""
+            tilingModeHorizontal: (tilies > 1)? Texture.Repeat : Texture.ClampToEdge
+            tilingModeVertical: (tilies > 1)? Texture.Repeat : Texture.ClampToEdge
+            scaleU: tilies
+            scaleV: tilies
+        }
+
+        normalMap: Texture    {
+            source: (model)? model.normalMap: ""
+            tilingModeHorizontal: (tilies > 1)? Texture.Repeat : Texture.ClampToEdge
+            tilingModeVertical: (tilies > 1)? Texture.Repeat : Texture.ClampToEdge
+            scaleU: tilies
+            scaleV: tilies
+        }
     }
 
     materials: [
