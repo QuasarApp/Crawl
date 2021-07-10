@@ -25,9 +25,6 @@ AbstractMenuView {
     }
 
     MouseArea {
-        property bool track: false
-        property real oldX: 0
-        property real oldY: 0
         cursorShape: Qt.DragMoveCursor
 
         Layout.fillHeight: true
