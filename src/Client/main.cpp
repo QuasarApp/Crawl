@@ -10,6 +10,7 @@
 #include <QQmlContext>
 #include <Crawl/clientapp.h>
 #include <testlevel.h>
+#include <abstractlvl.h>
 #include <quasarapp.h>
 #include <jungle.h>
 
@@ -39,6 +40,7 @@ int main(int argc, char *argv[])
     CRAWL::ClientApp client;
 
     client.registerLevel<TestLevel>();
+    client.registerLevel<AbstractLvl>();
     client.registerLevel<Jungle>();
 
     if (!client.init(&engine)) {

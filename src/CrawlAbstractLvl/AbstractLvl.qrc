@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/qml">
+        <file>AbsLvlControl.qml</file>
+    </qresource>
+</RCC>
