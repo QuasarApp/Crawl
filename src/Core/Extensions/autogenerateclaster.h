@@ -15,7 +15,7 @@ namespace CRAWL {
 /**
  * @brief The AutoGenerateClaster class hs support the registration default claster item class and factory method for the items.
  */
-class AutoGenerateClaster: public Claster
+class CRAWL_EXPORT AutoGenerateClaster: public Claster
 {
 public:
     AutoGenerateClaster();
