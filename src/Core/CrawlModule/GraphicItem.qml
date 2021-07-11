@@ -26,6 +26,7 @@ Model {
 
     PrincipledMaterial {
         id:  objMaterial
+        roughness : 1
         baseColorMap: Texture {
             source: (model)? model.baseColorMap: ""
             tilingModeHorizontal: (tilies > 1)? Texture.Repeat : Texture.ClampToEdge

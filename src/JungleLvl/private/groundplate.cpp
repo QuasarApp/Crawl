@@ -15,6 +15,8 @@ GroundPlate::GroundPlate(): CRAWL::GroundTile("JungleGroundTile",
     setSize({6, 6, 0.01});
     setBaseColorMap("qrc:/mesh/meshes/Other/Terrain_Base.jpg");
     setNormalMap("qrc:/mesh/meshes/Other/Terrain_Normal.jpg");
+//    setRoughnessMap("qrc:/mesh/meshes/Other/Roughness_without.jpg");
+//    setEmissiveMap("qrc:/mesh/meshes/Other/Emission_without.jpg");
     setTiliesCount(6);
 
 }

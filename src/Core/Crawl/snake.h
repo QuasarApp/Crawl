@@ -81,6 +81,39 @@ public:
 
     unsigned int itemsCount() const override;
 
+    /**
+     * @brief lengthBetwinItemsMap This method return map with lengths betwin items.
+     * The key of map are position of snake Body and the value are length  betwin this current and parent items.
+     *  The default map of snake are:
+     *  ```
+     *  0.0 - 0.8
+     *  0.6 - 1.2
+     *  1   - 0.5
+     *  ```
+     * @return  length betwin items map of snake body.
+     */
+    const QMap<float, float> &lengthBetwinItemsMap() const;
+
+    /**
+     * @brief setLengthBetwinItemsMap This method sets new valud of the length betwin items map.
+     * @param newLengthBetwinItemsMap this is new value of the length betwin tems map.
+     * @note for get more information see the lengthBetwinItemsMap method.
+     */
+    void setLengthBetwinItemsMap(const QMap<float, float> &newLengthBetwinItemsMap);
+
+    /**
+     * @brief getValueFromMap This method return near value from the map by position.
+     * @param map This is map that contains list of the values.
+     * @param position This requried position from map.
+     * @param defaultValue This value will be returned when map are empty.
+     * @return near value of the requried position.
+     *
+     * @note This function works as a gradient.
+     */
+    float getValueFromMap(const QMap<float, float> &map,
+                          float position,
+                          float defaultValue = 1);
+
 protected slots:
     void onTap() override;
 
@@ -88,7 +121,9 @@ protected slots:
 private:
     void generateItems() override;
 
+
     QMap<float, float> _scales;
+    QMap<float, float> _lengthBetwinItemsMap;
 
     float _lengthBetwinItems;
     const IWorldItem* _lastSnakeItem = nullptr;

@@ -32,9 +32,9 @@ void SnakeItem::render(unsigned int tbfMsec) {
     if (auto claster = static_cast<Snake*>(parentClaster())) {
         float ratationLength = ratationVector.length();
 
-        if (ratationLength > claster->lengthBetwinItems() * 10) {
+        if (ratationLength > lengthBetwinItems() * 10) {
             setposition(_prevObject->position());
-        } else if (ratationLength > claster->lengthBetwinItems()) {
+        } else if (ratationLength > lengthBetwinItems()) {
             setMovableVector(ratationVector.normalized() * claster->currentMovableVector().length());
         }
     }
@@ -44,5 +44,13 @@ void SnakeItem::render(unsigned int tbfMsec) {
 
 const IWorldItem * SnakeItem::prev() const {
     return _prevObject;
+}
+
+float SnakeItem::lengthBetwinItems() const {
+    return _lengthBetwinItems;
+}
+
+void SnakeItem::setLengthBetwinItems(float newLengthBetwinItems) {
+    _lengthBetwinItems = newLengthBetwinItems;
 }
 }

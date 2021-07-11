@@ -11,15 +11,31 @@
 namespace JungleLvl {
 
 Snake::Snake(): CRAWL::Snake("JungleSnake") {
+    setBreakingForce(50);
+    setAngularVelocity(100);
+
     registerItemType<JungleLvl::SnakeItem>();
     setMash("qrc:/mesh/meshes/Other/Snake_head.mesh");
     setBaseColorMap("qrc:/mesh/meshes/Other/Snake_Base.jpg");
-    setSize({1.5,1.5,1.5});
-    setStaticRotation(QQuaternion::fromEulerAngles(0,90,-90));
+    setSize({1,1,1});
+    setStaticRotation(QQuaternion::fromEulerAngles(0,0,0));
 
+
+    setScales({{0, 0.9},
+              {0.4, 1.2},
+              {1, 0.5}});
+
+    setLengthBetwinItemsMap({{0, 4.5},
+                             {0.01, 1},
+                             {0.4, 1.5},
+                             {1, 0.5}});
 }
 
 void Snake::onIntersects(const IWorldItem *) {
 
+}
+
+unsigned int Snake::itemsCount() const {
+    return 35;
 }
 }
