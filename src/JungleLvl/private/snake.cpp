@@ -25,10 +25,10 @@ Snake::Snake(): CRAWL::Snake("JungleSnake") {
               {0.4, 1.2},
               {1, 0.5}});
 
-    setLengthBetwinItemsMap({{0, 4.5},
-                             {0.01, 1},
-                             {0.4, 1.5},
-                             {1, 0.5}});
+    setLengthBetwinItemsMap({{0, 4},
+                             {0.01, 2},
+                             {0.4, 2.5},
+                             {1, 1.0}});
 }
 
 void Snake::onIntersects(const IWorldItem *) {
