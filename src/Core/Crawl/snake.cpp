@@ -110,7 +110,10 @@ float CRAWL::Snake::getValueFromMap(const QMap<float, float> &map,
             }
         }
 
-        return ((position - fromKey) * toKey / (to - from)) + from;
+        float localPosition = (position - fromKey) / toKey - fromKey;
+        float valueDiff = from - to;
+
+        return from + localPosition * valueDiff;
     }
 
     return defaultValue;
