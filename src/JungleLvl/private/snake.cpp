@@ -21,13 +21,13 @@ Snake::Snake(): CRAWL::Snake("JungleSnake") {
     setStaticRotation(QQuaternion::fromEulerAngles(0,0,0));
 
 
-    setScales({{0, 1},
+    setScales({{0, 0.9},
               {0.6, 1},
               {1, 0.5}});
 
-    setLengthBetwinItemsMap({{0, 4},
-                             {0.01, 1},
-                             {0.4, 1.5},
+    setLengthBetwinItemsMap({{0, 3},
+                             {0.001, 0.9},
+                             {0.6, 1},
                              {1, 0.5}});
 }
 
@@ -36,6 +36,6 @@ void Snake::onIntersects(const IWorldItem *) {
 }
 
 unsigned int Snake::itemsCount() const {
-    return 35;
+    return 50;
 }
 }
