@@ -10,6 +10,8 @@
 
 #include "Crawl/snake.h"
 
+namespace TestLvl {
+
 class TestSnake : public CRAWL::Snake {
 
     Q_OBJECT
@@ -21,6 +23,12 @@ public:
 protected:
     void onIntersects(const IWorldItem *item) override;
 
+
+    // AutoGenerateClaster interface
+public:
+    unsigned int itemsCount() const override;
 };
+
+}
 
 #endif // TESTSNAKE_H

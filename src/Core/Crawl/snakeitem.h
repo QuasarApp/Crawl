@@ -19,7 +19,9 @@ class CRAWL_EXPORT SnakeItem: public SingleClasterWorldItem, public MovableObjec
 {
     Q_OBJECT
 public:
-    SnakeItem(const QString itemName = "SnakeItem");
+    SnakeItem(const QString& name,
+              const QString& viewTempalte = DEFAULT_VIEW_TEMPLATE,
+              QObject *ptr = nullptr);
 
     /**
      * @brief setPrev This method sets id of the previous snake item.
@@ -34,8 +36,22 @@ public:
      */
     const IWorldItem * prev() const;
 
+    /**
+     * @brief lengthBetwinItems This method return current length betwin current and parew item.
+     * @return current length betwin current and parew item.
+     * @note See also the setPrev method.
+     */
+    float lengthBetwinItems() const;
+
+    /**
+     * @brief setLengthBetwinItems This method sets new valeu of the length betwin current and parew item.
+     * @param newLengthBetwinItems This is new value of the length betwin current and parew item.
+     */
+    void setLengthBetwinItems(float newLengthBetwinItems);
+
 private:
     const IWorldItem *_prevObject = nullptr;
+    float _lengthBetwinItems = 1;
 };
 
 }

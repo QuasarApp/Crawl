@@ -5,12 +5,16 @@
 //# of this license document, but changing it is not allowed.
 //#
 
+#include "background.h"
 #include "box.h"
 #include "plate.h"
 #include "testcontrol.h"
 #include "world.h"
 #include <testsnake.h>
 #include "Crawl/iworlditem.h"
+
+namespace TestLvl {
+
 
 World::World() {
     setCameraReleativePosition({0,0,100});
@@ -19,7 +23,8 @@ World::World() {
 
 CRAWL::WorldRule *World::initWorldRules() {
     return new CRAWL::WorldRule {
-        {0, {{registerObject<Box>(), 1000}}}
+        {0, {{registerObject<Box>(), 1000},
+             {registerObject<Background>(), 1}}}
     };
 }
 
@@ -74,4 +79,5 @@ void World::handleYViewChanged(double dy) {
     auto eilorRatation = cameraRatation().toEulerAngles();
     eilorRatation.setY(eilorRatation.y() + dy );
     setCameraRatation(QQuaternion::fromEulerAngles(eilorRatation));
+}
 }

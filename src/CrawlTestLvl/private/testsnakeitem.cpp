@@ -5,10 +5,10 @@
 //# of this license document, but changing it is not allowed.
 //#
 
-
 #include "testsnakeitem.h"
+namespace TestLvl {
 
-TestSnakeItem::TestSnakeItem() {
+TestSnakeItem::TestSnakeItem():CRAWL::SnakeItem("TestSnakeItem") {
     setMash("qrc:/mesh/meshes/cube.mesh");
     setColor("#20aa9a");
     setSize({1,1,1});
@@ -18,4 +18,5 @@ TestSnakeItem::TestSnakeItem() {
 void TestSnakeItem::onIntersects(const IWorldItem *item) {
     Q_UNUSED(item);
 
+}
 }

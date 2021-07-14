@@ -27,11 +27,11 @@ View3D {
 
     }
 
-    PointLight {
-        position: camera.position
+    DirectionalLight {
+        position: Qt.vector3d(10000, 0, 10000);
         rotation: camera.rotation
 
-        brightness: 250
+        brightness: 120
     }
 
     environment: SceneEnvironment {

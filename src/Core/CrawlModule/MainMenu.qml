@@ -75,8 +75,8 @@ Item {
 
         standardButtons:  Dialog.Save | Dialog.Cancel | Dialog.RestoreDefaults
         modal: false;
-        width: 12 * metrix.controlPtMaterial
-        height: 8 * metrix.controlPtMaterial;
+        width: parent.width * 0.8
+        height: parent.height * 0.8;
 
         onAccepted: {
             settingsView.save();
@@ -109,8 +109,8 @@ Item {
         }
 
         modal: false;
-        width: 12 * metrix.controlPtMaterial
-        height: 8 * metrix.controlPtMaterial;
+        width: parent.width * 0.8
+        height: parent.height * 0.8;
 
     }
 }

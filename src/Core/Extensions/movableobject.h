@@ -10,6 +10,7 @@
 #define MOVABLEOBJECT_H
 
 #include "Crawl/irender.h"
+#include <QQuaternion>
 #include <QVector3D>
 
 namespace CRAWL {
@@ -85,6 +86,20 @@ public:
      */
     const QVector3D &currentMovableVector() const;
 
+    /**
+     * @brief staticRotation This method retur nstatic rotation in quaternion. The static rotation rotate object to setted value independet then movable vector.
+     * @return quterion of the static rotation
+     */
+    const QQuaternion &staticRotation() const;
+
+    /**
+     * @brief setStaticRotation This metho sets new value of the static rotation of this object.
+     * @param newStaticRotation new value of the static rotation.
+     * @note if you want use eilor angles then use the QQuaternion::fromEulerAngles method.
+     * @note See the staticRotation method for get more information.
+     */
+    void setStaticRotation(const QQuaternion &newStaticRotation);
+
 protected:
 
     /**
@@ -104,6 +119,7 @@ protected:
 private:
     QVector3D _movableVector;
     QVector3D _currentMovableVector;
+    QQuaternion _staticRotation = QQuaternion::fromEulerAngles(0,0,0);
 
     float _angularVelocity = 0;
     float _breakingForce = 0;

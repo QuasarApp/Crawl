@@ -8,6 +8,8 @@
 #include "testsnake.h"
 #include <testsnakeitem.h>
 
+namespace TestLvl {
+
 TestSnake::TestSnake(): Snake("Snake") {
     setBreakingForce(50);
     setAngularVelocity(100);
@@ -15,11 +17,16 @@ TestSnake::TestSnake(): Snake("Snake") {
     setMash("qrc:/mesh/meshes/cube.mesh");
     setSize({2,1,1});
 
-    registerBodyitem<TestSnakeItem>();
+    registerItemType<TestSnakeItem>();
 
 }
 
 void TestSnake::onIntersects(const IWorldItem *item) {
     Q_UNUSED(item);
 
+}
+
+unsigned int TestSnake::itemsCount() const {
+    return 50;
+}
 }

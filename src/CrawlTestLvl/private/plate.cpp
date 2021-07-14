@@ -7,13 +7,22 @@
 
 #include "plate.h"
 
-Plate::Plate(): IGround("plate")
+namespace TestLvl {
+
+
+Plate::Plate(): CRAWL::GroundTile("TestPlate")
 {
-    setMash("qrc:/mesh/meshes/cube.mesh");
-    setSize({100,100,0});
+    setMash("#Cube");
+    setColor("#5c4f45");
+    setSize({10,10,0.01});
     setZ(0);
 }
 
 void Plate::onIntersects(const IWorldItem *item) {
     Q_UNUSED(item)
+}
+
+void Plate::render(unsigned int){
+
+}
 }

@@ -11,6 +11,9 @@
 
 #include "Crawl/snakeitem.h"
 
+namespace TestLvl {
+
+
 class TestSnakeItem: public CRAWL::SnakeItem
 {
     Q_OBJECT
@@ -22,4 +25,5 @@ protected:
     void onIntersects(const IWorldItem *item) override;
 };
 
+}
 #endif // TESTSNAKEITEM_H

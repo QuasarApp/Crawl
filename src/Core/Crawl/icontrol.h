@@ -5,8 +5,8 @@
 //# of this license document, but changing it is not allowed.
 //#
 
-#ifndef ICONTROL_H
-#define ICONTROL_H
+#ifndef CRAWL_ICONTROL_H
+#define CRAWL_ICONTROL_H
 
 #include <QObject>
 #include "global.h"
@@ -67,4 +67,4 @@ private:
 
 }
 
-#endif // ICONTROL_H
+#endif // CRAWL_ICONTROL_H

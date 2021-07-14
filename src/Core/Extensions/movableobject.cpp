@@ -51,7 +51,7 @@ void MovableObject::setBreakingForce(float newBreakingForce) {
 
 void MovableObject::renderRatation(GuiObject *object, unsigned int) {
     if (_currentMovableVector.length() > 0) {
-        object->setRatation(QQuaternion::rotationTo({1.0f, 0.0, 0.0}, _currentMovableVector));
+        object->setRatation(QQuaternion::rotationTo({1.0f, 0.0, 0.0}, _currentMovableVector) * staticRotation());
     }
 }
 
@@ -85,6 +85,14 @@ void MovableObject::renderPosition(GuiObject *object, unsigned int tbfMsec) {
     // update movable vector
     _movableVector = _movableVector.normalized() * newMovableVectorLength;
 
+}
+
+const QQuaternion &MovableObject::staticRotation() const {
+    return _staticRotation;
+}
+
+void MovableObject::setStaticRotation(const QQuaternion &newStaticRotation) {
+    _staticRotation = newStaticRotation;
 }
 
 const QVector3D &MovableObject::currentMovableVector() const {

@@ -1,0 +1,12 @@
+#ifndef Crawl_JUNGLE_LEVEL_GLOBAL_H
+#define Crawl_JUNGLE_LEVEL_GLOBAL_H
+
+#include <QtCore/qglobal.h>
+
+#if defined(CRAWL_JUNGLE_LEVEL_LIBRARY)
+#  define CRAWL_JUNGLE_LEVEL_EXPORT Q_DECL_EXPORT
+#else
+#  define CRAWL_JUNGLE_LEVEL_EXPORT Q_DECL_IMPORT
+#endif
+
+#endif // Crawl_JUNGLE_LEVEL_GLOBAL_H

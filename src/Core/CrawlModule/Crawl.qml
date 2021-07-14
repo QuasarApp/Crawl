@@ -14,8 +14,8 @@ import NotifyModule 1.0
 ApplicationWindow {
     id: mainWindow;
     visible: true;
-    width: 640;
-    height: 480;
+    width: 1024;
+    height: 720;
     title: qsTr("Crawl");
 
     Metrix {id: metrix}
@@ -36,4 +36,6 @@ ApplicationWindow {
     NotificationServiceView {
         anchors.fill: parent;
     }
+
+
 }

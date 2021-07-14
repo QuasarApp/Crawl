@@ -20,10 +20,8 @@ Snake::Snake(const QString &name, const QString &viewTempalte, QObject *ptr):
 
     _vectors = new QVector3D[2];
     setAngularVelocity(100);
-    setSpeed(100);
 
     setLengthBetwinItems(1);
-    setBodyCount(50);
     setSpeed(100);
 
     _clickIndex = 0;
@@ -31,6 +29,10 @@ Snake::Snake(const QString &name, const QString &viewTempalte, QObject *ptr):
     setScales({{0, 0.8},
               {0.4, 1.2},
               {1, 0.5}});
+
+    setLengthBetwinItemsMap({{0, 0.8},
+                              {0.4, 1.2},
+                              {1, 0.5}});
 }
 
 Snake::~Snake( ){
@@ -81,51 +83,73 @@ void Snake::remove(int id) {
 }
 
 void Snake::init() {
-    generateBody();
+    generateItems();
 }
 
 void Snake::onTap() {
     setMovableVector(_vectors[_clickIndex++ % 2]);
 }
 
-void Snake::generateBody() {
-
-    auto scaleIt = _scales.begin();
+float CRAWL::Snake::getValueFromMap(const QMap<float, float> &map,
+                                    float position,
+                                    float defaultValue) {
+    auto it = map.cbegin();
 
     float from = 0, fromKey = 0;
-    float to = scaleIt.value(), toKey = scaleIt.key();
+    float to = it.value(), toKey = it.key();
 
-    for(int i = 0; i < _bodyCount; ++i) {
-        if (!_factory) {
-            QuasarAppUtils::Params::log("Please use the registerBodyitem method"
-                                        " before invoke parent constructor.",
+    if (it != _scales.cend()) {
+        while (position >= it.key() && it != _scales.cend()) {
+            it++;
+
+            if (it != _scales.cend()) {
+                from = to;
+                to = it.value();
+                fromKey = toKey;
+                toKey = it.key();
+            }
+        }
+
+        float localPosition = (position - fromKey) / (fromKey - toKey);
+        float valueDiff = from - to;
+
+        return from + localPosition * valueDiff;
+    }
+
+    return defaultValue;
+}
+
+void Snake::generateItems() {
+
+    for(unsigned int i = 0; i < itemsCount(); ++i) {
+
+        SnakeItem* item = dynamic_cast<SnakeItem*>(factory());
+
+        if (!item) {
+            QuasarAppUtils::Params::log("The snake item class should be child class"
+                                        " of the SnakeItem class.",
                                         QuasarAppUtils::Error);
             return;
         }
 
-        auto item = _factory();
-
-        float scale = 1;
-        if (scaleIt != _scales.end()) {
-            float position = static_cast<float>(i) / _bodyCount;
-            while (position >= scaleIt.key() && scaleIt != _scales.end()) {
-                scaleIt++;
-
-                if (scaleIt != _scales.end()) {
-                    from = to;
-                    to = scaleIt.value();
-                    fromKey = toKey;
-                    toKey = scaleIt.key();
-                }
-            }
-
-            scale = ((position - fromKey) * toKey / (to - from)) + from;
-        }
+        float scale = getValueFromMap(_scales,
+                                      static_cast<float>(i) / itemsCount());
+        float lengthBIt = getValueFromMap(_lengthBetwinItemsMap,
+                                          static_cast<float>(i) / itemsCount());
 
         item->setSize(item->size() * scale);
+        item->setLengthBetwinItems(lengthBIt);
 
         add(item);
     }
+}
+
+const QMap<float, float> &Snake::lengthBetwinItemsMap() const {
+    return _lengthBetwinItemsMap;
+}
+
+void Snake::setLengthBetwinItemsMap(const QMap<float, float> &newLengthBetwinItemsMap) {
+    _lengthBetwinItemsMap = newLengthBetwinItemsMap;
 }
 
 float Snake::speed() const {
@@ -139,12 +163,8 @@ void Snake::setSpeed(float newSpeed) {
     _vectors[1] = QVector3D(asixPos,-asixPos,0); // right tap
 }
 
-int Snake::bodyCount() const {
-    return _bodyCount;
-}
-
-void Snake::setBodyCount(int newBodyCount) {
-    _bodyCount = newBodyCount;
+unsigned int Snake::itemsCount() const {
+    return 50;
 }
 
 const QMap<float, float> &Snake::scales() const {

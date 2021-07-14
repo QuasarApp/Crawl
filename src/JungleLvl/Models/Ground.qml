@@ -5,14 +5,10 @@
 //# of this license document, but changing it is not allowed.
 //#
 
-#include "testlvl.h"
-#include "world.h"
+import QtQuick 2.15
+import CrawlModule 1.0
+import QtQuick.Layouts 1.15
 
-TestLvl::TestLvl() {
-
-}
-
-CRAWL::IWorld *TestLvl::world() {
-    initTestLvlResources();
-    return new World();
+GraphicItem {
+    tilies: (model)? model.tiliesCount : 1
 }

@@ -9,6 +9,9 @@
 #define BOX_H
 #include "Crawl/iworlditem.h"
 
+namespace TestLvl {
+
+
 class Box: public CRAWL::IWorldItem {
 
 public:
@@ -18,5 +21,5 @@ public:
 protected:
     void onIntersects(const IWorldItem *item) override;
 };
-
+}
 #endif // BOX_H

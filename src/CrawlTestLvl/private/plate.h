@@ -7,15 +7,25 @@
 
 #ifndef PLATE_H
 #define PLATE_H
-#include "Crawl/iground.h"
+#include "Crawl/groundtile.h"
+namespace TestLvl {
 
-class Plate: public CRAWL::IGround {
+
+/**
+ * @brief The Plate class
+ */
+class Plate: public CRAWL::GroundTile {
+    Q_OBJECT
 public:
     Plate();
 
     // IWorldItem interface
 protected:
     void onIntersects(const IWorldItem *item) override;
-};
 
+    // IRender interface
+public:
+    void render(unsigned int tbfMsec) override;
+};
+}
 #endif // PLATE_H

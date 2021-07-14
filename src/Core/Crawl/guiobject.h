@@ -162,11 +162,35 @@ signals:
 
 protected:
 
-    int _guiId = -1;
-    QString _color = "#ff1111";
+    /**
+     * @brief setBaseColorMap This method sets path to the base color map of the object. See the baseColorMap method for get more information.
+     * @param baseColorMap This is new value of the path to base color map.
+     */
+    void setBaseColorMap(const QString& baseColorMap);
+
+    /**
+     * @brief setRoughnessMap This method sets path to the roughness map of the object. See the roughnessMap method for get more information.
+     * @param roughnessMap This is new value of the path to roughness map.
+     */
+    void setRoughnessMap(const QString& roughnessMap);
+
+    /**
+     * @brief setNormalMap This method sets path to the normal map of the object. See the normalMap method for get more information.
+     * @param normalMap This is new value of the path to normal map.
+     */
+    void setNormalMap(const QString& normalMap);
+
+    /**
+     * @brief setEmissiveMap This method sets path to the emissive map of the object. See the emissiveMap method for get more information.
+     * @param emissiveMap This is new value of the path to emissive map.
+     */
+    void setEmissiveMap(const QString& emissiveMap);
 
 private:
     void generateId();
+
+    int _guiId = -1;
+    QString _color = "#ff1111";
 
     QString _baseColorMap;
     QString _roughnessMap;
