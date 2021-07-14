@@ -89,7 +89,9 @@ View3D {
 
             for (var i = 0; i < arrayObjects.length; ++i) {
                 if (id === arrayObjects[i].guiId) {
+                    arrayObjects[i].destroy();
                     arrayObjects.splice(i,1);
+
                 }
             }
         }

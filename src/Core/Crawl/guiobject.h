@@ -16,6 +16,9 @@
 #include "Crawl/irender.h"
 
 #define DEFAULT_VIEW_TEMPLATE "qrc:/CrawlModule/GraphicItem.qml"
+/** the AUTO_CLASS_NAME define gets name from the class and namespace.
+ */
+#define AUTO_CLASS_NAME typeid(this).name()
 
 namespace CRAWL {
 

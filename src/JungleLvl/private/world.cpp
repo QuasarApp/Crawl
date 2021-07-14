@@ -5,8 +5,11 @@
 //# of this license document, but changing it is not allowed.
 //#
 
+#include "grees.h"
 #include "ground.h"
+#include "longgress.h"
 #include "snake.h"
+#include "tree.h"
 #include "world.h"
 #include "Crawl/iworlditem.h"
 
@@ -21,7 +24,21 @@ World::World() {
 CRAWL::WorldRule *World::initWorldRules() {
     return new CRAWL::WorldRule {
         {0, {
-             {registerObject<Ground>(), 1}}}
+             {registerObject<Ground>(), 1},
+             {registerObject<Grees>(), 500},
+             {registerObject<LongGress>(), 100},
+             {registerObject<Tree>(), 0}
+
+            }
+        },
+        {500, {
+             {registerObject<Ground>(), 1},
+             {registerObject<Grees>(), 500},
+             {registerObject<LongGress>(), 100},
+             {registerObject<Tree>(), 100}
+
+            }
+        }
     };
 }
 

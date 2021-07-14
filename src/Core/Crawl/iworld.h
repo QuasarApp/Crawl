@@ -276,6 +276,13 @@ signals:
      */
     void hdrChanged();
 
+    /**
+     * @brief sigWorldChanged emit this signal if you want to change level of the world.
+     * @note this signal needed for the move WorldChange method into main thread.
+     * @param objects this is iterator of the world rule object.
+     */
+    void sigWorldChanged(WorldRule::const_iterator objects);
+
 protected:
 
     /**
@@ -369,12 +376,24 @@ protected:
         return type;
     }
 
+    /**
+     * @brief updateWorld This method check current distance and load neede level and level objects.
+     */
+    void updateWorld();
+
 private slots:
 
     /**
      * @brief handleStop This slot invoked when user click return main menu button.
      */
     void handleStop();
+
+    /**
+     * @brief worldChanged This method generate diff for the qml
+     * @param objects This is iterator of the world rules object that contains list of object on lvl
+     * @note This method addd player object to this list.
+     */
+    void worldChanged(WorldRule::const_iterator objects);
 
 private:
     /**
@@ -383,6 +402,10 @@ private:
      * @return true if world initialized successful
      */
     bool prepare();
+
+    /**
+     * @brief reset This method reset all world objects.
+     */
     void reset();
 
 
@@ -399,12 +422,8 @@ private:
     void setRunning(bool newRunning);
 
     /**
-     * @brief worldChanged This method generate diff for the qml
-     * @param objects This is list of object on lvl
-     * @note This method addd player object to this list.
+     * @brief clearItems This method remove all created items from world.
      */
-    void worldChanged(WorldObjects objects);
-
     void clearItems();
 
     /**
@@ -472,6 +491,8 @@ private:
 
     QString _hdrMap;
     WorldRule *_worldRules = nullptr;
+    WorldRule::const_iterator _currendWorldLevel;
+
     IPlayer *_player = nullptr;
     IControl *_userInterface = nullptr;
     IAI *_backgroundAI = nullptr;
