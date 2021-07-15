@@ -38,7 +38,7 @@ CRAWL::WorldRule *World::initWorldRules() {
 
             }
         },
-        {5000, {
+        {1000, {
                 {registerObject<Ground>(), 1},
                 {registerObject<Grees>(), 500},
                 {registerObject<LongGress>(), 100},
@@ -48,7 +48,7 @@ CRAWL::WorldRule *World::initWorldRules() {
 
             }
         },
-        {10000, {
+        {2000, {
                 {registerObject<Ground>(), 1},
                 {registerObject<Grees>(), 500},
                 {registerObject<LongGress>(), 100},
