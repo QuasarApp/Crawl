@@ -12,6 +12,13 @@
 #include "tree.h"
 #include "world.h"
 #include "Crawl/iworlditem.h"
+#include "ivy.h"
+#include "plant.h"
+#include "stone.h"
+#include "wood.h"
+#include "redegg.h"
+#include "purpleegg.h"
+#include "blueegg.h"
 
 #include <Crawl/snake.h>
 namespace JungleLvl {
@@ -24,18 +31,35 @@ World::World() {
 CRAWL::WorldRule *World::initWorldRules() {
     return new CRAWL::WorldRule {
         {0, {
-             {registerObject<Ground>(), 1},
-             {registerObject<Grees>(), 500},
-             {registerObject<LongGress>(), 100},
-             {registerObject<Tree>(), 0}
+                {registerObject<Ground>(), 1},
+                {registerObject<Grees>(), 500},
+                {registerObject<LongGress>(), 100}
+
 
             }
         },
-        {500, {
-             {registerObject<Ground>(), 1},
-             {registerObject<Grees>(), 500},
-             {registerObject<LongGress>(), 100},
-             {registerObject<Tree>(), 100}
+        {5000, {
+                {registerObject<Ground>(), 1},
+                {registerObject<Grees>(), 500},
+                {registerObject<LongGress>(), 100},
+                {registerObject<Plant>(), 20},
+                {registerObject<Wood>(), 25},
+
+
+            }
+        },
+        {10000, {
+                {registerObject<Ground>(), 1},
+                {registerObject<Grees>(), 500},
+                {registerObject<LongGress>(), 100},
+                {registerObject<Tree>(), 50},
+                {registerObject<Plant>(), 20},
+                {registerObject<Ivy>(), 25},
+                {registerObject<Stone>(), 25},
+                {registerObject<Wood>(), 25},
+                {registerObject<RedEgg>(), 5},
+                {registerObject<PurpleEgg>(), 5},
+                {registerObject<BlueEgg>(), 5},
 
             }
         }
