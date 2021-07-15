@@ -30,6 +30,7 @@ class IPlayer;
 class GroundClaster;
 class IControl;
 class IAI;
+class IWorldLight;
 
 /**
  * @brief WorldObjects This is map list of the avalable objects and its count on a lvl-long point.

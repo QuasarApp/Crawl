@@ -27,13 +27,6 @@ View3D {
 
     }
 
-    DirectionalLight {
-        position: Qt.vector3d(10000, 0, 10000);
-        rotation: camera.rotation
-
-        brightness: 120
-    }
-
     environment: SceneEnvironment {
         id: background
         backgroundMode: SceneEnvironment.SkyBox

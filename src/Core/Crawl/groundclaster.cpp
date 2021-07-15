@@ -31,7 +31,7 @@ void GroundClaster::render(unsigned int ) {
 
     auto object = _itemsOrder.at(_index % _itemsOrder.size());
 
-    if (playerObject->position().x() - object->position().x() >
+    if (playerObject->position().distanceToPoint(object->position()) >
             newObjectDistance()) {
 
         auto prewObject = _itemsOrder.at((_index - 1) % _itemsOrder.size());

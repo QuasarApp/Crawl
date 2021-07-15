@@ -12,6 +12,7 @@
 #include "world.h"
 #include <testsnake.h>
 #include "Crawl/iworlditem.h"
+#include <Crawl/defaultlight.h>
 
 namespace TestLvl {
 
@@ -24,7 +25,8 @@ World::World() {
 CRAWL::WorldRule *World::initWorldRules() {
     return new CRAWL::WorldRule {
         {0, {{registerObject<Box>(), 1000},
-             {registerObject<Background>(), 1}}}
+             {registerObject<Background>(), 1},
+             {registerObject<CRAWL::DefaultLight>(), 1}}}
     };
 }
 
