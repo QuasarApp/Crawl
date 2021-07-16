@@ -82,8 +82,8 @@ public:
               const QString& viewTempalte = DEFAULT_VIEW_TEMPLATE,
               QObject *ptr = nullptr);
 
-    QString color() const;
-    void setColor(QString color);
+    const QString &color() const;
+    void setColor(const QString &color);
 
     virtual void reset();
     QString viewTemplate() const;
