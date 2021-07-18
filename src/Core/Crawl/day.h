@@ -11,6 +11,7 @@
 #include "Extensions/claster.h"
 #include "dayitem.h"
 #include "iworlditem.h"
+#include "math.h"
 
 namespace CRAWL {
 
@@ -19,7 +20,8 @@ template <class Sun, class Moon>
 /**
  * @brief The Day class is template wrapper for the moon and sun objects.
  * The moon and sun objects moving around world center for imitation of the day.
- * @note All objects will be moving around this objects with radius. The Radius by default is 1000.
+ * @note All objects will be moving around this objects with radius. The Radius by default is 2000.
+ * @note This class automaticly sets ligth force for the light objects.
  */
 class Day: public IWorldItem, public Claster
 {
@@ -31,17 +33,21 @@ public:
                 "The Day class can be works only with DayItem child classes");
 
         DayItem* sun = new Sun(&position());
-        DayItem* moon = new Moon(&position());
+        DayItem* moon1 = new Moon(&position());
+        DayItem* moon2 = new Moon(&position());
 
         sun->setAnglePosition(0);
-        moon->setAnglePosition(180);
+        moon1->setAnglePosition(225);
+        moon2->setAnglePosition(135);
 
         add(sun);
-        add(moon);
+        add(moon1);
+        add(moon2);
+
     }
 
     void render(unsigned int ) override {
-        setposition(getPlayer()->position() + QVector3D{1000, 0, 0});
+        setposition(getPlayer()->position() + QVector3D{0, 0, 0});
     }
 
     void add(ClasterItem *object) override {
@@ -49,6 +55,9 @@ public:
         if (auto item = dynamic_cast<DayItem*>(object)) {
             item->setRadius(radius());
             item->setAxis(_axis);
+            item->setAngularVelocity(lengthToSpeed(_dayLengthSec));
+            item->setLightForce(_radius * 30);
+
             Claster::add(item);
         } else {
             QuasarAppUtils::Params::log("The Day class can works only with "
@@ -81,13 +90,16 @@ public:
         _radius = newRadius;
 
         for (auto object: objects()) {
+            reinterpret_cast<DayItem*>(object)->setLightForce(_radius * 30);
             reinterpret_cast<DayItem*>(object)->setRadius(_radius);
+
         }
     }
 
     /**
      * @brief axis This is sxis of rotation. all objects will be moving around this axis. The axis is general 3d vector object.
      * @return rotation axis.
+     * @note By default it is y axis
      */
     const QVector3D &axis() const {
         return _axis;
@@ -108,12 +120,43 @@ public:
         }
     }
 
+    /**
+     * @brief dayLengthSec This method return length of the game day in real secs.
+     * @note by default this value is 60 sec
+     * @return length of the game day in real secs.
+     */
+    float dayLengthSec() const {
+        return _dayLengthSec;
+    }
+
+    /**
+     * @brief setDayLengthSec This method sets new value of the day length.
+     * @param newDayLongSec This is new value of the day length.
+     * @note For get more information see the dayLengthSec method.
+     */
+    void setDayLengthSec(float newDayLengthSec) {
+
+        if (newDayLengthSec == _dayLengthSec)
+            return;
+
+        _dayLengthSec = newDayLengthSec;
+
+        for (auto object: objects()) {
+            reinterpret_cast<DayItem*>(object)->setAngularVelocity(lengthToSpeed(_dayLengthSec));
+        }
+    }
+
 protected:
     void onIntersects(const IWorldItem *) override {};
 
 private:
-    int _radius = 1000;
-    QVector3D _axis;
+    float lengthToSpeed(float length) const {
+        return (2 * M_PI * radius()) / length;
+    }
+
+    int _radius = 2000;
+    float _dayLengthSec = 160;
+    QVector3D _axis = {1,0,0};
 };
 
 }

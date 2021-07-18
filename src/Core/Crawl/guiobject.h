@@ -147,6 +147,18 @@ public:
      */
     const QString &className() const;
 
+    /**
+     * @brief visible This property sets to true if object visibel else false.
+     * @return true if object is visible
+     */
+    bool visible() const;
+
+    /**
+     * @brief setVisible This method sets new vlaue of the visible property
+     * @param newVisible new value of visible
+     */
+    void setVisible(bool newVisible);
+
 signals:
     void guiIdChanged(int guiId);
     void colorChanged(QString color);
@@ -162,6 +174,8 @@ signals:
     void ratationChanged();
 
     void mashChanged();
+
+    void visibleChanged();
 
 protected:
 
@@ -206,6 +220,8 @@ private:
     QQuaternion _ratation;
     QString _mash;
     QString _className;
+    bool _visible = true;
+    Q_PROPERTY(bool visible READ visible WRITE setVisible NOTIFY visibleChanged)
 };
 
 }

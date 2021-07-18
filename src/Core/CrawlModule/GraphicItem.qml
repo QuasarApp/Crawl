@@ -70,4 +70,6 @@ Model {
     source: (model)? model.mash: "#Cube";
     position: (model) ? model.position: Qt.vector3d(0,0,0);
 
+    visible: (model)? model.visible: false
+
 }

@@ -69,8 +69,9 @@ void CircularMotion::renderPosition(GuiObject *object,
 
     double motionCoef = 360 / (2 * M_PI * radius());
     _angle += motionCoef * angularVelocity() * (tbfMsec / 1000.f);
+    auto normal = (QQuaternion::fromAxisAndAngle(_axis, _angle) * QVector3D{0,0,1}).normalized();
 
-    object->setposition(*_center + (QQuaternion().fromAxisAndAngle(_axis, _angle).rotatedVector({0,0,0}).normalized() * radius()));
+    object->setposition(*_center + normal * radius());
 
 }
 }

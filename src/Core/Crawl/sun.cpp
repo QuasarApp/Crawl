@@ -7,12 +7,11 @@
 
 #include "sun.h"
 
-namespace TestLvl {
+namespace CRAWL {
 
 Sun::Sun(const QVector3D* center):
-    CRAWL::DayItem(center, AUTO_CLASS_NAME) {
-    setColor("#f8d850");
-    setLightForce(5100);
+    DayItem(center, AUTO_CLASS_NAME) {
+    setColor("#fff6d0");
 }
 
 void Sun::onIntersects(const IWorldItem *) {}

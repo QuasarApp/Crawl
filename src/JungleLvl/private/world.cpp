@@ -19,8 +19,9 @@
 #include "redegg.h"
 #include "purpleegg.h"
 #include "blueegg.h"
-#include "sun.h"
-#include "moon.h"
+#include "absaluteplate.h"
+#include "Crawl/sun.h"
+#include "Crawl/moon.h"
 
 #include <Crawl/day.h>
 #include <Crawl/defaultlight.h>
@@ -34,10 +35,11 @@ World::World() {
 
 CRAWL::WorldRule *World::initWorldRules() {
 
-    using Day = CRAWL::Day<Sun, Moon>;
+    using Day = CRAWL::Day<CRAWL::Sun, CRAWL::Moon>;
 
     return new CRAWL::WorldRule {
         {0, {
+                {registerObject<AbsalutePlate>(), 1},
                 {registerObject<Day>(), 1},
                 {registerObject<Ground>(), 1},
                 {registerObject<Grees>(), 500},
@@ -47,6 +49,7 @@ CRAWL::WorldRule *World::initWorldRules() {
             }
         },
         {1000, {
+                {registerObject<AbsalutePlate>(), 1},
                 {registerObject<Day>(), 1},
                 {registerObject<Ground>(), 1},
                 {registerObject<Grees>(), 500},
@@ -58,6 +61,7 @@ CRAWL::WorldRule *World::initWorldRules() {
             }
         },
         {2000, {
+                {registerObject<AbsalutePlate>(), 1},
                 {registerObject<Day>(), 1},
                 {registerObject<Ground>(), 1},
                 {registerObject<Grees>(), 500},

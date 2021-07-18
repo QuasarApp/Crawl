@@ -11,9 +11,12 @@
 #include "Crawl/dayitem.h"
 
 
-namespace JungleLvl {
+namespace CRAWL {
 
-class Moon: public CRAWL::DayItem {
+/**
+ * @brief The Moon class This is default implementation of the moon for the Dat class.
+ */
+class Moon: public DayItem {
     Q_OBJECT
 public:
     Moon(const QVector3D *center);

@@ -37,6 +37,17 @@ void GuiObject::generateId() {
     setGuiId(id++);
 }
 
+bool GuiObject::visible() const {
+    return _visible;
+}
+
+void GuiObject::setVisible(bool newVisible) {
+    if (_visible == newVisible)
+        return;
+    _visible = newVisible;
+    emit visibleChanged();
+}
+
 const QString &GuiObject::className() const {
     return _className;
 }

@@ -11,9 +11,12 @@
 
 #include "Crawl/dayitem.h"
 
-namespace JungleLvl {
+namespace CRAWL {
 
-class Sun: public CRAWL::DayItem
+/**
+ * @brief The Sun class This is default implementation of the sun for the Day class.
+ */
+class Sun: public DayItem
 {
     Q_OBJECT
 public:

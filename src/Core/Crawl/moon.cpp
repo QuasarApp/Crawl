@@ -6,12 +6,12 @@
 //#
 #include "moon.h"
 
-namespace JungleLvl {
+namespace CRAWL {
 
 Moon::Moon(const QVector3D* center):
-    CRAWL::DayItem(center, AUTO_CLASS_NAME) {
-    setColor("#6177ff");
-    setLightForce(1100);
+    DayItem(center, AUTO_CLASS_NAME) {
+    setColor("#022648");
+
 }
 
 void Moon::init() {}

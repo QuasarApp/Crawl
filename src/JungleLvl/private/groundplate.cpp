@@ -12,7 +12,7 @@ namespace JungleLvl {
 GroundPlate::GroundPlate(): CRAWL::GroundTile("JungleGroundTile",
                                               "qrc:/qml/Models/Ground.qml") {
     setMash("#Cube");
-    setSize({6, 6, 0.01});
+    setSize({6, 6, 0.001});
     setBaseColorMap("qrc:/mesh/meshes/Other/Terrain_Base.jpg");
     setNormalMap("qrc:/mesh/meshes/Other/Terrain_Normal.jpg");
 //    setRoughnessMap("qrc:/mesh/meshes/Other/Roughness_without.jpg");

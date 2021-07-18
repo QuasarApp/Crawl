@@ -7,16 +7,15 @@
 
 #include "background.h"
 #include "box.h"
-#include "moon.h"
 #include "plate.h"
-#include "sun.h"
 #include "testcontrol.h"
 #include "world.h"
 #include <testsnake.h>
 #include "Crawl/iworlditem.h"
 #include <Crawl/day.h>
-#include <Crawl/daylight.h>
 #include <Crawl/defaultlight.h>
+#include <Crawl/moon.h>
+#include <Crawl/sun.h>
 
 namespace TestLvl {
 
@@ -27,7 +26,7 @@ World::World() {
 }
 
 CRAWL::WorldRule *World::initWorldRules() {
-    using Day = CRAWL::Day<Sun, Moon>;
+    using Day = CRAWL::Day<CRAWL::Sun, CRAWL::Moon>;
 
     return new CRAWL::WorldRule {
         {0, {{registerObject<Box>(), 1000},

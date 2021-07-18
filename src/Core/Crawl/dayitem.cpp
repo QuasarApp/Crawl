@@ -18,9 +18,12 @@ DayItem::DayItem(
     IWorldLight(name, viewTempalte, ptr),
     CircularMotion(center) {
 
+
 }
 
 void DayItem::render(unsigned int tbfMsec) {
     CircularMotion::render(tbfMsec);
+    setVisible(position().z() > 0);
+
 }
 }
