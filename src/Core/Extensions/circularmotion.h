@@ -63,6 +63,18 @@ public:
      */
     void setRadius(float newRadius);
 
+    /**
+     * @brief anglePosition This method return current angel of the item position arountd center.
+     * @return current angle position around center.
+     */
+    double anglePosition() const;
+
+    /**
+     * @brief setAnglePosition This method sets new angel of the item position arountd center.
+     * @return newAngle angle position around center.
+     */
+    void setAnglePosition(double newAngle);
+
 private:
     float _angularVelocity = 0;
     QVector3D _axis;

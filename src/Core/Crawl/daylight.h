@@ -16,7 +16,7 @@ namespace CRAWL {
 /**
  * @brief The DayLight class
  */
-class CRAWL_EXPORT DayLight final: public IWorldLight
+class CRAWL_EXPORT DayLight: public IWorldLight
 {
     Q_OBJECT
     Q_PROPERTY(QString moonColor READ moonColor NOTIFY moonColorChanged)

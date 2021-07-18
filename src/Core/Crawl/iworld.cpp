@@ -218,7 +218,8 @@ void IWorld::removeItem(IWorldItem* item, QList<int> *removedObjectsList) {
     if (auto claster = dynamic_cast<Claster*>(item)) {
         const auto copyOfObjectsList = claster->objects();
         for (auto item : copyOfObjectsList) {
-            if (!item || item->parentClastersCount() > 1)
+            auto clasterItem = dynamic_cast<ClasterItem*>(item);
+            if (!clasterItem || clasterItem->parentClastersCount() > 1)
                 continue;
 
             int id = item->guiId();

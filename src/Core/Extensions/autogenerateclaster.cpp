@@ -21,7 +21,7 @@ void AutoGenerateClaster::generateItems() {
             return;
         }
 
-        add(_factory());
+        add(factory());
     }
 }
 

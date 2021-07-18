@@ -11,7 +11,7 @@ namespace CRAWL {
 IWorldLight::IWorldLight(const QString &name,
                          const QString &viewTempalte,
                          QObject *ptr):
-    IWorldItem(name, viewTempalte, ptr) {
+    ClasterItem(name, viewTempalte, ptr) {
 
 }
 

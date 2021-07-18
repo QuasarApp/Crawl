@@ -9,6 +9,7 @@
 #define GROUNDTILE_H
 
 #include "clasteritem.h"
+#include "iworlditem.h"
 
 namespace CRAWL {
 

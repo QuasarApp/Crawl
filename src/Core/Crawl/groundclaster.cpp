@@ -5,9 +5,9 @@
 //# of this license document, but changing it is not allowed.
 //#
 
+#include "clasteritem.h"
 #include "groundclaster.h"
 #include "iworld.h"
-#include "clasteritem.h"
 
 namespace CRAWL {
 
@@ -45,7 +45,6 @@ void GroundClaster::render(unsigned int ) {
 }
 
 void GroundClaster::add(ClasterItem *object) {
-
     object->setX(newObjectDistance() * _itemsOrder.count());
     _itemsOrder.push_back(object);
 

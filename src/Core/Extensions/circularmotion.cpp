@@ -51,4 +51,12 @@ float CircularMotion::radius() const {
 void CircularMotion::setRadius(float newRadius) {
     _radius = newRadius;
 }
+
+double CircularMotion::anglePosition() const {
+    return _angle;
+}
+
+void CircularMotion::setAnglePosition(double newAngle) {
+    _angle = newAngle;
+}
 }

@@ -48,7 +48,7 @@ protected:
     virtual int newObjectDistance() const;
 
 private:
-    QList<IWorldItem*> _itemsOrder;
+    QList<ClasterItem*> _itemsOrder;
     unsigned int _index = 0;
 
 };

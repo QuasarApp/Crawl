@@ -47,11 +47,11 @@ protected:
      * @brief factory This method create new item of the claster. See the registerItemType for get more information.
      * @return return new item of the claster item. If the object not registered return nullptr.
      */
-    ClasterItem* factory() const;
+    ClasterItem *factory() const;
 
     /**
      * @brief isClasterItemRegistered
-     * @return
+     * @return tru if the class is registered.
      */
     bool isClasterItemRegistered() const;
 

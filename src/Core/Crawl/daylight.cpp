@@ -16,7 +16,7 @@ DayLight::DayLight():
 
     _curerntTime = new QTime(0,0,0);
     _zeroTime = new QTime(0,0,0);
-    setposition({0, 0, 0});
+    setposition({0, 0, 00});
     setColor("#fff8e7");
     setMoonColor("#fff8e7");
     setSunLightForce(200);

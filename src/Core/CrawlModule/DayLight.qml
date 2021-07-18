@@ -14,7 +14,7 @@ Node {
     property var model: null
     property int guiId: (model) ? model.guiId : -1;
 
-    PointLight {
+    SpotLight {
         id : sun
 
         position: Qt.vector3d(0, 0, 100);
@@ -25,7 +25,10 @@ Node {
         shadowFilter: (model)? model.shadowFilter: 0
         shadowMapFar: (model)? model.shadowMapFar: 0
         shadowBias: (model)? model.shadowBias: 0
+        eulerRotation.z: -90
 
+        coneAngle: 300
+        innerConeAngle: 0
 
     }
 
@@ -47,6 +50,6 @@ Node {
 
     rotation: (model)? model.ratation: Qt.quaternion(0, 0, 0, 0)
     scale: (model)? model.size: Qt.vector3d(0, 0, 0);
-    position: /*(model) ? model.position:*/ Qt.vector3d(0,0,0);
+    position: (model) ? model.position: Qt.vector3d(0,0,0);
 
 }

@@ -5,7 +5,7 @@
 //# of this license document, but changing it is not allowed.
 //#
 
-#include "iworlditem.h"
+#include "clasteritem.h"
 
 #ifndef IWORLDLIGHT_H
 #define IWORLDLIGHT_H
@@ -19,7 +19,7 @@ namespace CRAWL {
  *
  * @note If you wnat to create a new qml file the you need to inherit from the Light.qml file.
  */
-class CRAWL_EXPORT IWorldLight: public IWorldItem
+class CRAWL_EXPORT IWorldLight: public ClasterItem
 {
     Q_OBJECT
     Q_PROPERTY(int lightForce READ lightForce WRITE setLightForce NOTIFY lightForceChanged)
