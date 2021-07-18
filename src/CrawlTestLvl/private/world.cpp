@@ -21,8 +21,8 @@ namespace TestLvl {
 
 
 World::World() {
-    setCameraReleativePosition({0,0,100});
-    setCameraRatation(QQuaternion::fromEulerAngles({0,0,-90}));
+    setCameraReleativePosition({50,0,100});
+    setCameraRatation(QQuaternion::fromEulerAngles({0,0,0}));
 }
 
 CRAWL::WorldRule *World::initWorldRules() {

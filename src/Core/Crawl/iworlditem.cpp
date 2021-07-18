@@ -35,15 +35,15 @@ const IWorldItem *IWorldItem::getPlayer() const {
 
 void IWorldItem::render(unsigned int) {
     if (_playerObject->position().distanceToPoint(position()) >
-            _world->cameraReleativePosition().z() * 2) {
+            _world->cameraReleativePosition().z() * 3) {
 
-        float dX = _world->cameraReleativePosition().z() +
+        float dX = _world->cameraReleativePosition().z() * 2 +
                 (rand() % static_cast<int>(_world->cameraReleativePosition().z()));
 
         setX(_playerObject->position().x() + dX);
 
-        float dY = (rand() % static_cast<int>(_world->cameraReleativePosition().z() * 2)
-                                             - _world->cameraReleativePosition().z());
+        float dY = (rand() % static_cast<int>(_world->cameraReleativePosition().z() * 3)
+                                             - _world->cameraReleativePosition().z() * 1.5);
 
         setY(_playerObject->position().y() + dY);
     }

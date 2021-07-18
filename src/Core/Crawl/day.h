@@ -56,7 +56,7 @@ public:
             item->setRadius(radius());
             item->setAxis(_axis);
             item->setAngularVelocity(lengthToSpeed(_dayLengthSec));
-            item->setLightForce(_radius * 30);
+            item->setLightForce(lengthForce());
 
             Claster::add(item);
         } else {
@@ -90,7 +90,7 @@ public:
         _radius = newRadius;
 
         for (auto object: objects()) {
-            reinterpret_cast<DayItem*>(object)->setLightForce(_radius * 30);
+            reinterpret_cast<DayItem*>(object)->setLightForce(lengthForce());
             reinterpret_cast<DayItem*>(object)->setRadius(_radius);
 
         }
@@ -154,8 +154,12 @@ private:
         return (2 * M_PI * radius()) / length;
     }
 
-    int _radius = 2000;
-    float _dayLengthSec = 160;
+    float lengthForce() const {
+        return _radius * 15;
+    }
+
+    int _radius = 1000;
+    float _dayLengthSec = 360;
     QVector3D _axis = {1,0,0};
 };
 

@@ -17,7 +17,7 @@ Node {
     PointLight {
         id : sun
 
-        brightness: (model)? model.lightForce: 100
+        brightness: (model)? model.lightForce * model.visible: 100
         color: (model)? model.color: "#ffffff"
         castsShadow: (model)? model.castsShadow: 0
         shadowFactor: (model)? model.shadowFactor: 0
@@ -26,12 +26,17 @@ Node {
         shadowBias: (model)? model.shadowBias: 0
         shadowMapQuality: Light.ShadowMapQualityHigh
 
+        Behavior on brightness {
+            NumberAnimation {
+                duration: 5000
 
+            }
+        }
     }
 
     rotation: (model)? model.ratation: Qt.quaternion(0, 0, 0, 0)
     scale: (model)? model.size: Qt.vector3d(0, 0, 0);
     position: (model) ? model.position: Qt.vector3d(0,0,0);
-    visible: (model)? model.visible: false
+    visible: sun.brightness
 
 }
