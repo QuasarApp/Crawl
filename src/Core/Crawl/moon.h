@@ -16,7 +16,7 @@ namespace CRAWL {
 /**
  * @brief The Moon class This is default implementation of the moon for the Dat class.
  */
-class Moon: public DayItem {
+class CRAWL_EXPORT Moon: public DayItem {
     Q_OBJECT
 public:
     Moon(const QVector3D *center);

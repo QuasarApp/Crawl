@@ -16,7 +16,7 @@ namespace CRAWL {
 /**
  * @brief The Sun class This is default implementation of the sun for the Day class.
  */
-class Sun: public DayItem
+class CRAWL_EXPORT Sun: public DayItem
 {
     Q_OBJECT
 public:
