@@ -7,7 +7,7 @@
 
 #include "sun.h"
 
-namespace JungleLvl {
+namespace TestLvl {
 
 Sun::Sun(const QVector3D* center):
     CRAWL::DayItem(center, AUTO_CLASS_NAME) {

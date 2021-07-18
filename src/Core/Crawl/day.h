@@ -19,7 +19,7 @@ template <class Sun, class Moon>
 /**
  * @brief The Day class is template wrapper for the moon and sun objects.
  * The moon and sun objects moving around world center for imitation of the day.
- * @note All objects will be moving around this objects with radius. The Radius by default is 10000.
+ * @note All objects will be moving around this objects with radius. The Radius by default is 1000.
  */
 class Day: public IWorldItem, public Claster
 {
@@ -30,8 +30,8 @@ public:
         static_assert(std::is_base_of_v<DayItem, Sun>,
                 "The Day class can be works only with DayItem child classes");
 
-        DayItem* sun = new Sun(position());
-        DayItem* moon = new Moon(position());
+        DayItem* sun = new Sun(&position());
+        DayItem* moon = new Moon(&position());
 
         sun->setAnglePosition(0);
         moon->setAnglePosition(180);
@@ -40,7 +40,9 @@ public:
         add(moon);
     }
 
-    void render(unsigned int ) override {}
+    void render(unsigned int ) override {
+        setposition(getPlayer()->position() + QVector3D{1000, 0, 0});
+    }
 
     void add(ClasterItem *object) override {
 
@@ -110,7 +112,7 @@ protected:
     void onIntersects(const IWorldItem *) override {};
 
 private:
-    int _radius = 10000;
+    int _radius = 1000;
     QVector3D _axis;
 };
 

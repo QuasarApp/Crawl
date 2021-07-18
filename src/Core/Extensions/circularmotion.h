@@ -5,20 +5,22 @@
 //# of this license document, but changing it is not allowed.
 //#
 
-#include <Crawl/irender.h>
-
-#include <QVector3D>
-
 #ifndef CIRCULARMOTION_H
 #define CIRCULARMOTION_H
 
+#include <Extensions/basemotion.h>
+#include <QVector3D>
+
+
 namespace CRAWL {
+
+class GuiObject;
 
 /**
  * @brief The CircularMotion class. This class contains render function for the moving guiobject by round.
  * @note For motion set motion asix and angular velocity
  */
-class CRAWL_EXPORT CircularMotion: public IRender
+class CRAWL_EXPORT CircularMotion: public BaseMotion
 {
 public:
     CircularMotion(const QVector3D* center);
@@ -74,6 +76,22 @@ public:
      * @return newAngle angle position around center.
      */
     void setAnglePosition(double newAngle);
+
+protected:
+
+    /**
+     * @brief renderRatation This method recalc raration for an @a object. The Default implementation rotate object to center.
+     * @param object This is provessing object. Usually @a an object is casted pointer of this to GuiObject type.
+     * @param tbfMsec This is time betwin frames argument. soame as in the IRender::render function.
+     */
+    void renderRatation(GuiObject* object, unsigned int) override;
+
+    /**
+     * @brief renderRatation This method recalc position for an @a object. The Default implementation move the current object around center.
+     * @param object This is provessing object. Usually @a an object is casted pointer of this to GuiObject type.
+     * @param tbfMsec This is time betwin frames argument. soame as in the IRender::render function.
+     */
+    void renderPosition(GuiObject* object, unsigned int tbfMsec) override;
 
 private:
     float _angularVelocity = 0;

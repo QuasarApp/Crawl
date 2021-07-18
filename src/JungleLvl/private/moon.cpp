@@ -4,19 +4,18 @@
 //# Everyone is permitted to copy and distribute verbatim copies
 //# of this license document, but changing it is not allowed.
 //#
-
-#include "sun.h"
+#include "moon.h"
 
 namespace JungleLvl {
 
-Sun::Sun(const QVector3D* center):
+Moon::Moon(const QVector3D* center):
     CRAWL::DayItem(center, AUTO_CLASS_NAME) {
-    setColor("#f8d850");
-    setLightForce(5100);
+    setColor("#6177ff");
+    setLightForce(1100);
 }
 
-void Sun::onIntersects(const IWorldItem *) {}
+void Moon::init() {}
 
-void Sun::init() {}
+void Moon::onIntersects(const IWorldItem *) {}
 
 }

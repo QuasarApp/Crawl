@@ -7,11 +7,14 @@
 
 #include "background.h"
 #include "box.h"
+#include "moon.h"
 #include "plate.h"
+#include "sun.h"
 #include "testcontrol.h"
 #include "world.h"
 #include <testsnake.h>
 #include "Crawl/iworlditem.h"
+#include <Crawl/day.h>
 #include <Crawl/daylight.h>
 #include <Crawl/defaultlight.h>
 
@@ -24,10 +27,12 @@ World::World() {
 }
 
 CRAWL::WorldRule *World::initWorldRules() {
+    using Day = CRAWL::Day<Sun, Moon>;
+
     return new CRAWL::WorldRule {
         {0, {{registerObject<Box>(), 1000},
              {registerObject<Background>(), 1},
-             {registerObject<CRAWL::DayLight>(), 1}}}
+             {registerObject<Day>(), 1}}}
     };
 }
 

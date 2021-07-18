@@ -19,7 +19,10 @@
 #include "redegg.h"
 #include "purpleegg.h"
 #include "blueegg.h"
+#include "sun.h"
+#include "moon.h"
 
+#include <Crawl/day.h>
 #include <Crawl/defaultlight.h>
 #include <Crawl/snake.h>
 namespace JungleLvl {
@@ -30,9 +33,12 @@ World::World() {
 }
 
 CRAWL::WorldRule *World::initWorldRules() {
+
+    using Day = CRAWL::Day<Sun, Moon>;
+
     return new CRAWL::WorldRule {
         {0, {
-                {registerObject<CRAWL::DefaultLight>(), 1},
+                {registerObject<Day>(), 1},
                 {registerObject<Ground>(), 1},
                 {registerObject<Grees>(), 500},
                 {registerObject<LongGress>(), 100},
@@ -41,7 +47,7 @@ CRAWL::WorldRule *World::initWorldRules() {
             }
         },
         {1000, {
-                {registerObject<CRAWL::DefaultLight>(), 1},
+                {registerObject<Day>(), 1},
                 {registerObject<Ground>(), 1},
                 {registerObject<Grees>(), 500},
                 {registerObject<LongGress>(), 100},
@@ -52,7 +58,7 @@ CRAWL::WorldRule *World::initWorldRules() {
             }
         },
         {2000, {
-                {registerObject<CRAWL::DefaultLight>(), 1},
+                {registerObject<Day>(), 1},
                 {registerObject<Ground>(), 1},
                 {registerObject<Grees>(), 500},
                 {registerObject<LongGress>(), 100},

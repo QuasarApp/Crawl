@@ -87,14 +87,6 @@ void MovableObject::renderPosition(GuiObject *object, unsigned int tbfMsec) {
 
 }
 
-const QQuaternion &MovableObject::staticRotation() const {
-    return _staticRotation;
-}
-
-void MovableObject::setStaticRotation(const QQuaternion &newStaticRotation) {
-    _staticRotation = newStaticRotation;
-}
-
 const QVector3D &MovableObject::currentMovableVector() const {
     return _currentMovableVector;
 }

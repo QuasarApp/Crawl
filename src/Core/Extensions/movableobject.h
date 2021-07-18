@@ -9,7 +9,7 @@
 #ifndef MOVABLEOBJECT_H
 #define MOVABLEOBJECT_H
 
-#include "Crawl/irender.h"
+#include "Extensions/basemotion.h"
 #include <QQuaternion>
 #include <QVector3D>
 
@@ -27,7 +27,7 @@ class GuiObject;
  * * **Angular velocity** This property sets spead of the angle moving.
  * * **Braking force** This property are delta decriment the Power of the movable vector on time.
  */
-class CRAWL_EXPORT MovableObject: public virtual IRender
+class CRAWL_EXPORT MovableObject: public BaseMotion
 {
 
 public:
@@ -86,20 +86,6 @@ public:
      */
     const QVector3D &currentMovableVector() const;
 
-    /**
-     * @brief staticRotation This method retur nstatic rotation in quaternion. The static rotation rotate object to setted value independet then movable vector.
-     * @return quterion of the static rotation
-     */
-    const QQuaternion &staticRotation() const;
-
-    /**
-     * @brief setStaticRotation This metho sets new value of the static rotation of this object.
-     * @param newStaticRotation new value of the static rotation.
-     * @note if you want use eilor angles then use the QQuaternion::fromEulerAngles method.
-     * @note See the staticRotation method for get more information.
-     */
-    void setStaticRotation(const QQuaternion &newStaticRotation);
-
 protected:
 
     /**
@@ -107,14 +93,14 @@ protected:
      * @param object This is provessing object. Usually @a an object is casted pointer of this to GuiObject type.
      * @param tbfMsec This is time betwin frames argument. soame as in the IRender::render function.
      */
-    virtual void renderRatation(GuiObject* object, unsigned int tbfMsec);
+    void renderRatation(GuiObject* object, unsigned int tbfMsec) override;
 
     /**
      * @brief renderRatation This method recalc position for an @a object. The Default implementation move the current movable vector to setts movable vector. For example if you invoke the MovableObject::setMovableVector method then object change current movable vector with spead MovableObject::angularVelocity. If you sets
      * @param object This is provessing object. Usually @a an object is casted pointer of this to GuiObject type.
      * @param tbfMsec This is time betwin frames argument. soame as in the IRender::render function.
      */
-    virtual void renderPosition(GuiObject* object, unsigned int tbfMsec);
+    void renderPosition(GuiObject* object, unsigned int tbfMsec) override;
 
 private:
     QVector3D _movableVector;

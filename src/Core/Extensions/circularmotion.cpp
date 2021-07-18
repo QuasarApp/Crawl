@@ -17,14 +17,10 @@ CircularMotion::CircularMotion(const QVector3D *center) {
 }
 
 void CircularMotion::render(unsigned int tbfMsec) {
+
     if (auto _this = checkminimumRequariedType<GuiObject>()) {
-        if (!_center)
-            return;
-
-        double motionCoef = 360 / (2 * M_PI * radius());
-        _angle += motionCoef * angularVelocity() * (tbfMsec / 1000.f);
-
-        _this->setposition(*_center + (QQuaternion().fromAxisAndAngle(_axis, _angle).rotatedVector({0,0,0}).normalized() * radius()));
+        renderPosition(_this, tbfMsec);
+        renderRatation(_this, tbfMsec);
     }
 }
 
@@ -58,5 +54,23 @@ double CircularMotion::anglePosition() const {
 
 void CircularMotion::setAnglePosition(double newAngle) {
     _angle = newAngle;
+}
+
+void CircularMotion::renderRatation(GuiObject *object,
+                                    unsigned int ) {
+    object->setRatation(QQuaternion::rotationTo({1.0f, 0.0, 0.0}, *_center) * staticRotation());
+}
+
+void CircularMotion::renderPosition(GuiObject *object,
+                                    unsigned int tbfMsec) {
+
+    if (!_center)
+        return;
+
+    double motionCoef = 360 / (2 * M_PI * radius());
+    _angle += motionCoef * angularVelocity() * (tbfMsec / 1000.f);
+
+    object->setposition(*_center + (QQuaternion().fromAxisAndAngle(_axis, _angle).rotatedVector({0,0,0}).normalized() * radius()));
+
 }
 }

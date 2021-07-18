@@ -20,7 +20,7 @@ class DayItem: public IWorldLight, public CircularMotion {
 public:
     DayItem(const QVector3D* center,
             const QString& name,
-            const QString& viewTempalte = "qrc:/CrawlModule/Light.qml",
+            const QString& viewTempalte = "qrc:/CrawlModule/DayLight.qml",
             QObject *ptr = nullptr);
 
     void render(unsigned int tbfMsec);
