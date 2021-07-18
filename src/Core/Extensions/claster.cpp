@@ -14,7 +14,8 @@ Claster::Claster() {}
 
 Claster::~Claster() {
     for (auto child : qAsConst(_objects)) {
-        child->removeClaster(this);
+        if (auto obj = dynamic_cast<ClasterItem*>(child))
+            obj->removeClaster(this);
     }
 }
 

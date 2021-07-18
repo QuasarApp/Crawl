@@ -9,6 +9,7 @@
 #ifndef SNAKEITEM_H
 #define SNAKEITEM_H
 
+#include "iworlditem.h"
 #include "singleclasterworlditem.h"
 #include "Extensions/movableobject.h"
 

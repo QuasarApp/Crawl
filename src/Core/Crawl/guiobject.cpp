@@ -20,11 +20,11 @@ GuiObject::GuiObject(const QString &name, const QString &viewTempalte, QObject *
     setRatation(QQuaternion::fromEulerAngles({0,0,0}));
 }
 
-QString GuiObject::color() const {
+const QString& GuiObject::color() const {
     return _color;
 }
 
-void GuiObject::setColor(QString color) {
+void GuiObject::setColor(const QString& color) {
     if (_color == color)
         return;
 
@@ -35,6 +35,17 @@ void GuiObject::setColor(QString color) {
 void GuiObject::generateId() {
     static int id = 0;
     setGuiId(id++);
+}
+
+bool GuiObject::visible() const {
+    return _visible;
+}
+
+void GuiObject::setVisible(bool newVisible) {
+    if (_visible == newVisible)
+        return;
+    _visible = newVisible;
+    emit visibleChanged();
 }
 
 const QString &GuiObject::className() const {

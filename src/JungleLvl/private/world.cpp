@@ -5,23 +5,78 @@
 //# of this license document, but changing it is not allowed.
 //#
 
+#include "grees.h"
 #include "ground.h"
+#include "longgress.h"
 #include "snake.h"
+#include "tree.h"
 #include "world.h"
 #include "Crawl/iworlditem.h"
+#include "ivy.h"
+#include "plant.h"
+#include "stone.h"
+#include "wood.h"
+#include "redegg.h"
+#include "purpleegg.h"
+#include "blueegg.h"
+#include "absaluteplate.h"
+#include "Crawl/sun.h"
+#include "Crawl/moon.h"
 
+#include <Crawl/day.h>
+#include <Crawl/defaultlight.h>
 #include <Crawl/snake.h>
 namespace JungleLvl {
 
 World::World() {
-    setCameraReleativePosition({0,0,100});
-    setCameraRatation(QQuaternion::fromEulerAngles({0,0,-90}));
+    setCameraReleativePosition({50,0,100});
+    setCameraRatation(QQuaternion::fromEulerAngles({0,0,0}));
 }
 
 CRAWL::WorldRule *World::initWorldRules() {
+
+    using Day = CRAWL::Day<CRAWL::Sun, CRAWL::Moon>;
+
     return new CRAWL::WorldRule {
         {0, {
-             {registerObject<Ground>(), 1}}}
+                {registerObject<AbsalutePlate>(), 1},
+                {registerObject<Day>(), 1},
+                {registerObject<Ground>(), 1},
+                {registerObject<Grees>(), 500},
+                {registerObject<LongGress>(), 100},
+
+
+            }
+        },
+        {1000, {
+                {registerObject<AbsalutePlate>(), 1},
+                {registerObject<Day>(), 1},
+                {registerObject<Ground>(), 1},
+                {registerObject<Grees>(), 500},
+                {registerObject<LongGress>(), 100},
+                {registerObject<Plant>(), 20},
+                {registerObject<Wood>(), 25},
+
+
+            }
+        },
+        {2000, {
+                {registerObject<AbsalutePlate>(), 1},
+                {registerObject<Day>(), 1},
+                {registerObject<Ground>(), 1},
+                {registerObject<Grees>(), 500},
+                {registerObject<LongGress>(), 100},
+                {registerObject<Tree>(), 50},
+                {registerObject<Plant>(), 20},
+                {registerObject<Ivy>(), 25},
+                {registerObject<Stone>(), 25},
+                {registerObject<Wood>(), 25},
+                {registerObject<RedEgg>(), 5},
+                {registerObject<PurpleEgg>(), 5},
+                {registerObject<BlueEgg>(), 5},
+
+            }
+        }
     };
 }
 

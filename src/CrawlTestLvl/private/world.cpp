@@ -12,19 +12,26 @@
 #include "world.h"
 #include <testsnake.h>
 #include "Crawl/iworlditem.h"
+#include <Crawl/day.h>
+#include <Crawl/defaultlight.h>
+#include <Crawl/moon.h>
+#include <Crawl/sun.h>
 
 namespace TestLvl {
 
 
 World::World() {
-    setCameraReleativePosition({0,0,100});
-    setCameraRatation(QQuaternion::fromEulerAngles({0,0,-90}));
+    setCameraReleativePosition({50,0,100});
+    setCameraRatation(QQuaternion::fromEulerAngles({0,0,0}));
 }
 
 CRAWL::WorldRule *World::initWorldRules() {
+    using Day = CRAWL::Day<CRAWL::Sun, CRAWL::Moon>;
+
     return new CRAWL::WorldRule {
         {0, {{registerObject<Box>(), 1000},
-             {registerObject<Background>(), 1}}}
+             {registerObject<Background>(), 1},
+             {registerObject<Day>(), 1}}}
     };
 }
 

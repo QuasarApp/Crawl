@@ -13,5 +13,7 @@
         <file>CrawlModule/SelectLvlView.qml</file>
         <file>CrawlModule/DefaultMenu.qml</file>
         <file>CrawlModule/AbstractMenuView.qml</file>
+        <file>CrawlModule/Light.qml</file>
+        <file>CrawlModule/DayLight.qml</file>
     </qresource>
 </RCC>

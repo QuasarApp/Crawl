@@ -39,7 +39,10 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
     CRAWL::ClientApp client;
 
+#ifdef QT_DEBUG
     client.registerLevel<TestLevel>();
+#endif
+
     client.registerLevel<AbstractLvl>();
     client.registerLevel<Jungle>();
 

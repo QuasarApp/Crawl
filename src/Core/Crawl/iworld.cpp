@@ -24,7 +24,8 @@ namespace CRAWL {
 
 
 IWorld::IWorld() {
-
+    qRegisterMetaType<WorldRule::const_iterator>("WorldRule::const_iterator");
+    connect(this, &IWorld::sigWorldChanged, this, &IWorld::worldChanged, Qt::QueuedConnection);
 }
 
 IWorld::~IWorld() {
@@ -62,6 +63,7 @@ void IWorld::render(unsigned int tbfMsec) {
         emit sigGameFinished(_player->getCurrentStatus());
     }
 
+    updateWorld();
 
     int waitTime = 1000 / _targetFps - tbfMsec;
     if (waitTime > 0)
@@ -84,7 +86,7 @@ bool IWorld::start() {
     _player->setControl(_userInterface);
 
 
-    worldChanged(*_worldRules->begin());
+    worldChanged(_worldRules->cbegin());
     setTargetFps(60);
     setRunning(true);
 
@@ -216,7 +218,8 @@ void IWorld::removeItem(IWorldItem* item, QList<int> *removedObjectsList) {
     if (auto claster = dynamic_cast<Claster*>(item)) {
         const auto copyOfObjectsList = claster->objects();
         for (auto item : copyOfObjectsList) {
-            if (!item || item->parentClastersCount() > 1)
+            auto clasterItem = dynamic_cast<ClasterItem*>(item);
+            if (!clasterItem || clasterItem->parentClastersCount() > 1)
                 continue;
 
             int id = item->guiId();
@@ -338,6 +341,18 @@ void IWorld::setHdr(const QString &hdr) {
     emit hdrChanged();
 }
 
+void IWorld::updateWorld() {
+
+    if (_currendWorldLevel->isEmpty() || !_worldRules || !_player)
+        return;
+
+    float distance = _player->position().x();
+    auto nextLevel = _currendWorldLevel + 1;
+    if (nextLevel != _worldRules->cend() && distance > nextLevel.key()) {
+        emit sigWorldChanged(nextLevel);
+    }
+}
+
 const QQuaternion &IWorld::cameraRatation() const {
     return _cameraRatation;
 }
@@ -377,8 +392,12 @@ const QVector3D &IWorld::cameraReleativePosition() const {
     return _cameraReleativePosition;
 }
 
-void IWorld::worldChanged(WorldObjects objects) {
+void IWorld::worldChanged(WorldRule::const_iterator iterator) {
 
+    if (_currendWorldLevel == iterator)
+        return;
+
+    auto objects = iterator.value();
     objects[_player->className()] = 1;
 
     for (auto it = objects.begin(); it != objects.end(); ++it) {
@@ -395,6 +414,8 @@ void IWorld::worldChanged(WorldObjects objects) {
             }
         }
     }
+
+    _currendWorldLevel = iterator;
 }
 
 int IWorld::wordlStatus() const {

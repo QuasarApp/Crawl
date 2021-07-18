@@ -27,13 +27,6 @@ View3D {
 
     }
 
-    DirectionalLight {
-        position: Qt.vector3d(10000, 0, 10000);
-        rotation: camera.rotation
-
-        brightness: 120
-    }
-
     environment: SceneEnvironment {
         id: background
         backgroundMode: SceneEnvironment.SkyBox
@@ -89,7 +82,9 @@ View3D {
 
             for (var i = 0; i < arrayObjects.length; ++i) {
                 if (id === arrayObjects[i].guiId) {
+                    arrayObjects[i].destroy();
                     arrayObjects.splice(i,1);
+
                 }
             }
         }

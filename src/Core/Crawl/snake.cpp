@@ -5,7 +5,6 @@
 //# of this license document, but changing it is not allowed.
 //#
 
-#include "clasteritem.h"
 #include "snake.h"
 #include "snakeitem.h"
 #include <QQuaternion>
