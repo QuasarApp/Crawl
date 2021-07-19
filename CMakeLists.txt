@@ -13,7 +13,7 @@ if(TARGET ${PROJECT_NAME})
 endif()
 
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Core REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Test QUIET)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Test REQUIRED)
 
 include(submodules/QuasarAppLib/CMake/QuasarApp.cmake)
 
