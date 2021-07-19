@@ -155,11 +155,15 @@ private:
     }
 
     float lengthForce() const {
+#if QT_VERSION > QT_VERSION_CHECK(6, 0, 0)
+        return _radius * 0.1;
+#else
         return _radius * 15;
+#endif
     }
 
     int _radius = 1000;
-    float _dayLengthSec = 360;
+    float _dayLengthSec = 20;
     QVector3D _axis = {1,0,0};
 };
 

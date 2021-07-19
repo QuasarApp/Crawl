@@ -347,7 +347,7 @@ void IWorld::updateWorld() {
         return;
 
     float distance = _player->position().x();
-    auto nextLevel = _currendWorldLevel + 1;
+    auto nextLevel = std::next(_currendWorldLevel);
     if (nextLevel != _worldRules->cend() && distance > nextLevel.key()) {
         emit sigWorldChanged(nextLevel);
     }

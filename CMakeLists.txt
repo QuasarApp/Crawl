@@ -12,7 +12,7 @@ if(TARGET ${PROJECT_NAME})
   return()
 endif()
 
-set(QT_VERSION_MAJOR 5)
+set(QT_VERSION_MAJOR 6)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Test REQUIRED)
 
 include(submodules/QuasarAppLib/CMake/QuasarApp.cmake)

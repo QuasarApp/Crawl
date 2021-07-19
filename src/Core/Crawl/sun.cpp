@@ -12,6 +12,7 @@ namespace CRAWL {
 Sun::Sun(const QVector3D* center):
     DayItem(center, AUTO_CLASS_NAME) {
     setColor("#fff6d0");
+
 }
 
 void Sun::onIntersects(const IWorldItem *) {}
