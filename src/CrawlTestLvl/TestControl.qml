@@ -21,7 +21,7 @@ DefaultMenu {
             property real oldX: 0
             property real oldY: 0
             cursorShape: Qt.DragMoveCursor
-            onPressed: {
+            onPressed: (mouse) => {
                 track = true
                 oldX = mouse.x
                 oldY = mouse.y
@@ -32,7 +32,7 @@ DefaultMenu {
                 track = false
             }
 
-            onMouseXChanged: {
+            onPositionChanged: (mouse) => {
                 if (!model) {
                     return;
                 }
@@ -41,27 +41,17 @@ DefaultMenu {
                     return;
                 }
 
-                const delta = mouse.x - oldX;
-                const radianDelta = (delta / (parent.width / 2)) * 45
-
-                model.xChanged(radianDelta)
-                oldX = mouse.x;
-            }
-
-            onMouseYChanged:  {
-                if (!model) {
-                    return;
-                }
-
-                if (!track) {
-                    return;
-                }
-
-                const delta = mouse.y - oldY;
-                const radianDelta = (delta / (parent.height / 2)) * 45
+                let delta = mouse.y - oldY;
+                let radianDelta = (delta / (parent.height / 2)) * 45
 
                 model.yChanged(radianDelta)
                 oldY = mouse.y;
+
+                delta = mouse.x - oldX;
+                radianDelta = (delta / (parent.width / 2)) * 45
+
+                model.xChanged(radianDelta)
+                oldX = mouse.x;
             }
 
             anchors.fill: parent

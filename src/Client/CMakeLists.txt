@@ -43,17 +43,17 @@ if (ANDROID)
                          QmlNotyfyService
                          ViewSolutions)
 
-    find_package(Qt${QT_VERSION_MAJOR} COMPONENTS AndroidExtras REQUIRED)
+#    find_package(Qt${QT_VERSION_MAJOR} COMPONENTS AndroidExtras REQUIRED)
 
-    addDeployAPK(${CURRENT_PROJECT}
-                "${CMAKE_CURRENT_LIST_DIR}/android"
-                "SnakeProject"
-                "${SIGPATH}/Crawl.keystore"
-                "${SIGPASS_SNAKE}"
-                "${TARGET_DIR}"
-                "${SNAKE_EXTRA_LIBS}")
+#    addDeployAPK(${CURRENT_PROJECT}
+#                "${CMAKE_CURRENT_LIST_DIR}/android"
+#                "SnakeProject"
+#                "${SIGPATH}/Crawl.keystore"
+#                "${SIGPASS_SNAKE}"
+#                "${TARGET_DIR}"
+#                "${SNAKE_EXTRA_LIBS}")
 
-    target_link_libraries(${CURRENT_PROJECT} PRIVATE Qt${QT_VERSION_MAJOR}::AndroidExtras)
+#    target_link_libraries(${CURRENT_PROJECT} PRIVATE Qt${QT_VERSION_MAJOR}::AndroidExtras)
 
     file(GLOB java_files
        "android/src/com/quasarapp/androidtools/*.java"
