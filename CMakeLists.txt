@@ -55,10 +55,6 @@ endif()
 
 # Add sub directories
 
-if (ANDROID)
-    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src/Client/android")
-endif()
-
 add_subdirectory(submodules/QuasarAppLib)
 add_subdirectory(submodules/SimpleQmlNotify)
 add_subdirectory(submodules/ViewSolutions)

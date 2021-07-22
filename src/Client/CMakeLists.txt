@@ -20,11 +20,7 @@ set(PUBLIC_INCUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 
 set(PRIVATE_INCUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/private")
 
-if (ANDROID)
-    add_library(${CURRENT_PROJECT} ${SOURCE_CPP})
-else()
-    add_executable(${CURRENT_PROJECT} ${SOURCE_CPP})
-endif()
+qt_add_executable(${CURRENT_PROJECT} ${SOURCE_CPP})
 
 target_link_libraries(${CURRENT_PROJECT} PUBLIC ${PROJECT_NAME}Core TestLvl JungleLvl AbstractLvl)
 
@@ -35,13 +31,34 @@ SET(TARGET_DIR "${CMAKE_SOURCE_DIR}/Distro")
 file(MAKE_DIRECTORY ${TARGET_DIR})
 
 if (ANDROID)
-    set(SNAKE_EXTRA_LIBS "${PROJECT_NAME}Core"
-                         TestLvl
-                         AbstractLvl
-			 JungleLvl
-                         QuasarApp
-                         QmlNotyfyService
-                         ViewSolutions)
+
+    set(ARG_DEPENDS
+        ${PROJECT_NAME}Core
+        TestLvl
+        AbstractLvl
+        JungleLvl
+        QuasarApp
+        QmlNotyfyService
+        ViewSolutions)
+
+    make_directory("${CMAKE_BINARY_DIR}/extraLibs/")
+    foreach(LIB ${ARG_DEPENDS})
+        ADD_CUSTOM_TARGET(
+            copyExtraAPKLib${LIB} ALL
+            COMMAND ${CMAKE_COMMAND} -E copy "$<TARGET_FILE:${LIB}>" "${CMAKE_BINARY_DIR}/extraLibs/"
+            COMMENT ${CMAKE_COMMAND} -E copy "$<TARGET_FILE:${LIB}>" "${CMAKE_BINARY_DIR}/extraLibs/"
+        )
+
+        if(EXTRA_LIBS)
+            set(EXTRA_LIBS "${EXTRA_LIBS},${CMAKE_BINARY_DIR}/extraLibs/lib${LIB}.so")
+        else()
+            set(EXTRA_LIBS "${CMAKE_BINARY_DIR}/extraLibs/lib${LIB}.so")
+        endif()
+
+    endforeach()
+
+    set_target_properties(${CURRENT_PROJECT} PROPERTIES QT_ANDROID_EXTRA_LIBS ${EXTRA_LIBS})
+    set_target_properties(${CURRENT_PROJECT} PROPERTIES QT_ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
 
 #    find_package(Qt${QT_VERSION_MAJOR} COMPONENTS AndroidExtras REQUIRED)
 
@@ -57,6 +74,11 @@ if (ANDROID)
 
     file(GLOB java_files
        "android/src/com/quasarapp/androidtools/*.java"
+       "android/*.xml"
+       "android/*.gradle"
+       "android/gradlew"
+       "android/gradle.*"
+
     )
 
     add_custom_target(${name}Android
@@ -68,7 +90,6 @@ else()
     addDeployFromCustomFile("Crawl"
                             "${CMAKE_CURRENT_SOURCE_DIR}/../../Deploy/Crawl.json")
 endif()
-
 
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_import_qml_plugins(${CURRENT_PROJECT})
