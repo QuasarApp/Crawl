@@ -36,7 +36,7 @@ android {
 
     compileSdkVersion androidCompileSdkVersion.toInteger()
 
-    buildToolsVersion '31.0.0'
+    buildToolsVersion '30.0.2'
 
     sourceSets {
         main {
@@ -73,6 +73,6 @@ android {
         resConfig "en"
         multiDexEnabled true
         minSdkVersion = 28
-        targetSdkVersion = 31
+        targetSdkVersion = 30
     }
 }

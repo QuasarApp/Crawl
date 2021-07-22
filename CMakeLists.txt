@@ -6,10 +6,37 @@
 #
 
 cmake_minimum_required(VERSION 3.14)
-project(Crawl)
+project(Crawl VERSION 0.1 LANGUAGES CXX)
+
 if(TARGET ${PROJECT_NAME})
   message("The ${PROJECT_NAME} arledy included in main Project")
   return()
+endif()
+
+if (ANDROID)
+    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src/Client/android")
+
+    set(ARG_DEPENDS
+        ${PROJECT_NAME}Core
+        TestLvl
+        AbstractLvl
+        JungleLvl
+        QuasarApp
+        QmlNotyfyService
+        ViewSolutions)
+
+    set(ANDROID_EXTRA_CRAWL_LIBS_DIR "${CMAKE_BINARY_DIR}/extraLibs/")
+    make_directory(${ANDROID_EXTRA_CRAWL_LIBS_DIR})
+
+    foreach(LIB ${ARG_DEPENDS})
+        ADD_CUSTOM_TARGET(
+            copyExtraAPKLib${LIB} ALL
+            COMMAND ${CMAKE_COMMAND} -E copy "$<TARGET_FILE:${LIB}>" ${ANDROID_EXTRA_CRAWL_LIBS_DIR}
+            COMMENT ${CMAKE_COMMAND} -E copy "$<TARGET_FILE:${LIB}>" ${ANDROID_EXTRA_CRAWL_LIBS_DIR}
+        )
+
+        set(ANDROID_EXTRA_LIBS ${ANDROID_EXTRA_LIBS} "${ANDROID_EXTRA_CRAWL_LIBS_DIR}/lib${LIB}.so")
+    endforeach()
 endif()
 
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Core REQUIRED)
