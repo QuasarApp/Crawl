@@ -17,10 +17,17 @@ if (ANDROID)
     set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src/Client/android")
 endif()
 
-find_package(QT NAMES Qt6 Qt5 COMPONENTS Core REQUIRED)
+find_package(QT NAMES Qt5 Qt6 COMPONENTS Core REQUIRED)
+include(submodules/QuasarAppLib/CMake/QuasarApp.cmake)
+
+if (${QT_VERSION_MAJOR} LESS_EQUAL 5)
+    message("The ${PROJECT_NAME} support only qt6. please rebuild this project with qt6")
+    initAll()
+    return()
+endif()
+
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Test REQUIRED)
 
-include(submodules/QuasarAppLib/CMake/QuasarApp.cmake)
 
 if (DEFINED TARGET_PLATFORM_TOOLCHAIN)
     if (${TARGET_PLATFORM_TOOLCHAIN} STREQUAL "wasm32")
