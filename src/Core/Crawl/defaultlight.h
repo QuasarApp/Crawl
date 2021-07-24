@@ -14,7 +14,9 @@
 namespace CRAWL {
 
 /**
- * @brief The DefaultLight class This is default implementation of the wirld light.
+ * @brief The DefaultLight class This is default implementation of the world light.
+ * This object create uniform illumination for all world.
+ * For integration This object yo worl see the IWorld::initWorldRules method
  */
 class DefaultLight final:  public IWorldLight
 {
