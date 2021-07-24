@@ -11,7 +11,7 @@ namespace AbstractLvl {
 
 Baff::Baff() : IWorldItem(AUTO_CLASS_NAME) {
     setMash("qrc:/mesh/meshes/Baff.mesh");
-    setSize({2,2,2});
+    setSize({1,1,1});
     setColor("#00ff00");
     setposition({200, 0, 200});
     setZ(0);

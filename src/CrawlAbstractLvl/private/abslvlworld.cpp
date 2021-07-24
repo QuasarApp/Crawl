@@ -19,7 +19,7 @@
 namespace AbstractLvl {
 
 AbsLvlWorld::AbsLvlWorld() {
-    setCameraReleativePosition({50,0,200});
+    setCameraReleativePosition({20,0,100});
     setCameraRatation(QQuaternion::fromEulerAngles({0,0,0}));
 }
 

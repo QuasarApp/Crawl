@@ -10,7 +10,7 @@ namespace AbstractLvl {
 
 ObstacleBlue::ObstacleBlue() : IWorldItem(AUTO_CLASS_NAME) {
     setMash("qrc:/mesh/meshes/ObstacleBlue.mesh");
-    setSize({2,2,2});
+    setSize({1,1,1});
     setColor("#00bfff");
     setposition({250, 0, 200});
     setZ(0);
