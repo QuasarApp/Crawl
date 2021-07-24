@@ -33,19 +33,19 @@ CRAWL::WorldRule *AbsLvlWorld::initWorldRules() {
 
         {0,
             {
-                {registerObject<Baff>(), 10}, {registerObject<DefaultLight>(), 1}
+                {registerObject<Baff>(), 10}, {registerObject<CRAWL::DefaultLight>(), 1}
             }
         },
 
         {20,
             {
-                {registerObject<ObstacleBlue>(), 10}, {registerObject<DefaultLight>(), 1}
+                {registerObject<ObstacleBlue>(), 10}, {registerObject<CRAWL::DefaultLight>(), 1}
             }
         },
 
         {30,
             {
-                {registerObject<ObstacleRed>(), 40}, {registerObject<DefaultLight>(), 1}
+                {registerObject<ObstacleRed>(), 40}, {registerObject<CRAWL::DefaultLight>(), 1}
             }
         }
 
