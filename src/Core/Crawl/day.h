@@ -20,8 +20,32 @@ template <class Sun, class Moon>
 /**
  * @brief The Day class is template wrapper for the moon and sun objects.
  * The moon and sun objects moving around world center for imitation of the day.
+ *
+ * ### Integration on the world.
+ * You need to add one object of this class in the IWorld::initWorldRules method.
+ * **Example:**
+ *
+ * ```cpp
+ * CRAWL::WorldRule *World::initWorldRules() {
+
+    using Day = CRAWL::Day<CRAWL::Sun, CRAWL::Moon>;
+
+    return new CRAWL::WorldRule {
+        {0, {
+                {registerObject<Day>(), 1},
+            }
+        },
+        {1000, {
+                {registerObject<Day>(), 1},
+            }
+        },
+    };
+}
+ * ```
  * @note All objects will be moving around this objects with radius. The Radius by default is 2000.
  * @note This class automaticly sets ligth force for the light objects.
+ *
+ *
  */
 class Day: public IWorldItem, public Claster
 {
