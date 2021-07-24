@@ -10,6 +10,8 @@
 
 #include "Crawl/iworld.h"
 
+namespace AbstractLvl {
+
 class AbsLvlWorld : public CRAWL::IWorld {
 
     // IWorld interface
@@ -28,5 +30,7 @@ public:
     void initPlayerControl(CRAWL::IControl *control) override;
 
 };
+
+}
 
 #endif // ABSLEVELWORLD_H

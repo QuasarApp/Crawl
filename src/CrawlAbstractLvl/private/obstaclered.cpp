@@ -7,12 +7,18 @@
 
 #include "obstaclered.h"
 
-ObstacleRed::ObstacleRed() : IWorldItem("ObstacleRed") {
+namespace AbstractLvl {
+
+ObstacleRed::ObstacleRed() : IWorldItem(AUTO_CLASS_NAME) {
     setMash("qrc:/mesh/meshes/ObstacleRed.mesh");
-    setSize({1,1,1});
+    setSize({2,2,2});
+    setColor("#ff1927");
+    setposition({300, 0, 200});
     setZ(0);
 }
 
 void ObstacleRed::onIntersects(const IWorldItem *item) {
         Q_UNUSED(item);
+}
+
 }

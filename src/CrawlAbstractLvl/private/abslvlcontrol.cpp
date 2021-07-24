@@ -7,10 +7,14 @@
 
 #include "abslvlcontrol.h"
 
+namespace AbstractLvl {
+
 AbsLvlControl::AbsLvlControl() {
 
 }
 
 QString AbsLvlControl::initQmlView() const {
     return "qrc:/qml/AbsLvlControl.qml";
+}
+
 }

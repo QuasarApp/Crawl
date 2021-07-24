@@ -5,24 +5,24 @@
 //# of this license document, but changing it is not allowed.
 //#
 
-#ifndef ABSTRACTLVL_H
-#define ABSTRACTLVL_H
+#ifndef ABSTRACTLEVEL_H
+#define ABSTRACTLEVEL_H
 
 #include <Crawl/ilevel.h>
 #include "abstractlvl_global.h"
 
-inline void initAbstractLvlResources() { Q_INIT_RESOURCE(AbstractLvl);
+inline void initAbstractLvlResources() { Q_INIT_RESOURCE(abstractLevel);
                                          Q_INIT_RESOURCE(absLvlRes);}
 /**
  * @brief The AbstractLvl class This is test lvlv wraper of the crawl
  */
-class CRAWL_ABSTRACT_LEVEL_EXPORT AbstractLvl: public CRAWL::ILevel {
+class CRAWL_ABSTRACT_LEVEL_EXPORT AbstractLevel: public CRAWL::ILevel {
 public:
-    AbstractLvl();
+    AbstractLevel();
 
     // ILevel interface
 public:
     CRAWL::IWorld *world() override;
 };
 
-#endif // ABSTRACTLVL_H
+#endif // ABSTRACTLEVEL_H

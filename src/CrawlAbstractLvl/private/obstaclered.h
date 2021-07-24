@@ -9,6 +9,7 @@
 #define OBJOBSTACLERED_H
 #include "Crawl/iworlditem.h"
 
+namespace AbstractLvl {
 
 class ObstacleRed: public CRAWL::IWorldItem {
 public:
@@ -18,5 +19,7 @@ public:
 protected:
     void onIntersects(const IWorldItem *item) override;
 };
+
+}
 
 #endif // OBJOBSTACLERED_H
