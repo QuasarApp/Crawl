@@ -19,6 +19,7 @@ public:
 
     AbsLvlWorld();
 
+
     CRAWL::IPlayer *initPlayer() const override;
     CRAWL::WorldRule *initWorldRules() override;
     QString initHdrBackGround() const override;
