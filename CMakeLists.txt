@@ -12,10 +12,18 @@ if(TARGET ${PROJECT_NAME})
   return()
 endif()
 
-set(QT_VERSION_MAJOR 5)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Test REQUIRED)
-
+find_package(QT NAMES Qt5 Qt6 COMPONENTS Core REQUIRED)
 include(submodules/QuasarAppLib/CMake/QuasarApp.cmake)
+
+if (NOT ${QT_VERSION_MAJOR} EQUAL 5)
+    message("The ${PROJECT_NAME} support only qt5. please rebuild this project with qt6")
+    initAll()
+    addDoc(${PROJECT_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/doxygen.conf)
+
+    return()
+endif()
+
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Test REQUIRED)
 
 if (DEFINED TARGET_PLATFORM_TOOLCHAIN)
     if (${TARGET_PLATFORM_TOOLCHAIN} STREQUAL "wasm32")
