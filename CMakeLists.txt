@@ -18,6 +18,8 @@ include(submodules/QuasarAppLib/CMake/QuasarApp.cmake)
 if (NOT ${QT_VERSION_MAJOR} EQUAL 5)
     message("The ${PROJECT_NAME} support only qt5. please rebuild this project with qt6")
     initAll()
+    addDoc(${PROJECT_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/doxygen.conf)
+
     return()
 endif()
 
