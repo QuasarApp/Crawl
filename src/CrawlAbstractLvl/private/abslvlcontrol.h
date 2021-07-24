@@ -9,6 +9,8 @@
 #define ABSLVLCONTROL_H
 #include "Crawl/defaultcontrol.h"
 
+namespace AbstractLvl {
+
 /**
  * @brief The AbsLvlControl class This controll support custom camera-ratation functions.
  */
@@ -20,5 +22,7 @@ public:
     QString initQmlView() const override;
 
 };
+
+}
 
 #endif // ABSLVLCONTROL_H

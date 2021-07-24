@@ -13,9 +13,14 @@
 #include <abslvlsnake.h>
 #include "Crawl/iworlditem.h"
 
+#include "Crawl/defaultlight.h"
+
+
+namespace AbstractLvl {
 
 AbsLvlWorld::AbsLvlWorld() {
-    setCameraReleativePosition({0, 0, 100});
+    setCameraReleativePosition({20,0,100});
+    setCameraRatation(QQuaternion::fromEulerAngles({0,0,0}));
 }
 
 CRAWL::IPlayer *AbsLvlWorld::initPlayer() const {
@@ -23,10 +28,27 @@ CRAWL::IPlayer *AbsLvlWorld::initPlayer() const {
 }
 
 CRAWL::WorldRule *AbsLvlWorld::initWorldRules() {
+
     return new CRAWL::WorldRule {
-        {0, {{registerObject<Baff>(), 1}}},
-        {10, {{registerObject<ObstacleBlue>(), 1}}},
-        {20, {{registerObject<ObstacleRed>(), 1}}}
+
+        {0,
+            {
+                {registerObject<Baff>(), 10}, {registerObject<CRAWL::DefaultLight>(), 1}
+            }
+        },
+
+        {20,
+            {
+                {registerObject<ObstacleBlue>(), 10}, {registerObject<CRAWL::DefaultLight>(), 1}
+            }
+        },
+
+        {30,
+            {
+                {registerObject<ObstacleRed>(), 40}, {registerObject<CRAWL::DefaultLight>(), 1}
+            }
+        }
+
     };
 }
 
@@ -57,4 +79,6 @@ CRAWL::IControl *AbsLvlWorld::initUserInterface() const {
 
 void AbsLvlWorld::initPlayerControl(CRAWL::IControl *control) {
     return IWorld::initPlayerControl(control);
+}
+
 }

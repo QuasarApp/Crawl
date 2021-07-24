@@ -10,6 +10,8 @@
 
 #include "Crawl/snake.h"
 
+namespace AbstractLvl {
+
 class AbsLvlSnake : public CRAWL::Snake {
 
     Q_OBJECT
@@ -22,5 +24,7 @@ protected:
     void onIntersects(const IWorldItem *item) override;
 
 };
+
+}
 
 #endif // ABSLVLSNAKE_H

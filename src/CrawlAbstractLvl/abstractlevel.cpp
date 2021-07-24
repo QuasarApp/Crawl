@@ -5,14 +5,14 @@
 //# of this license document, but changing it is not allowed.
 //#
 
-#include "abstractlvl.h"
+#include "abstractlevel.h"
 #include "abslvlworld.h"
 
-AbstractLvl::AbstractLvl() {
+AbstractLevel::AbstractLevel() {
 
 }
 
-CRAWL::IWorld *AbstractLvl::world() {
+CRAWL::IWorld *AbstractLevel::world() {
     initAbstractLvlResources();
-    return new AbsLvlWorld();
+    return new AbstractLvl::AbsLvlWorld();
 }

@@ -7,7 +7,9 @@
 
 #include "abslvlsnakeitem.h"
 
-AbsLvlSnakeItem::AbsLvlSnakeItem():CRAWL::SnakeItem("AbstractSnakeItem") {
+namespace AbstractLvl {
+
+AbsLvlSnakeItem::AbsLvlSnakeItem():CRAWL::SnakeItem(AUTO_CLASS_NAME) {
     setMash("qrc:/mesh/meshes/SnakePatternBody.mesh");
     setColor("#20aa9a");
     setSize({1,1,1});
@@ -15,5 +17,7 @@ AbsLvlSnakeItem::AbsLvlSnakeItem():CRAWL::SnakeItem("AbstractSnakeItem") {
 
 void AbsLvlSnakeItem::onIntersects(const IWorldItem *item) {
     Q_UNUSED(item);
+
+}
 
 }
