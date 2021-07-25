@@ -22,13 +22,14 @@ file(GLOB SOURCE_CPP
 set(PUBLIC_INCUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 set(PRIVATE_INCUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/private")
 
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick Quick3D Concurrent REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick Quick3D Gui Concurrent REQUIRED)
 
 add_library(${CURRENT_PROJECT} ${SOURCE_CPP} ${SOURCE_QRC})
 
 target_link_libraries(${CURRENT_PROJECT} PUBLIC
                         Qt${QT_VERSION_MAJOR}::Concurrent
                         Qt${QT_VERSION_MAJOR}::Quick3D
+                        Qt${QT_VERSION_MAJOR}::Gui
                         QuasarApp
                         QmlNotyfyService
                         ViewSolutions)
