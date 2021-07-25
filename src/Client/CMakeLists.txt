@@ -78,7 +78,7 @@ else()
 endif()
 
 if(QT_VERSION_MAJOR EQUAL 6)
-    qt_import_qml_plugins(${CURRENT_PROJECT})
+#    qt_import_qml_plugins(${CURRENT_PROJECT})
     qt_finalize_executable(${CURRENT_PROJECT})
 endif()
 
