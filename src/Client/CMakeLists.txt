@@ -22,7 +22,16 @@ set(PRIVATE_INCUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/private")
 
 qt_add_executable(${CURRENT_PROJECT} MANUAL_FINALIZATION ${SOURCE_CPP})
 
-target_link_libraries(${CURRENT_PROJECT} PUBLIC ${PROJECT_NAME}Core TestLvl JungleLvl AbstractLvl)
+target_link_libraries(${CURRENT_PROJECT} PUBLIC 
+                        ${PROJECT_NAME}Core
+                        TestLvl
+                        JungleLvl
+                        AbstractLvl
+                        Qt${QT_VERSION_MAJOR}::Core
+                        Qt${QT_VERSION_MAJOR}::Quick
+                        Qt${QT_VERSION_MAJOR}::Quick3D
+                        Qt${QT_VERSION_MAJOR}::Concurrent
+                        )
 
 target_include_directories(${CURRENT_PROJECT} PUBLIC ${PUBLIC_INCUDE_DIR})
 target_include_directories(${CURRENT_PROJECT} PRIVATE ${PRIVATE_INCUDE_DIR})
