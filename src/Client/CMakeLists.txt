@@ -27,10 +27,6 @@ target_link_libraries(${CURRENT_PROJECT} PUBLIC
                         TestLvl
                         JungleLvl
                         AbstractLvl
-                        Qt${QT_VERSION_MAJOR}::Core
-                        Qt${QT_VERSION_MAJOR}::Quick
-                        Qt${QT_VERSION_MAJOR}::Quick3D
-                        Qt${QT_VERSION_MAJOR}::Concurrent
                         )
 
 target_include_directories(${CURRENT_PROJECT} PUBLIC ${PUBLIC_INCUDE_DIR})

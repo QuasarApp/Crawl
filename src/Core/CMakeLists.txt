@@ -28,6 +28,7 @@ add_library(${CURRENT_PROJECT} ${SOURCE_CPP} ${SOURCE_QRC})
 
 target_link_libraries(${CURRENT_PROJECT} PUBLIC
                         Qt${QT_VERSION_MAJOR}::Concurrent
+                        Qt${QT_VERSION_MAJOR}::Quick3D
                         QuasarApp
                         QmlNotyfyService
                         ViewSolutions)
