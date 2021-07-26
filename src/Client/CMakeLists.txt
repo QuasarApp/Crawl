@@ -20,16 +20,10 @@ set(PUBLIC_INCUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 
 set(PRIVATE_INCUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/private")
 
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick Quick3D Gui Concurrent REQUIRED)
-
 qt_add_executable(${CURRENT_PROJECT} MANUAL_FINALIZATION ${SOURCE_CPP})
 
 target_link_libraries(${CURRENT_PROJECT} PUBLIC 
                         ${PROJECT_NAME}Core
-                        Qt${QT_VERSION_MAJOR}::Concurrent
-                        Qt${QT_VERSION_MAJOR}::Quick3D
-                        Qt${QT_VERSION_MAJOR}::Gui
-                        Qt${QT_VERSION_MAJOR}::Quick
                         TestLvl
                         JungleLvl
                         AbstractLvl
