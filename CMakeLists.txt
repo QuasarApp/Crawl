@@ -6,24 +6,28 @@
 #
 
 cmake_minimum_required(VERSION 3.14)
-project(Crawl)
+project(Crawl VERSION 0.1 LANGUAGES CXX)
+
 if(TARGET ${PROJECT_NAME})
   message("The ${PROJECT_NAME} arledy included in main Project")
   return()
 endif()
 
+if (ANDROID)
+    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src/Client/android")
+endif()
+
 find_package(QT NAMES Qt5 Qt6 COMPONENTS Core REQUIRED)
 include(submodules/QuasarAppLib/CMake/QuasarApp.cmake)
 
-if (NOT ${QT_VERSION_MAJOR} EQUAL 5)
-    message("The ${PROJECT_NAME} support only qt5. please rebuild this project with qt6")
+if (${QT_VERSION_MAJOR} LESS_EQUAL 5)
+    message("The ${PROJECT_NAME} support only qt6. please rebuild this project with qt6")
     initAll()
-    addDoc(${PROJECT_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/doxygen.conf)
-
     return()
 endif()
 
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Test REQUIRED)
+
 
 if (DEFINED TARGET_PLATFORM_TOOLCHAIN)
     if (${TARGET_PLATFORM_TOOLCHAIN} STREQUAL "wasm32")
@@ -62,10 +66,6 @@ if (NOT DEFINED CRAWL_TESTS)
 endif()
 
 # Add sub directories
-
-if (ANDROID)
-    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src/Client/android")
-endif()
 
 add_subdirectory(submodules/QuasarAppLib)
 add_subdirectory(submodules/SimpleQmlNotify)

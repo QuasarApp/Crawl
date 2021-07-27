@@ -7,7 +7,7 @@
 
 package com.quasarapp.androidtools;
 
-import org.qtproject.qt5.android.bindings.QtActivity;
+import org.qtproject.qt.android.bindings.QtActivity;
 import android.view.View;
 
 public class MainActivity extends QtActivity

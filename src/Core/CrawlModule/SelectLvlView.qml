@@ -5,11 +5,11 @@
 //# of this license document, but changing it is not allowed.
 //#
 
-import QtQuick 2.15
-import ViewSolutionsModule 1.0
-import QtQuick.Controls 2.15
-import QtQuick.Controls.Material 2.15
-import QtQuick.Layouts 1.15
+import QtQuick
+import ViewSolutionsModule
+import QtQuick.Controls
+import QtQuick.Controls.Material
+import QtQuick.Layouts
 
 ColumnLayout {
     id: root

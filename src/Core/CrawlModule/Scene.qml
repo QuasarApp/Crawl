@@ -1,11 +1,11 @@
-import QtQuick 2.15
-import QtQuick3D 1.15
-import QtQuick.Controls.Material 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
+import QtQuick
+import QtQuick3D
+import QtQuick.Controls.Material
+import QtQuick.Controls
+import QtQuick.Layouts
 
 // https://doc.qt.io/qt-5/qqmlengine.html#qmlRegisterUncreatableMetaObject
-import engine.worldstatus 1.0
+import engine.worldstatus
 
 View3D {
     id: scene;
@@ -27,13 +27,13 @@ View3D {
 
     }
 
-    environment: SceneEnvironment {
-        id: background
-        backgroundMode: SceneEnvironment.SkyBox
-        lightProbe: Texture {
-            source: (privateRoot.world)? privateRoot.world.hdr: ""
-        }
+    SceneEnvironment {
+        id: defautlBackground
+        backgroundMode: SceneEnvironment.Color
+        clearColor: "#777777"
     }
+
+    environment: /*(privateRoot.world)? background:*/ defautlBackground
 
     Node {
         id: privateRoot

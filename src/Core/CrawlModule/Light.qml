@@ -5,8 +5,8 @@
 //# of this license document, but changing it is not allowed.
 //#
 
-import QtQuick 2.15
-import QtQuick3D 1.15
+import QtQuick
+import QtQuick3D
 
 Node {
     id: graphicItem

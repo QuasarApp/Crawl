@@ -118,7 +118,7 @@ void Engine::startRenderLoop() {
         return;
 
     _renderLoop = true;
-    _renderLoopFuture = QtConcurrent::run(this, &Engine::renderLoop);
+    _renderLoopFuture = QtConcurrent::run([this](){renderLoop();});
 }
 
 void Engine::stopRenderLoop() {
