@@ -6,13 +6,18 @@
 //#
 
 #include "obstacleblue.h"
+namespace AbstractLvl {
 
-ObstacleBlue::ObstacleBlue() : IWorldItem("OstacleBlue") {
+ObstacleBlue::ObstacleBlue() : IWorldItem(AUTO_CLASS_NAME) {
     setMash("qrc:/mesh/meshes/ObstacleBlue.mesh");
     setSize({1,1,1});
+    setColor("#00bfff");
+    setposition({250, 0, 200});
     setZ(0);
 }
 
 void ObstacleBlue::onIntersects(const IWorldItem *item) {
         Q_UNUSED(item);
+}
+
 }

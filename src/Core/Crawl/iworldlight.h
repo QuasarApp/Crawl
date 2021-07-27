@@ -18,6 +18,28 @@ namespace CRAWL {
  * You need to create own qml file with light.
  *
  * @note If you wnat to create a new qml file the you need to inherit from the Light.qml file.
+ *
+ * ### Integration on the world.
+ * You need to add one object of this class in the IWorld::initWorldRules method.
+ * **Example:**
+ *
+ * ```cpp
+ * CRAWL::WorldRule *World::initWorldRules() {
+
+    return new CRAWL::WorldRule {
+        {0, {
+                {registerObject<MyLightObject>(), 1},
+            }
+        },
+        {1000, {
+                {registerObject<MyLightObject>(), 1},
+            }
+        },
+    };
+}
+ * ```
+ *
+ * For integration This object you world see the IWorld::initWorldRules method
  */
 class CRAWL_EXPORT IWorldLight: public ClasterItem
 {
@@ -30,6 +52,7 @@ class CRAWL_EXPORT IWorldLight: public ClasterItem
     Q_PROPERTY(float shadowBias READ shadowBias WRITE setShadowBias NOTIFY shadowBiasChanged)
 
 public:
+
     IWorldLight(const QString& name,
                 const QString& viewTempalte = "qrc:/CrawlModule/Light.qml",
                 QObject *ptr = nullptr);

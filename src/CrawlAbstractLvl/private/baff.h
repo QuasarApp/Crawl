@@ -9,6 +9,7 @@
 #define OBJBAFF_H
 #include "Crawl/iworlditem.h"
 
+namespace AbstractLvl {
 
 class Baff: public CRAWL::IWorldItem {
 public:
@@ -18,5 +19,7 @@ public:
 protected:
     void onIntersects(const IWorldItem *item) override;
 };
+
+}
 
 #endif // OBJBAFF_H
