@@ -1,8 +1,8 @@
-import QtQuick 2.15
-import CrawlModule 1.0
-import QtQuick.Layouts 1.15
-import QtQuick.Controls.Material 2.15
-import QtQuick.Controls 2.15
+import QtQuick
+import CrawlModule
+import QtQuick.Layouts
+import QtQuick.Controls.Material
+import QtQuick.Controls
 
 DefaultMenu {
     columns: 2

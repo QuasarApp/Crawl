@@ -5,9 +5,9 @@
 //# of this license document, but changing it is not allowed.
 //#
 
-import QtQuick 2.15
-import CrawlModule 1.0
-import QtQuick.Layouts 1.15
+import QtQuick
+import CrawlModule
+import QtQuick.Layouts
 
 DefaultMenu {
 

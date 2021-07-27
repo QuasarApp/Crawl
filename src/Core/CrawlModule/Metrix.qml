@@ -5,10 +5,10 @@
 //# of this license document, but changing it is not allowed.
 //#
 
-import QtQuick 2.15
-import QtQuick.Window 2.15
-import QtQuick.Controls.Material 2.15
-import QtQuick.Controls 2.15
+import QtQuick
+import QtQuick.Window
+import QtQuick.Controls.Material
+import QtQuick.Controls
 
 Item {
     readonly property int pointCount: 100;

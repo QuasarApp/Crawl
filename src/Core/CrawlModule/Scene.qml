@@ -27,13 +27,13 @@ View3D {
 
     }
 
-    environment: SceneEnvironment {
-        id: background
-        backgroundMode: SceneEnvironment.SkyBox
-        lightProbe: Texture {
-            source: (privateRoot.world)? privateRoot.world.hdr: ""
-        }
+    SceneEnvironment {
+        id: defautlBackground
+        backgroundMode: SceneEnvironment.Color
+        clearColor: "#777777"
     }
+
+    environment: /*(privateRoot.world)? background:*/ defautlBackground
 
     Node {
         id: privateRoot
