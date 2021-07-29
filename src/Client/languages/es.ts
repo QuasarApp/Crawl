@@ -2,7 +2,7 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ru">
 <context>
-    <name>AbstractLevel::AbsLvlWorld</name>
+    <name>AbstractLvl::AbsLvlWorld</name>
     <message>
         <source>This a abstract lvl</source>
         <translation type="unfinished"></translation>
