@@ -29,6 +29,32 @@ struct LocalPropertyes {
  *
  * This class have implementation of the render method that move all child object on selected local positions in parent object.
  *
+ * ## Example of use
+ *
+ * ### For what this object uses
+ * This object will be very convinent wher you want to create a difecly claster object with multiple subobjects that should contains in the parrent root object.
+ * For example : weapon of the player.
+ *
+ * ### Example of use
+ *
+ * 1. create the Player class:
+ *
+ * ```cpp
+ * const QVector3d weaponPosition = {1,0,0};
+ * const QQuaternion weaponRotation = QQuaternion::fromEilorAngle(90,0,0);
+ *
+ * class Player: public IWorldItem, public GroupObject {
+ *  //... some implementation
+ *  void setWeapon(WeaponObject * weapon) {
+ *      installObject(weapon, weaponPosition, weaponRotation);
+ *  }
+ *  //... some implementation
+ * };
+ * ```
+ *
+ * All done. Now the weapon will be static on forward of the Player object.
+ *
+ * You can change the position and rotation of the weapon object using updatePosition and updateRotation methods.
  */
 class GroupObject: public IRender, public Claster
 {
