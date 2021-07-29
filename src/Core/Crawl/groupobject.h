@@ -55,6 +55,8 @@ struct LocalPropertyes {
  * All done. Now the weapon will be static on forward of the Player object.
  *
  * You can change the position and rotation of the weapon object using updatePosition and updateRotation methods.
+ *
+ * @note This class requried the GuiObject functions as a parent class.
  */
 class GroupObject: public IRender, public Claster
 {
