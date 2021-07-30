@@ -18,7 +18,7 @@ Ivy::Ivy(): CRAWL::IWorldItem(AUTO_CLASS_NAME) {
 
     setBaseColorMap("qrc:/mesh/meshes/Plant/Ivy_Base.jpg");
     setSize({1,1,1});
-    setRatation(QQuaternion::fromEulerAngles({0,0, static_cast<float>(rand() % 360)}));
+    setRotation(QQuaternion::fromEulerAngles({0,0, static_cast<float>(rand() % 360)}));
 }
 
 void Ivy::onIntersects(const IWorldItem *) {

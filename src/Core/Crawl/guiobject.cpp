@@ -17,7 +17,7 @@ GuiObject::GuiObject(const QString &name, const QString &viewTempalte, QObject *
     _viewTemplate = viewTempalte;
     _className = name;
     generateId();
-    setRatation(QQuaternion::fromEulerAngles({0,0,0}));
+    setRotation(QQuaternion::fromEulerAngles({0,0,0}));
 }
 
 const QString& GuiObject::color() const {
@@ -173,15 +173,15 @@ void GuiObject::setSize(const QVector3D &newSize) {
     emit sizeChanged();
 }
 
-const QQuaternion &GuiObject::ratation() const {
-    return _ratation;
+const QQuaternion &GuiObject::rotation() const {
+    return _rotation;
 }
 
-void GuiObject::setRatation(const QQuaternion &newRatation) {
-    if (_ratation == newRatation)
+void GuiObject::setRotation(const QQuaternion &newRotation) {
+    if (_rotation == newRotation)
         return;
-    _ratation = newRatation;
-    emit ratationChanged();
+    _rotation = newRotation;
+    emit rotationChanged();
 }
 
 const QString &GuiObject::mash() const {

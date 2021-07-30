@@ -16,7 +16,7 @@ Box::Box(): IWorldItem("Box") {
     setSize({2,2,2});
     setColor(QColor::fromRgb(rand()).name());
 
-    setRatation(QQuaternion::fromEulerAngles(
+    setRotation(QQuaternion::fromEulerAngles(
                     rand() % 360 ,
                     rand() % 360,
                     rand() % 360));

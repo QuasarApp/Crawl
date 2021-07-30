@@ -23,7 +23,7 @@ Tree::Tree(): CRAWL::IWorldItem(AUTO_CLASS_NAME) {
     setMash(mashes[rand() % mashes.size()]);
     setBaseColorMap("qrc:/mesh/meshes/Plant/Tree_Base.jpg");
     setSize({1,1,1});
-    setRatation(QQuaternion::fromEulerAngles({static_cast<float>(rand() % 60 - 30),
+    setRotation(QQuaternion::fromEulerAngles({static_cast<float>(rand() % 60 - 30),
                                               static_cast<float>(rand() % 60 - 30),
                                               static_cast<float>(rand() % 360)}));
 

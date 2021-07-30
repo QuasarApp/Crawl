@@ -30,7 +30,7 @@ namespace CRAWL {
  *
  * The gui objct contains base properties for drow objects on scane
  * * position
- * * ratation
+ * * rotation
  * * mash
  * * and map textures
  *
@@ -66,7 +66,7 @@ class CRAWL_EXPORT GuiObject: public QObject, virtual public IRender {
 
     Q_PROPERTY(QVector3D position READ position WRITE setposition NOTIFY positionChanged)
     Q_PROPERTY(QVector3D size READ size WRITE setSize NOTIFY sizeChanged)
-    Q_PROPERTY(QQuaternion ratation READ ratation WRITE setRatation NOTIFY ratationChanged)
+    Q_PROPERTY(QQuaternion rotation READ rotation WRITE setRotation NOTIFY rotationChanged)
 
     Q_PROPERTY(QString mash READ mash WRITE setMash NOTIFY mashChanged)
 
@@ -133,8 +133,8 @@ public:
     const QVector3D &size() const;
     void setSize(const QVector3D &newSize);
 
-    const QQuaternion &ratation() const;
-    void setRatation(const QQuaternion &newRatation);
+    const QQuaternion &rotation() const;
+    void setRotation(const QQuaternion &newRotation);
 
     const QString &mash() const;
     void setMash(const QString &newMash);
@@ -171,7 +171,7 @@ signals:
 
     void positionChanged();
     void sizeChanged();
-    void ratationChanged();
+    void rotationChanged();
 
     void mashChanged();
 
@@ -217,7 +217,7 @@ private:
 
     QVector3D _position;
     QVector3D _size;
-    QQuaternion _ratation;
+    QQuaternion _rotation;
     QString _mash;
     QString _className;
     bool _visible = true;

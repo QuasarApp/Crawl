@@ -12,7 +12,7 @@
 namespace TestLvl {
 
 /**
- * @brief The TestControl class This controll support custom camera-ratation functions.
+ * @brief The TestControl class This controll support custom camera-rotation functions.
  */
 class TestControl: public CRAWL::DefaultControl
 {

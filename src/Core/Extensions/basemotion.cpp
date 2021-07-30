@@ -26,7 +26,7 @@ void BaseMotion::setStaticRotation(const QQuaternion &newStaticRotation) {
 void BaseMotion::render(unsigned int tbfMsec) {
     if (auto _this = checkminimumRequariedType<GuiObject>()) {
         renderPosition(_this, tbfMsec);
-        renderRatation(_this, tbfMsec);
+        renderRotation(_this, tbfMsec);
     }
 }
 }

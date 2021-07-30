@@ -20,7 +20,7 @@ namespace AbstractLvl {
 
 AbsLvlWorld::AbsLvlWorld() {
     setCameraReleativePosition({20,0,100});
-    setCameraRatation(QQuaternion::fromEulerAngles({0,0,0}));
+    setCameraRotation(QQuaternion::fromEulerAngles({0,0,0}));
 }
 
 CRAWL::IPlayer *AbsLvlWorld::initPlayer() const {

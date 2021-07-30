@@ -89,14 +89,14 @@ public:
 protected:
 
     /**
-     * @brief renderRatation This method recalc raration for an @a object. The Default implementation converts movableVector to ratation of an @a object.
+     * @brief renderRotation This method recalc raration for an @a object. The Default implementation converts movableVector to rotation of an @a object.
      * @param object This is provessing object. Usually @a an object is casted pointer of this to GuiObject type.
      * @param tbfMsec This is time betwin frames argument. soame as in the IRender::render function.
      */
-    void renderRatation(GuiObject* object, unsigned int tbfMsec) override;
+    void renderRotation(GuiObject* object, unsigned int tbfMsec) override;
 
     /**
-     * @brief renderRatation This method recalc position for an @a object. The Default implementation move the current movable vector to setts movable vector. For example if you invoke the MovableObject::setMovableVector method then object change current movable vector with spead MovableObject::angularVelocity. If you sets
+     * @brief renderRotation This method recalc position for an @a object. The Default implementation move the current movable vector to setts movable vector. For example if you invoke the MovableObject::setMovableVector method then object change current movable vector with spead MovableObject::angularVelocity. If you sets
      * @param object This is provessing object. Usually @a an object is casted pointer of this to GuiObject type.
      * @param tbfMsec This is time betwin frames argument. soame as in the IRender::render function.
      */

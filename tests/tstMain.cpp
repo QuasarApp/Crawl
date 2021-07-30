@@ -7,6 +7,7 @@
 
 #include <QtTest>
 #include "clasterstest.h"
+#include "groupobjecttest.h"
 
 // Use This macros for initialize your own test classes.
 // Check exampletests
@@ -33,6 +34,7 @@ private slots:
 
     // BEGIN TESTS CASES
     TestCase(clastersTest, ClastersTest)
+    TestCase(groupObjectTest, GroupObjectTest)
 
     // END TEST CASES
 

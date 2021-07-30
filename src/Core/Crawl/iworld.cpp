@@ -353,15 +353,15 @@ void IWorld::updateWorld() {
     }
 }
 
-const QQuaternion &IWorld::cameraRatation() const {
-    return _cameraRatation;
+const QQuaternion &IWorld::cameraRotation() const {
+    return _cameraRotation;
 }
 
-void IWorld::setCameraRatation(const QQuaternion &newCameraRatation) {
-    if (_cameraRatation == newCameraRatation)
+void IWorld::setCameraRotation(const QQuaternion &newCameraRotation) {
+    if (_cameraRotation == newCameraRotation)
         return;
-    _cameraRatation = newCameraRatation;
-    emit cameraRatationChanged();
+    _cameraRotation = newCameraRotation;
+    emit cameraRotationChanged();
 }
 
 IAI *IWorld::backgroundAI() const {

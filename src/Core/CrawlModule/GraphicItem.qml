@@ -65,7 +65,7 @@ Model {
         (fMapColor)? objMaterial: defaultMaterial
     ]
 
-    rotation: (model)? model.ratation: Qt.quaternion(0, 0, 0, 0)
+    rotation: (model)? model.rotation: Qt.quaternion(0, 0, 0, 0)
     scale: (model)? model.size: Qt.vector3d(0, 0, 0);
     source: (model)? model.mash: "#Cube";
     position: (model) ? model.position: Qt.vector3d(0,0,0);

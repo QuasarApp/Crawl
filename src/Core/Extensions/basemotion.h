@@ -21,7 +21,7 @@ class GuiObject;
  * @brief The BaseMotion class contains base functions of the motion.
  * For Create your own motion alghoritm you need to override two methods:
  *  * renderPosition
- *  * renderRatation
+ *  * renderRotation
  */
 class CRAWL_EXPORT BaseMotion : public virtual IRender
 {
@@ -49,14 +49,14 @@ public:
 protected:
 
     /**
-     * @brief renderRatation This method recalc raration for an @a object. The Default do nothing.
+     * @brief renderRotation This method recalc raration for an @a object. The Default do nothing.
      * @param object This is provessing object. Usually @a an object is casted pointer of this to GuiObject type.
      * @param tbfMsec This is time betwin frames argument. soame as in the IRender::render function.
      */
-    virtual void renderRatation(GuiObject* object, unsigned int tbfMsec) = 0;
+    virtual void renderRotation(GuiObject* object, unsigned int tbfMsec) = 0;
 
     /**
-     * @brief renderRatation This method recalc position for an @a object.
+     * @brief renderRotation This method recalc position for an @a object.
      * @param object This is provessing object. Usually @a an object is casted pointer of this to GuiObject type.
      * @param tbfMsec This is time betwin frames argument. soame as in the IRender::render function.
      */

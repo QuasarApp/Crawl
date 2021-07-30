@@ -42,7 +42,7 @@ template <class Sun, class Moon>
     };
 }
  * ```
- * @note All objects will be moving around this objects with radius. The Radius by default is 2000.
+ * @note All objects will be moving around this objects with radius. The Radius by default is 1000.
  * @note This class automaticly sets ligth force for the light objects.
  *
  *
@@ -57,16 +57,13 @@ public:
                 "The Day class can be works only with DayItem child classes");
 
         DayItem* sun = new Sun(&position());
-        DayItem* moon1 = new Moon(&position());
-        DayItem* moon2 = new Moon(&position());
+        DayItem* moon = new Moon(&position());
 
         sun->setAnglePosition(0);
-        moon1->setAnglePosition(225);
-        moon2->setAnglePosition(135);
+        moon->setAnglePosition(180);
 
         add(sun);
-        add(moon1);
-        add(moon2);
+        add(moon);
 
     }
 
@@ -146,7 +143,7 @@ public:
 
     /**
      * @brief dayLengthSec This method return length of the game day in real secs.
-     * @note by default this value is 60 sec
+     * @note by default this value is 360 sec
      * @return length of the game day in real secs.
      */
     float dayLengthSec() const {
@@ -187,7 +184,7 @@ private:
     }
 
     int _radius = 1000;
-    float _dayLengthSec = 20;
+    float _dayLengthSec = 360;
     QVector3D _axis = {1,0,0};
 };
 

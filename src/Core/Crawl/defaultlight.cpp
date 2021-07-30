@@ -12,7 +12,7 @@ namespace CRAWL {
 DefaultLight::DefaultLight(): IWorldLight(AUTO_CLASS_NAME) {
     setColor("#fff8e7");
     setposition({10000, 0, 10000});
-    setRatation(QQuaternion::fromEulerAngles({-90,0,0}));
+    setRotation(QQuaternion::fromEulerAngles({-90,0,0}));
     setLightForce(110);
 }
 

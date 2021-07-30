@@ -21,7 +21,7 @@ void MovableObject::render(unsigned int tbfMsec) {
 
     if (auto _this = checkminimumRequariedType<GuiObject>()) {
         renderPosition(_this, tbfMsec);
-        renderRatation(_this, tbfMsec);
+        renderRotation(_this, tbfMsec);
     }
 }
 
@@ -49,9 +49,9 @@ void MovableObject::setBreakingForce(float newBreakingForce) {
     _breakingForce = newBreakingForce;
 }
 
-void MovableObject::renderRatation(GuiObject *object, unsigned int) {
+void MovableObject::renderRotation(GuiObject *object, unsigned int) {
     if (_currentMovableVector.length() > 0) {
-        object->setRatation(QQuaternion::rotationTo({1.0f, 0.0, 0.0}, _currentMovableVector) * staticRotation());
+        object->setRotation(QQuaternion::rotationTo({1.0f, 0.0, 0.0}, _currentMovableVector) * staticRotation());
     }
 }
 

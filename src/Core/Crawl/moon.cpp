@@ -10,7 +10,7 @@ namespace CRAWL {
 
 Moon::Moon(const QVector3D* center):
     DayItem(center, AUTO_CLASS_NAME) {
-    setColor("#022648");
+    setColor("#6177ff");
 
 }
 
