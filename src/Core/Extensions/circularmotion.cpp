@@ -20,7 +20,7 @@ void CircularMotion::render(unsigned int tbfMsec) {
 
     if (auto _this = checkminimumRequariedType<GuiObject>()) {
         renderPosition(_this, tbfMsec);
-        renderRatation(_this, tbfMsec);
+        renderRotation(_this, tbfMsec);
     }
 }
 
@@ -56,9 +56,9 @@ void CircularMotion::setAnglePosition(double newAngle) {
     _angle = newAngle;
 }
 
-void CircularMotion::renderRatation(GuiObject *object,
+void CircularMotion::renderRotation(GuiObject *object,
                                     unsigned int ) {
-    object->setRatation(QQuaternion::rotationTo({1.0f, 0.0, 0.0}, *_center) * staticRotation());
+    object->setRotation(QQuaternion::rotationTo({1.0f, 0.0, 0.0}, *_center) * staticRotation());
 }
 
 void CircularMotion::renderPosition(GuiObject *object,

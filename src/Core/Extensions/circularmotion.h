@@ -80,14 +80,14 @@ public:
 protected:
 
     /**
-     * @brief renderRatation This method recalc raration for an @a object. The Default implementation rotate object to center.
+     * @brief renderRotation This method recalc raration for an @a object. The Default implementation rotate object to center.
      * @param object This is provessing object. Usually @a an object is casted pointer of this to GuiObject type.
      * @param tbfMsec This is time betwin frames argument. soame as in the IRender::render function.
      */
-    void renderRatation(GuiObject* object, unsigned int) override;
+    void renderRotation(GuiObject* object, unsigned int) override;
 
     /**
-     * @brief renderRatation This method recalc position for an @a object. The Default implementation move the current object around center.
+     * @brief renderRotation This method recalc position for an @a object. The Default implementation move the current object around center.
      * @param object This is provessing object. Usually @a an object is casted pointer of this to GuiObject type.
      * @param tbfMsec This is time betwin frames argument. soame as in the IRender::render function.
      */

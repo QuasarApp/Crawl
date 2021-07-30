@@ -25,7 +25,7 @@ Stone::Stone(): CRAWL::IWorldItem(AUTO_CLASS_NAME)
     setNormalMap("qrc:/mesh/meshes/Stone/Stone_Normal.jpg");
 
     setSize({1,1,1});
-    setRatation(QQuaternion::fromEulerAngles({0,0, static_cast<float>(rand() % 360)}));
+    setRotation(QQuaternion::fromEulerAngles({0,0, static_cast<float>(rand() % 360)}));
 }
 
 void Stone::onIntersects(const IWorldItem *) {

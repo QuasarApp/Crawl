@@ -24,15 +24,15 @@ struct LocalPropertyes {
 };
 
 /**
- * @brief The GroupObject class is extansion with group object behavior.
- * ### Requeried functions: IWorldItem
+ * @brief The GroupObject class is extension with group object behavior.
+ * ### Requried child classes: IWorldItem
  *
- * This class have implementation of the render method that move all child object on selected local positions in parent object.
+ * This class have implementation of the render method that move all child objects on selected local positions on parent object.
  *
  * ## Example of use
  *
  * ### For what this object uses
- * This object will be very convinent wher you want to create a difecly claster object with multiple subobjects that should contains in the parrent root object.
+ *This object will be very convenient where you want to create a directly cluster object with multiple sub objects that should contains in the parent root object.
  * For example : weapon of the player.
  *
  * ### Example of use

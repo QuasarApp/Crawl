@@ -22,7 +22,7 @@ namespace TestLvl {
 
 World::World() {
     setCameraReleativePosition({50,0,100});
-    setCameraRatation(QQuaternion::fromEulerAngles({0,0,0}));
+    setCameraRotation(QQuaternion::fromEulerAngles({0,0,0}));
 }
 
 CRAWL::WorldRule *World::initWorldRules() {
@@ -77,14 +77,14 @@ CRAWL::IAI *World::initBackGroundAI() const {
 }
 
 void World::handleXViewChanged(double dx) {
-    auto eilorRatation = cameraRatation().toEulerAngles();
-    eilorRatation.setX(eilorRatation.x() + dx);
-    setCameraRatation(QQuaternion::fromEulerAngles(eilorRatation));
+    auto eilorRotation = cameraRotation().toEulerAngles();
+    eilorRotation.setX(eilorRotation.x() + dx);
+    setCameraRotation(QQuaternion::fromEulerAngles(eilorRotation));
 }
 
 void World::handleYViewChanged(double dy) {
-    auto eilorRatation = cameraRatation().toEulerAngles();
-    eilorRatation.setY(eilorRatation.y() + dy );
-    setCameraRatation(QQuaternion::fromEulerAngles(eilorRatation));
+    auto eilorRotation = cameraRotation().toEulerAngles();
+    eilorRotation.setY(eilorRotation.y() + dy );
+    setCameraRotation(QQuaternion::fromEulerAngles(eilorRotation));
 }
 }

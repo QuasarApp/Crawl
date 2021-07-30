@@ -49,7 +49,7 @@ class CRAWL_EXPORT IWorld : public QObject, public IRender
 {
     Q_OBJECT
     Q_PROPERTY(QVector3D cameraReleativePosition READ cameraReleativePosition NOTIFY cameraReleativePositionChanged)
-    Q_PROPERTY(QQuaternion cameraRatation READ cameraRatation NOTIFY cameraRatationChanged)
+    Q_PROPERTY(QQuaternion cameraRotation READ cameraRotation NOTIFY cameraRotationChanged)
     Q_PROPERTY(QObject * player READ player WRITE setPlayer NOTIFY playerChanged)
     Q_PROPERTY(QString hdr READ hdr NOTIFY hdrChanged)
 
@@ -210,10 +210,10 @@ public:
     IAI *backgroundAI() const;
 
     /**
-     * @brief cameraRatation This method return curent camera ratation.
-     * @return Quaternion of camera ratation
+     * @brief cameraRotation This method return curent camera rotation.
+     * @return Quaternion of camera rotation
      */
-    const QQuaternion &cameraRatation() const;
+    const QQuaternion &cameraRotation() const;
 
     /**
      * @brief player This method return player object
@@ -263,9 +263,9 @@ signals:
     void worldStatusChanged();
 
     /**
-     * @brief cameraRatationChanged This method emited when ratation of the camera cahnged
+     * @brief cameraRotationChanged This method emited when rotation of the camera cahnged
      */
-    void cameraRatationChanged();
+    void cameraRotationChanged();
 
     /**
      * @brief playerChanged This signal eited when player are changed.
@@ -320,10 +320,10 @@ protected:
     void setCameraReleativePosition(const QVector3D &newCameraReleativePosition);
 
     /**
-     * @brief setCameraRatation This method sets new ratation of the camera.
-     * @param newCameraRatation new ratation of the camera.
+     * @brief setCameraRotation This method sets new rotation of the camera.
+     * @param newCameraRotation new rotation of the camera.
      */
-    void setCameraRatation(const QQuaternion &newCameraRatation);
+    void setCameraRotation(const QQuaternion &newCameraRotation);
 
     /**
      * @brief targetFps This method return current targetFps;
@@ -488,7 +488,7 @@ private:
     mutable QMutex _ItemsMutex;
 
     QVector3D _cameraReleativePosition;
-    QQuaternion _cameraRatation;
+    QQuaternion _cameraRotation;
 
     QString _hdrMap;
     WorldRule *_worldRules = nullptr;

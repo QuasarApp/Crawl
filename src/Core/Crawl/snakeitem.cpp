@@ -27,15 +27,15 @@ void SnakeItem::render(unsigned int tbfMsec) {
         return;
     }
 
-    auto ratationVector = (_prevObject->position() - position());
+    auto rotationVector = (_prevObject->position() - position());
 
     if (auto claster = static_cast<Snake*>(parentClaster())) {
-        float ratationLength = ratationVector.length();
+        float rotationLength = rotationVector.length();
 
-        if (ratationLength > lengthBetwinItems() * 10) {
+        if (rotationLength > lengthBetwinItems() * 10) {
             setposition(_prevObject->position());
-        } else if (ratationLength > lengthBetwinItems()) {
-            setMovableVector(ratationVector.normalized() * claster->currentMovableVector().length());
+        } else if (rotationLength > lengthBetwinItems()) {
+            setMovableVector(rotationVector.normalized() * claster->currentMovableVector().length());
         }
     }
 

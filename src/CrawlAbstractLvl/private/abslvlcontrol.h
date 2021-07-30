@@ -12,7 +12,7 @@
 namespace AbstractLvl {
 
 /**
- * @brief The AbsLvlControl class This controll support custom camera-ratation functions.
+ * @brief The AbsLvlControl class This controll support custom camera-rotation functions.
  */
 class AbsLvlControl: public CRAWL::DefaultControl
 {

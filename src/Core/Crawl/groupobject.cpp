@@ -23,7 +23,7 @@ void GroupObject::render(unsigned int tbfMsec) {
 
         if (LocalPropertyes *props = getLocalPropertyes(object->guiId())) {
             if (!props->_rotation.isNull())
-                object->setRatation(_this->ratation() * props->_rotation);
+                object->setRotation(_this->rotation() * props->_rotation);
 
             object->setposition(_this->position() + props->_position);
         }

@@ -18,7 +18,7 @@ Egg::Egg(const QString name): CRAWL::IWorldItem(name)
     setMash(mashes[rand() % mashes.size()]);
 
     setSize({1,1,1});
-    setRatation(QQuaternion::fromEulerAngles({0,0, static_cast<float>(rand() % 360)}));
+    setRotation(QQuaternion::fromEulerAngles({0,0, static_cast<float>(rand() % 360)}));
 }
 
 void Egg::onIntersects(const IWorldItem *) {

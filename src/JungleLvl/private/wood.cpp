@@ -28,7 +28,7 @@ Wood::Wood(): CRAWL::IWorldItem(AUTO_CLASS_NAME) {
     setNormalMap("qrc:/mesh/meshes/Wood/Wood_Normal.jpg");
     setRoughnessMap("qrc:/mesh/meshes/Wood/Wood_Roughness.jpg");
     setSize({1,1,1});
-    setRatation(QQuaternion::fromEulerAngles({0,0, static_cast<float>(rand() % 360)}));
+    setRotation(QQuaternion::fromEulerAngles({0,0, static_cast<float>(rand() % 360)}));
 }
 
 void Wood::onIntersects(const IWorldItem *) {

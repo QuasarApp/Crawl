@@ -23,7 +23,7 @@ View3D {
                           :
                       Qt.vector3d(0,0,100)
 
-        rotation: (privateRoot.world)? privateRoot.world.cameraRatation: Qt.quaternion(0,0,0,0)
+        rotation: (privateRoot.world)? privateRoot.world.cameraRotation: Qt.quaternion(0,0,0,0)
 
     }
 
