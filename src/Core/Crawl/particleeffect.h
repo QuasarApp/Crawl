@@ -21,6 +21,11 @@ At least one emitter is required to have particles in the ParticleSystem3D.
 class ParticleEffect : public IWorldItem
 {
     Q_OBJECT
+    /**
+     * if enabled is set to false, this emitter will not emit any particles.
+     *  Usually this is used to conditionally turn an emitter on or off. If you want to continue emitting burst,
+     *  keep emitRate at 0 instead of toggling this to false. The default value is true.
+    */
     Q_PROPERTY(bool enabled READ enabled WRITE setEnabled NOTIFY enabledChanged)
     Q_PROPERTY(float emitRate READ emitRate WRITE setEmitRate NOTIFY emitRateChanged)
     Q_PROPERTY(float depthBias READ depthBias WRITE setDepthBias NOTIFY depthBiasChanged)
@@ -102,11 +107,10 @@ public:
     /**
      * @brief lifeSpanVariation This property defines the lifespan variation of a single particle in milliseconds.
      * For example, to emit particles which will exist between 3 and 4 seconds:
-     *
-     * ```
+     * @code
        lifeSpan: 3500
        lifeSpanVariation: 500
-       ```
+       @endcode
      * The default value is 0.
      * @return current value of the lifeSpanVariation property
      */
@@ -169,10 +173,10 @@ public:
      *  For example, to emit particles in random rotations which have random rotation velocity between -100 and 100
      *  degrees per second into any directions:
 
-        ```
+        @code
              particleRotationVariation: Qt.vector3d(180, 180, 180)
              particleRotationVelocityVariation: Qt.vector3d(100, 100, 100)
-        ```
+        @endcode
      * See also ParticleEffect::particleRotationVelocity.
      * @return current value of the particleRotationVelocityVariation property
      */
@@ -203,11 +207,11 @@ public:
      * @brief particleScaleVariation This property defines the scale variation of the particles.
      *  This variation is used for both particleScale and particleEndScale.
      *  For example, to emit particles which start at scale 0.5 - 1.5 and end at 2.5 - 3.5:
-     *  ```
-            particleScale: 1.0
-            particleEndScale: 3.0
-            particleScaleVariation: 0.5
-        ```
+     *  @code
+        particleScale: 1.0
+        particleEndScale: 3.0
+        particleScaleVariation: 0.5
+        @endcode
      * The default value is 0.0.
      * See also ParticleEffect::particleScale and ParticleEffect::particleScaleVariation.
      * @return current value of the ParticleEffect::particleScaleVariation property
@@ -439,10 +443,10 @@ protected:
      * This element sets emitted particle velocity towards the target direction vector.
      *  The length of the direction vector is used as the velocity magnitude.
      *  For example, to emit particles towards some random direction within x: 50..150, y: -20..20, z: 0:
-     *  ```
+     *  @code
      *   velositydirection: Qt.vector3d(100, 0, 0)
          velositydirectionVariation: Qt.vector3d(50, 20, 0)
-     *  ```
+     *  @endcode
      * @param velosityDirection see the ParticleEffect::velosityDirection property
      * @param velosityDirectionValatility see the ParticleEffect::velosityDirectionValatility property
      * @note This and useTargetVelosity method is not compatible. If you invoke them together then will works correctly will be only last invoked method.
@@ -454,13 +458,13 @@ protected:
      * @brief useTargetVelosity This method can be invoked a starting velocity for emitted particles. If velocity is not set, particles start motionless and velocity comes from affectors if they are used.
      * This element sets emitted particle velocity towards the target position.
      * For example, to emit particles towards position (100, 0, 0) with random magnitude between 10..20:
-     * ```
+     * @code
          velosityposition: Qt.vector3d(100, 0, 0)
          velositynormalized: true
          velositymagnitude: 15.0
          velositymagnitudeVariation: 5.0
 
-     * ```
+     * @endcode
 
 
      * @param velosityMagnitude see the ParticleEffect::velosityMagnitude property
