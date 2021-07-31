@@ -22,7 +22,7 @@ class ParticleEffect : public IWorldItem
 {
     Q_OBJECT
     /**
-     * if enabled is set to false, this emitter will not emit any particles.
+     *  @brief enabled if enabled is set to false, this emitter will not emit any particles.
      *  Usually this is used to conditionally turn an emitter on or off. If you want to continue emitting burst,
      *  keep emitRate at 0 instead of toggling this to false. The default value is true.
     */
