@@ -15,5 +15,6 @@
         <file>CrawlModule/AbstractMenuView.qml</file>
         <file>CrawlModule/Light.qml</file>
         <file>CrawlModule/DayLight.qml</file>
+        <file>CrawlModule/particles/AbstractMenuView.qml</file>
     </qresource>
 </RCC>

@@ -3,6 +3,7 @@ import QtQuick3D
 import QtQuick.Controls.Material
 import QtQuick.Controls
 import QtQuick.Layouts
+import QtQuick3D.Particles3D
 
 // https://doc.qt.io/qt-5/qqmlengine.html#qmlRegisterUncreatableMetaObject
 import engine.worldstatus
@@ -12,7 +13,12 @@ View3D {
 
     property var model: null;
     property alias showMenu: privateRoot.showMenu
-    renderMode: View3D.Underlay
+    renderMode: View3D.Offscreen
+
+    Label {
+        text: scane.renderStats.fps
+        x: 200
+    }
 
     PerspectiveCamera {
         id: camera
@@ -35,7 +41,7 @@ View3D {
 
     environment: /*(privateRoot.world)? background:*/ defautlBackground
 
-    Node {
+    ParticleSystem3D {
         id: privateRoot
 
         property var arrayObjects: []

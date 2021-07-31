@@ -11,8 +11,8 @@ set(CURRENT_PROJECT "${PROJECT_NAME}Core")
 add_definitions(-DCRAWL_LIBRARY)
 
 file(GLOB SOURCE_CPP
-    "*Crawl/*.cpp"
-    "*Extensions/*.cpp"
+    "Crawl/*.cpp"
+    "Extensions/*.cpp"
      "private/*.cpp"
      "*.qrc"
      "Crawl/*.qrc"
