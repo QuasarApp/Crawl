@@ -27,23 +27,147 @@ class ParticleEffect : public IWorldItem
      *  keep emitRate at 0 instead of toggling this to false. The default value is true.
     */
     Q_PROPERTY(bool enabled READ enabled WRITE setEnabled NOTIFY enabledChanged)
+
+    /**
+     * @brief emitRate This property defines the constant emitting rate in particles per second. For example, if the emitRate is 120 and system animates at 60 frames per second, 2 new particles are emitted at every frame.
+     *  The default value is 0.
+     */
     Q_PROPERTY(float emitRate READ emitRate WRITE setEmitRate NOTIFY emitRateChanged)
+
+    /**
+     * @brief depthBias Holds the depth bias of the emitter. Depth bias is added to the object distance from camera when sorting objects. This can be used to force rendering order between objects close to each other, that might otherwise be rendered in different order in different frames. Negative values cause the sorting value to move closer to the camera while positive values move it further from the camera.
+     */
     Q_PROPERTY(float depthBias READ depthBias WRITE setDepthBias NOTIFY depthBiasChanged)
+
+    /**
+     * @brief lifeSpan This property defines the lifespan of a single particle in milliseconds.
+     * The default value is 1000.
+     * See also the lifeSpanVariation property.
+     */
     Q_PROPERTY(int lifeSpan READ lifeSpan WRITE setLifeSpan NOTIFY lifeSpanChanged)
+
+    /**
+     * @brief lifeSpanVariation This property defines the lifespan variation of a single particle in milliseconds.
+     * For example, to emit particles which will exist between 3 and 4 seconds:
+     * @code
+       lifeSpan: 3500
+       lifeSpanVariation: 500
+       @endcode
+     * The default value is 0.
+     */
     Q_PROPERTY(int lifeSpanVariation READ lifeSpanVariation WRITE setLifeSpanVariation NOTIFY lifeSpanVariationChanged)
+
+    /**
+     * @brief particleEndScale This property defines the scale multiplier of the particles at the end of particle lifeSpan.
+     *  To have variation in the particle end sizes, use ParticleEffect::particleScaleVariation.
+     *  When the value is negative, end scale is the same as the particleScale,
+     *  so scale doesn't change during the particle lifeSpan.
+     *  The default value is -1.0.
+     *  See also ParticleEffect::particleScale and ParticleEffect::particleScaleVariation.
+     */
     Q_PROPERTY(float particleEndScale READ particleEndScale WRITE setParticleEndScale NOTIFY particleEndScaleChanged)
+
+    /**
+     * @brief particleRotationVariation This property defines the rotation variation of the particles in the beginning. Rotation variation is defined as degrees in euler angles.
+     *  For example, to emit particles in fully random rotations: Qt.vector3d(180, 180, 180)
+     *  See also ParticleEffect::particleRotation.
+     */
     Q_PROPERTY(QVector3D particleRotationVariation READ particleRotationVariation WRITE setParticleRotationVariation NOTIFY particleRotationVariationChanged)
+
+    /**
+     * @brief particleRotationVelocity This property defines the rotation velocity of the particles in the beginning.
+     *  Rotation velocity is defined as degrees per second in euler angles.
+     *  See also ParticleEffect::particleRotationVelocityVariation.
+     */
     Q_PROPERTY(QVector3D particleRotationVelocity READ particleRotationVelocity WRITE setParticleRotationVelocity NOTIFY particleRotationVelocityChanged)
+
+    /**
+     * @brief particleRotationVelocityVariation This property defines the rotation velocity variation of the particles.
+     *  Rotation velocity variation is defined as degrees per second in euler angles.
+     *  For example, to emit particles in random rotations which have random rotation velocity between -100 and 100
+     *  degrees per second into any directions:
+
+        @code
+             particleRotationVariation: Qt.vector3d(180, 180, 180)
+             particleRotationVelocityVariation: Qt.vector3d(100, 100, 100)
+        @endcode
+     * See also ParticleEffect::particleRotationVelocity.
+     */
     Q_PROPERTY(QVector3D particleRotationVelocityVariation READ particleRotationVelocityVariation WRITE setParticleRotationVelocityVariation NOTIFY particleRotationVelocityVariationChanged)
+
+    /**
+     * @brief particleScale This property defines the scale multiplier of the particles at the beginning.
+     *  To have variation in the particle sizes, use particleScaleVariation.
+     *  The default value is 1.0.
+     *  See also ParticleEffect::particleEndScale and ParticleEffect::particleScaleVariation.
+     */
     Q_PROPERTY(float particleScale READ particleScale WRITE setParticleScale NOTIFY particleScaleChanged)
+
+    /**
+     * @brief particleScaleVariation This property defines the scale variation of the particles.
+     *  This variation is used for both particleScale and particleEndScale.
+     *  For example, to emit particles which start at scale 0.5 - 1.5 and end at 2.5 - 3.5:
+     *  @code
+        particleScale: 1.0
+        particleEndScale: 3.0
+        particleScaleVariation: 0.5
+        @endcode
+     * The default value is 0.0.
+     * See also ParticleEffect::particleScale and ParticleEffect::particleScaleVariation.
+     */
     Q_PROPERTY(float particleScaleVariation READ particleScaleVariation WRITE setParticleScaleVariation NOTIFY particleScaleVariationChanged)
+
+    /**
+     * @brief velosityDirection this property defines the direction for particles target.
+     *  The default value is (0, 100, 0) (upwards on the y-axis).
+     */
     Q_PROPERTY(QVector3D velosityDirection READ velosityDirection WRITE setVelosityDirection NOTIFY velosityDirectionChanged)
+
+    /**
+     * @brief velosityDirectionValatility This property defines the direction variation for particles target.
+     *  The default value is (0, 0, 0) (no variation).
+     */
     Q_PROPERTY(QVector3D velosityDirectionValatility READ velosityDirectionValatility WRITE setVelosityDirectionValatility NOTIFY velosityDirectionValatilityChanged)
+
+    /**
+     * @brief velosityMagnitude This property defines the magnitude in position change per second.
+     *  Negative magnitude accelerates the opposite way from the position.
+     *  When the normalized is false, this is multiplied with the distance to the target position.
+     *  The default value is 1.0.
+     */
     Q_PROPERTY(float velosityMagnitude READ velosityMagnitude WRITE setVelosityMagnitude NOTIFY velosityMagnitudeChanged)
+
+    /**
+     * @brief velosityMagnitudeVariation This property defines the magnitude variation in position change per second.
+     *  When the normalized is false, this is multiplied with the distance to the target position.
+     *  The default value is 0.0.
+     */
     Q_PROPERTY(float velosityMagnitudeVariation READ velosityMagnitudeVariation WRITE setVelosityMagnitudeVariation NOTIFY velosityMagnitudeVariationChanged)
+
+    /**
+     * @brief velosityNormalized This property defines if the distance to position should be considered as normalized or not.
+     *  When this is false, distance to the position affects the magnitude of the particles velocity.
+     *  When set to true, distance is normalized and velocity amount comes only from magnitude and magnitudeVariation.
+     *  The default value is false.
+     */
     Q_PROPERTY(bool velosityNormalized READ velosityNormalized WRITE setVelosityNormalized NOTIFY velosityNormalizedChanged)
+
+    /**
+     * @brief velosityTargetPosition This property defines the position for particles target.
+     *  The default value is (0, 0, 0) (the center of the emitter).
+     */
     Q_PROPERTY(QVector3D velosityTargetPosition READ velosityTargetPosition WRITE setVelosityTargetPosition NOTIFY velosityTargetPositionChanged)
+
+    /**
+     * @brief velosityTargetPositionVariation This property defines the position variation for particles target.
+     *  The default value is (0, 0, 0) (no variation).
+     */
     Q_PROPERTY(QVector3D velosityTargetPositionVariation READ velosityTargetPositionVariation WRITE setVelosityTargetPositionVariation NOTIFY velosityTargetPositionVariationChanged)
+
+    /**
+     * @brief particleDelegate This is path yo the qml delegate file of the particle object.
+     * @return path to delegate of the particle object.
+     */
     Q_PROPERTY(QString particleDelegate READ particleDelegate WRITE setParticleDelegate NOTIFY particleDelegateChanged)
 
 public:
