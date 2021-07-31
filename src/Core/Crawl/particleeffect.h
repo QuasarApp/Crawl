@@ -124,7 +124,7 @@ public:
      *  When the value is negative, end scale is the same as the particleScale,
      *  so scale doesn't change during the particle lifeSpan.
      *  The default value is -1.0.
-     *  See also particleScale and particleScaleVariation.
+     *  See also ParticleEffect::particleScale and ParticleEffect::particleScaleVariation.
      * @return current value of the particleEndScale property
      */
     float particleEndScale() const;
@@ -138,7 +138,7 @@ public:
     /**
      * @brief particleRotationVariation This property defines the rotation variation of the particles in the beginning. Rotation variation is defined as degrees in euler angles.
      *  For example, to emit particles in fully random rotations: Qt.vector3d(180, 180, 180)
-     *  See also particleRotation.
+     *  See also ParticleEffect::particleRotation.
      * @return current value of the particleRotationVariation property
      */
     const QVector3D &particleRotationVariation() const;
@@ -152,7 +152,7 @@ public:
     /**
      * @brief particleRotationVelocity This property defines the rotation velocity of the particles in the beginning.
      *  Rotation velocity is defined as degrees per second in euler angles.
-     *  See also particleRotationVelocityVariation.
+     *  See also ParticleEffect::particleRotationVelocityVariation.
      * @return current value of the particleRotationVelocity property
      */
     const QVector3D &particleRotationVelocity() const;
@@ -166,15 +166,14 @@ public:
     /**
      * @brief particleRotationVelocityVariation This property defines the rotation velocity variation of the particles.
      *  Rotation velocity variation is defined as degrees per second in euler angles.
-     *  For example,
-     *  to emit particles in random rotations which have random rotation velocity between -100 and 100
+     *  For example, to emit particles in random rotations which have random rotation velocity between -100 and 100
      *  degrees per second into any directions:
 
         ```
              particleRotationVariation: Qt.vector3d(180, 180, 180)
              particleRotationVelocityVariation: Qt.vector3d(100, 100, 100)
         ```
-     * See also particleRotationVelocity.
+     * See also ParticleEffect::particleRotationVelocity.
      * @return current value of the particleRotationVelocityVariation property
      */
     const QVector3D &particleRotationVelocityVariation() const;
@@ -189,7 +188,7 @@ public:
      * @brief particleScale This property defines the scale multiplier of the particles at the beginning.
      *  To have variation in the particle sizes, use particleScaleVariation.
      *  The default value is 1.0.
-     *  See also particleEndScale and particleScaleVariation.
+     *  See also ParticleEffect::particleEndScale and ParticleEffect::particleScaleVariation.
      * @return current value of the particleScale property
      */
     float particleScale() const;
@@ -210,7 +209,7 @@ public:
              particleScaleVariation: 0.5
          ```
      * The default value is 0.0.
-     * See also particleScale and particleScaleVariation.
+     * See also ParticleEffect::particleScale and ParticleEffect::particleScaleVariation.
      * @return
      */
     float particleScaleVariation() const;
@@ -444,8 +443,8 @@ protected:
      *   velositydirection: Qt.vector3d(100, 0, 0)
          velositydirectionVariation: Qt.vector3d(50, 20, 0)
      *  ```
-     * @param velosityDirection see the velosityDirection property
-     * @param velosityDirectionValatility see the velosityDirectionValatility property
+     * @param velosityDirection see the ParticleEffect::velosityDirection property
+     * @param velosityDirectionValatility see the ParticleEffect::velosityDirectionValatility property
      * @note This and useTargetVelosity method is not compatible. If you invoke them together then will works correctly will be only last invoked method.
      */
     void useDirectionVelosity(const QVector3D& velosityDirection,
@@ -464,11 +463,11 @@ protected:
      * ```
 
 
-     * @param velosityMagnitude see the velosityMagnitude property
-     * @param velosityMagnitudeVariation see the velosityMagnitudeVariation property
-     * @param velosityNormalized see the velosityNormalized property
-     * @param velosityTargetPosition see the velosityTargetPosition property
-     * @param velosityTargetPositionVariation see the velosityTargetPositionVariation property
+     * @param velosityMagnitude see the ParticleEffect::velosityMagnitude property
+     * @param velosityMagnitudeVariation see the ParticleEffect::velosityMagnitudeVariation property
+     * @param velosityNormalized see the ParticleEffect::velosityNormalized property
+     * @param velosityTargetPosition see the ParticleEffect::velosityTargetPosition property
+     * @param velosityTargetPositionVariation see the ParticleEffect::velosityTargetPositionVariation property
      * @note This and useDirectionVelosity method is not compatible. If you invoke them together then will works correctly will be only last invoked method.
      */
     void useTargetVelosity(float velosityMagnitude,
