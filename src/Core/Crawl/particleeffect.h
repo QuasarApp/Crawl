@@ -102,6 +102,7 @@ public:
     /**
      * @brief lifeSpanVariation This property defines the lifespan variation of a single particle in milliseconds.
      * For example, to emit particles which will exist between 3 and 4 seconds:
+     *
      * ```
        lifeSpan: 3500
        lifeSpanVariation: 500
@@ -118,11 +119,12 @@ public:
     void setLifeSpanVariation(int newLifeSpanVariation);
 
     /**
-     * @brief particleEndScale This property defines the scale multiplier of the particles at the end of particle lifeSpan. To have variation in the particle end sizes, use particleScaleVariation.
+     * @brief particleEndScale This property defines the scale multiplier of the particles at the end of particle lifeSpan.
+     *  To have variation in the particle end sizes, use particleScaleVariation.
      *  When the value is negative, end scale is the same as the particleScale,
-     *   so scale doesn't change during the particle lifeSpan.
-     *   The default value is -1.0.
-     *   See also particleScale and particleScaleVariation.
+     *  so scale doesn't change during the particle lifeSpan.
+     *  The default value is -1.0.
+     *  See also particleScale and particleScaleVariation.
      * @return current value of the particleEndScale property
      */
     float particleEndScale() const;
@@ -135,8 +137,8 @@ public:
 
     /**
      * @brief particleRotationVariation This property defines the rotation variation of the particles in the beginning. Rotation variation is defined as degrees in euler angles.
-For example, to emit particles in fully random rotations: Qt.vector3d(180, 180, 180)
-See also particleRotation.
+     *  For example, to emit particles in fully random rotations: Qt.vector3d(180, 180, 180)
+     *  See also particleRotation.
      * @return current value of the particleRotationVariation property
      */
     const QVector3D &particleRotationVariation() const;
@@ -148,8 +150,9 @@ See also particleRotation.
     void setParticleRotationVariation(const QVector3D &newParticleRotationVariation);
 
     /**
-     * @brief particleRotationVelocity This property defines the rotation velocity of the particles in the beginning. Rotation velocity is defined as degrees per second in euler angles.
-See also particleRotationVelocityVariation.
+     * @brief particleRotationVelocity This property defines the rotation velocity of the particles in the beginning.
+     *  Rotation velocity is defined as degrees per second in euler angles.
+     *  See also particleRotationVelocityVariation.
      * @return current value of the particleRotationVelocity property
      */
     const QVector3D &particleRotationVelocity() const;
@@ -165,7 +168,7 @@ See also particleRotationVelocityVariation.
      *  Rotation velocity variation is defined as degrees per second in euler angles.
      *  For example,
      *  to emit particles in random rotations which have random rotation velocity between -100 and 100
-     *   degrees per second into any directions:
+     *  degrees per second into any directions:
 
         ```
              particleRotationVariation: Qt.vector3d(180, 180, 180)
