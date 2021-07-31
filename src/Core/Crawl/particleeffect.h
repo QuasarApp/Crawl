@@ -120,7 +120,7 @@ public:
 
     /**
      * @brief particleEndScale This property defines the scale multiplier of the particles at the end of particle lifeSpan.
-     *  To have variation in the particle end sizes, use particleScaleVariation.
+     *  To have variation in the particle end sizes, use ParticleEffect::particleScaleVariation.
      *  When the value is negative, end scale is the same as the particleScale,
      *  so scale doesn't change during the particle lifeSpan.
      *  The default value is -1.0.
@@ -203,14 +203,14 @@ public:
      * @brief particleScaleVariation This property defines the scale variation of the particles.
      *  This variation is used for both particleScale and particleEndScale.
      *  For example, to emit particles which start at scale 0.5 - 1.5 and end at 2.5 - 3.5:
-     *   ```
-             particleScale: 1.0
-             particleEndScale: 3.0
-             particleScaleVariation: 0.5
-         ```
+     *  ```
+            particleScale: 1.0
+            particleEndScale: 3.0
+            particleScaleVariation: 0.5
+        ```
      * The default value is 0.0.
      * See also ParticleEffect::particleScale and ParticleEffect::particleScaleVariation.
-     * @return
+     * @return current value of the ParticleEffect::particleScaleVariation property
      */
     float particleScaleVariation() const;
 
@@ -236,7 +236,7 @@ public:
 
     /**
      * @brief velosityDirectionValatility This property defines the direction variation for particles target.
-     * The default value is (0, 0, 0) (no variation).
+     *  The default value is (0, 0, 0) (no variation).
      * @return current value of the velosityDirectionValatility property
      */
     const QVector3D &velosityDirectionValatility() const;
@@ -251,8 +251,8 @@ public:
     /**
      * @brief velosityMagnitude This property defines the magnitude in position change per second.
      *  Negative magnitude accelerates the opposite way from the position.
-     *   When the normalized is false, this is multiplied with the distance to the target position.
-     *   The default value is 1.0.
+     *  When the normalized is false, this is multiplied with the distance to the target position.
+     *  The default value is 1.0.
      * @return current value of the velosityMagnitude property
      */
     float velosityMagnitude() const;
