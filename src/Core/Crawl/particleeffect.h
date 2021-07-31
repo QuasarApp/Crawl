@@ -13,12 +13,13 @@
 
 namespace CRAWL {
 
+
 /**
  * @brief The ParticleEffect class This element emits logical particles into the ParticleSystem, with the given starting attributes.
 At least one emitter is required to have particles in the ParticleSystem3D.
     Please see the [qt](https://doc.qt.io/qt-6/qtquick3d-index.html) documentation for get more inforamtion
  */
-class ParticleEffect : public IWorldItem
+class CRAWL_EXPORT ParticleEffect : public IWorldItem
 {
     Q_OBJECT
     /**
@@ -118,51 +119,10 @@ class ParticleEffect : public IWorldItem
     Q_PROPERTY(float particleScaleVariation READ particleScaleVariation WRITE setParticleScaleVariation NOTIFY particleScaleVariationChanged)
 
     /**
-     * @brief velosityDirection this property defines the direction for particles target.
-     *  The default value is (0, 100, 0) (upwards on the y-axis).
-     */
-    Q_PROPERTY(QVector3D velosityDirection READ velosityDirection WRITE setVelosityDirection NOTIFY velosityDirectionChanged)
-
-    /**
-     * @brief velosityDirectionValatility This property defines the direction variation for particles target.
-     *  The default value is (0, 0, 0) (no variation).
-     */
-    Q_PROPERTY(QVector3D velosityDirectionValatility READ velosityDirectionValatility WRITE setVelosityDirectionValatility NOTIFY velosityDirectionValatilityChanged)
-
-    /**
-     * @brief velosityMagnitude This property defines the magnitude in position change per second.
-     *  Negative magnitude accelerates the opposite way from the position.
-     *  When the normalized is false, this is multiplied with the distance to the target position.
-     *  The default value is 1.0.
-     */
-    Q_PROPERTY(float velosityMagnitude READ velosityMagnitude WRITE setVelosityMagnitude NOTIFY velosityMagnitudeChanged)
-
-    /**
-     * @brief velosityMagnitudeVariation This property defines the magnitude variation in position change per second.
-     *  When the normalized is false, this is multiplied with the distance to the target position.
-     *  The default value is 0.0.
-     */
-    Q_PROPERTY(float velosityMagnitudeVariation READ velosityMagnitudeVariation WRITE setVelosityMagnitudeVariation NOTIFY velosityMagnitudeVariationChanged)
-
-    /**
-     * @brief velosityNormalized This property defines if the distance to position should be considered as normalized or not.
-     *  When this is false, distance to the position affects the magnitude of the particles velocity.
-     *  When set to true, distance is normalized and velocity amount comes only from magnitude and magnitudeVariation.
-     *  The default value is false.
-     */
-    Q_PROPERTY(bool velosityNormalized READ velosityNormalized WRITE setVelosityNormalized NOTIFY velosityNormalizedChanged)
-
-    /**
-     * @brief velosityTargetPosition This property defines the position for particles target.
-     *  The default value is (0, 0, 0) (the center of the emitter).
-     */
-    Q_PROPERTY(QVector3D velosityTargetPosition READ velosityTargetPosition WRITE setVelosityTargetPosition NOTIFY velosityTargetPositionChanged)
-
-    /**
-     * @brief velosityTargetPositionVariation This property defines the position variation for particles target.
-     *  The default value is (0, 0, 0) (no variation).
-     */
-    Q_PROPERTY(QVector3D velosityTargetPositionVariation READ velosityTargetPositionVariation WRITE setVelosityTargetPositionVariation NOTIFY velosityTargetPositionVariationChanged)
+     * @brief velocity can be used to set a starting velocity for emitted particles. If velocity is not set, particles start motionless and velocity comes from affectors if they are used.
+     * @note For the initialisation of this propertye use ParticleEffect::useTargetVelosity and ParticleEffect::useDirectionVelosity methods
+    */
+    Q_PROPERTY(QObject *velocity READ velocity NOTIFY velocityChanged)
 
     /**
      * @brief particleDelegate This is path yo the qml delegate file of the particle object.
@@ -349,109 +309,6 @@ public:
     void setParticleScaleVariation(float newParticleScaleVariation);
 
     /**
-     * @brief velosityDirection this property defines the direction for particles target.
-     *  The default value is (0, 100, 0) (upwards on the y-axis).
-     * @return current value of the velosityDirection property
-     */
-    const QVector3D &velosityDirection() const;
-
-    /**
-     * @brief setVelosityDirection This method sets new value of the ParticleEffect::velosityDirection property.
-     * @param newVelosityDirection This is a new value of the ParticleEffect::velosityDirection property
-     * @note This propertye will be workd only after invoke the useDirectionVelosity method.
-     */
-    void setVelosityDirection(const QVector3D &newVelosityDirection);
-
-    /**
-     * @brief velosityDirectionValatility This property defines the direction variation for particles target.
-     *  The default value is (0, 0, 0) (no variation).
-     * @return current value of the velosityDirectionValatility property
-     */
-    const QVector3D &velosityDirectionValatility() const;
-
-    /**
-     * @brief setVelosityDirectionValatility This method sets new value of the ParticleEffect::velosityDirectionValatility property.
-     * @param newVelosityDirectionValatility This is a new value of the ParticleEffect::velosityDirectionValatility property
-     * @note This propertye will be workd only after invoke the useDirectionVelosity method.
-     */
-    void setVelosityDirectionValatility(const QVector3D &newVelosityDirectionValatility);
-
-    /**
-     * @brief velosityMagnitude This property defines the magnitude in position change per second.
-     *  Negative magnitude accelerates the opposite way from the position.
-     *  When the normalized is false, this is multiplied with the distance to the target position.
-     *  The default value is 1.0.
-     * @return current value of the velosityMagnitude property
-     */
-    float velosityMagnitude() const;
-
-    /**
-     * @brief setVelosityMagnitude This method sets new value of the ParticleEffect::velosityMagnitude property.
-     * @param newVelosityMagnitude This is a new value of the ParticleEffect::velosityMagnitude property
-     * @note This propertye will be workd only after invoke the useTargetVelosity method.
-     */
-    void setVelosityMagnitude(float newVelosityMagnitude);
-
-    /**
-     * @brief velosityMagnitudeVariation This property defines the magnitude variation in position change per second.
-     *  When the normalized is false, this is multiplied with the distance to the target position.
-     *  The default value is 0.0.
-     * @return current value of the velosityMagnitudeVariation property
-     */
-    float velosityMagnitudeVariation() const;
-
-    /**
-     * @brief setVelosityMagnitudeVariation This method sets new value of the ParticleEffect::velosityMagnitudeVariation property.
-     * @param newVelosityMagnitudeVariation This is a new value of the ParticleEffect::velosityMagnitudeVariation property
-     * @note This propertye will be workd only after invoke the useTargetVelosity method.
-     */
-    void setVelosityMagnitudeVariation(float newVelosityMagnitudeVariation);
-
-    /**
-     * @brief velosityNormalized This property defines if the distance to position should be considered as normalized or not.
-     *  When this is false, distance to the position affects the magnitude of the particles velocity.
-     *  When set to true, distance is normalized and velocity amount comes only from magnitude and magnitudeVariation.
-     *  The default value is false.
-     * @return current value of the velosityNormalized property
-     */
-    bool velosityNormalized() const;
-
-    /**
-     * @brief setVelosityNormalized This method sets new value of the ParticleEffect::velosityNormalized property.
-     * @param newVelosityNormalized This is a new value of the ParticleEffect::velosityNormalized property
-     * @note This propertye will be workd only after invoke the useTargetVelosity method.
-     */
-    void setVelosityNormalized(bool newVelosityNormalized);
-
-    /**
-     * @brief velosityTargetPosition This property defines the position for particles target.
-     *  The default value is (0, 0, 0) (the center of the emitter).
-     * @return current value of the velosityNormalized property
-     */
-    const QVector3D &velosityTargetPosition() const;
-
-    /**
-     * @brief setVelosityTargetPosition This method sets new value of the ParticleEffect::velosityTargetPosition property.
-     * @param newVelosityTargetPosition This is a new value of the ParticleEffect::velosityTargetPosition property
-     * @note This propertye will be workd only after invoke the useTargetVelosity method.
-     */
-    void setVelosityTargetPosition(const QVector3D &newVelosityTargetPosition);
-
-    /**
-     * @brief velosityTargetPositionVariation This property defines the position variation for particles target.
-     *  The default value is (0, 0, 0) (no variation).
-     * @return current value of the velosityTargetPositionVariation property
-     */
-    const QVector3D &velosityTargetPositionVariation() const;
-
-    /**
-     * @brief setVelosityTargetPositionVariation This method sets new value of the ParticleEffect::velosityTargetPositionVariation property.
-     * @param newVelosityTargetPositionVariation This is a new value of the ParticleEffect::velosityTargetPositionVariation property
-     * @note This propertye will be workd only after invoke the useTargetVelosity method.
-     */
-    void setVelosityTargetPositionVariation(const QVector3D &newVelosityTargetPositionVariation);
-
-    /**
      * @brief particleDelegate This is path yo the qml delegate file of the particle object.
      * @return path to delegate of the particle object.
      */
@@ -462,6 +319,12 @@ public:
      * @param newParticleDelegate This is new value of the path to particle object.
      */
     void setParticleDelegate(const QString &newParticleDelegate);
+
+    /**
+     * @brief velocity This property can be used to set a starting velocity for emitted particles. If velocity is not set, particles start motionless and velocity comes from affectors if they are used.
+     * @return current value of the ParticleEffect::velocity property
+     */
+    QObject *velocity() const;
 
 signals:
 
@@ -521,44 +384,14 @@ signals:
     void particleScaleVariationChanged();
 
     /**
-     * @brief velosityDirectionChanged This signal emited when the velosityDirection propertye changed.
-     */
-    void velosityDirectionChanged();
-
-    /**
-     * @brief velosityDirectionValatilityChanged This signal emited when the velosityDirectionValatility propertye changed.
-     */
-    void velosityDirectionValatilityChanged();
-
-    /**
-     * @brief velosityMagnitudeChanged This signal emited when the velosityMagnitude propertye changed.
-     */
-    void velosityMagnitudeChanged();
-
-    /**
-     * @brief velosityMagnitudeVariationChanged This signal emited when the velosityMagnitudeVariation propertye changed.
-     */
-    void velosityMagnitudeVariationChanged();
-
-    /**
-     * @brief velosityNormalizedChanged This signal emited when the velosityNormalized propertye changed.
-     */
-    void velosityNormalizedChanged();
-
-    /**
-     * @brief velosityTargetPositionChanged This signal emited when the velosityTargetPosition propertye changed.
-     */
-    void velosityTargetPositionChanged();
-
-    /**
-     * @brief velosityTargetPositionVariationChanged This signal emited when the velosityTargetPositionVariation propertye changed.
-     */
-    void velosityTargetPositionVariationChanged();
-
-    /**
      * @brief particleDelegateChanged This signal emited when the particleDelegate propertye changed.
      */
     void particleDelegateChanged();
+
+    /**
+     * @brief particleDelegateChanged This signal emited when the velocity propertye changed.
+     */
+    void velocityChanged();
 
 protected:
 
@@ -603,6 +436,13 @@ protected:
                            bool velosityNormalized,
                            const QVector3D& velosityTargetPosition,
                            const QVector3D& velosityTargetPositionVariation);
+
+    /**
+     * @brief setVelocity This method sets new value of ParticleEffect::velocity property.
+     * @param newVelocity This is new value of the ParticleEffect::velocity property.
+     */
+    void setVelocity(QObject *newVelocity);
+
 private:
     bool _enabled = false;
     float _emitRate = 0;
@@ -616,15 +456,7 @@ private:
     float _particleScale = 1;
     float _particleScaleVariation = 0;
 
-    // velosity
-    QVector3D _velosityDirection = {};
-    QVector3D _velosityDirectionValatility = {};
-
-    float _velosityMagnitude = 1;
-    float _velosityMagnitudeVariation = 0;
-    bool _velosityNormalized = false;
-    QVector3D _velosityTargetPosition = {};
-    QVector3D _velosityTargetPositionVariation = {};
+    QObject* _velocity = nullptr;
 
     QString _particleDelegate;
 };

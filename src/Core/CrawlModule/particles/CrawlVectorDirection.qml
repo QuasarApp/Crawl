@@ -9,16 +9,10 @@ import QtQuick
 import QtQuick3D
 import QtQuick3D.Particles3D
 
-ParticleEmitter3D {
-
+VectorDirection3D {
     property var model: null
-    property int guiId: (model) ? model.guiId : -1;
+    property string path: ""
 
-
-
-    rotation: (model)? model.rotation: Qt.quaternion(0, 0, 0, 0)
-    scale: (model)? model.size: Qt.vector3d(0, 0, 0);
-    position: (model) ? model.position: Qt.vector3d(0,0,0);
-    visible: (model)? model.visible: false
-
+    direction: (model)? model.velosityDirection : Qt.vector3d(0, 0, 0)
+    directionVariation: (model)? model.velosityDirectionValatility : Qt.vector3d(0, 0, 0)
 }

@@ -7,6 +7,8 @@
 
 
 #include "particleeffect.h"
+#include "targetdirection.h"
+#include "vectordirection.h"
 namespace CRAWL {
 
 
@@ -138,83 +140,6 @@ void ParticleEffect::setParticleScaleVariation(float newParticleScaleVariation) 
     emit particleScaleVariationChanged();
 }
 
-const QVector3D &ParticleEffect::velosityDirection() const {
-    return _velosityDirection;
-}
-
-void ParticleEffect::setVelosityDirection(const QVector3D &newVelosityDirection) {
-    if (_velosityDirection == newVelosityDirection)
-        return;
-    _velosityDirection = newVelosityDirection;
-    emit velosityDirectionChanged();
-}
-
-const QVector3D &ParticleEffect::velosityDirectionValatility() const {
-    return _velosityDirectionValatility;
-}
-
-void ParticleEffect::setVelosityDirectionValatility(const QVector3D &newVelosityDirectionValatility) {
-    if (_velosityDirectionValatility == newVelosityDirectionValatility)
-        return;
-    _velosityDirectionValatility = newVelosityDirectionValatility;
-    emit velosityDirectionValatilityChanged();
-}
-
-float ParticleEffect::velosityMagnitude() const {
-    return _velosityMagnitude;
-}
-
-void ParticleEffect::setVelosityMagnitude(float newVelosityMagnitude) {
-    if (qFuzzyCompare(_velosityMagnitude, newVelosityMagnitude))
-        return;
-    _velosityMagnitude = newVelosityMagnitude;
-    emit velosityMagnitudeChanged();
-}
-
-float ParticleEffect::velosityMagnitudeVariation() const {
-    return _velosityMagnitudeVariation;
-}
-
-void ParticleEffect::setVelosityMagnitudeVariation(float newVelosityMagnitudeVariation) {
-    if (qFuzzyCompare(_velosityMagnitudeVariation, newVelosityMagnitudeVariation))
-        return;
-    _velosityMagnitudeVariation = newVelosityMagnitudeVariation;
-    emit velosityMagnitudeVariationChanged();
-}
-
-bool ParticleEffect::velosityNormalized() const {
-    return _velosityNormalized;
-}
-
-void ParticleEffect::setVelosityNormalized(bool newVelosityNormalized) {
-    if (_velosityNormalized == newVelosityNormalized)
-        return;
-    _velosityNormalized = newVelosityNormalized;
-    emit velosityNormalizedChanged();
-}
-
-const QVector3D &ParticleEffect::velosityTargetPosition() const {
-    return _velosityTargetPosition;
-}
-
-void ParticleEffect::setVelosityTargetPosition(const QVector3D &newVelosityTargetPosition) {
-    if (_velosityTargetPosition == newVelosityTargetPosition)
-        return;
-    _velosityTargetPosition = newVelosityTargetPosition;
-    emit velosityTargetPositionChanged();
-}
-
-const QVector3D &ParticleEffect::velosityTargetPositionVariation() const {
-    return _velosityTargetPositionVariation;
-}
-
-void ParticleEffect::setVelosityTargetPositionVariation(const QVector3D &newVelosityTargetPositionVariation) {
-    if (_velosityTargetPositionVariation == newVelosityTargetPositionVariation)
-        return;
-    _velosityTargetPositionVariation = newVelosityTargetPositionVariation;
-    emit velosityTargetPositionVariationChanged();
-}
-
 const QString &ParticleEffect::particleDelegate() const {
     return _particleDelegate;
 }
@@ -225,5 +150,45 @@ void ParticleEffect::setParticleDelegate(const QString &newParticleDelegate) {
     _particleDelegate = newParticleDelegate;
     emit particleDelegateChanged();
 }
+
+QObject *ParticleEffect::velocity() const {
+    return _velocity;
+}
+
+void ParticleEffect::setVelocity(QObject *newVelocity) {
+    if (_velocity == newVelocity)
+        return;
+    _velocity = newVelocity;
+    emit velocityChanged();
+}
+
+void ParticleEffect::useDirectionVelosity(
+        const QVector3D& velosityDirection,
+        const QVector3D& velosityDirectionValatility) {
+
+    if (_velocity) {
+        _velocity->deleteLater();
+    }
+
+    setVelocity(new VectorDirection(velosityDirection, velosityDirectionValatility));
+}
+
+void ParticleEffect::useTargetVelosity(
+        float velosityMagnitude,
+        float velosityMagnitudeVariation,
+        bool velosityNormalized,
+        const QVector3D& velosityTargetPosition,
+        const QVector3D& velosityTargetPositionVariation) {
+
+    if (_velocity) {
+        _velocity->deleteLater();
+    }
+
+    setVelocity(new TargetDirection(velosityMagnitude,
+                                    velosityMagnitudeVariation,
+                                    velosityNormalized,
+                                    velosityTargetPosition,
+                                    velosityTargetPositionVariation));
+};
 
 }

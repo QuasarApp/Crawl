@@ -73,7 +73,7 @@ View3D {
             var temp = Qt.createComponent(viewTemplate)
             if (temp.status === Component.Ready) {
                 var obj = temp.createObject(privateRoot)
-                obj.model = model.getGameObject(cppObjId);
+                obj.model = objModel;
                 arrayObjects.push(obj)
             } else {
                 console.log("wrong viewTemplate in model " + temp.errorString());
