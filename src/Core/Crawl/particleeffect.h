@@ -14,7 +14,9 @@
 namespace CRAWL {
 
 /**
- * @brief The ParticleEffect class
+ * @brief The ParticleEffect class This element emits logical particles into the ParticleSystem, with the given starting attributes.
+At least one emitter is required to have particles in the ParticleSystem3D.
+    Please see the [qt](https://doc.qt.io/qt-6/qtquick3d-index.html) documentation for get more inforamtion
  */
 class ParticleEffect : public IWorldItem
 {
@@ -45,8 +47,9 @@ public:
                    QObject *ptr = nullptr);
 
     /**
-     * @brief enabled if enabled is set to false, this emitter will not emit any particles. Usually this is used to conditionally turn an emitter on or off. If you want to continue emitting burst, keep emitRate at 0 instead of toggling this to false.
-The default value is true.
+     * @brief enabled if enabled is set to false, this emitter will not emit any particles.
+     *  Usually this is used to conditionally turn an emitter on or off. If you want to continue emitting burst,
+     *  keep emitRate at 0 instead of toggling this to false. The default value is true.
      * @return true if this effect is enabled.
      */
     bool enabled() const;
@@ -59,7 +62,7 @@ The default value is true.
 
     /**
      * @brief emitRate This property defines the constant emitting rate in particles per second. For example, if the emitRate is 120 and system animates at 60 frames per second, 2 new particles are emitted at every frame.
-The default value is 0.
+     *  The default value is 0.
      * @return current value of the emitRate property
      */
     float emitRate() const;
@@ -197,7 +200,7 @@ See also particleRotationVelocityVariation.
     /**
      * @brief particleScaleVariation This property defines the scale variation of the particles.
      *  This variation is used for both particleScale and particleEndScale.
-     *   For example, to emit particles which start at scale 0.5 - 1.5 and end at 2.5 - 3.5:
+     *  For example, to emit particles which start at scale 0.5 - 1.5 and end at 2.5 - 3.5:
      *   ```
              particleScale: 1.0
              particleEndScale: 3.0
@@ -217,7 +220,7 @@ See also particleRotationVelocityVariation.
 
     /**
      * @brief velosityDirection this property defines the direction for particles target.
-     * The default value is (0, 100, 0) (upwards on the y-axis).
+     *  The default value is (0, 100, 0) (upwards on the y-axis).
      * @return current value of the velosityDirection property
      */
     const QVector3D &velosityDirection() const;
