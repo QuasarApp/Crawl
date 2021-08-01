@@ -155,11 +155,80 @@ QObject *ParticleEffect::velocity() const {
     return _velocity;
 }
 
+QVector3D ParticleEffect::brust(int count,
+                                int duration,
+                                const QVector3D &position) const {
+    QVector3D result = {0,0,0};
+
+    if (!viewObject()) {
+        QuasarAppUtils::Params::log("Failed to brust particles because the viewObject is empty.");
+        return result;
+    }
+
+    QMetaObject::invokeMethod(viewObject(),
+                              "brust",
+                              Qt::DirectConnection,
+                              Q_RETURN_ARG(QVector3D, result),
+                              Q_ARG(int, count),
+                              Q_ARG(int, duration),
+                              Q_ARG(QVector3D, position));
+
+    return result;
+}
+
+QVector3D ParticleEffect::brust(int count, int duration) const {
+
+    QVector3D result = {0,0,0};
+
+    if (!viewObject()) {
+        QuasarAppUtils::Params::log("Failed to brust particles because the viewObject is empty.");
+        return result;
+    }
+
+    QMetaObject::invokeMethod(viewObject(),
+                              "brust",
+                              Qt::DirectConnection,
+                              Q_RETURN_ARG(QVector3D, result),
+                              Q_ARG(int, count),
+                              Q_ARG(int, duration));
+
+    return result;
+}
+
+QVector3D ParticleEffect::brust(int count) const {
+
+    QVector3D result = {0,0,0};
+
+    if (!viewObject()) {
+        QuasarAppUtils::Params::log("Failed to brust particles because the viewObject is empty.");
+        return result;
+    }
+
+    QMetaObject::invokeMethod(viewObject(),
+                              "brust",
+                              Qt::DirectConnection,
+                              Q_RETURN_ARG(QVector3D, result),
+                              Q_ARG(int, count));
+
+    return result;
+}
+
 void ParticleEffect::setVelocity(QObject *newVelocity) {
     if (_velocity == newVelocity)
         return;
     _velocity = newVelocity;
     emit velocityChanged();
+}
+
+const QString &ParticleEffect::particleShape() const {
+    return _particleShape;
+}
+
+void ParticleEffect::setParticleShape(const QString &newParticleShape) {
+    if (_particleShape == newParticleShape)
+        return;
+    _particleShape = newParticleShape;
+    emit particleShapeChanged();
 }
 
 void ParticleEffect::useDirectionVelosity(

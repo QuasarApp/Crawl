@@ -34,6 +34,11 @@ ParticleEmitter3D {
     particleRotationVelocityVariation: (model)? model.particleRotationVelocityVariation: particleRotationVelocityVariation
     particleScaleVariation: (model)? model.particleScaleVariation: particleScaleVariation
 
+    onModelChanged: () => {
+                        if (root.model) {
+                            root.model.viewObject = root;
+                        }
+                    }
 
     Connections {
         id: privateRoot
@@ -71,5 +76,25 @@ ParticleEmitter3D {
                 }
             }
         }
+
+        onParticleDelegateChanged: () => {
+                                       const viewTemplate = root.model.particleDelegate
+                                       let temp = Qt.createComponent(viewTemplate)
+                                       if (temp.status === Component.Ready) {
+                                           root.particle =  temp.createObject();
+                                       } else {
+                                           console.log("wrong viewTemplate in model " + temp.errorString());
+                                       }
+                                   }
+
+        onParticleShapeChanged: () => {
+                                    const viewTemplate = root.model.particleShape
+                                    let temp = Qt.createComponent(viewTemplate)
+                                    if (temp.status === Component.Ready) {
+                                        root.shape =  temp.createObject();
+                                    } else {
+                                        console.log("wrong viewTemplate in model " + temp.errorString());
+                                    }
+                                }
     }
 }

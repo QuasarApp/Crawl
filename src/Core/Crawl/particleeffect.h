@@ -130,6 +130,14 @@ class CRAWL_EXPORT ParticleEffect : public IWorldItem
      */
     Q_PROPERTY(QString particleDelegate READ particleDelegate WRITE setParticleDelegate NOTIFY particleDelegateChanged)
 
+    /**
+     * @brief particleShape This property defines optional shape for the emitting area.
+     *  Shape is scaled, positioned and rotated based on the emitter node properties.
+     *  When the Shape fill property is set to false,
+     *  emitting happens only from the surface of the shape. When the shape is not defined, emitting is done from the center point of the emitter node.
+    */
+    Q_PROPERTY(QString particleShape READ particleShape WRITE setParticleShape NOTIFY particleShapeChanged)
+
 public:
     ParticleEffect(const QString& name,
                    const QString& viewTempalte = DEFAULT_VIEW_TEMPLATE,
@@ -326,6 +334,50 @@ public:
      */
     QObject *velocity() const;
 
+    /**
+     * @brief brust This method emits count amount of particles from this emitter during the next duration milliseconds.
+     *  The particles are emitted as if the emitter was at position but all other properties are the same.
+     * @param count This is count of emited particles
+     * @param duration This ducration of the emitting particles.
+     * @param position This is position wher the emiter should emit particles.
+     * @return
+     */
+    QVector3D brust(int count,
+                    int duration,
+                    const QVector3D& position) const;
+
+    /**
+     * @brief brust This method emits count amount of particles from this emitter during the next duration milliseconds.
+     * @param count This is count of emited particles
+     * @param duration This ducration of the emitting particles.
+     * @return
+     */
+    QVector3D brust(int count,
+                    int duration) const;
+
+    /**
+     * @brief brust This method emits count amount of particles from this emitter immediately.
+     * @param count This is count of emited particles
+     * @return
+     */
+    QVector3D brust(int count) const;
+
+    /**
+     * @brief particleShape The ParticleShape3D element supports shapes like Cube,
+     *  Sphere and Cylinder for particles needs.
+     *  For example, emitter can use shape property to emit particles from the shape area.
+     *  Shapes don't have position, scale or rotation.
+     *  Instead, they use parent node for these properties.
+     * @return path to qml shape element.
+     */
+    const QString &particleShape() const;
+
+    /**
+     * @brief setParticleShape This method set new path to shape element
+     * @param newParticleShape This is new value of the path to qml shape element.
+     */
+    void setParticleShape(const QString &newParticleShape);
+
 signals:
 
     /**
@@ -389,9 +441,14 @@ signals:
     void particleDelegateChanged();
 
     /**
-     * @brief particleDelegateChanged This signal emited when the velocity propertye changed.
+     * @brief velocityChanged This signal emited when the velocity propertye changed.
      */
     void velocityChanged();
+
+    /**
+     * @brief particleShapeChanged This signal emited when the shape propertye changed.
+     */
+    void particleShapeChanged();
 
 protected:
 
@@ -459,6 +516,7 @@ private:
     QObject* _velocity = nullptr;
 
     QString _particleDelegate;
+    QString _particleShape;
 };
 }
 #endif // PARTICLEEFFECT_H

@@ -18,4 +18,15 @@ const QString &ViewTemaplateModel::viewTemplate() const {
     return _viewTemplate;
 }
 
+QObject *ViewTemaplateModel::viewObject() const {
+    return _viewObject;
+}
+
+void ViewTemaplateModel::setViewObject(QObject *newViewObject) {
+    if (_viewObject == newViewObject)
+        return;
+    _viewObject = newViewObject;
+    emit viewObjectChanged();
+}
+
 }
