@@ -23,6 +23,7 @@ ParticleEmitter3D {
 
     depthBias: (model)? model.depthBias: 0
     emitRate: (model)? model.emitRate: 0
+
     enabled: (model)? model.enabled: false
     lifeSpan: (model)? model.lifeSpan: 0
     lifeSpanVariation: (model)? model.lifeSpanVariation: 0
@@ -39,61 +40,74 @@ ParticleEmitter3D {
                         }
                     }
 
-    Connections {
+    Item {
         id: privateRoot
-        target: model
-
+        property var velosity: (model)? model.velocity: null
+        property string delegate: (model)? model.particleDelegate: ""
+        property string particleShape: (model)? model.particleShape: ""
         property var view: null
 
-        function onVelocityChanged() {
-            const objModel = model.velocity;
+        onVelosityChanged: () => {
+                               if (!root.model)
+                                   return;
 
-            if (!objModel) {
-                if (view) {
-                    view.distory();
-                }
+                               const objModel = root.model.velocity;
 
-                root.velocity = view = null;
-                return;
-            }
+                               if (!objModel) {
+                                   if (view) {
+                                       view.distory();
+                                   }
 
-            const viewTemplate = objModel.viewTemplate;
+                                   root.velocity = view = null;
+                                   return;
+                               }
 
-            if (view.path !== viewTemplate) {
-                let temp = Qt.createComponent(viewTemplate)
-                if (temp.status === Component.Ready) {
-                    let obj = temp.createObject()
-                    obj.model = objModel;
+                               const viewTemplate = objModel.viewTemplate;
 
-                    if (view) {
-                        view.distory();
-                    }
+                               if (!view || (view.path !== viewTemplate)) {
+                                   let temp = Qt.createComponent(viewTemplate)
 
-                    root.velocity = view = obj;
-                } else {
-                    console.log("wrong viewTemplate in model " + temp.errorString());
-                }
-            }
-        }
+                                   if (!temp)
+                                       return
 
-        function onParticleDelegateChanged () {
-            const viewTemplate = root.model.particleDelegate
-            let temp = Qt.createComponent(viewTemplate)
-            if (temp.status === Component.Ready) {
-                root.particle =  temp.createObject();
-            } else {
-                console.log("wrong viewTemplate in model " + temp.errorString());
-            }
-        }
+                                   if (temp.status === Component.Ready) {
+                                       let obj = temp.createObject(root)
+                                       obj.model = objModel;
 
-        function onParticleShapeChanged() {
-            const viewTemplate = root.model.particleShape
-            let temp = Qt.createComponent(viewTemplate)
-            if (temp.status === Component.Ready) {
-                root.shape =  temp.createObject();
-            } else {
-                console.log("wrong viewTemplate in model " + temp.errorString());
-            }
-        }
+                                       if (view) {
+                                           view.distory();
+                                       }
+
+                                       root.velocity = view = obj;
+                                   } else {
+                                       console.log("wrong viewTemplate in model " + temp.errorString());
+                                   }
+                               }
+                           }
+        onDelegateChanged: () => {
+                               let temp = Qt.createComponent(privateRoot.delegate)
+
+                               if (!temp)
+                                   return
+
+                               if (temp.status === Component.Ready) {
+                                   root.particle =  temp.createObject(root.parent);
+                               } else {
+                                   console.log("wrong viewTemplate in model " + temp.errorString());
+                               }
+                           }
+
+        onParticleShapeChanged: () => {
+                                    let temp = Qt.createComponent(privateRoot.particleShape)
+
+                                    if (!temp)
+                                        return
+
+                                    if (temp.status === Component.Ready) {
+                                        root.shape =  temp.createObject(root.parent);
+                                    } else {
+                                        console.log("wrong viewTemplate in model " + temp.errorString());
+                                    }
+                                }
     }
 }
