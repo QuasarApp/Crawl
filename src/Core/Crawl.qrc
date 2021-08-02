@@ -18,5 +18,10 @@
         <file>CrawlModule/particles/ParticleEffect.qml</file>
         <file>CrawlModule/particles/CrawlVectorDirection.qml</file>
         <file>CrawlModule/particles/CrawlTargetDirection.qml</file>
+        <file>CrawlModule/particles/FireParticel.qml</file>
+        <file>CrawlCoreAssets/particles/fireColorTable.png</file>
+        <file>CrawlCoreAssets/particles/sphere.png</file>
+        <file>CrawlCoreAssets/particles/smokeSprite.png</file>
+        <file>CrawlModule/particles/Fire.qml</file>
     </qresource>
 </RCC>

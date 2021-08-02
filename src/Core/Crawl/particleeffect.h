@@ -138,9 +138,14 @@ class CRAWL_EXPORT ParticleEffect : public IWorldItem
     */
     Q_PROPERTY(QString particleShape READ particleShape WRITE setParticleShape NOTIFY particleShapeChanged)
 
+    /**
+     * @brief particleRotation This property defines the rotation of the particles in the beginning. Rotation is defined as degrees in euler angles.
+     */
+    Q_PROPERTY(QVector3D particleRotation READ particleRotation WRITE setParticleRotation NOTIFY particleRotationChanged)
+
 public:
     ParticleEffect(const QString& name,
-                   const QString& viewTempalte = DEFAULT_VIEW_TEMPLATE,
+                   const QString& viewTempalte = "qrc:/CrawlModule/particles/ParticleEffect.qml",
                    QObject *ptr = nullptr);
 
     /**
@@ -378,6 +383,18 @@ public:
      */
     void setParticleShape(const QString &newParticleShape);
 
+    /**
+     * @brief particleRotation This property defines the rotation of the particles in the beginning. Rotation is defined as degrees in euler angles.
+     * @return current value of the particleRotation property
+     */
+    const QVector3D &particleRotation() const;
+
+    /**
+     * @brief setParticleRotationVelocity This method sets new value of the ParticleEffect::particleRotation property.
+     * @param newParticleRotationVelocity This is a new value of the ParticleEffect::particleRotation property
+     */
+    void setParticleRotation(const QVector3D &newParticleRotation);
+
 signals:
 
     /**
@@ -450,6 +467,11 @@ signals:
      */
     void particleShapeChanged();
 
+    /**
+     * @brief particleShapeChanged This signal emited when the particleRotation propertye changed.
+     */
+    void particleRotationChanged();
+
 protected:
 
     /**
@@ -507,6 +529,7 @@ private:
     int _lifeSpan = 1000;
     int _lifeSpanVariation = 0;
     float _particleEndScale = -1.0;
+    QVector3D _particleRotation = {};
     QVector3D _particleRotationVariation = {};
     QVector3D _particleRotationVelocity = {};
     QVector3D _particleRotationVelocityVariation = {};

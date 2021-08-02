@@ -21,18 +21,17 @@ ParticleEmitter3D {
     position: (model) ? model.position: Qt.vector3d(0,0,0);
     visible: (model)? model.visible: false
 
-    depthBias: (model)? model.depthBias: depthBias
-    emitRate: (model)? model.emitRate: emitRate
-    enabled: (model)? model.enabled: enabled
-    lifeSpan: (model)? model.lifeSpan: lifeSpan
-    lifeSpanVariation: (model)? model.lifeSpanVariation: lifeSpanVariation
-    particle: (model)? model.particle: particle
-    particleEndScale: (model)? model.particleEndScale: particleEndScale
-    particleRotation: (model)? model.particleRotation: particleRotation
-    particleRotationVariation: (model)? model.particleRotationVariation: particleRotationVariation
-    particleRotationVelocity: (model)? model.particleRotationVelocity: particleRotationVelocity
-    particleRotationVelocityVariation: (model)? model.particleRotationVelocityVariation: particleRotationVelocityVariation
-    particleScaleVariation: (model)? model.particleScaleVariation: particleScaleVariation
+    depthBias: (model)? model.depthBias: 0
+    emitRate: (model)? model.emitRate: 0
+    enabled: (model)? model.enabled: false
+    lifeSpan: (model)? model.lifeSpan: 0
+    lifeSpanVariation: (model)? model.lifeSpanVariation: 0
+    particleEndScale: (model)? model.particleEndScale: 0
+    particleRotation: (model)? model.particleRotation: Qt.vector3d(0, 0, 0)
+    particleRotationVariation: (model)? model.particleRotationVariation: Qt.vector3d(0, 0, 0)
+    particleRotationVelocity: (model)? model.particleRotationVelocity: Qt.vector3d(0, 0, 0)
+    particleRotationVelocityVariation: (model)? model.particleRotationVelocityVariation: Qt.vector3d(0, 0, 0)
+    particleScaleVariation: (model)? model.particleScaleVariation: 0
 
     onModelChanged: () => {
                         if (root.model) {
@@ -46,7 +45,7 @@ ParticleEmitter3D {
 
         property var view: null
 
-        onVelocityChanged: () => {
+        function onVelocityChanged() {
             const objModel = model.velocity;
 
             if (!objModel) {
@@ -77,24 +76,24 @@ ParticleEmitter3D {
             }
         }
 
-        onParticleDelegateChanged: () => {
-                                       const viewTemplate = root.model.particleDelegate
-                                       let temp = Qt.createComponent(viewTemplate)
-                                       if (temp.status === Component.Ready) {
-                                           root.particle =  temp.createObject();
-                                       } else {
-                                           console.log("wrong viewTemplate in model " + temp.errorString());
-                                       }
-                                   }
+        function onParticleDelegateChanged () {
+            const viewTemplate = root.model.particleDelegate
+            let temp = Qt.createComponent(viewTemplate)
+            if (temp.status === Component.Ready) {
+                root.particle =  temp.createObject();
+            } else {
+                console.log("wrong viewTemplate in model " + temp.errorString());
+            }
+        }
 
-        onParticleShapeChanged: () => {
-                                    const viewTemplate = root.model.particleShape
-                                    let temp = Qt.createComponent(viewTemplate)
-                                    if (temp.status === Component.Ready) {
-                                        root.shape =  temp.createObject();
-                                    } else {
-                                        console.log("wrong viewTemplate in model " + temp.errorString());
-                                    }
-                                }
+        function onParticleShapeChanged() {
+            const viewTemplate = root.model.particleShape
+            let temp = Qt.createComponent(viewTemplate)
+            if (temp.status === Component.Ready) {
+                root.shape =  temp.createObject();
+            } else {
+                console.log("wrong viewTemplate in model " + temp.errorString());
+            }
+        }
     }
 }

@@ -220,6 +220,17 @@ void ParticleEffect::setVelocity(QObject *newVelocity) {
     emit velocityChanged();
 }
 
+const QVector3D &ParticleEffect::particleRotation() const {
+    return _particleRotation;
+}
+
+void ParticleEffect::setParticleRotation(const QVector3D &newParticleRotation) {
+    if (_particleRotation == newParticleRotation)
+        return;
+    _particleRotation = newParticleRotation;
+    emit particleRotationChanged();
+}
+
 const QString &ParticleEffect::particleShape() const {
     return _particleShape;
 }
