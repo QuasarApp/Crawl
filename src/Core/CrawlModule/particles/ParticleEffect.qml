@@ -24,7 +24,7 @@ ParticleEmitter3D {
     depthBias: (model)? model.depthBias: 0
     emitRate: (model)? model.emitRate: 0
 
-    enabled: (model)? model.enabled: false
+    enabled: (model)? model.enabled: true
     lifeSpan: (model)? model.lifeSpan: 0
     lifeSpanVariation: (model)? model.lifeSpanVariation: 0
     particleEndScale: (model)? model.particleEndScale: 0
@@ -80,10 +80,11 @@ ParticleEmitter3D {
 
                                        root.velocity = view = obj;
                                    } else {
-                                       console.log("wrong viewTemplate in model " + temp.errorString());
+                                       console.log("wrong path (viewTemplate property) ot thq velosity module " + temp.errorString());
                                    }
                                }
                            }
+
         onDelegateChanged: () => {
                                let temp = Qt.createComponent(privateRoot.delegate)
 
@@ -93,7 +94,7 @@ ParticleEmitter3D {
                                if (temp.status === Component.Ready) {
                                    root.particle =  temp.createObject(root.parent);
                                } else {
-                                   console.log("wrong viewTemplate in model " + temp.errorString());
+                                   console.log("wrong path to the in model " + temp.errorString());
                                }
                            }
 

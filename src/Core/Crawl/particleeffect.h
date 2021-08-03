@@ -18,6 +18,31 @@ namespace CRAWL {
  * @brief The ParticleEffect class This element emits logical particles into the ParticleSystem, with the given starting attributes.
 At least one emitter is required to have particles in the ParticleSystem3D.
     Please see the [qt](https://doc.qt.io/qt-6/qtquick3d-index.html) documentation for get more inforamtion
+
+    @note if you want that this effect alway shows then set the enabled property to true or invoke the brust method for singel show.
+
+    ### Example:
+
+    @code{cpp}
+
+    Fire::Fire(): ParticleEffect(AUTO_CLASS_NAME, "qrc:/CrawlModule/particles/Fire.qml") {
+
+        useDirectionVelosity({0, 0 , 10}, {10, 10, 0});
+        setParticleScale(4);
+        setParticleEndScale(12);
+        setParticleScaleVariation(3);
+        setLifeSpanVariation(500);
+        setColor("#ffaf2c");
+        setSize({1, 1, 1});
+        setposition({0,0,10});
+        setEnabled(true);
+
+        setParticleDelegate("qrc:/CrawlModule/particles/FireParticel.qml");
+
+        setFireStrength(100);
+    }
+
+    @endcode
  */
 class CRAWL_EXPORT ParticleEffect : public IWorldItem
 {
@@ -25,7 +50,7 @@ class CRAWL_EXPORT ParticleEffect : public IWorldItem
     /**
      *  @brief enabled if enabled is set to false, this emitter will not emit any particles.
      *  Usually this is used to conditionally turn an emitter on or off. If you want to continue emitting burst,
-     *  keep emitRate at 0 instead of toggling this to false. The default value is true.
+     *  keep emitRate at 0 instead of toggling this to false. The default value is false.
     */
     Q_PROPERTY(bool enabled READ enabled WRITE setEnabled NOTIFY enabledChanged)
 
@@ -120,7 +145,7 @@ class CRAWL_EXPORT ParticleEffect : public IWorldItem
 
     /**
      * @brief velocity can be used to set a starting velocity for emitted particles. If velocity is not set, particles start motionless and velocity comes from affectors if they are used.
-     * @note For the initialisation of this propertye use ParticleEffect::useTargetVelosity and ParticleEffect::useDirectionVelosity methods
+     * @note For the initialisation of this property use ParticleEffect::useTargetVelosity and ParticleEffect::useDirectionVelosity methods
     */
     Q_PROPERTY(QObject *velocity READ velocity NOTIFY velocityChanged)
 
@@ -398,77 +423,77 @@ public:
 signals:
 
     /**
-     * @brief enabledChanged This signal emited when the enabled propertye changed.
+     * @brief enabledChanged This signal emited when the enabled property changed.
      */
     void enabledChanged();
 
     /**
-     * @brief emitRateChanged This signal emited when the emitRate propertye changed.
+     * @brief emitRateChanged This signal emited when the emitRate property changed.
      */
     void emitRateChanged();
 
     /**
-     * @brief depthBiasChanged This signal emited when the depthBias propertye changed.
+     * @brief depthBiasChanged This signal emited when the depthBias property changed.
      */
     void depthBiasChanged();
 
     /**
-     * @brief lifeSpanChanged This signal emited when the lifeSpan propertye changed.
+     * @brief lifeSpanChanged This signal emited when the lifeSpan property changed.
      */
     void lifeSpanChanged();
 
     /**
-     * @brief lifeSpanVariationChanged This signal emited when the ifeSpanVariation propertye changed.
+     * @brief lifeSpanVariationChanged This signal emited when the ifeSpanVariation property changed.
      */
     void lifeSpanVariationChanged();
 
     /**
-     * @brief particleEndScaleChanged This signal emited when the particleEndScale propertye changed.
+     * @brief particleEndScaleChanged This signal emited when the particleEndScale property changed.
      */
     void particleEndScaleChanged();
 
     /**
-     * @brief particleRotationVariationChanged This signal emited when the particleRotationVariation propertye changed.
+     * @brief particleRotationVariationChanged This signal emited when the particleRotationVariation property changed.
      */
     void particleRotationVariationChanged();
 
     /**
-     * @brief particleRotationVelocityChanged This signal emited when the particleRotationVelocity propertye changed.
+     * @brief particleRotationVelocityChanged This signal emited when the particleRotationVelocity property changed.
      */
     void particleRotationVelocityChanged();
 
     /**
-     * @brief particleRotationVelocityVariationChanged This signal emited when the particleRotationVelocityVariation propertye changed.
+     * @brief particleRotationVelocityVariationChanged This signal emited when the particleRotationVelocityVariation property changed.
      */
     void particleRotationVelocityVariationChanged();
 
     /**
-     * @brief particleScaleChanged This signal emited when the particleScale propertye changed.
+     * @brief particleScaleChanged This signal emited when the particleScale property changed.
      */
     void particleScaleChanged();
 
     /**
-     * @brief particleScaleVariationChanged This signal emited when the particleScaleVariation propertye changed.
+     * @brief particleScaleVariationChanged This signal emited when the particleScaleVariation property changed.
      */
     void particleScaleVariationChanged();
 
     /**
-     * @brief particleDelegateChanged This signal emited when the particleDelegate propertye changed.
+     * @brief particleDelegateChanged This signal emited when the particleDelegate property changed.
      */
     void particleDelegateChanged();
 
     /**
-     * @brief velocityChanged This signal emited when the velocity propertye changed.
+     * @brief velocityChanged This signal emited when the velocity property changed.
      */
     void velocityChanged();
 
     /**
-     * @brief particleShapeChanged This signal emited when the shape propertye changed.
+     * @brief particleShapeChanged This signal emited when the shape property changed.
      */
     void particleShapeChanged();
 
     /**
-     * @brief particleShapeChanged This signal emited when the particleRotation propertye changed.
+     * @brief particleShapeChanged This signal emited when the particleRotation property changed.
      */
     void particleRotationChanged();
 

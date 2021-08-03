@@ -47,7 +47,7 @@ public:
 
     /**
      * @brief viewObject This is object of view companent.
-     * @note For working with the view propertyes use the QOBject::getPropertye and QObject::setPropertye methods. For invoke view method use the "QMetaObject::invokeMethod" method.
+     * @note For working with the view propertys use the QOBject::getproperty and QObject::setproperty methods. For invoke view method use the "QMetaObject::invokeMethod" method.
      * For get more inforamtion about qt method see the Qt documentation.
      * @return pointer to view object.
      * @note If the object not inited and the model propetye of the view is empty then this property will be equals nullptr

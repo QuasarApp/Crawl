@@ -89,7 +89,7 @@ public:
     /**
      * @brief setVelosityMagnitude This method sets new value of the ParticleEffect::velosityMagnitude property.
      * @param newVelosityMagnitude This is a new value of the ParticleEffect::velosityMagnitude property
-     * @note This propertye will be workd only after invoke the useTargetVelosity method.
+     * @note This property will be workd only after invoke the useTargetVelosity method.
      */
     void setVelosityMagnitude(float newVelosityMagnitude);
 
@@ -104,7 +104,7 @@ public:
     /**
      * @brief setVelosityMagnitudeVariation This method sets new value of the ParticleEffect::velosityMagnitudeVariation property.
      * @param newVelosityMagnitudeVariation This is a new value of the ParticleEffect::velosityMagnitudeVariation property
-     * @note This propertye will be workd only after invoke the useTargetVelosity method.
+     * @note This property will be workd only after invoke the useTargetVelosity method.
      */
     void setVelosityMagnitudeVariation(float newVelosityMagnitudeVariation);
 
@@ -120,7 +120,7 @@ public:
     /**
      * @brief setVelosityNormalized This method sets new value of the ParticleEffect::velosityNormalized property.
      * @param newVelosityNormalized This is a new value of the ParticleEffect::velosityNormalized property
-     * @note This propertye will be workd only after invoke the useTargetVelosity method.
+     * @note This property will be workd only after invoke the useTargetVelosity method.
      */
     void setVelosityNormalized(bool newVelosityNormalized);
 
@@ -134,7 +134,7 @@ public:
     /**
      * @brief setVelosityTargetPosition This method sets new value of the ParticleEffect::velosityTargetPosition property.
      * @param newVelosityTargetPosition This is a new value of the ParticleEffect::velosityTargetPosition property
-     * @note This propertye will be workd only after invoke the useTargetVelosity method.
+     * @note This property will be workd only after invoke the useTargetVelosity method.
      */
     void setVelosityTargetPosition(const QVector3D &newVelosityTargetPosition);
 
@@ -148,34 +148,34 @@ public:
     /**
      * @brief setVelosityTargetPositionVariation This method sets new value of the ParticleEffect::velosityTargetPositionVariation property.
      * @param newVelosityTargetPositionVariation This is a new value of the ParticleEffect::velosityTargetPositionVariation property
-     * @note This propertye will be workd only after invoke the useTargetVelosity method.
+     * @note This property will be workd only after invoke the useTargetVelosity method.
      */
     void setVelosityTargetPositionVariation(const QVector3D &newVelosityTargetPositionVariation);
 
 signals:
 
     /**
-     * @brief velosityMagnitudeChanged This signal emited when the velosityMagnitude propertye changed.
+     * @brief velosityMagnitudeChanged This signal emited when the velosityMagnitude property changed.
      */
     void velosityMagnitudeChanged();
 
     /**
-     * @brief velosityMagnitudeVariationChanged This signal emited when the velosityMagnitudeVariation propertye changed.
+     * @brief velosityMagnitudeVariationChanged This signal emited when the velosityMagnitudeVariation property changed.
      */
     void velosityMagnitudeVariationChanged();
 
     /**
-     * @brief velosityNormalizedChanged This signal emited when the velosityNormalized propertye changed.
+     * @brief velosityNormalizedChanged This signal emited when the velosityNormalized property changed.
      */
     void velosityNormalizedChanged();
 
     /**
-     * @brief velosityTargetPositionChanged This signal emited when the velosityTargetPosition propertye changed.
+     * @brief velosityTargetPositionChanged This signal emited when the velosityTargetPosition property changed.
      */
     void velosityTargetPositionChanged();
 
     /**
-     * @brief velosityTargetPositionVariationChanged This signal emited when the velosityTargetPositionVariation propertye changed.
+     * @brief velosityTargetPositionVariationChanged This signal emited when the velosityTargetPositionVariation property changed.
      */
     void velosityTargetPositionVariationChanged();
 

@@ -20,7 +20,7 @@ class Fire: public ParticleEffect
     Q_OBJECT
 
     /**
-     * @brief fireStrength This propertye chenge fire power. By Default it is 10.
+     * @brief fireStrength This propertye chenge fire power. By Default it is 100.
     */
     Q_PROPERTY(float fireStrength READ fireStrength WRITE setFireStrength NOTIFY fireStrengthChanged)
 public:

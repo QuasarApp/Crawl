@@ -43,7 +43,6 @@ View3D {
 
     ParticleSystem3D {
         id: privateRoot
-
         property var arrayObjects: []
         property var world: (model)? model.world: null
 

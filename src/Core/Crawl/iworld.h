@@ -134,7 +134,7 @@ public:
 
     /**
      * @brief render this method recursive invoke all render functions of the all world items.
-     *  The render function is main function of the SnakeEngine This method recal all propertyes of all objects.
+     *  The render function is main function of the SnakeEngine This method recal all propertys of all objects.
      */
     virtual void render(unsigned int tbfMsec) override;
 

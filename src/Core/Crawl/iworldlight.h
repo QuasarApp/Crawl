@@ -146,22 +146,22 @@ signals:
     void castsShadowChanged();
 
     /**
-     * @brief shadowFactorChanged This signal emits when the shadowFactor propertye has changed.
+     * @brief shadowFactorChanged This signal emits when the shadowFactor property has changed.
      */
     void shadowFactorChanged();
 
     /**
-     * @brief shadowFilterChanged This signal emits when the shadowFilter propertye has changed.
+     * @brief shadowFilterChanged This signal emits when the shadowFilter property has changed.
      */
     void shadowFilterChanged();
 
     /**
-     * @brief shadowMapFarChanged This signal emits when the shadowMapFar propertye has changed.
+     * @brief shadowMapFarChanged This signal emits when the shadowMapFar property has changed.
      */
     void shadowMapFarChanged();
 
     /**
-     * @brief shadowBiasChanged This signal emits when the shadowBias propertye has changed.
+     * @brief shadowBiasChanged This signal emits when the shadowBias property has changed.
      */
     void shadowBiasChanged();
 

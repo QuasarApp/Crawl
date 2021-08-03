@@ -12,18 +12,20 @@ namespace CRAWL {
 
 Fire::Fire(): ParticleEffect(AUTO_CLASS_NAME, "qrc:/CrawlModule/particles/Fire.qml") {
 
-    useDirectionVelosity({0, 0 ,0}, {10, 10, 0});
-    setParticleScale(4);
-    setParticleEndScale(12);
+    useDirectionVelosity({0, 0 , 10}, {10, 10, 0});
+    setParticleScale(1);
+    setParticleEndScale(3);
     setParticleScaleVariation(3);
+
     setLifeSpanVariation(500);
     setColor("#ffaf2c");
     setSize({1, 1, 1});
     setposition({0,0,10});
+    setEnabled(true);
 
     setParticleDelegate("qrc:/CrawlModule/particles/FireParticel.qml");
 
-    setFireStrength(10);
+    setFireStrength(100);
 }
 
 void CRAWL::Fire::onIntersects(const IWorldItem *) {
@@ -40,11 +42,11 @@ void Fire::setFireStrength(float newFireStrength) {
 
     _fireStrength = newFireStrength;
 
-    setEmitRate(2 * _fireStrength);
+    setEmitRate(10 + _fireStrength);
     setLifeSpan(1000 + _fireStrength);
 
     auto vel = static_cast<VectorDirection*>(velocity());
-    vel->setVelosityDirection({0, 0 ,  _fireStrength});
+    vel->setVelosityDirection({0, 0 , _fireStrength / 4});
     vel->setVelosityDirectionValatility({10, 10, 0});
 
     emit fireStrengthChanged();

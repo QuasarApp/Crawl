@@ -16,9 +16,9 @@
 namespace CRAWL {
 
 /**
- * @brief The LocalPropertyes struct This structure contains local propertyes of the all childs object of a GroupObject class object.
+ * @brief The Localpropertys struct This structure contains local propertys of the all childs object of a GroupObject class object.
  */
-struct LocalPropertyes {
+struct Localpropertys {
     QVector3D _position = {0,0,0};
     QQuaternion _rotation = {};
 };
@@ -72,7 +72,7 @@ public:
      * @param localPosition This is local position of the @a object. The default value is current object center.
      * @param localRotation This is local rotation of the @a object. The default value is invalid quaternion and will be ignored..
      * @note The @a object should be disable own render method of a render method
-     * or @a object should not be change position and rotation propertyes
+     * or @a object should not be change position and rotation propertys
      * @note if you want to ignore the local rotation functionality then set the @a localRotation argument to invalid or default value.
     */
     void installObject(ClasterItem* object,
@@ -112,16 +112,16 @@ protected:
     QVector3D* getLocalPosition(int id);
 
     /**
-     * @brief getLocalPropertyes This method return all local propertyes of an object with @a id
+     * @brief getLocalpropertys This method return all local propertys of an object with @a id
      * @param id This is id of the object for getting changes.
-     * @return pointer to structure with local propertyes of the object. IF the object with id not exists on this classter then return nullptr.
+     * @return pointer to structure with local propertys of the object. IF the object with id not exists on this classter then return nullptr.
      * @warning use this return not const pointer and you can change them value but this is not thread safe.
      */
-    LocalPropertyes* getLocalPropertyes(int id);
+    Localpropertys* getLocalpropertys(int id);
 
 
 private:
-    QHash<int, LocalPropertyes> _extraPropertyes;
+    QHash<int, Localpropertys> _extrapropertys;
 
 };
 }

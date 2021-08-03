@@ -11,8 +11,7 @@ import QtQuick3D.Particles3D
 
 ParticleEffect {
     PointLight {
-        position: parent.position
-        brightness: 100 * (model)? model.fireStrength: 0;
+        brightness: (model)? Math.sqrt(model.fireStrength): 0;
         color: (model)? model.color: "#ffffff";
     }
 }

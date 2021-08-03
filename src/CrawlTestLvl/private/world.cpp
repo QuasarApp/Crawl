@@ -14,6 +14,7 @@
 #include "Crawl/iworlditem.h"
 #include <Crawl/day.h>
 #include <Crawl/defaultlight.h>
+#include <Crawl/dynamicwint.h>
 #include <Crawl/fire.h>
 #include <Crawl/moon.h>
 #include <Crawl/sun.h>
@@ -32,6 +33,8 @@ CRAWL::WorldRule *World::initWorldRules() {
     return new CRAWL::WorldRule {
         {0, {{registerObject<Box>(), 100},
              {registerObject<CRAWL::Fire>(), 10},
+             {registerObject<CRAWL::DynamicWint>(), 1},
+
              {registerObject<Background>(), 1},
              {registerObject<Day>(), 1}}}
     };

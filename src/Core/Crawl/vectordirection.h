@@ -60,7 +60,7 @@ public:
     /**
      * @brief setVelosityDirection This method sets new value of the ParticleEffect::velosityDirection property.
      * @param newVelosityDirection This is a new value of the ParticleEffect::velosityDirection property
-     * @note This propertye will be workd only after invoke the useDirectionVelosity method.
+     * @note This property will be workd only after invoke the useDirectionVelosity method.
      */
     void setVelosityDirection(const QVector3D &newVelosityDirection);
 
@@ -74,19 +74,19 @@ public:
     /**
      * @brief setVelosityDirectionValatility This method sets new value of the ParticleEffect::velosityDirectionValatility property.
      * @param newVelosityDirectionValatility This is a new value of the ParticleEffect::velosityDirectionValatility property
-     * @note This propertye will be workd only after invoke the useDirectionVelosity method.
+     * @note This property will be workd only after invoke the useDirectionVelosity method.
      */
     void setVelosityDirectionValatility(const QVector3D &newVelosityDirectionValatility);
 
 signals:
 
     /**
-     * @brief velosityDirectionChanged This signal emited when the velosityDirection propertye changed.
+     * @brief velosityDirectionChanged This signal emited when the velosityDirection property changed.
      */
     void velosityDirectionChanged();
 
     /**
-     * @brief velosityDirectionValatilityChanged This signal emited when the velosityDirectionValatility propertye changed.
+     * @brief velosityDirectionValatilityChanged This signal emited when the velosityDirectionValatility property changed.
      */
     void velosityDirectionValatilityChanged();
 
