@@ -24,6 +24,5 @@
         <file>CrawlCoreAssets/particles/smokeSprite.png</file>
         <file>CrawlModule/particles/Fire.qml</file>
         <file>CrawlModule/particles/Wint.qml</file>
-        <file>CrawlModule/particles/BaseAffector.qml</file>
     </qresource>
 </RCC>

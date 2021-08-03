@@ -2,3 +2,9 @@ module CrawlModule
 Crawl 1.0 Crawl.qml
 DefaultMenu 1.0 DefaultMenu.qml
 GraphicItem 1.0 GraphicItem.qml
+ParticleEffect 1.0 ParticleEffect.qml
+Light 1.0 Light.qml
+GraphicItem 1.0 GraphicItem.qml
+GraphicItem 1.0 GraphicItem.qml
+GraphicItem 1.0 GraphicItem.qml
+GraphicItem 1.0 GraphicItem.qml

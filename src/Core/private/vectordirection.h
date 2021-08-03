@@ -9,7 +9,7 @@
 #ifndef VECTORDIRECTION_H
 #define VECTORDIRECTION_H
 
-#include "viewtemaplatemodel.h"
+#include "Crawl/viewtemaplatemodel.h"
 #include <QVector3D>
 #include "global.h"
 
@@ -29,7 +29,7 @@ namespace CRAWL {
  *
  * @note This class use the CrawlVectorDirection.qml template as a view temaplate.
  */
-class CRAWL_EXPORT VectorDirection: public ViewTemaplateModel
+class VectorDirection: public ViewTemaplateModel
 {
     Q_OBJECT
 

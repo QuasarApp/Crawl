@@ -5,7 +5,7 @@
 //# of this license document, but changing it is not allowed.
 //#
 
-#include "viewtemaplatemodel.h"
+#include "Crawl/viewtemaplatemodel.h"
 #include <QVector3D>
 #include "global.h"
 
@@ -30,7 +30,7 @@ namespace CRAWL {
 
  * @note This class use the CrawlTargetDirection.qml template as a view temaplate.
  */
-class CRAWL_EXPORT TargetDirection: public ViewTemaplateModel
+class TargetDirection: public ViewTemaplateModel
 {
     Q_OBJECT
 
