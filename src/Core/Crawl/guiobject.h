@@ -8,7 +8,7 @@
 #ifndef GUIOBJECT_H
 #define GUIOBJECT_H
 
-#include "QObject"
+#include "viewtemaplatemodel.h"
 
 #include <QQuaternion>
 #include <QRectF>
@@ -58,11 +58,10 @@ namespace CRAWL {
  * }
  * ```
  */
-class CRAWL_EXPORT GuiObject: public QObject, virtual public IRender {
+class CRAWL_EXPORT GuiObject: public ViewTemaplateModel, virtual public IRender {
     Q_OBJECT
-    Q_PROPERTY(QString color READ color WRITE setColor NOTIFY colorChanged)
     Q_PROPERTY(int guiId READ guiId NOTIFY guiIdChanged)
-    Q_PROPERTY(QString viewTemplate READ viewTemplate NOTIFY viewTemplateChanged)
+    Q_PROPERTY(QString color READ color WRITE setColor NOTIFY colorChanged)
 
     Q_PROPERTY(QVector3D position READ position WRITE setposition NOTIFY positionChanged)
     Q_PROPERTY(QVector3D size READ size WRITE setSize NOTIFY sizeChanged)
@@ -86,10 +85,6 @@ public:
     void setColor(const QString &color);
 
     virtual void reset();
-    QString viewTemplate() const;
-
-    int guiId() const;
-    void setGuiId(int guiId);
 
     void setX(float newX);
     void setY(float newY);
@@ -159,10 +154,12 @@ public:
      */
     void setVisible(bool newVisible);
 
+    int guiId() const;
+    void setGuiId(int guiId);
+
 signals:
     void guiIdChanged(int guiId);
     void colorChanged(QString color);
-    void viewTemplateChanged(QString viewTemplate);
 
     void baseColorMapChanged();
     void roughnessMapChanged();
@@ -213,7 +210,6 @@ private:
     QString _roughnessMap;
     QString _normalMap;
     QString _emissiveMap;
-    QString _viewTemplate;
 
     QVector3D _position;
     QVector3D _size;

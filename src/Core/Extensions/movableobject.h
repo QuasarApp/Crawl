@@ -51,7 +51,7 @@ public:
     /**
      * @brief setMovableVector This method sets new value of the mvable vector.
      * @param newMovableVector this is a new value ofthe movable vector
-     * @note The movable vector will be changed in time if you set the MovableObject::breakingForce propertye to non 0 value.
+     * @note The movable vector will be changed in time if you set the MovableObject::breakingForce property to non 0 value.
      */
     void setMovableVector(const QVector3D &newMovableVector);
 

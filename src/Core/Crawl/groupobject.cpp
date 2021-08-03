@@ -21,7 +21,7 @@ void GroupObject::render(unsigned int tbfMsec) {
 
     for (ClasterItem* object: objects()) {
 
-        if (LocalPropertyes *props = getLocalPropertyes(object->guiId())) {
+        if (Localpropertys *props = getLocalpropertys(object->guiId())) {
             if (!props->_rotation.isNull())
                 object->setRotation(_this->rotation() * props->_rotation);
 
@@ -41,32 +41,32 @@ void GroupObject::installObject(ClasterItem *object,
 }
 
 void GroupObject::updatePosition(int id, const QVector3D &position) {
-    _extraPropertyes[id]._position = position;
+    _extrapropertys[id]._position = position;
 }
 
 void GroupObject::updateRotation(int id, const QQuaternion &roatation) {
-    _extraPropertyes[id]._rotation = roatation;
+    _extrapropertys[id]._rotation = roatation;
 }
 
 QQuaternion *GroupObject::getLocalrotation(int id) {
-    if (_extraPropertyes.contains(id)) {
-        return &_extraPropertyes[id]._rotation;
+    if (_extrapropertys.contains(id)) {
+        return &_extrapropertys[id]._rotation;
     }
 
     return nullptr;
 }
 
 QVector3D *GroupObject::getLocalPosition(int id) {
-    if (_extraPropertyes.contains(id)) {
-        return &_extraPropertyes[id]._position;
+    if (_extrapropertys.contains(id)) {
+        return &_extrapropertys[id]._position;
     }
 
     return nullptr;
 }
 
-LocalPropertyes *GroupObject::getLocalPropertyes(int id) {
-    if (_extraPropertyes.contains(id)) {
-        return &_extraPropertyes[id];
+Localpropertys *GroupObject::getLocalpropertys(int id) {
+    if (_extrapropertys.contains(id)) {
+        return &_extrapropertys[id];
     }
 
     return nullptr;

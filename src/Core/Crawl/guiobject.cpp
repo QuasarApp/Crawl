@@ -13,8 +13,7 @@ namespace CRAWL {
 
 
 GuiObject::GuiObject(const QString &name, const QString &viewTempalte, QObject *ptr):
-    QObject (ptr) {
-    _viewTemplate = viewTempalte;
+    ViewTemaplateModel (viewTempalte, ptr) {
     _className = name;
     generateId();
     setRotation(QQuaternion::fromEulerAngles({0,0,0}));
@@ -56,10 +55,6 @@ void GuiObject::reset() {
     setX(0);
     setY(0);
     setZ(0);
-}
-
-QString GuiObject::viewTemplate() const {
-    return _viewTemplate;
 }
 
 int GuiObject::guiId() const {
