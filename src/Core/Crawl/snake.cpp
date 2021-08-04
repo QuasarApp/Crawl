@@ -15,7 +15,7 @@ namespace CRAWL {
 
 
 Snake::Snake(const QString &name, const QString &viewTempalte, QObject *ptr):
-    IPlayer (name, viewTempalte, ptr) {
+    PlayableObject (name, viewTempalte, ptr) {
 
     _vectors = new QVector3D[2];
     setAngularVelocity(100);
@@ -39,7 +39,7 @@ Snake::~Snake( ){
 }
 
 void Snake::render(unsigned int tbfMsec) {
-    IPlayer::render(tbfMsec);
+    PlayableObject::render(tbfMsec);
 }
 
 void Snake::add(ClasterItem *object) {

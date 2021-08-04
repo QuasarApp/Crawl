@@ -58,11 +58,6 @@ void IWorld::render(unsigned int tbfMsec) {
 
     _ItemsMutex.unlock();
 
-
-    if (_player->isDead()) {
-        emit sigGameFinished(_player->getCurrentStatus());
-    }
-
     updateWorld();
 
     int waitTime = 1000 / _targetFps - tbfMsec;
@@ -101,7 +96,7 @@ void IWorld::setPlayer(QObject *newPlayer) {
     if (_player == newPlayer)
         return;
 
-    auto newPlayerObject = dynamic_cast<IPlayer*>(newPlayer);
+    auto newPlayerObject = dynamic_cast<PlayableObject*>(newPlayer);
     if (!newPlayerObject) {
         QuasarAppUtils::Params::log("Failed to set player object. The input object is not player.",
                                     QuasarAppUtils::Error);

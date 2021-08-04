@@ -45,7 +45,7 @@ public:
 
     // IWorld interface
 public:
-    CRAWL::IPlayer *initPlayer() const {return nullptr;};
+    CRAWL::PlayableObject *initPlayer() const {return nullptr;};
     CRAWL::WorldRule *initWorldRules() {return nullptr;};
     QString initHdrBackGround() const {return "";};
     QString description() const {return "";};

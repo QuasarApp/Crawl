@@ -8,7 +8,8 @@
 #ifndef CRAWL_IWORLD_H
 #define CRAWL_IWORLD_H
 
-#include "iplayer.h"
+#include "gameresult.h"
+#include "playableobject.h"
 
 #include <QHash>
 #include <QMap>
@@ -26,7 +27,7 @@ class ClastersTest;
 namespace CRAWL {
 
 class IWorldItem;
-class IPlayer;
+class PlayableObject;
 class GroundClaster;
 class IControl;
 class IAI;
@@ -67,7 +68,7 @@ public:
      * @note The Palyer object will be deleted when wold distroed.
      *  So do not delete your created player pbject yuorself.
      */
-    virtual IPlayer* initPlayer() const = 0;
+    virtual PlayableObject* initPlayer() const = 0;
 
     /**
      * @brief initWorldRules The implementation of this interface must be retun initialized list of the world rules.
@@ -494,7 +495,7 @@ private:
     WorldRule *_worldRules = nullptr;
     WorldRule::const_iterator _currendWorldLevel;
 
-    IPlayer *_player = nullptr;
+    PlayableObject *_player = nullptr;
     IControl *_userInterface = nullptr;
     IAI *_backgroundAI = nullptr;
     int _worldStatus = 0;
