@@ -5,10 +5,9 @@
 //# of this license document, but changing it is not allowed.
 //#
 
-#ifndef IPLAYER_H
-#define IPLAYER_H
+#ifndef PLAYABLEOBJECT_H
+#define PLAYABLEOBJECT_H
 
-#include "gameresult.h"
 #include "global.h"
 #include "iworlditem.h"
 #include "Extensions/movableobject.h"
@@ -19,56 +18,46 @@ namespace CRAWL {
 class IControl;
 
 /**
- * @brief The IPlayer class This is base class of the player functions.
+ * @brief The PlayableObject class support works withe the IControl child classes.
+ * **How to is works**? You need to override the  PlayableObject::setControl method for adding your own cpntroll classes. By Default This class use The DefaultControl class.
  */
-class CRAWL_EXPORT IPlayer: public IWorldItem, public MovableObject {
+class CRAWL_EXPORT PlayableObject: public IWorldItem, public MovableObject {
     Q_OBJECT
 public:
-    IPlayer(const QString& name,
+    PlayableObject(const QString& name,
             const QString& viewTempalte = DEFAULT_VIEW_TEMPLATE,
             QObject *ptr = nullptr);
-
-    /**
-     * @brief getCurrentStatus This method return current game state of the player.
-     * @return current gameState.
-     */
-    GameResult getCurrentStatus() const;
-
-    /**
-     * @brief isDead This method return true if your player are dead.
-     * @return true if a player are dead.
-     */
-    bool isDead() const;
 
     /**
      * @brief setControl This method should be connect player object with control object.
      * @param control This is control object.
      * @note This method can invoked two or more times, for example connect with AI control object and player control object. So your implementation should be contains disconnect methods.
+     *
+     * ### Example of use
+     *
+     * @code{cpp}
+        void MyPlayableObject::setControl(const IControl *control) {
+
+
+            if (auto oldControl = dynamic_cast<const DefaultControl*>(_currentControl)) {
+                disconnect(oldControl, &DefaultControl::userTap, this, &PlayableObject::onTap);
+                // some disconnect methodots
+            }
+
+            auto defaultControl = dynamic_cast<const DefaultControl*>(control);
+            _currentControl = defaultControl;
+
+            if (_currentControl) {
+                connect(defaultControl, &DefaultControl::userTap, this, &PlayableObject::onTap);
+                // some connect methodots
+
+            }
+        }
+     * @endcode
      */
     virtual void setControl(const IControl* control);
 
 protected:
-
-    /**
-     * @brief kill This method kill your player.
-     *  Invoke this method when you want to kell your player.
-     */
-    void kill();
-
-    /**
-     * @brief reward This method add reward for player.
-     * @param value This is new value;
-     * @note This method increment current value.
-     */
-    void reward(int value);
-
-    /**
-     * @brief fine This method remove reward for player.
-     * @param value This is fine amount;
-     * @note This method decriment current points value.
-     */
-    void fine(int value);
-
     void render(unsigned int tbfMsec) override;
 
 protected slots:
@@ -80,12 +69,10 @@ protected slots:
 
 
 private:
-    bool _fDead = false;
-    int _currentPoints = 0;
     const IControl * _currentControl = nullptr;
 
 };
 
 }
 
-#endif // IPLAYER_H
+#endif // PLAYABLEOBJECT_H

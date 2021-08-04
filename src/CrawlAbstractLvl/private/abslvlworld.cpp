@@ -23,7 +23,7 @@ AbsLvlWorld::AbsLvlWorld() {
     setCameraRotation(QQuaternion::fromEulerAngles({0,0,0}));
 }
 
-CRAWL::IPlayer *AbsLvlWorld::initPlayer() const {
+CRAWL::PlayableObject *AbsLvlWorld::initPlayer() const {
     return new AbsLvlSnake();
 }
 

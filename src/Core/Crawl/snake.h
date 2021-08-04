@@ -8,7 +8,7 @@
 #ifndef CRAWL_SNAKE_H
 #define CRAWL_SNAKE_H
 
-#include "iplayer.h"
+#include "playableobject.h"
 #include "Extensions/autogenerateclaster.h"
 
 namespace CRAWL {
@@ -18,7 +18,7 @@ class SnakeItem;
 /**
  * @brief The Snake class This class implement render mehod for snake object.
  */
-class CRAWL_EXPORT Snake : public IPlayer, public AutoGenerateClaster
+class CRAWL_EXPORT Snake : public PlayableObject, public AutoGenerateClaster
 {
     Q_OBJECT
 public:

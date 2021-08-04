@@ -28,7 +28,7 @@ public:
     int costToUnlock() const override;
     CRAWL::IControl *initUserInterface() const override;
     void initPlayerControl(CRAWL::IControl *control) override;
-    CRAWL::IPlayer *initPlayer() const override;
+    CRAWL::PlayableObject *initPlayer() const override;
     CRAWL::IAI *initBackGroundAI() const override;
 
 private slots:

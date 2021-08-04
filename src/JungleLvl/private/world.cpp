@@ -108,7 +108,7 @@ void World::initPlayerControl(CRAWL::IControl *control) {
     return IWorld::initPlayerControl(control);
 }
 
-CRAWL::IPlayer *World::initPlayer() const {
+CRAWL::PlayableObject *World::initPlayer() const {
     return new Snake();
 }
 
