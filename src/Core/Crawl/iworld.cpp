@@ -19,6 +19,7 @@
 #include "thread"
 #include "chrono"
 #include "diff.h"
+#include "eventserver.h"
 
 namespace CRAWL {
 
@@ -26,10 +27,13 @@ namespace CRAWL {
 IWorld::IWorld() {
     qRegisterMetaType<WorldRule::const_iterator>("WorldRule::const_iterator");
     connect(this, &IWorld::sigWorldChanged, this, &IWorld::worldChanged, Qt::QueuedConnection);
+
+    _eventServer = new EventServer;
 }
 
 IWorld::~IWorld() {
     reset();
+    delete _eventServer;
 }
 
 void IWorld::init() {prepare();}
@@ -50,17 +54,14 @@ void IWorld::render(unsigned int tbfMsec) {
     for (auto i = _items.begin(); i != _items.end(); ++i) {
         (*i)->render(tbfMsec);
 
-        // intersects event.
-        if ((*i)->intersects(*_player)) {
-            _player->onIntersects((*i));
-        }
+        _eventServer->process(*i);
     }
 
     _ItemsMutex.unlock();
 
     updateWorld();
 
-    int waitTime = 1000 / _targetFps - tbfMsec;
+    int waitTime = 1000 / targetFps() - tbfMsec;
     if (waitTime > 0)
         std::this_thread::sleep_for(std::chrono::milliseconds(waitTime));
 }

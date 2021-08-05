@@ -22,6 +22,7 @@ class GuiObject;
  * For Create your own motion alghoritm you need to override two methods:
  *  * renderPosition
  *  * renderRotation
+ *
  */
 class CRAWL_EXPORT BaseMotion : public virtual IRender
 {

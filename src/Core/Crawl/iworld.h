@@ -32,6 +32,7 @@ class GroundClaster;
 class IControl;
 class IAI;
 class IWorldLight;
+class EventServer;
 
 /**
  * @brief WorldObjects This is map list of the avalable objects and its count on a lvl-long point.
@@ -481,6 +482,8 @@ private:
      */
     void removeAnyItemFromGroup(const QString &group,
                                 QList<int>* removedObjectsList = nullptr);
+
+    EventServer * _eventServer = nullptr;
 
     QHash<int, IWorldItem*> _items;
     QMultiHash<QString, int> _itemsGroup;
