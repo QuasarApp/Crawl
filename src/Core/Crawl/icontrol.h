@@ -42,6 +42,7 @@ public:
      * @return return path to qml view.
      */
     const QString &view() const;
+
 signals:
     void viewChanged();
 
