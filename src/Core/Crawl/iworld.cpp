@@ -87,6 +87,7 @@ bool IWorld::start() {
     worldChanged(_worldRules->cbegin());
     setTargetFps(60);
     setRunning(true);
+    _eventServer->start();
 
     return true;
 }
@@ -121,6 +122,7 @@ IWorldItem *IWorld::generate(const QString &objectType) const {
 
 bool IWorld::stop() {
     setRunning(false);
+    _eventServer->stop();
     return true;
 }
 

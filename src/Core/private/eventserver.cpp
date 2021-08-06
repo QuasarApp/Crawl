@@ -77,6 +77,7 @@ void EventServer::eventProcess() {
                 if (result.size()) {
                     emit sigIntersect(result << item);
                 }
+                break;
             }
 
             default: {
@@ -96,7 +97,19 @@ void EventServer::addToSupportedEvents(const IWorldItem * obj, int event) {
 
 void EventServer::renderLoop() {
     while (_renderLoop) {
+        quint64 currentTime = QDateTime::currentMSecsSinceEpoch();
+
+        if (!_oldTimeRender) {
+            _oldTimeRender = currentTime;
+            continue;
+        }
+
         eventProcess();
+        int waitTime = 100 - currentTime + _oldTimeRender;
+        _oldTimeRender = currentTime;
+
+        if (waitTime > 0)
+            std::this_thread::sleep_for(std::chrono::milliseconds(waitTime));
     }
 }
 }
