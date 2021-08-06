@@ -23,6 +23,10 @@ void PlayableObject::render(unsigned int tbfMsec) {
     MovableObject::render(tbfMsec);
 }
 
+const IControl *PlayableObject::currentControl() const {
+    return _currentControl;
+}
+
 void PlayableObject::setControl(const IControl *control) {
 
 

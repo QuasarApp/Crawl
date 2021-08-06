@@ -36,16 +36,7 @@ const IWorldItem *IWorldItem::getPlayer() const {
 void IWorldItem::render(unsigned int) {
     if (_playerObject->position().distanceToPoint(position()) >
             _world->cameraReleativePosition().z() * 3) {
-
-        float dX = _world->cameraReleativePosition().z() * 2 +
-                (rand() % static_cast<int>(_world->cameraReleativePosition().z()));
-
-        setX(_playerObject->position().x() + dX);
-
-        float dY = (rand() % static_cast<int>(_world->cameraReleativePosition().z() * 3)
-                                             - _world->cameraReleativePosition().z() * 1.5);
-
-        setY(_playerObject->position().y() + dY);
+        respawn();
     }
 }
 
@@ -64,16 +55,36 @@ bool IWorldItem::isSopportEvent(int event) const {
     return (_supportedEvents & event) == event;
 }
 
+void IWorldItem::destroy() {
+    _fDistroy = true;
+}
+
+void IWorldItem::respawn() {
+    float dX = _world->cameraReleativePosition().z() * 2 +
+            (rand() % static_cast<int>(_world->cameraReleativePosition().z()));
+
+    setX(_playerObject->position().x() + dX);
+
+    float dY = (rand() % static_cast<int>(_world->cameraReleativePosition().z() * 3)
+                                         - _world->cameraReleativePosition().z() * 1.5);
+
+    setY(_playerObject->position().y() + dY);
+}
+
+bool IWorldItem::destroyIsScheduled() const {
+    return _fDistroy;
+}
+
 void IWorldItem::setSupportedEvents(int newSupportedEvents) {
     _supportedEvents = newSupportedEvents;
 }
 
 void IWorldItem::addSupportOfEvent(int newSupportedEvent) {
-
+    _supportedEvents = _supportedEvents | newSupportedEvent;
 }
 
 void IWorldItem::dropSupportOfEvent(int depricatedEvent) {
-
+    _supportedEvents = _supportedEvents & (~depricatedEvent);
 }
 
 bool IWorldItem::isDecorative() const {

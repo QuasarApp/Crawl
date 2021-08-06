@@ -54,12 +54,19 @@ void IWorld::render(unsigned int tbfMsec) {
     }
 
     _ItemsMutex.lock();
-
+    QList<int> toRemove;
     for (auto i = _items.begin(); i != _items.end(); ++i) {
+        if ((*i)->destroyIsScheduled())
+            toRemove.push_back((*i)->guiId());
+
         (*i)->render(tbfMsec);
     }
 
     _ItemsMutex.unlock();
+
+    for (int id: toRemove) {
+        removeItem(id);
+    }
 
     updateWorld();
 

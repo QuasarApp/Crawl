@@ -59,6 +59,24 @@ public:
      */
     bool isSopportEvent(int event) const;
 
+    /**
+     * @brief destroy this method will schedule a destroing of this object on the world.
+     * @see IWorldItem::destroyIsScheduled
+     */
+    virtual void destroy();
+
+    /**
+     * @brief respawn this method will schedule a repawning of this object on the world.
+     */
+    virtual void respawn();
+
+    /**
+     * @brief destroyIsScheduled This method return true if the current object has been scheduled to destroy.
+     * @return true if the current object has been scheduled to destroy, else false.
+     * @see IWorldItem::destroy
+     */
+    bool destroyIsScheduled() const;
+
 protected:
 
     /**
@@ -122,7 +140,7 @@ private:
     const IWorldItem *_playerObject = nullptr;
 
     bool _fDecorative = true;
-
+    bool _fDistroy = false;
     int _supportedEvents;
 
     friend class IWorld;

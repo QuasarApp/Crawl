@@ -57,6 +57,12 @@ public:
      */
     virtual void setControl(const IControl* control);
 
+    /**
+     * @brief currentControl This method return pointer to current control
+     * @return
+     */
+    const IControl *currentControl() const;
+
 protected:
     void render(unsigned int tbfMsec) override;
 
