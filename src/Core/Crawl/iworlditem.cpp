@@ -56,6 +56,34 @@ void IWorldItem::initOnWorld(const IWorld *world, const IWorldItem * player) {
     _playerObject = player;
 }
 
+int IWorldItem::supportedEvents() const {
+    return _supportedEvents;
+}
+
+bool IWorldItem::isSopportEvent(int event) const {
+    return (_supportedEvents & event) == event;
+}
+
+void IWorldItem::setSupportedEvents(int newSupportedEvents) {
+    _supportedEvents = newSupportedEvents;
+}
+
+void IWorldItem::addSupportOfEvent(int newSupportedEvent) {
+
+}
+
+void IWorldItem::dropSupportOfEvent(int depricatedEvent) {
+
+}
+
+bool IWorldItem::isDecorative() const {
+    return _fDecorative;
+}
+
+void IWorldItem::setFDecorative(bool newFDecorative) {
+    _fDecorative = newFDecorative;
+}
+
 const IWorld *IWorldItem::world() const {
     return _world;
 }

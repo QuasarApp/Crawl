@@ -26,6 +26,14 @@ class ClastersTest;
 
 namespace CRAWL {
 
+/**
+ * @brief The Events enum contains availabele events of the World.
+ */
+enum Events {
+    /// If object support this event then for them will be check intersection with all not decorative objects.
+    Intersects = 0x01,
+};
+
 class IWorldItem;
 class PlayableObject;
 class GroundClaster;
@@ -383,6 +391,9 @@ protected:
      * @brief updateWorld This method check current distance and load neede level and level objects.
      */
     void updateWorld();
+
+protected slots:
+    virtual void onIntersects(QList<const IWorldItem *> list);
 
 private slots:
 

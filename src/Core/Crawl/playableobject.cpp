@@ -16,6 +16,7 @@ PlayableObject::PlayableObject(const QString &name,
                  QObject *ptr):
     IWorldItem(name, viewTempalte, ptr) {
 
+    setFDecorative(false);
 }
 
 void PlayableObject::render(unsigned int tbfMsec) {

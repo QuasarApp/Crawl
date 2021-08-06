@@ -13,7 +13,6 @@
 
 namespace CRAWL {
 
-
 class IWorld;
 /**
  * @brief The IWorldItem class This is World item. This class contains functions for control event system.
@@ -36,6 +35,30 @@ public:
     void render(unsigned int tbfMsec) override;
     void init() override;
 
+    /**
+     * @brief isDecorative This method return true if the object is decarative.
+     *  The decorative objects not patricipate in event process.
+     * @return true if this ovjects is decorative.
+     */
+    bool isDecorative() const;
+
+    /**
+     * @brief supportedEvents This method return mask of the supported events. For get more information about events see the CRAWL::Events enum.
+     * @return integer mask of the supported events.
+     * @see IWorldItem::setSupportedEvents
+     * @see IWorldItem::addSupportOfEvent
+     * @see IWorldItem::dropSupportOfEvent
+     * @see IWorldItem::supportedEvents
+     */
+    int supportedEvents() const;
+
+    /**
+     * @brief isSopportEvent This method return true ithis objects support a @a event.f
+     * @return true if this objects support a @a event else false.
+     * @note If a @a event is mask with multiple events the this method return true if this objects support all events from a @a event mask.
+     */
+    bool isSopportEvent(int event) const;
+
 protected:
 
     /**
@@ -56,13 +79,52 @@ protected:
      */
     const IWorldItem * getPlayer() const;
 
+    /**
+     * @brief setFDecorative This method sets if object declarative or physical.
+     * @param newFDecorative new value of the fDecorative property
+     */
+    void setFDecorative(bool newFDecorative);
 
+    /**
+     * @brief setSupportedEvents This method overwrite the mask og the supported events.
+     * @param newSupportedEvents This is new value of the supported events mask.
+     * @see IWorldItem::setSupportedEvents
+     * @see IWorldItem::addSupportOfEvent
+     * @see IWorldItem::dropSupportOfEvent
+     * @see IWorldItem::supportedEvents
+     */
+    void setSupportedEvents(int newSupportedEvents);
+
+    /**
+     * @brief addSupportOfEvent This method add support of a @a newSupportedEvent.
+     * @param newSupportedEvent This is new value of a supported event.
+     * @see IWorldItem::setSupportedEvents
+     * @see IWorldItem::addSupportOfEvent
+     * @see IWorldItem::dropSupportOfEvent
+     * @see IWorldItem::supportedEvents
+     */
+    void addSupportOfEvent(int newSupportedEvent);
+
+    /**
+     * @brief dropSupportOfEvent This method drop support of a @a depricatedEvent
+     * @param depricatedEvent This is event that will be dropped.
+     * @see IWorldItem::setSupportedEvents
+     * @see IWorldItem::addSupportOfEvent
+     * @see IWorldItem::dropSupportOfEvent
+     * @see IWorldItem::supportedEvents
+     */
+    void dropSupportOfEvent(int depricatedEvent);
 
 private:
     void initOnWorld(const IWorld* world, const IWorldItem *player);
 
     const IWorld* _world = nullptr;
     const IWorldItem *_playerObject = nullptr;
+
+    bool _fDecorative = true;
+
+    int _supportedEvents;
+
     friend class IWorld;
 };
 }
