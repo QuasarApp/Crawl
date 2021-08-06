@@ -10,6 +10,7 @@
 #include <QQuaternion>
 #include <quasarapp.h>
 #include <cmath>
+#include "iworld.h"
 
 namespace CRAWL {
 
@@ -32,6 +33,8 @@ Snake::Snake(const QString &name, const QString &viewTempalte, QObject *ptr):
     setLengthBetwinItemsMap({{0, 0.8},
                               {0.4, 1.2},
                               {1, 0.5}});
+
+    addSupportOfEvent(Events::Intersects);
 }
 
 Snake::~Snake( ){

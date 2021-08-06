@@ -5,6 +5,12 @@
 //# of this license document, but changing it is not allowed.
 //#
 
+#include <QFuture>
+#include <QObject>
+
+#include <Crawl/diff.h>
+#include <QMultiHash>
+
 
 #ifndef EVENTSERVER_H
 #define EVENTSERVER_H
@@ -12,20 +18,56 @@
 namespace CRAWL {
 
 class IWorldItem;
+class IWorld;
 
 /**
  * @brief The EventServer class process all game events.
- */
-class EventServer
+ * This class process all game events on the separate thread and do not change the game objects. All signal of the events return constant object pointers.
+*/
+class EventServer: public QObject
 {
+    Q_OBJECT
 public:
-    EventServer();
+    EventServer(IWorld * instance);
+    ~EventServer();
 
     /**
-     * @brief process This method process al events of an @a item object
-     * @param item This is processed object.
+     * @brief start This method start a processing og the objects events.
      */
-    void process(IWorldItem* item);
+    void start();
+
+    /**
+     * @brief stop This method stop the processing of the objects.
+     */
+    void stop();
+
+public slots:
+    /**
+     * @brief handleAvailableObjectChanges This slots handle all changes of the world.
+     * @param diff This is changes on the world.
+     */
+    void handleAvailableObjectChanges(const Diff& diff);
+
+signals:
+    /**
+     * @brief sigIntersect This signal emit when objects intersect on the world.
+     * @param objects This is list of the intersects objects.
+     */
+    void sigIntersect(QList<const IWorldItem*> objects);
+
+private:
+    void eventProcess();
+    void addToSupportedEvents(const IWorldItem *obj, int event);
+
+    void renderLoop();
+
+    IWorld * _worldInstance = nullptr;
+    QHash<int, const IWorldItem*> _objects;
+    QHash<int, QHash<int, const IWorldItem*>> _supportedEvents;
+    QList<int> _supportedEventsKeys;
+    QFuture<void> _renderLoopFuture;
+    bool _renderLoop = false;
+
 };
 
 }

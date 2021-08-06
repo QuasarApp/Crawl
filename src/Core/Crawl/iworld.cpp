@@ -28,7 +28,11 @@ IWorld::IWorld() {
     qRegisterMetaType<WorldRule::const_iterator>("WorldRule::const_iterator");
     connect(this, &IWorld::sigWorldChanged, this, &IWorld::worldChanged, Qt::QueuedConnection);
 
-    _eventServer = new EventServer;
+    _eventServer = new EventServer(this);
+
+    connect(_eventServer, &EventServer::sigIntersect, this, &IWorld::onIntersects);
+    connect(this, &IWorld::sigOBjctsListChanged, _eventServer, &EventServer::handleAvailableObjectChanges);
+
 }
 
 IWorld::~IWorld() {
@@ -53,8 +57,6 @@ void IWorld::render(unsigned int tbfMsec) {
 
     for (auto i = _items.begin(); i != _items.end(); ++i) {
         (*i)->render(tbfMsec);
-
-        _eventServer->process(*i);
     }
 
     _ItemsMutex.unlock();
@@ -347,6 +349,10 @@ void IWorld::updateWorld() {
     if (nextLevel != _worldRules->cend() && distance > nextLevel.key()) {
         emit sigWorldChanged(nextLevel);
     }
+}
+
+void IWorld::onIntersects(QList<const IWorldItem *> list) {
+    Q_UNUSED(list);
 }
 
 const QQuaternion &IWorld::cameraRotation() const {
