@@ -14,6 +14,7 @@ namespace CRAWL {
 SnakeItem::SnakeItem(const QString &name, const QString &viewTempalte, QObject *ptr):
     SingleClasterWorldItem(name, viewTempalte, ptr) {
     setAngularVelocity(-1);
+    setFDecorative(true);
 
 }
 

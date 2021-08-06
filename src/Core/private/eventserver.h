@@ -67,6 +67,7 @@ private:
     QList<int> _supportedEventsKeys;
     QFuture<void> _renderLoopFuture;
     bool _renderLoop = false;
+    quint64 _oldTimeRender = 0;
 
 };
 
