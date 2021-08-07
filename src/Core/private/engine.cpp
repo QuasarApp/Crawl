@@ -49,7 +49,7 @@ void Engine::setWorld(IWorld *world) {
     emit worldChanged();
 
     if (!prepareNewWorld()) {
-        QuasarAppUtils::Params::log("Failed to init world. World name: " + _currentWorld->name(),
+        QuasarAppUtils::Params::log("Failed to init world. World name: " + _currentWorld->itemName(),
                                     QuasarAppUtils::Error);
 
         _currentWorld = nullptr;

@@ -48,15 +48,15 @@ QString World::description() const {
     return "This a test lvl";
 }
 
-QString World::imagePreview() const {
+QString World::image() const {
     return "qrc:/hdr/hdr/testHDR.jpg";
 }
 
-QString World::name() const {
+QString World::itemName() const {
     return "Test";
 }
 
-int World::costToUnlock() const {
+int World::cost() const {
     return 0;
 }
 
@@ -79,6 +79,10 @@ CRAWL::PlayableObject *World::initPlayer() const {
 
 CRAWL::IAI *World::initBackGroundAI() const {
     return IWorld::initBackGroundAI();
+}
+
+QString World::itemTextId() const {
+    return "TestLevel";
 }
 
 void World::handleXViewChanged(double dx) {

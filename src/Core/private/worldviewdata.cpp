@@ -15,7 +15,7 @@ WorldViewData::WorldViewData(const IWorld *data) {
 
 QString WorldViewData::name() const {
     if (_worldObject) {
-        return _worldObject->name();
+        return _worldObject->itemName();
     }
 
     return "";
@@ -31,7 +31,7 @@ QString WorldViewData::desc() const {
 
 int WorldViewData::cost() const {
     if (_worldObject) {
-        return _worldObject->costToUnlock();
+        return _worldObject->cost();
     }
 
     return 0;
@@ -50,7 +50,7 @@ void WorldViewData::setUnlocked(bool newUnlocked) {
 
 QString WorldViewData::image() const {
     if (_worldObject) {
-        return _worldObject->imagePreview();
+        return _worldObject->image();
     }
 
     return "";

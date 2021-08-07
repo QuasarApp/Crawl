@@ -132,7 +132,7 @@ void ClientApp::addLvl(IWorld *levelWordl) {
 
     data.model = levelWordl;
     data.viewModel = new WorldViewData(data.model);
-    _availableLvls.insert(data.model->name(), data);
+    _availableLvls.insert(data.model->itemName(), data);
     _menu->addWorldViewModel(data.viewModel);
 }
 
