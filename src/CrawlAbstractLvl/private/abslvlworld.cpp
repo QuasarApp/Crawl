@@ -60,16 +60,16 @@ QString AbsLvlWorld::description() const {
     return tr("This a abstract lvl");
 }
 
-QString AbsLvlWorld::imagePreview() const {
+QString AbsLvlWorld::image() const {
     return "qrc:/hdr/hdr/testHDR.jpg";
 
 }
 
-QString AbsLvlWorld::name() const {
+QString AbsLvlWorld::itemName() const {
     return tr("AbstractLvl");
 }
 
-int AbsLvlWorld::costToUnlock() const {
+int AbsLvlWorld::cost() const {
     return 0;
 }
 
@@ -79,6 +79,10 @@ CRAWL::IControl *AbsLvlWorld::initUserInterface() const {
 
 void AbsLvlWorld::initPlayerControl(CRAWL::IControl *control) {
     return IWorld::initPlayerControl(control);
+}
+
+QString AbsLvlWorld::itemTextId() const {
+    return "AbstractLevel";
 }
 
 }

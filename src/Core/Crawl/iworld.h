@@ -9,6 +9,7 @@
 #define CRAWL_IWORLD_H
 
 #include "gameresult.h"
+#include "iitem.h"
 #include "playableobject.h"
 
 #include <QHash>
@@ -55,7 +56,7 @@ typedef QMap<int, WorldObjects> WorldRule;
 /**
  * @brief The IWorld class use this interface for implementation your own game levels
  */
-class CRAWL_EXPORT IWorld : public QObject, public IRender
+class CRAWL_EXPORT IWorld : public QObject, public IRender, public IItem
 {
     Q_OBJECT
     Q_PROPERTY(QVector3D cameraReleativePosition READ cameraReleativePosition NOTIFY cameraReleativePositionChanged)
@@ -117,30 +118,6 @@ public:
      * @return path to hfr map.
      */
     virtual QString initHdrBackGround() const = 0;
-
-    /**
-     * @brief description This method shold be return lvl description.
-     * @return lvel description string.
-     */
-    virtual QString description() const = 0;
-
-    /**
-     * @brief imagePreview This method should be return path to banner of the lvl.
-     * @return path to level banner.
-     */
-    virtual QString imagePreview() const = 0;
-
-    /**
-     * @brief name This method shold be return lvl name.
-     * @return lvl name.
-     */
-    virtual QString name() const = 0;
-
-    /**
-     * @brief costToUnlock This method shold be return unlock cost.
-     * @return unlock cost
-     */
-    virtual int costToUnlock() const = 0;
 
     /**
      * @brief render this method recursive invoke all render functions of the all world items.

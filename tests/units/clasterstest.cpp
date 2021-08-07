@@ -45,14 +45,14 @@ public:
 
     // IWorld interface
 public:
-    CRAWL::PlayableObject *initPlayer() const {return nullptr;};
-    CRAWL::WorldRule *initWorldRules() {return nullptr;};
-    QString initHdrBackGround() const {return "";};
-    QString description() const {return "";};
-    QString imagePreview() const {return "";};
-    QString name() const {return "TestWorld";};
-    int costToUnlock() const {return 0;};
-
+    CRAWL::PlayableObject *initPlayer() const override {return nullptr;};
+    CRAWL::WorldRule *initWorldRules() override {return nullptr;};
+    QString initHdrBackGround() const override {return "";};
+    QString description() const override {return "";};
+    QString image() const override {return "";};
+    QString itemName() const override {return "TestWorld";};
+    int cost() const override {return 0;};
+    QString itemTextId() const override {return "TestWorld";};
     friend class ClastersTest;
 };
 
