@@ -160,7 +160,7 @@ private:
 
     int recalcTier();
 
-    void setTier();
+    void setTier(int tier);
 
     int _money = 0;
     int _xp = 0;
