@@ -11,19 +11,21 @@ namespace CRAWL {
 constexpr float tierMul = 1.2;
 constexpr int firstTierCount = 10;
 
-// Tiers table
+/// @private
 template <int N>
 struct Tiers
 {
     enum { value = static_cast<const int>(tierMul * Tiers<N - 1>::value)};
 };
 
+/// @private
 template <>
 struct Tiers<0>
 {
     enum { value = 0 };
 };
 
+/// @private
 template <>
 struct Tiers<1>
 {
