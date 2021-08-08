@@ -78,6 +78,15 @@ int User::recalcTier() {
     return _tier;
 }
 
+void User::setTier(int tier) {
+    if (_tier == tier)
+        return;
+
+    _tier = tier;
+
+    emit tierChanged();
+}
+
 int User::xp() const {
     return _xp;
 }
@@ -87,7 +96,7 @@ void User::setXp(int newXp) {
         return;
     _xp = newXp;
 
-    recalcTier();
+    setTier(recalcTier());
 
     emit xpChanged();
 }
