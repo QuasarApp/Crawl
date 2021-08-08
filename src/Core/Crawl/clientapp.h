@@ -25,6 +25,7 @@ class IWorld;
 class WorldViewData;
 class MainMenuModel;
 class IControl;
+class Store;
 
 
 /**
@@ -69,6 +70,7 @@ private:
     QByteArray initTheme();
     IWorld* getLastWorld();
 
+    void initStore(Store* store);
     /**
      * @brief addLvl This method should be add level to game.
      * @param levelWordl This is world instance
@@ -84,6 +86,7 @@ private:
     QHash<QString, WordlData> _availableLvls;
     MainMenuModel *_menu = nullptr;
     Engine *_engine = nullptr;
+    Store *_store = nullptr;
 };
 
 }

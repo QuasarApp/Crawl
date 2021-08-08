@@ -31,14 +31,11 @@ public:
     CRAWL::PlayableObject *initPlayer() const override;
     CRAWL::IAI *initBackGroundAI() const override;
     QString itemTextId() const override;
+    int requiredTier() const override;
 
 private slots:
     void handleXViewChanged(double dx);
     void handleYViewChanged(double dy);
-
-
-
-
 };
 
 

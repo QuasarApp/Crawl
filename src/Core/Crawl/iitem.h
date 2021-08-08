@@ -9,6 +9,7 @@
 #ifndef IITEM_H
 #define IITEM_H
 
+#include <QList>
 #include <QString>
 #include "global.h"
 
@@ -62,6 +63,31 @@ public:
     virtual int requiredTier() const = 0;
 
     /**
+     * @brief childItems This method shold be return list of the child items available for unlocked for this item.
+     * @return list of the child items pointers.
+     * @note The child items connot be removed automaticalu. All child items will be removed in the Store object.
+     * @see IItem::addChildItem
+     * @see IItem::childItemsRecursive
+     */
+    QList<const IItem*> childItems() const;
+
+    /**
+     * @brief childItemsRecursive This method return hash map of all items of this item.
+     * @note This method working recursive.
+     * @return Hash map of the all child items (include current item).
+     * @see IItem::addChildItem
+     * @see IItem::childItems
+     */
+    QMultiHash<int, const IItem *> childItemsRecursive() const;
+
+    /**
+     * @brief addChildItem This method add child item.
+     * @param item This is pointe of the item.
+     * @see IItem::childItems
+     */
+    void addChildItem(const IItem* item);
+
+    /**
      * @brief itemId This method return hash of the IItem::itemTextId.
      * @return hash of the IItem::itemTextId.
      * @note The not const implementation inlike const implementation write a id to cache.
@@ -77,6 +103,7 @@ public:
 
 private:
     unsigned int _id = 0;
+    QList<const IItem*> _childs;
 };
 
 }
