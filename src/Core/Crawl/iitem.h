@@ -56,6 +56,12 @@ public:
     virtual int cost() const = 0;
 
     /**
+     * @brief requiredTier This method return requried level to unlock.
+     * @return requried level to unlock.
+     */
+    virtual int requiredTier() const = 0;
+
+    /**
      * @brief itemId This method return hash of the IItem::itemTextId.
      * @return hash of the IItem::itemTextId.
      * @note The not const implementation inlike const implementation write a id to cache.
