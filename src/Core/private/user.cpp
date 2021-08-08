@@ -71,7 +71,7 @@ void User::setUnlockedItems(const QSet<int> &newUnlockedItems) {
 int User::recalcTier() {
     int _tier = 0;
 
-    while (xp() > tiersTable[_tier]) {
+    while (getXp() > tiersTable[_tier]) {
         _tier++;
     }
 
@@ -87,7 +87,7 @@ void User::setTier(int tier) {
     emit tierChanged();
 }
 
-int User::xp() const {
+int User::getXp() const {
     return _xp;
 }
 
@@ -101,11 +101,11 @@ void User::setXp(int newXp) {
     emit xpChanged();
 }
 
-int User::tier() {
+int User::getTier() {
     return _tier;
 }
 
-int User::money() const {
+int User::getMoney() const {
     return _money;
 }
 
