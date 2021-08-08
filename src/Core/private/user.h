@@ -160,6 +160,8 @@ private:
 
     int recalcTier();
 
+    void setTier();
+
     int _money = 0;
     int _xp = 0;
     int _tier = 0;
