@@ -15,6 +15,25 @@ IItem::IItem() {
 
 }
 
+QList<const IItem *> IItem::childItems() const {
+    return _childs;
+}
+
+QMultiHash<int, const IItem *> IItem::childItemsRecursive() const {
+    QMultiHash<int, const IItem *> result;
+
+    for (const IItem* item : _childs) {
+        result.unite(item->childItemsRecursive());
+    }
+
+    result.insert(itemId(), this);
+    return result;
+}
+
+void IItem::addChildItem(const IItem *item) {
+    _childs.push_back(item);
+}
+
 unsigned int IItem::itemId() {
     if (_id) {
         return _id;
@@ -25,6 +44,10 @@ unsigned int IItem::itemId() {
 }
 
 unsigned int IItem::itemId() const {
-    return _id;
+    if (_id) {
+        return _id;
+    }
+
+    return qHash(itemTextId());
 }
 }

@@ -85,6 +85,10 @@ QString World::itemTextId() const {
     return "TestLevel";
 }
 
+int World::requiredTier() const {
+    return 0;
+}
+
 void World::handleXViewChanged(double dx) {
     auto eilorRotation = cameraRotation().toEulerAngles();
     eilorRotation.setX(eilorRotation.x() + dx);

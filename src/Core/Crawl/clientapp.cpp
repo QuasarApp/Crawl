@@ -14,6 +14,7 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <quasarapp.h>
+#include <store.h>
 
 #include <engine.h>
 #include <qmlnotifyservice.h>
@@ -38,6 +39,7 @@ QByteArray ClientApp::initTheme() {
 ClientApp::ClientApp() {
     _engine = new Engine();
     _menu = new MainMenuModel();
+    _store = new Store();
 
     connect(_menu, &MainMenuModel::sigNewGame, this, &ClientApp::start);
 }
@@ -45,6 +47,7 @@ ClientApp::ClientApp() {
 ClientApp::~ClientApp() {
     delete _menu;
     delete _engine;
+    delete _store;
 
     for (auto it = _availableLvls.begin(); it != _availableLvls.end(); ++it) {
         delete it.value().viewModel;
@@ -62,6 +65,15 @@ IWorld *ClientApp::getLastWorld() {
     }
 
     return nullptr;
+}
+
+void ClientApp::initStore(Store *store) {
+    QMultiHash<int, const IItem *> storeItems;
+    for (const auto &data : qAsConst(_availableLvls)) {
+        storeItems.unite(data.model->childItemsRecursive());
+    }
+
+    store->init(storeItems);
 }
 
 void ClientApp::start(const QString &lvl) {
@@ -123,6 +135,7 @@ bool ClientApp::init(QQmlApplicationEngine *engine) {
 
     _engine->setWorld(getLastWorld());
     _engine->setQmlEngine(engine);
+    initStore(_store);
 
     return true;
 }

@@ -15,11 +15,11 @@
 #include "Crawl/icontrol.h"
 #include "QDateTime"
 #include "QtConcurrent"
+#include "store.h"
 
 namespace CRAWL {
 
 Engine::Engine(QObject *parent): QObject(parent) {
-
 }
 
 Engine::~Engine() {

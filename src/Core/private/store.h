@@ -36,7 +36,7 @@ public:
      * @param availabelItems This is hash of the available item.
      * @return true if the items inited successfuly else false.
      */
-    bool init(const QHash<int, const IItem*>& availabelItems);
+    bool init(const QMultiHash<int, const IItem *> &availabelItems);
 
     /**
      * @brief getItemById This method return item by id.
@@ -46,7 +46,7 @@ public:
     const IItem* getItemById(int id) const;
 
 private:
-    QHash<int, const IItem*> _store;
+    QMultiHash<int, const IItem*> _store;
 };
 }
 #endif // STORE_H

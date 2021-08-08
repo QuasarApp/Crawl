@@ -34,7 +34,7 @@ bool Store::buy(User &buyer, int itemId) {
     return true;
 }
 
-bool Store::init(const QHash<int, const IItem *> &availabelItems) {
+bool Store::init(const QMultiHash<int, const IItem *> &availabelItems) {
     _store = availabelItems;
 
     return true;

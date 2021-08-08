@@ -16,6 +16,7 @@
 namespace CRAWL {
 
 class IWorld;
+class Store;
 
 /**
  * @brief The Engine class

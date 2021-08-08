@@ -53,6 +53,8 @@ public:
     QString itemName() const override {return "TestWorld";};
     int cost() const override {return 0;};
     QString itemTextId() const override {return "TestWorld";};
+    int requiredTier() const override {return 0;};
+
     friend class ClastersTest;
 };
 

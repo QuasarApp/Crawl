@@ -85,4 +85,8 @@ QString AbsLvlWorld::itemTextId() const {
     return "AbstractLevel";
 }
 
+int AbsLvlWorld::requiredTier() const {
+    return 0;
+}
+
 }

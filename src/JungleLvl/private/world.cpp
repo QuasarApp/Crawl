@@ -120,6 +120,10 @@ QString World::itemTextId() const {
     return "JungleLevel";
 }
 
+int World::requiredTier() const {
+    return 0;
+}
+
 void World::handleXViewChanged(double dx) {
     auto eilorRotation = cameraRotation().toEulerAngles();
     eilorRotation.setX(eilorRotation.x() + dx);
