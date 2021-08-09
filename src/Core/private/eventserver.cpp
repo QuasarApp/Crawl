@@ -75,7 +75,7 @@ void EventServer::eventProcess() {
                 }
 
                 if (result.size()) {
-                    emit sigIntersect(result << item);
+                    emit sigIntersect(item, result);
                 }
                 break;
             }

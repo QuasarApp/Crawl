@@ -51,9 +51,10 @@ public slots:
 signals:
     /**
      * @brief sigIntersect This signal emit when objects intersect on the world.
+     * @param trigger This is pointer to object that support this evvent.
      * @param objects This is list of the intersects objects.
      */
-    void sigIntersect(QList<const IWorldItem*> objects);
+    void sigIntersect(const IWorldItem* trigger, QList<const IWorldItem*> objects);
 
 private:
     void eventProcess();

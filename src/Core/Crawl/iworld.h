@@ -370,7 +370,7 @@ protected:
     void updateWorld();
 
 protected slots:
-    virtual void onIntersects(QList<const IWorldItem *> list);
+    virtual void onIntersects(const IWorldItem * trigger, QList<const IWorldItem *> list);
 
 private slots:
 

@@ -75,6 +75,10 @@ bool IWorldItem::destroyIsScheduled() const {
     return _fDistroy;
 }
 
+void IWorldItem::action(IWorldItem *) {
+
+}
+
 void IWorldItem::setSupportedEvents(int newSupportedEvents) {
     _supportedEvents = newSupportedEvents;
 }
