@@ -41,7 +41,7 @@ void EventServer::handleAvailableObjectChanges(const Diff &diff) {
     for (int added: diff.addedIds) {
         auto obj = _worldInstance->getItem(added);
 
-        if (!obj->isDecorative()) {
+        if (obj->isDecorative()) {
             continue;
         }
 

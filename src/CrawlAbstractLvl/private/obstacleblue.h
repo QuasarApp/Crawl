@@ -14,10 +14,6 @@ namespace AbstractLvl {
 class ObstacleBlue: public CRAWL::IWorldItem {
 public:
     ObstacleBlue();
-
-    // IWorldItem interface
-protected:
-    void onIntersects(const IWorldItem *item) override;
 };
 
 }

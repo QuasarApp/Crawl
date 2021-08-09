@@ -19,9 +19,6 @@ class AbsLvlSnakeItem: public CRAWL::SnakeItem {
 public:
     AbsLvlSnakeItem();
 
-    // IWorldItem interface
-protected:
-    void onIntersects(const IWorldItem *item) override;
 };
 
 }

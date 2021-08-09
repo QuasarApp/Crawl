@@ -13,8 +13,6 @@ namespace CRAWL {
 Wint::Wint(): Affector(AUTO_CLASS_NAME, "qrc:/CrawlModule/particles/Wint.qml") {
 }
 
-void Wint::onIntersects(const IWorldItem *) {}
-
 float Wint::magnitude() const {
     return _magnitude;
 }

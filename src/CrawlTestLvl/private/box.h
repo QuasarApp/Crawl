@@ -16,10 +16,7 @@ class Box: public CRAWL::IWorldItem {
 
 public:
     Box();
-
-    // IWorldItem interface
-protected:
-    void onIntersects(const IWorldItem *item) override;
+    void action(IWorldItem *item) override;
 };
 }
 #endif // BOX_H

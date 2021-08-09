@@ -19,8 +19,7 @@ Fire::Fire(): ParticleEffect(AUTO_CLASS_NAME, "qrc:/CrawlModule/particles/Fire.q
 
     setLifeSpanVariation(500);
     setColor("#ffaf2c");
-    setSize({1, 1, 1});
-    setposition({0,0,10});
+    setposition({0,0,1});
     setEnabled(true);
 
     setParticleDelegate("qrc:/CrawlModule/particles/FireParticel.qml");

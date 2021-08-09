@@ -24,7 +24,4 @@ void DefaultLight::init() {
 
 }
 
-void DefaultLight::onIntersects(const IWorldItem *) {
-
-}
 }

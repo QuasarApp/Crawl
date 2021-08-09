@@ -13,10 +13,6 @@ Ground::Ground() : CRAWL::GroundClaster("JungelGroud") {
     registerItemType<GroundPlate>();
 }
 
-void Ground::onIntersects(const IWorldItem *) {
-
-}
-
 unsigned int Ground::itemsCount() const {
     return 3;
 }

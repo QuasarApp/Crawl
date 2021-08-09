@@ -66,8 +66,7 @@ signals:
     void directionChanged();
     void magnitudeChanged();
 
-protected:
-    void onIntersects(const IWorldItem *item) override;
+private:
 
     QVector3D _direction = {1, 0, 0};
     float _magnitude = 10;

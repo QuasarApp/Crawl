@@ -19,10 +19,6 @@ class TestSnakeItem: public CRAWL::SnakeItem
     Q_OBJECT
 public:
     TestSnakeItem();
-
-    // IWorldItem interface
-protected:
-    void onIntersects(const IWorldItem *item) override;
 };
 
 }

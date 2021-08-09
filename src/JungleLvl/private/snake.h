@@ -26,7 +26,6 @@ public:
 
     // IWorldItem interface
 protected:
-    void onIntersects(const IWorldItem *) override;
     unsigned int itemsCount() const override;
 
 };

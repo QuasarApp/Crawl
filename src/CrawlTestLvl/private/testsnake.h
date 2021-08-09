@@ -19,10 +19,6 @@ class TestSnake : public CRAWL::Snake {
 public:
     TestSnake();
 
-    // IWorldItem interface
-protected:
-    void onIntersects(const IWorldItem *item) override;
-
 
     // AutoGenerateClaster interface
 public:

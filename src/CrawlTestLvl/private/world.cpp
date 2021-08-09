@@ -31,7 +31,7 @@ CRAWL::WorldRule *World::initWorldRules() {
     using Day = CRAWL::Day<CRAWL::Sun, CRAWL::Moon>;
 
     return new CRAWL::WorldRule {
-        {0, {{registerObject<Box>(), 100},
+        {0, {{registerObject<Box>(), 1000},
              {registerObject<CRAWL::Fire>(), 10},
              {registerObject<CRAWL::DynamicWint>(), 1},
 

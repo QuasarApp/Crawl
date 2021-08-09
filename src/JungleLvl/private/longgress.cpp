@@ -15,7 +15,4 @@ LongGress::LongGress(): CRAWL::IWorldItem(AUTO_CLASS_NAME) {
     setRotation(QQuaternion::fromEulerAngles({0,0, static_cast<float>(rand() % 360)}));
 }
 
-void LongGress::onIntersects(const IWorldItem *) {
-
-}
 }

@@ -14,10 +14,6 @@ namespace AbstractLvl {
 class Baff: public CRAWL::IWorldItem {
 public:
     Baff();
-
-    // IWorldItem interface
-protected:
-    void onIntersects(const IWorldItem *item) override;
 };
 
 }

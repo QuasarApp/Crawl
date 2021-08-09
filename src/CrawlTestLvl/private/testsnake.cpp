@@ -18,11 +18,7 @@ TestSnake::TestSnake(): Snake("Snake") {
     setSize({2,1,1});
 
     registerItemType<TestSnakeItem>();
-
-}
-
-void TestSnake::onIntersects(const IWorldItem *item) {
-    Q_UNUSED(item);
+    setContainerSize({2, 2, 2});
 
 }
 

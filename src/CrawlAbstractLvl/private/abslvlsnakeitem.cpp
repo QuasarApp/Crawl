@@ -15,9 +15,4 @@ AbsLvlSnakeItem::AbsLvlSnakeItem():CRAWL::SnakeItem(AUTO_CLASS_NAME) {
     setSize({1,1,1});
 }
 
-void AbsLvlSnakeItem::onIntersects(const IWorldItem *item) {
-    Q_UNUSED(item);
-
-}
-
 }

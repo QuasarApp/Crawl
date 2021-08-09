@@ -167,9 +167,6 @@ public:
         }
     }
 
-protected:
-    void onIntersects(const IWorldItem *) override {};
-
 private:
     float lengthToSpeed(float length) const {
         return (2 * M_PI * radius()) / length;
