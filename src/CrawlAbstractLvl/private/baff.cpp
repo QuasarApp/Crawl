@@ -17,8 +17,5 @@ Baff::Baff() : IWorldItem(AUTO_CLASS_NAME) {
     setZ(0);
 }
 
-void Baff::onIntersects(const IWorldItem *item) {
-        Q_UNUSED(item);
-}
 
 }

@@ -18,10 +18,6 @@ class SnakeItem : public CRAWL::SnakeItem
 public:
     SnakeItem();
     void init() override;
-
-    // IWorldItem interface
-protected:
-    void onIntersects(const IWorldItem *item) override;
 };
 
 }

@@ -21,10 +21,6 @@ GroundPlate::GroundPlate(): CRAWL::GroundTile("JungleGroundTile",
 
 }
 
-void GroundPlate::onIntersects(const IWorldItem *) {
-
-}
-
 int GroundPlate::tiliesCount() const {
     return _tiliesCount;
 }

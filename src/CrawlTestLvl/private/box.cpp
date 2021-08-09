@@ -24,9 +24,16 @@ Box::Box(): IWorldItem("Box") {
     setposition({static_cast<float>(rand() % 100) - 50,
                  static_cast<float>(rand() % 100) - 50,
                  0 });
+
+    setFDecorative(false);
+
+    setContainerSize({4, 4, 4});
 }
 
-void Box::onIntersects(const IWorldItem *item) {
-    Q_UNUSED(item);
+void Box::action(IWorldItem *item) {
+    if (item->className() == getPlayer()->className()) {
+        respawn();
+    }
 }
+
 }

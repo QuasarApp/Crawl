@@ -131,6 +131,8 @@ private:
     QVector3D* _vectors;
     float _speed;
 
+    int _hp = 100;
+
 };
 
 }

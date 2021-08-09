@@ -18,10 +18,6 @@ Plate::Plate(): CRAWL::GroundTile("TestPlate")
     setZ(0);
 }
 
-void Plate::onIntersects(const IWorldItem *item) {
-    Q_UNUSED(item)
-}
-
 void Plate::render(unsigned int){
 
 }

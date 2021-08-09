@@ -15,9 +15,6 @@ class ObstacleRed: public CRAWL::IWorldItem {
 public:
     ObstacleRed();
 
-    // IWorldItem interface
-protected:
-    void onIntersects(const IWorldItem *item) override;
 };
 
 }

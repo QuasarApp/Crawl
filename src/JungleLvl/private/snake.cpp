@@ -31,10 +31,6 @@ Snake::Snake(): CRAWL::Snake("JungleSnake") {
                              {1, 0.5}});
 }
 
-void Snake::onIntersects(const IWorldItem *) {
-
-}
-
 unsigned int Snake::itemsCount() const {
     return 50;
 }

@@ -22,9 +22,6 @@ class CRAWL_JUNGLE_LEVEL_EXPORT LongGress: public CRAWL::IWorldItem
 public:
     LongGress();
 
-    // IWorldItem interface
-protected:
-    void onIntersects(const IWorldItem *item) override;
 };
 
 }

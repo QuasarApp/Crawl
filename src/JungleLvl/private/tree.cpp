@@ -31,7 +31,4 @@ Tree::Tree(): CRAWL::IWorldItem(AUTO_CLASS_NAME) {
         setZ(-static_cast<float>(rand() % 10));
 }
 
-void Tree::onIntersects(const IWorldItem *) {
-
-}
 }

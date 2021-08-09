@@ -21,10 +21,6 @@ class CRAWL_JUNGLE_LEVEL_EXPORT Tree : public CRAWL::IWorldItem
     Q_OBJECT
 public:
     Tree();
-
-    // IWorldItem interface
-protected:
-    void onIntersects(const IWorldItem *) override;
 };
 }
 #endif // TREE_H

@@ -30,8 +30,5 @@ AbsLvlSnake::AbsLvlSnake(): Snake(AUTO_CLASS_NAME) {
     registerItemType<AbsLvlSnakeItem>();
 }
 
-void AbsLvlSnake::onIntersects(const IWorldItem *item) {
-    Q_UNUSED(item);
-}
 
 }

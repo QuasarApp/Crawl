@@ -17,8 +17,4 @@ Grees::Grees(): CRAWL::IWorldItem(AUTO_CLASS_NAME) {
 
 }
 
-void Grees::onIntersects(const IWorldItem *) {
-
-}
-
 }

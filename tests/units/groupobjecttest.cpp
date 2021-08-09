@@ -19,8 +19,6 @@ public:
     TestGroupObject(): CRAWL::IWorldItem(AUTO_CLASS_NAME) {
 
     }
-protected:
-    void onIntersects(const IWorldItem *) override {};
 
     // IRender interface
     void render(unsigned int tbfMsec) override {
@@ -40,8 +38,6 @@ public:
     TestGroupObjectItem(): CRAWL::ClasterItem(AUTO_CLASS_NAME) {
 
     }
-protected:
-    void onIntersects(const IWorldItem *) override {};
 };
 
 GroupObjectTest::GroupObjectTest() {

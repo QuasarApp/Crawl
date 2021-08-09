@@ -19,13 +19,6 @@ class Background: public CRAWL::GroundClaster
 {
 public:
     Background();
-
-    // IWorldItem interface
-protected:
-    void onIntersects(const IWorldItem *item) override;
-
-    // AutoGenerateClaster interface
-public:
     unsigned int itemsCount() const override;
 };
 
