@@ -77,6 +77,13 @@ public:
      */
     bool destroyIsScheduled() const;
 
+    /**
+     * @brief action This method contains actions releative another game objects.
+     * @param item This is pointer to item that will be interaction with this object.
+     * @note The default implementation do nothing.
+     */
+    virtual void action(IWorldItem* item);
+
 protected:
 
     /**

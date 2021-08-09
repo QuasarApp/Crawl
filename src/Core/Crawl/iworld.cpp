@@ -360,8 +360,11 @@ void IWorld::updateWorld() {
     }
 }
 
-void IWorld::onIntersects(QList<const IWorldItem *> list) {
-    Q_UNUSED(list);
+void IWorld::onIntersects(const IWorldItem *trigger, QList<const IWorldItem *> list) {
+
+    for (const IWorldItem* item : list) {
+        const_cast<IWorldItem*>(item)->action(const_cast<IWorldItem*>(trigger));
+    }
 }
 
 const QQuaternion &IWorld::cameraRotation() const {
