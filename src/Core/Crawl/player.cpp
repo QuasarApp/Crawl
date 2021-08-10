@@ -6,9 +6,29 @@
 //#
 
 #include "player.h"
+#include <user.h>
+
 namespace CRAWL {
 
 Player::Player() {
 
+}
+
+void Player::addXp(int newXp) {
+    if (_userData)
+        _userData->setXp(_userData->getXp() + newXp);
+}
+
+void Player::addMoney(int money) {
+    if (_userData)
+        _userData->setMoney(_userData->getMoney() + money);
+}
+
+User *Player::userData() const {
+    return _userData;
+}
+
+void Player::setUserData(User *newUserData) {
+    _userData = newUserData;
 }
 }

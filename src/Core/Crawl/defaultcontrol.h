@@ -8,8 +8,7 @@
 #ifndef DEFAULTCONTROL_H
 #define DEFAULTCONTROL_H
 
-#include "icontrol.h"
-#include "global.h"
+#include "player.h"
 
 namespace CRAWL {
 
@@ -17,7 +16,7 @@ namespace CRAWL {
 /**
  * @brief The DefaultControl class This class contains default implementation of the game menu.
  */
-class CRAWL_EXPORT DefaultControl : public IControl {
+class CRAWL_EXPORT DefaultControl : public Player {
     Q_OBJECT
 public:
     DefaultControl();

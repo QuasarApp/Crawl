@@ -24,5 +24,6 @@
         <file>CrawlCoreAssets/particles/smokeSprite.png</file>
         <file>CrawlModule/particles/Fire.qml</file>
         <file>CrawlModule/particles/Wint.qml</file>
+        <file>CrawlModule/PreviewScane.qml</file>
     </qresource>
 </RCC>

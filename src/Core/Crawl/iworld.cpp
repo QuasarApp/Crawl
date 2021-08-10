@@ -20,6 +20,7 @@
 #include "chrono"
 #include "diff.h"
 #include "eventserver.h"
+#include "player.h"
 
 namespace CRAWL {
 
@@ -40,9 +41,11 @@ IWorld::~IWorld() {
     delete _eventServer;
 }
 
-void IWorld::init() {prepare();}
+void IWorld::init() {
+    prepare();
+}
 
-IControl *IWorld::initUserInterface() const {
+Player *IWorld::initUserInterface() const {
     return new DefaultControl;
 }
 
@@ -83,12 +86,13 @@ void IWorld::initPlayerControl(IControl *control) {
     }
 }
 
-bool IWorld::start() {
+bool IWorld::start(const StartData& config) {
     _player->setposition({0,0,0});
 
     setWorldStatus(WorldStatus::Game);
     _backgroundAI->stopAI();
     _player->setControl(_userInterface);
+    setPlayer(initPlayer());
 
 
     worldChanged(_worldRules->cbegin());
@@ -151,8 +155,6 @@ bool IWorld::prepare() {
     _worldRules = initWorldRules();
 
     setHdr(initHdrBackGround());
-    setPlayer(initPlayer());
-    _player->initOnWorld(this, _player);
     _userInterface = initUserInterface();
     _backgroundAI = initBackGroundAI();
 
@@ -283,7 +285,7 @@ void IWorld::addAtomicItem(IWorldItem* obj) {
     _items.insert(obj->guiId(), obj);
     _itemsGroup.insert(obj->className(), obj->guiId());
 
-    obj->initOnWorld(this, _player);
+    obj->initOnWorld(this);
 }
 
 bool IWorld::removeAtomicItem(int id) {

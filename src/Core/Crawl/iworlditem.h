@@ -135,10 +135,9 @@ protected:
     void dropSupportOfEvent(int depricatedEvent);
 
 private:
-    void initOnWorld(const IWorld* world, const IWorldItem *player);
+    void initOnWorld(const IWorld* world);
 
     const IWorld* _world = nullptr;
-    const IWorldItem *_playerObject = nullptr;
 
     bool _fDecorative = true;
     bool _fDistroy = false;
