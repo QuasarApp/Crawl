@@ -8,6 +8,7 @@
 #ifndef CRAWL_SNAKE_H
 #define CRAWL_SNAKE_H
 
+#include "iitem.h"
 #include "playableobject.h"
 #include "Extensions/autogenerateclaster.h"
 
@@ -18,7 +19,7 @@ class SnakeItem;
 /**
  * @brief The Snake class This class implement render mehod for snake object.
  */
-class CRAWL_EXPORT Snake : public PlayableObject, public AutoGenerateClaster
+class CRAWL_EXPORT Snake : public PlayableObject, public AutoGenerateClaster, public IItem
 {
     Q_OBJECT
 public:
@@ -33,7 +34,6 @@ public:
     void remove(ClasterItem *object) override;
     void remove(int id) override;
     void init() override;
-
 
     // IPlayer interface
     /**
@@ -132,7 +132,6 @@ private:
     float _speed;
 
     int _hp = 100;
-
 };
 
 }

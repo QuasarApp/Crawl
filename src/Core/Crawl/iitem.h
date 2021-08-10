@@ -22,6 +22,7 @@ class CRAWL_EXPORT IItem
 {
 public:
     IItem();
+    virtual ~IItem() = default;
 
     /**
      * @brief itemTextId All items contains own ids, override this method for create base for generate new item id.

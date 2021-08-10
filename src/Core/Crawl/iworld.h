@@ -11,6 +11,7 @@
 #include "gameresult.h"
 #include "iitem.h"
 #include "playableobject.h"
+#include "startdata.h"
 
 #include <QHash>
 #include <QMap>
@@ -42,6 +43,7 @@ class IControl;
 class IAI;
 class IWorldLight;
 class EventServer;
+class Player;
 
 /**
  * @brief WorldObjects This is map list of the avalable objects and its count on a lvl-long point.
@@ -110,7 +112,7 @@ public:
      * @note The base implementation return default user interface.
      * @return pointer to userInterface.
      */
-    virtual IControl* initUserInterface() const;
+    virtual Player *initUserInterface() const;
 
     /**
      * @brief initHdrBackGround The implementation of this method must be return valid path to the hdr image map.
@@ -127,17 +129,18 @@ public:
 
     /**
      * @brief initPlayerControl This method should be configure all connections of @a control object.
-     * @brief control This is control object
+     * @param control This is control object
      * @note override this method if you have own IControl object.
      */
     virtual void initPlayerControl(IControl* control);
 
     /**
      * @brief start This method will be invoked when user click start button.
+     * @param config This is initialize level arguments.
      * @note The Default implementation reset all positions for all objects.
      * @return true if game started successful.
      */
-    virtual bool start();
+    virtual bool start(const StartData &config);
 
     /**
      * @brief stop This methos will be invoked when user click to return to main menu button.
@@ -487,8 +490,8 @@ private:
     WorldRule::const_iterator _currendWorldLevel;
 
     PlayableObject *_player = nullptr;
-    IControl *_userInterface = nullptr;
     IAI *_backgroundAI = nullptr;
+    Player *_userInterface = nullptr;
     int _worldStatus = 0;
     QHash<QString, std::function<IWorldItem*()>> _registeredTypes;
 

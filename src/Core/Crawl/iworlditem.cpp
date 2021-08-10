@@ -30,10 +30,17 @@ const IWorldItem *IWorldItem::getItem(int id) const {
 }
 
 const IWorldItem *IWorldItem::getPlayer() const {
-    return _playerObject;
+    if (!_world)
+        return nullptr;
+    return static_cast<const IWorldItem *>(_world->player());
 }
 
 void IWorldItem::render(unsigned int) {
+    auto _playerObject = getPlayer();
+
+    if (!_playerObject)
+        return;
+
     if (_playerObject->position().distanceToPoint(position()) >
             _world->cameraReleativePosition().z() * 3) {
         respawn();
@@ -42,9 +49,8 @@ void IWorldItem::render(unsigned int) {
 
 void IWorldItem::init() {}
 
-void IWorldItem::initOnWorld(const IWorld *world, const IWorldItem * player) {
+void IWorldItem::initOnWorld(const IWorld *world) {
     _world = world;
-    _playerObject = player;
 }
 
 int IWorldItem::supportedEvents() const {
@@ -60,6 +66,11 @@ void IWorldItem::destroy() {
 }
 
 void IWorldItem::respawn() {
+    auto _playerObject = getPlayer();
+
+    if (!_playerObject)
+        return;
+
     float dX = _world->cameraReleativePosition().z() * 2 +
             (rand() % static_cast<int>(_world->cameraReleativePosition().z()));
 
