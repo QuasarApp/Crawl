@@ -18,6 +18,9 @@ namespace CRAWL {
 
 class IWorld;
 class Store;
+class StartData;
+class User;
+class StoreViewModel;
 
 /**
  * @brief The Engine class
@@ -27,9 +30,10 @@ class Engine : public QObject {
     Q_OBJECT
     Q_PROPERTY(QObject* player READ player NOTIFY playerChanged)
     Q_PROPERTY(QObject* world READ world NOTIFY worldChanged)
+    Q_PROPERTY(QObject* nest READ nest NOTIFY worldChanged)
+    Q_PROPERTY(QObject* storeView READ storeView NOTIFY storeViewChanged)
 
     Q_PROPERTY(QObject* scane READ scane WRITE setScane NOTIFY scaneChanged)
-    Q_PROPERTY(int _prepareLvlProgress READ prepareLvlProgress WRITE setPrepareLvlProgress NOTIFY prepareLvlProgressChanged)
 
 public:
     Engine(QObject * parent = nullptr);
@@ -78,18 +82,6 @@ public:
     QObject* world() const;
 
     /**
-     * @brief prepareLvlProgress This method return rurrent progress of the loading lvl.
-     * @return current progress of loading new level on the world. progress range is 0 - 100 
-     */
-    int prepareLvlProgress() const;
-
-    /**
-     * @brief start This method run current lvl
-     * @return true if lvl started successful.
-     */
-    bool start() const;
-
-    /**
      * @brief getGameObject This method using in qml for getting main model of the gui objects.
      * @param id This is id of the gui object.
      * @return pointer to game object model
@@ -112,26 +104,67 @@ public:
      */
     bool isRendering() const;
 
+    /**
+     * @brief currentUser This method return pointer too current user.
+     * @return pointer too current user.
+     */
+    User *currentUser() const;
+
+    /**
+     * @brief storeView This method return pointer to store view model
+     * @return pointer to store view model
+     */
+    QObject *storeView() const;
+
+    /**
+     * @brief initStore This method is wrapper of the Store::init method.
+     * @param availabelItems This is list of available items.
+     */
+    void initStore(const QMultiHash<int, const IItem *> &availabelItems);
+
+    /**
+     * @brief store This pointer return pointer to store.
+     * @return pointer to store.
+     */
+    Store *store() const;
+
+    /**
+     * @brief nest This method return pointer to the nest model.
+     * @return pointer to the nest model.
+     */
+    QObject *nest() const ;
+
 signals:
     void scaneChanged();
     void playerChanged();
     void worldChanged();
+    void storeViewChanged();
 
-    void prepareLvlProgressChanged();
+private slots:
+    /**
+     * @brief start This method run current lvl ( move prepared data from the nest to game world)
+     * @param config This is confuguration that created new game world.
+     * @return true if lvl started successful.
+     */
+    void start(const StartData &config) const;
+
+    /**
+     * @brief stop This slots invoked when world finished own session.
+     */
+    void stop() const;
 
 private:
-    void setPrepareLvlProgress(int newPrepareLvlProgress);
     void renderLoop();
-
 
     QObject *_scane = nullptr;
     QQmlEngine *_engine = nullptr;
-//    IWorld* _currentWorld = nullptr;
     ILevel* _currentLevel = nullptr;
 
-    int _prepareLvlProgress;
-
     quint64 _oldTimeRender = 0;
+
+    User *_currentUser = nullptr;
+    StoreViewModel *_storeView = nullptr;
+    Store *_store = nullptr;
 
     QFuture<void> _renderLoopFuture;
     bool _renderLoop = false;

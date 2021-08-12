@@ -36,12 +36,12 @@ public:
     QObject* availableLvlsModel() const;
     void addWorldViewModel(QObject *);
     void setAvailableLvls(const QList<QObject *> &newData);
-    Q_INVOKABLE void newGame(const QString& lvl);
+    Q_INVOKABLE void changeLevel(int lvl);
 
 
 signals:
     void userSettingsModelChanged(QObject* userSettingsModel);
-    void sigNewGame(const QString& lvl);
+    void sigLevelChanged(int lvl);
     void availableLvlsModelChanged();
 
 private:

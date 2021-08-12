@@ -9,9 +9,11 @@
 
 #include <QQmlComponent>
 #include <Crawl/guiobject.h>
+#include <Crawl/ipreviewscaneworld.h>
 #include "Crawl/iworld.h"
 #include <QThread>
 #include <quasarapp.h>
+#include <storeviewmodel.h>
 #include "Crawl/icontrol.h"
 #include "QDateTime"
 #include "QtConcurrent"
@@ -20,10 +22,14 @@
 namespace CRAWL {
 
 Engine::Engine(QObject *parent): QObject(parent) {
+    _store = new Store();
+    _storeView = new StoreViewModel;
+
 }
 
 Engine::~Engine() {
     stopRenderLoop();
+    delete _storeView;
 }
 
 QObject *Engine::scane() {
@@ -48,15 +54,19 @@ void Engine::setLevel(ILevel *world) {
     _currentLevel = world;
     emit worldChanged();
 
-    if (_currentLevel && _currentLevel->world() && !_currentLevel->world()->)) {
+    if (!_currentLevel) {
 
-        if (_currentLevel->world()) {
-            QuasarAppUtils::Params::log("Failed to init world. World name: " + _currentLevel->world()->itemName(),
-                                        QuasarAppUtils::Error);
-        } else {
-            QuasarAppUtils::Params::log("Failed to init world. The World object is null! ",
-                                        QuasarAppUtils::Error);
-        }
+        QuasarAppUtils::Params::log("Failed to init world. The World object is null! ",
+                                    QuasarAppUtils::Error);
+
+        _currentLevel = nullptr;
+        return;
+    }
+
+    if (_currentLevel->world()) {
+        QuasarAppUtils::Params::log("Failed to init world. World name: " +
+                                    _currentLevel->world()->itemName(),
+                                    QuasarAppUtils::Error);
 
         _currentLevel = nullptr;
         return;
@@ -64,6 +74,12 @@ void Engine::setLevel(ILevel *world) {
 
     startRenderLoop();
     _currentLevel->world()->runAsBackGround();
+
+    connect(_currentLevel->previewScane(), &IPreviewScaneWorld::sigPrepareIsFinished,
+            this, &Engine::start);
+
+    connect(_currentLevel->world(), &IPreviewScaneWorld::sigGameFinished,
+            this, &Engine::stop);
 }
 
 void Engine::setScane(QObject *newScane) {
@@ -81,28 +97,41 @@ QObject *Engine::player() const {
 }
 
 QObject *Engine::world() const {
+    if (!_currentLevel)
+        return nullptr;
+
     return _currentLevel->world();
 }
 
-int Engine::prepareLvlProgress() const {
-    return _prepareLvlProgress;
+void Engine::start(const StartData& config) const {
+    if (!_currentLevel)
+        return;
+
+
+    if (!_currentLevel->previewScane()->stop()) {
+        return;
+    }
+
+    _currentLevel->world()->start(config);
 }
 
-bool Engine::start() const {
+void Engine::stop() const {
     if (!_currentLevel)
-        return false;
+        return;
 
-    if (!_currentLevel->isInit())
-        return false;
 
-    return _currentWorld->start();
+    if (!_currentLevel->world()->stop()) {
+        return;
+    }
+
+    _currentLevel->previewScane()->start(_currentLevel->previewScane()->configuration());
 }
 
 QObject *Engine::getGameObject(int id) const {
-    if (!_currentWorld)
+    if (!_currentLevel)
         return nullptr;
 
-    return _currentWorld->getItem(id);
+    return _currentLevel->world()->getItem(id);
 }
 
 void Engine::startRenderLoop() {
@@ -122,17 +151,9 @@ bool Engine::isRendering() const {
     return _renderLoopFuture.isRunning();
 }
 
-void Engine::setPrepareLvlProgress(int newPrepareLvlProgress) {
-    if (_prepareLvlProgress == newPrepareLvlProgress) {
-        return;
-    }
-    _prepareLvlProgress = newPrepareLvlProgress;
-    emit prepareLvlProgressChanged();
-}
-
 void Engine::renderLoop() {
 
-    if (!_currentWorld)
+    if (!_currentLevel)
         return;
 
     while (_renderLoop) {
@@ -144,11 +165,33 @@ void Engine::renderLoop() {
             continue;
         }
 
-        _currentWorld->render(currentTime - _oldTimeRender);
+        _currentLevel->world()->render(currentTime - _oldTimeRender);
         _oldTimeRender = currentTime;
     }
+}
 
+Store *Engine::store() const {
+    return _store;
+}
 
+QObject *Engine::nest() const {
+    if (!_currentLevel)
+        return nullptr;
+
+    return _currentLevel->previewScane();
+}
+
+User *Engine::currentUser() const {
+    return _currentUser;
+}
+
+QObject *Engine::storeView() const {
+    return _storeView;
+}
+
+void Engine::initStore(const QMultiHash<int, const IItem *> &availabelItems) {
+    _store->init(availabelItems);
+    _storeView->init(_store, _currentUser);
 }
 
 }

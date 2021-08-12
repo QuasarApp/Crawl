@@ -27,7 +27,6 @@ class MainMenuModel;
 class IControl;
 class Store;
 
-
 /**
  * @brief The WordlData struct simple structure that contains information about world.
  */
@@ -68,25 +67,25 @@ public:
 
 private:
     QByteArray initTheme();
-    IWorld* getLastWorld();
+    ILevel *getLastLevel();
 
     void initStore(Store* store);
     /**
      * @brief addLvl This method should be add level to game.
      * @param levelWordl This is world instance
      */
-    void addLvl(IWorld* levelWordl);
+    void addLvl(ILevel* levelWordl);
 
     /**
-     * @brief start This method star new game in @a lvl
+     * @brief changeLevel This method star new game in @a lvl
      * @param lvl This is lvl name
      */
-    void start(const QString& lvl);
+    void changeLevel(int lvl);
 
-    QHash<QString, WordlData> _availableLvls;
+    QHash<int, WordlData> _availableLvls;
     MainMenuModel *_menu = nullptr;
     Engine *_engine = nullptr;
-    Store *_store = nullptr;
+
 };
 
 }

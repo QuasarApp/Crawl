@@ -18,11 +18,19 @@ ApplicationWindow {
     height: 720;
     title: qsTr("Crawl");
 
+    property var model: engine
+
     Metrix {id: metrix}
 
     Scene {
         id: scane;
-        model: engine;
+        model: (model)? model.world : null;
+        anchors.fill: parent;
+    }
+
+    Scene {
+        id: nest;
+        model: (model)? model.world : null;
         anchors.fill: parent;
     }
 

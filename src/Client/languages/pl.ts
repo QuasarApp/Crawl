@@ -40,15 +40,15 @@
 <context>
     <name>MainMenu</name>
     <message>
-        <source>Play game</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>My Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Exit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select level</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

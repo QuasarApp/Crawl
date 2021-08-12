@@ -7,7 +7,7 @@
 
 #include "iitem.h"
 #include "ilevel.h"
-#include "iworld.h"
+#include "ipreviewscaneworld.h"
 
 namespace CRAWL {
 
@@ -20,7 +20,7 @@ IWorld *ILevel::world() {
     return _world;
 }
 
-IWorld *ILevel::previewScane() {
+IPreviewScaneWorld *ILevel::previewScane() {
     return _previewScane;
 }
 
@@ -33,7 +33,7 @@ void ILevel::setWorld(IWorld *newWorld) {
     _world = newWorld;
 }
 
-void ILevel::setPreviewScane(IWorld *newPreviewScane) {
+void ILevel::setPreviewScane(IPreviewScaneWorld *newPreviewScane) {
     _previewScane = newPreviewScane;
 }
 

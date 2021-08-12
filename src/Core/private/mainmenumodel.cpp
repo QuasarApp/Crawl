@@ -37,8 +37,8 @@ void MainMenuModel::setAvailableLvls(const QList<QObject*> &newData) {
     _availableLvlsModel->setSource(newData);
 }
 
-void MainMenuModel::newGame(const QString &lvl) {
-    emit sigNewGame(lvl);
+void MainMenuModel::changeLevel(int lvl) {
+    emit sigLevelChanged(lvl);
 }
 
 }

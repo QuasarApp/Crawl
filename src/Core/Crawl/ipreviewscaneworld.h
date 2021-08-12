@@ -17,6 +17,7 @@ namespace CRAWL {
  */
 class CRAWL_EXPORT IPreviewScaneWorld: public IWorld
 {
+    Q_OBJECT
 public:
     /**
      * @brief IPreviewScaneWorld This is main constructo of the preview world model.
@@ -37,6 +38,8 @@ public:
     IControl* initUserInterface() const override;
     bool start(const StartData &config) override;
     bool stop() override;
+
+    const StartData &configuration() const;
 
 signals:
     /**

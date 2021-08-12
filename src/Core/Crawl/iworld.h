@@ -71,8 +71,9 @@ class CRAWL_EXPORT IWorld : public QObject, public IRender, public IItem
      * @see IWorld::getMenu
      * @see IWorld::userInterface
     */
-    Q_PROPERTY(QObject * menu READ menu WRITE setMenu NOTIFY menuChanged)
+    Q_PROPERTY(QObject * menu READ getMenu WRITE setMenu NOTIFY menuChanged)
     Q_PROPERTY(QString hdr READ hdr NOTIFY hdrChanged)
+    Q_PROPERTY(bool visible READ visible NOTIFY visibleChanged)
 
     Q_PROPERTY(int worldStatus READ wordlStatus WRITE setWorldStatus NOTIFY worldStatusChanged)
 
@@ -248,12 +249,17 @@ public:
      */
     void reset();
 
+    /**
+     * @brief visible This metohd retunr current value of the visible object.
+     * @return true if view is visible else false.
+     */
+    bool visible() const;
+
 signals:
     /**
      * @brief sigGameFinished This signal emit when game are finished
-     * @brief result This is player statistics after finished level,
      */
-    void sigGameFinished(GameResult result);
+    void sigGameFinished() const;
 
     /**
      * @brief sigOBjctsListChanged This signal emited when lvel status are changed.
@@ -303,6 +309,11 @@ signals:
      * @brief menuChanged This signal emited when user interface is changed.
      */
     void menuChanged();
+
+    /**
+     * @brief visibleChanged This signal emited when visible of the view changed.
+     */
+    void visibleChanged();
 
 protected:
 
@@ -420,6 +431,16 @@ protected:
      */
     const WorldRule *worldRules();
 
+    /**
+     * @brief setVisible This method sets visible propertye for the qml view.
+     * @param visible This is new value of a property
+     */
+    void setVisible(bool visible);
+
+    /**
+     * @brief playerIsDead This method will be invoked when player object get signal dead.
+     */
+    virtual void playerIsDead(PlayableObject*) const;
 
 protected slots:
     virtual void onIntersects(const IWorldItem * trigger, QList<const IWorldItem *> list);
@@ -524,6 +545,7 @@ private:
 
     int _targetFps = 60;
     bool _running = false;
+    bool _visible = true;
 
     // testing
     friend ClastersTest;
