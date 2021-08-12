@@ -33,7 +33,7 @@ class Store;
  */
 struct WordlData {
     WorldViewData* viewModel = nullptr;
-    IWorld * model = nullptr;
+    ILevel * model = nullptr;
 };
 
 /**

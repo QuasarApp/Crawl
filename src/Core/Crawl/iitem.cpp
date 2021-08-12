@@ -15,7 +15,7 @@ IItem::IItem() {
 
 }
 
-QList<const IItem *> IItem::childItems() const {
+const QHash<int, const IItem *>& IItem::childItems() const {
     return _childs;
 }
 
@@ -31,7 +31,7 @@ QMultiHash<int, const IItem *> IItem::childItemsRecursive() const {
 }
 
 void IItem::addChildItem(const IItem *item) {
-    _childs.push_back(item);
+    _childs.insert(item->itemId(), item);
 }
 
 unsigned int IItem::itemId() {
@@ -49,5 +49,25 @@ unsigned int IItem::itemId() const {
     }
 
     return qHash(itemTextId());
+}
+
+const QSet<int> &IItem::activeItems() const {
+    return _activeItems;
+}
+
+void IItem::setActiveItems(const QSet<int> &newActiveItems) {
+    _activeItems = newActiveItems;
+}
+
+void IItem::activate(int item) {
+    _activeItems += item;
+}
+
+void IItem::deactivate(int item) {
+    _activeItems -= item;
+}
+
+bool IItem::isActive(int item) {
+    return _childs.contains(item) && _activeItems.contains(item);
 }
 }

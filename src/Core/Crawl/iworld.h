@@ -64,6 +64,14 @@ class CRAWL_EXPORT IWorld : public QObject, public IRender, public IItem
     Q_PROPERTY(QVector3D cameraReleativePosition READ cameraReleativePosition NOTIFY cameraReleativePositionChanged)
     Q_PROPERTY(QQuaternion cameraRotation READ cameraRotation NOTIFY cameraRotationChanged)
     Q_PROPERTY(QObject * player READ player WRITE setPlayer NOTIFY playerChanged)
+
+    /**
+     * @brief menu This propertye contains user interface model that initialised on the IWorld::userInterface method. For get more information see the IContol class.
+     * @see IWorld::setMenu
+     * @see IWorld::getMenu
+     * @see IWorld::userInterface
+    */
+    Q_PROPERTY(QObject * menu READ menu WRITE setMenu NOTIFY menuChanged)
     Q_PROPERTY(QString hdr READ hdr NOTIFY hdrChanged)
 
     Q_PROPERTY(int worldStatus READ wordlStatus WRITE setWorldStatus NOTIFY worldStatusChanged)
@@ -75,12 +83,13 @@ public:
     void init() override;
 
     /**
-     * @brief initPlayer The implementation of This interface must be return playerObject.
+     * @brief initPlayer The implementation of This interface must be return playerObject by type.
+     * @param objectType This is type of requried snake object.
      * @return raw pointer to the player object.
      * @note The Palyer object will be deleted when wold distroed.
      *  So do not delete your created player pbject yuorself.
      */
-    virtual PlayableObject* initPlayer() const = 0;
+    virtual PlayableObject* initPlayer(int objectType) const = 0;
 
     /**
      * @brief initWorldRules The implementation of this interface must be retun initialized list of the world rules.
@@ -112,7 +121,7 @@ public:
      * @note The base implementation return default user interface.
      * @return pointer to userInterface.
      */
-    virtual Player *initUserInterface() const;
+    virtual IControl *initUserInterface() const;
 
     /**
      * @brief initHdrBackGround The implementation of this method must be return valid path to the hdr image map.
@@ -128,11 +137,11 @@ public:
     virtual void render(unsigned int tbfMsec) override;
 
     /**
-     * @brief initPlayerControl This method should be configure all connections of @a control object.
+     * @brief initControl This method should be configure all connections of @a control object.
      * @param control This is control object
      * @note override this method if you have own IControl object.
      */
-    virtual void initPlayerControl(IControl* control);
+    virtual void initControl(IControl* control);
 
     /**
      * @brief start This method will be invoked when user click start button.
@@ -173,13 +182,7 @@ public:
      * @brief userInterface This method return pointer to userinterface.
      * @return pointer to user interface
      */
-    IControl *userInterface() const;
-
-    /**
-     * @brief isInit This method return true if the object initialized correctly else false.
-     * @return true if the object initialized correctly else false.
-     */
-    bool isInit() const;
+    Player *userInterface();
 
     /**
      * @brief wordlStatus This method return current world status.
@@ -197,7 +200,7 @@ public:
      * @brief backgroundAI This method return current backgroundAI.
      * @return Raw pointer to background AI object
      */
-    IAI *backgroundAI() const;
+    IAI *backgroundAI();
 
     /**
      * @brief cameraRotation This method return curent camera rotation.
@@ -215,13 +218,35 @@ public:
      * @brief hdr This method return path to hdr map of the lvl.
      * @return path to hdr map of this lvl.
      */
-    const QString &hdr() const;
+    const QString &hdr();
 
     /**
      * @brief runAsBackGround This method run this world as a backgroud.
      * The player start new game and sets new control from the backgroundAI method.
      */
     void runAsBackGround();
+
+    /**
+     * @brief menu This method return current pointer to the user interface of this world.
+     * @return pointer of the user Interface of this world.
+     * @see IWorld::setMenu
+     * @see IWorld::menu
+     * @see IWorld::userInterface
+     */
+    QObject *getMenu() const;
+    /**
+     * @brief setMenu This method sets new user interface object fot this world.
+     * @param newMenu This is new object of user interfavce of this world.
+     * @see IWorld::getMenu
+     * @see IWorld::menu
+     * @see IWorld::userInterface
+     */
+    void setMenu(QObject *newMenu);
+
+    /**
+     * @brief reset This method reset all world objects.
+     */
+    void reset();
 
 signals:
     /**
@@ -273,6 +298,11 @@ signals:
      * @param objects this is iterator of the world rule object.
      */
     void sigWorldChanged(WorldRule::const_iterator objects);
+
+    /**
+     * @brief menuChanged This signal emited when user interface is changed.
+     */
+    void menuChanged();
 
 protected:
 
@@ -372,15 +402,27 @@ protected:
      */
     void updateWorld();
 
-protected slots:
-    virtual void onIntersects(const IWorldItem * trigger, QList<const IWorldItem *> list);
-
-private slots:
+    /**
+     * @brief running This varibale check in render function if the running is true then render loop are working correctly
+     * @return status of the render function
+     */
+    bool running() const;
 
     /**
-     * @brief handleStop This slot invoked when user click return main menu button.
+     * @brief setRunning This method sets runnign render function status.
+     * @param newRunning new status of the render function
      */
-    void handleStop();
+    void setRunning(bool newRunning);
+
+    /**
+     * @brief worldRules This method return world cure map.
+     * @return world rule map.
+     */
+    const WorldRule *worldRules();
+
+
+protected slots:
+    virtual void onIntersects(const IWorldItem * trigger, QList<const IWorldItem *> list);
 
     /**
      * @brief worldChanged This method generate diff for the qml
@@ -389,31 +431,14 @@ private slots:
      */
     void worldChanged(WorldRule::const_iterator objects);
 
+private slots:
+
+    /**
+     * @brief handleStop This slot invoked when user click return main menu button.
+     */
+    void handleStop();
+
 private:
-    /**
-     * @brief prepare This method initialize world object.
-     * @note If object alredy initalize then this method do nothing.
-     * @return true if world initialized successful
-     */
-    bool prepare();
-
-    /**
-     * @brief reset This method reset all world objects.
-     */
-    void reset();
-
-
-    /**
-     * @brief running This varibale check in render function if the running is true then render loop are working correctly
-     * @return
-     */
-    bool running() const;
-
-    /**
-     * @brief setRunning
-     * @param newRunning
-     */
-    void setRunning(bool newRunning);
 
     /**
      * @brief clearItems This method remove all created items from world.
@@ -492,14 +517,13 @@ private:
     PlayableObject *_player = nullptr;
     IAI *_backgroundAI = nullptr;
     Player *_userInterface = nullptr;
+    QObject *_menu = nullptr;
+
     int _worldStatus = 0;
     QHash<QString, std::function<IWorldItem*()>> _registeredTypes;
 
     int _targetFps = 60;
     bool _running = false;
-
-    // engine
-    friend class Engine;
 
     // testing
     friend ClastersTest;

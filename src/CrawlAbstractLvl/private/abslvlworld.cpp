@@ -77,8 +77,8 @@ CRAWL::IControl *AbsLvlWorld::initUserInterface() const {
     return new AbsLvlControl();
 }
 
-void AbsLvlWorld::initPlayerControl(CRAWL::IControl *control) {
-    return IWorld::initPlayerControl(control);
+void AbsLvlWorld::initControl(CRAWL::IControl *control) {
+    return IWorld::initControl(control);
 }
 
 QString AbsLvlWorld::itemTextId() const {

@@ -12,6 +12,7 @@
 #include <QObject>
 #include <QQmlEngine>
 #include <Crawl/diff.h>
+#include <Crawl/ilevel.h>
 
 namespace CRAWL {
 
@@ -28,7 +29,6 @@ class Engine : public QObject {
     Q_PROPERTY(QObject* world READ world NOTIFY worldChanged)
 
     Q_PROPERTY(QObject* scane READ scane WRITE setScane NOTIFY scaneChanged)
-    Q_PROPERTY(QObject* menu READ menu WRITE setMenu NOTIFY menuChanged)
     Q_PROPERTY(int _prepareLvlProgress READ prepareLvlProgress WRITE setPrepareLvlProgress NOTIFY prepareLvlProgressChanged)
 
 public:
@@ -48,10 +48,10 @@ public:
     void setQmlEngine(QQmlEngine *newEngine);
 
     /**
-     * @brief setWorld This method set new world for game.
-     * @param world This is pointer to new world.
+     * @brief setLevel This method set new world level for game.
+     * @param world This is pointer to new world level.
      */
-    void setWorld(IWorld *world);
+    void setLevel(ILevel *world);
 
     /**
      * @brief setScane This method sets new scane object. The scane object are
@@ -76,19 +76,6 @@ public:
      * @return world object
      */
     QObject* world() const;
-
-    /**
-     * @brief menu This method return pointer to cistom menu.
-     * @return pointer to custom menu.
-     * @note menu creating in the Wolrld object.
-     */
-    QObject *menu() const;
-
-    /**
-     * @brief setMenu This method sets new menu object.
-     * @param newMenu
-     */
-    void setMenu(QObject *newMenu);
 
     /**
      * @brief prepareLvlProgress This method return rurrent progress of the loading lvl.
@@ -130,19 +117,18 @@ signals:
     void playerChanged();
     void worldChanged();
 
-    void menuChanged();
     void prepareLvlProgressChanged();
 
 private:
     void setPrepareLvlProgress(int newPrepareLvlProgress);
-    bool prepareNewWorld();
     void renderLoop();
 
 
     QObject *_scane = nullptr;
     QQmlEngine *_engine = nullptr;
-    IWorld* _currentWorld = nullptr;
-    QObject *_menu = nullptr;
+//    IWorld* _currentWorld = nullptr;
+    ILevel* _currentLevel = nullptr;
+
     int _prepareLvlProgress;
 
     quint64 _oldTimeRender = 0;

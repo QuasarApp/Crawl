@@ -24,6 +24,11 @@ IWorld *ILevel::previewScane() {
     return _previewScane;
 }
 
+void ILevel::reset() {
+    _world->reset();
+    _previewScane->reset();
+}
+
 void ILevel::setWorld(IWorld *newWorld) {
     _world = newWorld;
 }

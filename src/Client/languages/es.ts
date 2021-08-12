@@ -53,6 +53,17 @@
     </message>
 </context>
 <context>
+    <name>PreviewControl</name>
+    <message>
+        <source>Back to menu.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SelectLvlView</name>
     <message>
         <source>Start</source>

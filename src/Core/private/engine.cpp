@@ -37,27 +37,33 @@ void Engine::setQmlEngine(QQmlEngine *newEngine) {
     _engine = newEngine;
 }
 
-void Engine::setWorld(IWorld *world) {
-    if (_currentWorld == world)
+void Engine::setLevel(ILevel *world) {
+    if (_currentLevel == world)
         return ;
 
-    if (_currentWorld) {
-        _currentWorld->reset();
+    if (_currentLevel) {
+        _currentLevel->reset();
     }
 
-    _currentWorld = world;
+    _currentLevel = world;
     emit worldChanged();
 
-    if (!prepareNewWorld()) {
-        QuasarAppUtils::Params::log("Failed to init world. World name: " + _currentWorld->itemName(),
-                                    QuasarAppUtils::Error);
+    if (_currentLevel && _currentLevel->world() && !_currentLevel->world()->)) {
 
-        _currentWorld = nullptr;
+        if (_currentLevel->world()) {
+            QuasarAppUtils::Params::log("Failed to init world. World name: " + _currentLevel->world()->itemName(),
+                                        QuasarAppUtils::Error);
+        } else {
+            QuasarAppUtils::Params::log("Failed to init world. The World object is null! ",
+                                        QuasarAppUtils::Error);
+        }
+
+        _currentLevel = nullptr;
         return;
     }
 
     startRenderLoop();
-    _currentWorld->runAsBackGround();
+    _currentLevel->world()->runAsBackGround();
 }
 
 void Engine::setScane(QObject *newScane) {
@@ -68,28 +74,14 @@ void Engine::setScane(QObject *newScane) {
 }
 
 QObject *Engine::player() const {
-    if (_currentWorld)
-        return _currentWorld->_player;
+    if (_currentLevel && _currentLevel->world())
+        return _currentLevel->world()->player();
 
     return nullptr;
 }
 
 QObject *Engine::world() const {
-    return _currentWorld;
-}
-
-
-QObject *Engine::menu() const {
-    return _menu;
-}
-
-void Engine::setMenu(QObject *newMenu) {
-    if (_menu == newMenu) {
-        return;
-    }
-
-    _menu = newMenu;
-    emit menuChanged();
+    return _currentLevel->world();
 }
 
 int Engine::prepareLvlProgress() const {
@@ -97,10 +89,10 @@ int Engine::prepareLvlProgress() const {
 }
 
 bool Engine::start() const {
-    if (!_currentWorld)
+    if (!_currentLevel)
         return false;
 
-    if (!_currentWorld->isInit())
+    if (!_currentLevel->isInit())
         return false;
 
     return _currentWorld->start();
@@ -136,20 +128,6 @@ void Engine::setPrepareLvlProgress(int newPrepareLvlProgress) {
     }
     _prepareLvlProgress = newPrepareLvlProgress;
     emit prepareLvlProgressChanged();
-}
-
-bool Engine::prepareNewWorld() {
-    if (!_currentWorld->prepare()) {
-        return false;
-    }
-
-    if (!_currentWorld->userInterface()->init()) {
-        return false;
-    }
-
-    setMenu(_currentWorld->userInterface());
-
-    return true;
 }
 
 void Engine::renderLoop() {

@@ -27,7 +27,7 @@ public:
     QString itemName() const override;
     int cost() const override;
     CRAWL::IControl *initUserInterface() const override;
-    void initPlayerControl(CRAWL::IControl *control) override;
+    void initControl(CRAWL::IControl *control) override;
     CRAWL::PlayableObject *initPlayer() const override;
     CRAWL::IAI *initBackGroundAI() const override;
     QString itemTextId() const override;

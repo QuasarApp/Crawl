@@ -46,7 +46,7 @@ View3D {
         property var arrayObjects: []
         property var world: (model)? model.world: null
 
-        property var gameMenuModel: (model)? model.menu: null
+        property var gameMenuModel: (world)? world.menu: null
         property var player: (world)? world.player: null
         property var releativeCameraPosition: (world)? world.cameraReleativePosition: null
         property var progress: (model)? model.prepareLvlProgress: null

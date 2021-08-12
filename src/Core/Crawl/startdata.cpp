@@ -35,4 +35,12 @@ void StartData::setSnakeType(int newSnake) {
     _snakeType = newSnake;
 }
 
+const QSet<int> &StartData::snakePerks() const {
+    return _snakePerks;
+}
+
+void StartData::setSnakePerks(const QSet<int> &newSnakePerks) {
+    _snakePerks = newSnakePerks;
+}
+
 }

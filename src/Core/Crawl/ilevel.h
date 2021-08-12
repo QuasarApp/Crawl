@@ -41,6 +41,11 @@ public:
      */
     IWorld* previewScane();
 
+    /**
+     * @brief reset This method unload all loaded data from level.
+     */
+    void reset();
+
 protected:
     /**
      * @brief setWorld This method sets new world pointer.

@@ -104,8 +104,8 @@ CRAWL::IControl *World::initUserInterface() const {
     return IWorld::initUserInterface();
 }
 
-void World::initPlayerControl(CRAWL::IControl *control) {
-    return IWorld::initPlayerControl(control);
+void World::initControl(CRAWL::IControl *control) {
+    return IWorld::initControl(control);
 }
 
 CRAWL::PlayableObject *World::initPlayer() const {
