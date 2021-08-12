@@ -89,6 +89,10 @@ void IPreviewScaneWorld::handleSelect(int item, bool isSelected) {
     }
 }
 
+const StartData &IPreviewScaneWorld::configuration() const {
+    return _configuration;
+}
+
 void IPreviewScaneWorld::initControl(IControl *control) {
     auto controlObject = dynamic_cast<PreviewControl*>(control);
 

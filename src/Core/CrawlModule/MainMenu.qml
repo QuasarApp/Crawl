@@ -38,7 +38,7 @@ Item {
 
         MainMenuButton {
             id: play
-            text: qsTr("Play game")
+            text: qsTr("Select level")
 
             onClicked: {
                 selectLvl.open()

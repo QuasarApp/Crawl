@@ -45,6 +45,18 @@ public:
      */
     const IItem* getItemById(int id) const;
 
+    /**
+     * @brief size This method return count of the available items in store.
+     * @return count of the available items.
+     */
+    int size() const;
+
+    /**
+     * @brief keysList This method return a list of available keys
+     * @return a list of available keys
+     */
+    QList<int> keysList() const;
+
 private:
     QMultiHash<int, const IItem*> _store;
 };

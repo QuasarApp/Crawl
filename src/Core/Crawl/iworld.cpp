@@ -67,6 +67,10 @@ void IWorld::render(unsigned int tbfMsec) {
     _ItemsMutex.unlock();
 
     for (int id: toRemove) {
+        if (id == static_cast<IWorldItem *>(player())->guiId()) {
+            playerIsDead(static_cast<PlayableObject*>(player()));
+        }
+
         removeItem(id);
     }
 
@@ -97,6 +101,7 @@ bool IWorld::start(const StartData& config) {
     setTargetFps(60);
     setRunning(true);
     _eventServer->start();
+    setVisible(true);
 
     return true;
 }
@@ -134,6 +139,7 @@ IWorldItem *IWorld::generate(const QString &objectType) const {
 
 bool IWorld::stop() {
     setRunning(false);
+    setVisible(false);
     _eventServer->stop();
     return true;
 }
@@ -149,7 +155,7 @@ IWorldItem *IWorld::getItem(int id) const {
 }
 
 void IWorld::clearItems() {
-    stop();
+    IWorld::stop();
 
     while (_items.cbegin() != _items.cend()) {
         removeItem(*_items.cbegin());
@@ -307,6 +313,19 @@ const WorldRule *IWorld::worldRules() {
     return _worldRules;
 }
 
+void IWorld::setVisible(bool visible) {
+    if (_visible == visible) {
+        return;
+    }
+
+    _visible = visible;
+    emit visibleChanged();
+}
+
+void IWorld::playerIsDead(PlayableObject *) const {
+    emit sigGameFinished();
+}
+
 bool IWorld::running() const {
     return _running;
 }
@@ -390,7 +409,7 @@ void IWorld::setCameraReleativePosition(const QVector3D &newCameraReleativePosit
 }
 
 void IWorld::handleStop() {
-    runAsBackGround();
+    stop();
 }
 
 const QVector3D &IWorld::cameraReleativePosition() const {
@@ -465,6 +484,11 @@ void IWorld::setMenu(QObject *newMenu) {
 
     _menu = newMenu;
     emit menuChanged();
+}
+
+bool IWorld::visible() const
+{
+    return _visible;
 }
 
 }

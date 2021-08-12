@@ -15,6 +15,7 @@ namespace CRAWL {
 
 class IWorld;
 class IItem;
+class IPreviewScaneWorld;
 
 /**
  * @brief The ILevel class This interface make the world instance object.
@@ -39,7 +40,7 @@ public:
      * @return pointer to the model of the preview scane.
      * @see ILevel::setPreviewScane
      */
-    IWorld* previewScane();
+    IPreviewScaneWorld* previewScane();
 
     /**
      * @brief reset This method unload all loaded data from level.
@@ -61,12 +62,12 @@ protected:
      * @note The @a newPreviewScane item will be distroued with the parent object.
      * @see ILevel::previewScane
      */
-    void setPreviewScane(IWorld *newPreviewScane);
+    void setPreviewScane(IPreviewScaneWorld *newPreviewScane);
 
 private:
 
     IWorld* _world = nullptr;
-    IWorld* _previewScane = nullptr;
+    IPreviewScaneWorld* _previewScane = nullptr;
 };
 
 }

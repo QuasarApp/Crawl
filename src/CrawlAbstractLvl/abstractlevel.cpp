@@ -9,10 +9,9 @@
 #include "abslvlworld.h"
 
 AbstractLevel::AbstractLevel() {
-
-}
-
-CRAWL::IWorld *AbstractLevel::world() {
     initAbstractLvlResources();
-    return new AbstractLvl::AbsLvlWorld();
+
+    setWorld(new AbstractLvl::AbsLvlWorld());
+    setPreviewScane(new AbstractLvl::AbsLvlWorld());
 }
+

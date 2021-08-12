@@ -23,6 +23,7 @@
 #include "pluginloader.h"
 #include <viewsolutions.h>
 #include "worldstatus.h"
+#include "user.h"
 
 namespace CRAWL {
 
@@ -36,18 +37,27 @@ QByteArray ClientApp::initTheme() {
     }
 }
 
+ILevel *ClientApp::getLastLevel() {
+    for (const auto &data : qAsConst(_availableLvls)) {
+        if (data.model && data.model->world() && _engine->currentUser() &&
+                _engine->currentUser()->isUnlocked(data.model->world()->itemId())) {
+            return data.model;
+        }
+    }
+
+    return nullptr;
+}
+
 ClientApp::ClientApp() {
     _engine = new Engine();
     _menu = new MainMenuModel();
-    _store = new Store();
 
-    connect(_menu, &MainMenuModel::sigNewGame, this, &ClientApp::start);
+    connect(_menu, &MainMenuModel::sigLevelChanged, this, &ClientApp::changeLevel);
 }
 
 ClientApp::~ClientApp() {
     delete _menu;
     delete _engine;
-    delete _store;
 
     for (auto it = _availableLvls.begin(); it != _availableLvls.end(); ++it) {
         delete it.value().viewModel;
@@ -57,26 +67,17 @@ ClientApp::~ClientApp() {
     _availableLvls.clear();
 }
 
-IWorld *ClientApp::getLastWorld() {
-    for (const auto &data : qAsConst(_availableLvls)) {
-        if (data.viewModel && data.viewModel->unlocked()) {
-            return data.model;
-        }
-    }
-
-    return nullptr;
-}
-
 void ClientApp::initStore(Store *store) {
     QMultiHash<int, const IItem *> storeItems;
     for (const auto &data : qAsConst(_availableLvls)) {
-        storeItems.unite(data.model->childItemsRecursive());
+        if (data.model && data.model->world())
+            storeItems.unite(data.model->world()->childItemsRecursive());
     }
 
     store->init(storeItems);
 }
 
-void ClientApp::start(const QString &lvl) {
+void ClientApp::changeLevel(int lvl) {
     WordlData data = _availableLvls.value(lvl);
 
     if (!data.model) {
@@ -91,8 +92,7 @@ void ClientApp::start(const QString &lvl) {
         return;
     }
 
-    _engine->setWorld(data.model);
-    _engine->start();
+    _engine->setLevel(data.model);
 }
 
 bool ClientApp::init(QQmlApplicationEngine *engine) {
@@ -133,19 +133,19 @@ bool ClientApp::init(QQmlApplicationEngine *engine) {
     if (engine->rootObjects().isEmpty())
         return false;
 
-    _engine->setWorld(getLastWorld());
+    _engine->setLevel(getLastLevel());
     _engine->setQmlEngine(engine);
-    initStore(_store);
+    initStore(_engine->store());
 
     return true;
 }
 
-void ClientApp::addLvl(IWorld *levelWordl) {
+void ClientApp::addLvl(ILevel *levelWordl) {
     WordlData data;
 
     data.model = levelWordl;
-    data.viewModel = new WorldViewData(data.model);
-    _availableLvls.insert(data.model->itemName(), data);
+    data.viewModel = new WorldViewData(data.model->world());
+    _availableLvls.insert(data.model->world()->itemId(), data);
     _menu->addWorldViewModel(data.viewModel);
 }
 

@@ -43,4 +43,12 @@ bool Store::init(const QMultiHash<int, const IItem *> &availabelItems) {
 const IItem *Store::getItemById(int id) const {
     return _store.value(id, nullptr);
 }
+
+int Store::size() const {
+    return _store.size();
+}
+
+QList<int> Store::keysList() const {
+    return QList<int>{_store.keyBegin(), _store.keyEnd()};
+}
 }
