@@ -64,13 +64,13 @@ CRAWL::IControl *World::initUserInterface() const {
     return new TestControl();
 }
 
-void World::initPlayerControl(CRAWL::IControl *control) {
+void World::initControl(CRAWL::IControl *control) {
     if (auto test = dynamic_cast<TestControl*>(control)) {
         connect(test, &TestControl::xChanged, this, &World::handleXViewChanged);
         connect(test, &TestControl::yChanged, this, &World::handleYViewChanged);
     }
 
-    return IWorld::initPlayerControl(control);
+    return IWorld::initControl(control);
 }
 
 CRAWL::PlayableObject *World::initPlayer() const {

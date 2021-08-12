@@ -10,6 +10,7 @@
 #define IITEM_H
 
 #include <QList>
+#include <QSet>
 #include <QString>
 #include "global.h"
 
@@ -70,7 +71,7 @@ public:
      * @see IItem::addChildItem
      * @see IItem::childItemsRecursive
      */
-    QList<const IItem*> childItems() const;
+    const QHash<int, const IItem *> &childItems() const;
 
     /**
      * @brief childItemsRecursive This method return hash map of all items of this item.
@@ -102,9 +103,62 @@ public:
      */
     unsigned int itemId() const;
 
+    /**
+     * @brief activeItems This method return set of the actived items.
+     * @return set of the actived items.
+     * @see IItem::setActiveItems
+     * @see IItem::activate
+     * @see IItem::deactivate
+     * @see IItem::isActive
+     */
+    const QSet<int> &activeItems() const;
+
+    /**
+     * @brief setActiveItems This method sets new set of the actived items.
+     * @param newActiveItems This is new set of the ctived items.
+     * @see IItem::activeItems
+     * @see IItem::activate
+     * @see IItem::deactivate
+     * @see IItem::isActive
+     */
+    virtual void setActiveItems(const QSet<int> &newActiveItems);
+
+    /**
+     * @brief activate This method activate the child item with @a item id of this item.
+     * @param item activated item id.
+     * @see IItem::setActiveItems
+     * @see IItem::activeItems
+     * @see IItem::deactivate
+     * @see IItem::isActive
+     */
+    virtual void activate(int item);
+
+    /**
+     * @brief deactivate This method deactivate the child item with @a item id of this item.
+     * @param item deactivated item id.
+     * @see IItem::setActiveItems
+     * @see IItem::activate
+     * @see IItem::activeItems
+     * @see IItem::isActive
+     */
+    virtual void deactivate(int item);
+
+    /**
+     * @brief isActive This method will be return true if the @a item is actived. else false. If the item not child item of this object the this method return false.
+     * @param item This is checked item id.
+     * @return true if the @a item is actived. else false. If the item not child item of this object the this method return false.
+     * @see IItem::setActiveItems
+     * @see IItem::activate
+     * @see IItem::deactivate
+     * @see IItem::activeItems
+     */
+    bool isActive(int item);
+
 private:
     unsigned int _id = 0;
-    QList<const IItem*> _childs;
+    QHash<int, const IItem*> _childs;
+    QSet<int> _activeItems;
+
 };
 
 }

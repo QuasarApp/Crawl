@@ -42,10 +42,9 @@ IWorld::~IWorld() {
 }
 
 void IWorld::init() {
-    prepare();
 }
 
-Player *IWorld::initUserInterface() const {
+IControl *IWorld::initUserInterface() const {
     return new DefaultControl;
 }
 
@@ -78,7 +77,7 @@ void IWorld::render(unsigned int tbfMsec) {
         std::this_thread::sleep_for(std::chrono::milliseconds(waitTime));
 }
 
-void IWorld::initPlayerControl(IControl *control) {
+void IWorld::initControl(IControl *control) {
     auto controlObject = dynamic_cast<DefaultControl*>(control);
 
     if (controlObject) {
@@ -87,13 +86,12 @@ void IWorld::initPlayerControl(IControl *control) {
 }
 
 bool IWorld::start(const StartData& config) {
-    _player->setposition({0,0,0});
 
     setWorldStatus(WorldStatus::Game);
     _backgroundAI->stopAI();
-    _player->setControl(_userInterface);
-    setPlayer(initPlayer());
+    setPlayer(initPlayer(config.snakeType()));
 
+    userInterface()->setUserData(config.player());
 
     worldChanged(_worldRules->cbegin());
     setTargetFps(60);
@@ -122,6 +120,9 @@ void IWorld::setPlayer(QObject *newPlayer) {
         removeItem(_player->guiId());
 
     _player = newPlayerObject;
+    _player->setposition({0,0,0});
+    _player->setControl(userInterface());
+
     addItem(_player);
 
     emit playerChanged();
@@ -145,34 +146,6 @@ IWorldItem *IWorld::getItem(int id) const {
     QMutexLocker lock(&_ItemsMutex);
 
     return _items.value(id, nullptr);
-}
-
-bool IWorld::prepare() {
-
-    if (isInit())
-        return true;
-
-    _worldRules = initWorldRules();
-
-    setHdr(initHdrBackGround());
-    _userInterface = initUserInterface();
-    _backgroundAI = initBackGroundAI();
-
-    if (!isInit()) {
-        QuasarAppUtils::Params::log("Failed to init world implementation.");
-        reset();
-        return false;
-    }
-
-    if (!_worldRules->size()) {
-        reset();
-        return false;
-    }
-
-    initPlayerControl(_userInterface);
-    initPlayerControl(dynamic_cast<IControl*>(_backgroundAI));
-
-    return true;
 }
 
 void IWorld::clearItems() {
@@ -326,6 +299,14 @@ void IWorld::removeAnyItemFromGroup(const QString &group,
     removeItem(anyObjectId, removedObjectsList);
 }
 
+const WorldRule *IWorld::worldRules() {
+
+    if (!_worldRules)
+        initWorldRules();
+
+    return _worldRules;
+}
+
 bool IWorld::running() const {
     return _running;
 }
@@ -352,7 +333,7 @@ void IWorld::setHdr(const QString &hdr) {
 
 void IWorld::updateWorld() {
 
-    if (_currendWorldLevel->isEmpty() || !_worldRules || !_player)
+    if (_currendWorldLevel->isEmpty() || !_player)
         return;
 
     float distance = _player->position().x();
@@ -380,16 +361,24 @@ void IWorld::setCameraRotation(const QQuaternion &newCameraRotation) {
     emit cameraRotationChanged();
 }
 
-IAI *IWorld::backgroundAI() const {
+IAI *IWorld::backgroundAI() {
+
+    if (!_backgroundAI) {
+        _backgroundAI = initBackGroundAI();
+        initControl(dynamic_cast<IControl*>(_backgroundAI));
+    }
+
     return _backgroundAI;
 }
 
-IControl *IWorld::userInterface() const {
-    return _userInterface;
-}
+Player *IWorld::userInterface() {
 
-bool IWorld::isInit() const {
-    return _userInterface && _player && _worldRules && _backgroundAI;
+    if (!_userInterface) {
+        _userInterface = dynamic_cast<Player*>(initUserInterface());
+        initControl(_userInterface);
+    }
+
+    return _userInterface;
 }
 
 void IWorld::setCameraReleativePosition(const QVector3D &newCameraReleativePosition) {
@@ -447,12 +436,16 @@ void IWorld::setWorldStatus(int newWorldStatus) {
 }
 
 
-const QString &IWorld::hdr() const {
+const QString &IWorld::hdr() {
+    if (_hdrMap.isEmpty())
+        setHdr(initHdrBackGround());
+
     return _hdrMap;
 }
 
 void IWorld::runAsBackGround() {
-    start();
+    StartData data(nullptr, 0);
+    start(data);
 
     setWorldStatus(WorldStatus::Background);
     _player->setControl(dynamic_cast<IControl*>(_backgroundAI));
@@ -460,6 +453,18 @@ void IWorld::runAsBackGround() {
     _backgroundAI->startAI();
 
     setTargetFps(30);
+}
+
+QObject *IWorld::getMenu() const {
+    return _menu;
+}
+
+void IWorld::setMenu(QObject *newMenu) {
+    if (_menu == newMenu)
+        return;
+
+    _menu = newMenu;
+    emit menuChanged();
 }
 
 }

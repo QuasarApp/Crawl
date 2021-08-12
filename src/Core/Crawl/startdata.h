@@ -5,6 +5,10 @@
 //# of this license document, but changing it is not allowed.
 //#
 
+#include <QList>
+#include <QSet>
+#include "global.h"
+
 #ifndef STARTDATA_H
 #define STARTDATA_H
 
@@ -16,7 +20,7 @@ class PlayableObject;
 /**
  * @brief The StartData class This class contains arguments for starting new game session.
  */
-class StartData
+class CRAWL_EXPORT StartData
 {
 public:
     StartData();
@@ -51,9 +55,24 @@ public:
      */
     void setSnakeType(int newSnake);
 
+    /**
+     * @brief snakePerks This method return the list of the used snake upgrades.
+     * @return list of the used upgrades of the snake.
+     * @see StartData::setSnakePerks
+     */
+    const QSet<int> &snakePerks() const;
+
+    /**
+     * @brief setSnakePerks This method sets new list of the used upgrades.
+     * @param newSnakePerks This is list of the used upgrades.
+     * @see StartData::snakePerks
+     */
+    void setSnakePerks(const QSet<int> &newSnakePerks);
+
 private:
     User *_player = nullptr;
     int _snakeType;
+    QSet<int> _snakePerks;
 };
 
 }
