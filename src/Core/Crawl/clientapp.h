@@ -62,7 +62,7 @@ public:
         static_assert(std::is_base_of_v<ILevel, LevelType>,
                 "Plrease use the child classes of the ILevel interface for tegistering new levels in the crawl game.");
 
-        addLvl(LevelType().world());
+        addLvl(new LevelType());
     }
 
 private:

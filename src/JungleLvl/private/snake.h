@@ -23,10 +23,16 @@ class Snake: public CRAWL::Snake
 
 public:
     Snake();
-
+    QString itemTextId() const override;
+    QString itemName() const override;
+    QString description() const override;
+    QString image() const override;
+    int cost() const override;
+    int requiredTier() const override;
     // IWorldItem interface
 protected:
     unsigned int itemsCount() const override;
+
 
 };
 

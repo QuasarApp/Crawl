@@ -10,10 +10,7 @@
 #include "world.h"
 
 Jungle::Jungle() {
-
-}
-
-CRAWL::IWorld *Jungle::world() {
     initJungleLvlResources();
-    return new JungleLvl::World();
+
+    setWorld(new JungleLvl::World());
 }

@@ -9,10 +9,6 @@
 #include "world.h"
 
 TestLevel::TestLevel() {
-
-}
-
-CRAWL::IWorld *TestLevel::world() {
     initTestLvlResources();
-    return new TestLvl::World();
+    setWorld(new TestLvl::World());
 }
