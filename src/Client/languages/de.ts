@@ -2,6 +2,17 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="de">
 <context>
+    <name>AbstractLvl::AbsLvlSnake</name>
+    <message>
+        <source>AbsLvlSnake</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>AbsLvlSnake Snake</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>AbstractLvl::AbsLvlWorld</name>
     <message>
         <source>This a abstract lvl</source>

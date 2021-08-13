@@ -24,13 +24,13 @@ ApplicationWindow {
 
     Scene {
         id: scane;
-        model: (model)? model.world : null;
+        worldModel: (model)? model.world : null;
         anchors.fill: parent;
     }
 
     Scene {
         id: nest;
-        model: (model)? model.world : null;
+        worldModel: (model)? model.world : null;
         anchors.fill: parent;
     }
 

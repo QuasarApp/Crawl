@@ -21,10 +21,6 @@ class CRAWL_TEST_LEVEL_EXPORT TestLevel: public CRAWL::ILevel
 {
 public:
     TestLevel();
-
-    // ILevel interface
-public:
-    CRAWL::IWorld *world() override;
 };
 
 #endif // TESTLVL_H

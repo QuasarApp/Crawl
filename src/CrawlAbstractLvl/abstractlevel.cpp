@@ -12,6 +12,5 @@ AbstractLevel::AbstractLevel() {
     initAbstractLvlResources();
 
     setWorld(new AbstractLvl::AbsLvlWorld());
-    setPreviewScane(new AbstractLvl::AbsLvlWorld());
 }
 

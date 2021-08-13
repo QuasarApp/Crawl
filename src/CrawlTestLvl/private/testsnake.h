@@ -23,6 +23,15 @@ public:
     // AutoGenerateClaster interface
 public:
     unsigned int itemsCount() const override;
+
+    // IItem interface
+public:
+    QString itemTextId() const override;
+    QString itemName() const override;
+    QString description() const override;
+    QString image() const override;
+    int cost() const override;
+    int requiredTier() const override;
 };
 
 }

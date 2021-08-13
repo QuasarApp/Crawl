@@ -19,7 +19,7 @@ public:
 
     AbsLvlWorld();
 
-    CRAWL::PlayableObject *initPlayer() const override;
+    CRAWL::PlayableObject *initPlayer(int type) const override;
     CRAWL::WorldRule *initWorldRules() override;
     QString initHdrBackGround() const override;
     QString description() const override;

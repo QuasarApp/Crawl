@@ -73,7 +73,7 @@ void World::initControl(CRAWL::IControl *control) {
     return IWorld::initControl(control);
 }
 
-CRAWL::PlayableObject *World::initPlayer() const {
+CRAWL::PlayableObject *World::initPlayer(int) const {
     return new TestSnake();
 }
 

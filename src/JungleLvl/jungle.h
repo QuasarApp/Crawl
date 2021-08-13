@@ -26,9 +26,6 @@ class CRAWL_JUNGLE_LEVEL_EXPORT Jungle: public CRAWL::ILevel
 public:
     Jungle();
 
-    // ILevel interface
-public:
-    CRAWL::IWorld *world() override;
 };
 
 #endif // JUNGLE_H

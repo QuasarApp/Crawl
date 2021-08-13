@@ -25,4 +25,28 @@ TestSnake::TestSnake(): Snake("Snake") {
 unsigned int TestSnake::itemsCount() const {
     return 50;
 }
+
+QString TestSnake::itemTextId() const {
+    return "TestSnake";
+}
+
+QString TestSnake::itemName() const {
+    return tr("TestSnake");
+}
+
+QString TestSnake::description() const {
+    return tr("TestSnake Snake");
+}
+
+QString TestSnake::image() const {
+    return "";
+}
+
+int TestSnake::cost() const {
+    return 0;
+}
+
+int TestSnake::requiredTier() const {
+    return 0;
+}
 }
