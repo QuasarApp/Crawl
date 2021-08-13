@@ -60,6 +60,7 @@ bool User::isUnlocked(int item) const {
 
 void User::unclokItem(int item) {
     _unlockedItems.insert(item);
+    emit itemUlocked({item});
 }
 
 void User::droppItem(int item) {
@@ -68,6 +69,7 @@ void User::droppItem(int item) {
 
 void User::setUnlockedItems(const QSet<int> &newUnlockedItems) {
     _unlockedItems = newUnlockedItems;
+    emit itemUlocked(newUnlockedItems);
 }
 
 int User::recalcTier() {

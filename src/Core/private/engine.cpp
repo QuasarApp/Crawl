@@ -24,6 +24,7 @@ namespace CRAWL {
 Engine::Engine(QObject *parent): QObject(parent) {
     _store = new Store();
     _storeView = new StoreViewModel;
+    _currentUser = new User();
 
 }
 
@@ -36,14 +37,9 @@ QObject *Engine::scane() {
     return _scane;
 }
 
-void Engine::setQmlEngine(QQmlEngine *newEngine) {
-    if (_engine == newEngine)
-        return;
-
-    _engine = newEngine;
-}
-
 void Engine::setLevel(ILevel *world) {
+    _storeView->setVisible(!world);
+
     if (_currentLevel == world)
         return ;
 

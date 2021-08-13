@@ -60,7 +60,7 @@ QHash<int, QByteArray> StoreViewModel::roleNames() const {
     return roles;
 }
 
-void StoreViewModel::init(const Store * store, const User* user) {
+void StoreViewModel::init(Store *store, User *user) {
     setUser(user);
 
     int diff = store->size() - _keys.size();
@@ -86,8 +86,25 @@ void StoreViewModel::init(const Store * store, const User* user) {
     }
 }
 
-void StoreViewModel::setUser(const User *user) {
+void StoreViewModel::setUser(User *user) {
     _currentUser = user;
     emit dataChanged(index(0,0), index(rowCount() - 1, columnCount() - 1), {ItemWasBuy});
+}
+
+bool StoreViewModel::visible() const {
+    return _visible;
+}
+
+void StoreViewModel::setVisible(bool newVisible) {
+    if (_visible == newVisible)
+        return;
+    _visible = newVisible;
+    emit visibleChanged();
+}
+
+void StoreViewModel::buy(int item) {
+    if (_store && _currentUser) {
+        _store->buy(*_currentUser, item);
+    }
 }
 }

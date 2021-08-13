@@ -38,6 +38,17 @@
     </message>
 </context>
 <context>
+    <name>JungleLvl::Snake</name>
+    <message>
+        <source>JungleSnake</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>JungleSnake Snake</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>JungleLvl::World</name>
     <message>
         <source>Jungle world.</source>
@@ -97,6 +108,17 @@
     </message>
     <message>
         <source>In order for the new theme to take effect, you need to reload the game.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TestLvl::TestSnake</name>
+    <message>
+        <source>TestSnake</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TestSnake Snake</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

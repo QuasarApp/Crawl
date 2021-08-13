@@ -34,6 +34,11 @@ ApplicationWindow {
         anchors.fill: parent;
     }
 
+    StoreView {
+        model: (mainWindow.model)? mainWindow.model.storeView: null
+        anchors.fill: parent;
+    }
+
     MainMenu {
 
         model: (mainmenu)? mainmenu: null;

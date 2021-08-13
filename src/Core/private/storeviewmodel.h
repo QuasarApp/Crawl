@@ -21,6 +21,11 @@ class User;
 class StoreViewModel: public QAbstractListModel
 {
     Q_OBJECT
+    /**
+     * @brief visible If you sets thsis proprtye to false then store view qml view will be hide.
+    */
+    Q_PROPERTY(bool visible READ visible  NOTIFY visibleChanged)
+
 public:
     StoreViewModel();
 
@@ -36,13 +41,35 @@ public:
      * @param user This is new pointer to current user.
      * @see StoreViewModel::setUser
      */
-    void init(const Store * store, const User* user);
+    void init(Store * store, User* user);
 
     /**
      * @brief setUser This method update user pointer
      * @param user This is new pointer to current user.
      */
-    void setUser(const User* user);
+    void setUser(User* user);
+
+    /**
+     * @brief visible This method return true if the store view is visible.
+     * @return true if the store view is visible.
+     */
+    bool visible() const;
+
+    /**
+     * @brief setVisible This method chnge the visible state of the qml view of store.
+     * @param newVisible This is new value of the qml-store visible
+     */
+    void setVisible(bool newVisible);
+
+    /**
+     * @brief buy This is qml method for receive signal from view about buying item.
+     * @param item This is item id that user want to buy.
+     */
+    Q_INVOKABLE void buy(int item);
+
+signals:
+    void visibleChanged();
+
 private:
 
     enum StoreRoles {
@@ -53,9 +80,10 @@ private:
         ItemWasBuy
     };
 
-    const Store *_store = nullptr;
+    Store *_store = nullptr;
     QList<int> _keys;
-    const User* _currentUser = nullptr;
+    User* _currentUser = nullptr;
+    bool _visible = false;
 };
 
 }

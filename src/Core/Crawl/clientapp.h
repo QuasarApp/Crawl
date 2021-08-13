@@ -69,7 +69,12 @@ private:
     QByteArray initTheme();
     ILevel *getLastLevel();
 
-    void initStore(Store* store);
+    /**
+     * @brief initStore This method push to @a result map all available store items.
+     * @param result This is result value. Hash map of the available items.
+     */
+    void initStore(QMultiHash<int, const IItem *> &result);
+
     /**
      * @brief addLvl This method should be add level to game.
      * @param levelWordl This is world instance

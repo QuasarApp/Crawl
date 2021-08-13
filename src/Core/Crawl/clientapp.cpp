@@ -67,14 +67,11 @@ ClientApp::~ClientApp() {
     _availableLvls.clear();
 }
 
-void ClientApp::initStore(Store *store) {
-    QMultiHash<int, const IItem *> storeItems;
+void ClientApp::initStore(QMultiHash<int, const IItem *> & result) {
     for (const auto &data : qAsConst(_availableLvls)) {
         if (data.model && data.model->world())
-            storeItems.unite(data.model->world()->childItemsRecursive());
+            result.unite(data.model->world()->childItemsRecursive());
     }
-
-    store->init(storeItems);
 }
 
 void ClientApp::changeLevel(int lvl) {
@@ -133,9 +130,11 @@ bool ClientApp::init(QQmlApplicationEngine *engine) {
     if (engine->rootObjects().isEmpty())
         return false;
 
+    QMultiHash<int, const IItem *> availabelItems;
+    initStore(availabelItems);
+    _engine->initStore(availabelItems);
+
     _engine->setLevel(getLastLevel());
-    _engine->setQmlEngine(engine);
-    initStore(_engine->store());
 
     return true;
 }

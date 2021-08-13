@@ -25,5 +25,6 @@
         <file>CrawlModule/particles/Fire.qml</file>
         <file>CrawlModule/particles/Wint.qml</file>
         <file>CrawlModule/PreviewControl.qml</file>
+        <file>CrawlModule/StoreView.qml</file>
     </qresource>
 </RCC>

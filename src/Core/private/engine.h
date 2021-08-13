@@ -46,12 +46,6 @@ public:
     Q_INVOKABLE QObject* scane();
 
     /**
-     * @brief setQmlEngine This method sets qml engine
-     * @param newEngine This is pointer to the qml engine.
-     */
-    void setQmlEngine(QQmlEngine *newEngine);
-
-    /**
      * @brief setLevel This method set new world level for game.
      * @param world This is pointer to new world level.
      */
@@ -157,7 +151,6 @@ private:
     void renderLoop();
 
     QObject *_scane = nullptr;
-    QQmlEngine *_engine = nullptr;
     ILevel* _currentLevel = nullptr;
 
     quint64 _oldTimeRender = 0;
