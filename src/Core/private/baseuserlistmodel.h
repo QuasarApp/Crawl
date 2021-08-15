@@ -14,6 +14,7 @@ namespace CRAWL {
 
 class User;
 class IItem;
+class Store;
 
 /**
  * @brief The BaseUserListModel class This is base class wint implementation methods for working with user object.
@@ -61,7 +62,27 @@ public:
     QVariant data(const QModelIndex &index, int role) const override;
     QHash<int, QByteArray> roleNames() const override;
 
+    /**
+     * @brief store This method return pointer to current store object.
+     * @return current store object.
+     */
+    Store *store() const;
+
+    /**
+     * @brief setStore This method sets new pointer value for the store property.
+     * @param newStore This is new value of the store property
+     */
+    void setStore(Store *newStore);
+
 protected:
+
+    enum ViewItemRoles {
+        ItemId,
+        ItemName,
+        ItemImage,
+        ItemDescription,
+        ItemWasBuy
+    };
 
     /**
      * @brief getUser This method return pointer to current user.
@@ -92,7 +113,7 @@ protected:
      * @param id This is item id
      * @return const pointer to item object.
      */
-    virtual const IItem* getItem(int id) const = 0;
+    virtual const IItem* getItem(int id) const;
 
     /**
      * @brief getIndexById This method return index of the item by id.
@@ -102,17 +123,11 @@ protected:
     int getIndexById(int id) const;
 private:
 
-    enum ViewItemRoles {
-        ItemId,
-        ItemName,
-        ItemImage,
-        ItemDescription,
-        ItemWasBuy
-    };
-
     User * _user = nullptr;
     QList<int> _keys;
     QHash<int, int> _keysIndexes;
+    Store *_store = nullptr;
+
 };
 
 }

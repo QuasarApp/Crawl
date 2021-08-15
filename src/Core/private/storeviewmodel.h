@@ -43,9 +43,6 @@ public:
 protected:
     const IItem *getItem(int id) const;
 
-private:
-
-    Store *_store = nullptr;
 };
 
 }

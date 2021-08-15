@@ -12,21 +12,21 @@ StoreViewModel::StoreViewModel() {
 
 void StoreViewModel::init(Store *store, User *user) {
     setUser(user);
+    setStore(store);
     setKeys(store->keysList());
-    _store = store;
 }
 
 void StoreViewModel::buy(int item) {
-    if (_store && getUser()) {
-        _store->buy(*getUser(), item);
+    if (store() && getUser()) {
+        store()->buy(*getUser(), item);
     }
 }
 
 const IItem *StoreViewModel::getItem(int id) const {
-    if (!_store)
+    if (!store())
         return nullptr;
 
-    return _store->getItemById(id);
+    return store()->getItemById(id);
 }
 
 }

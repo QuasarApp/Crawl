@@ -47,7 +47,7 @@ QObject *MainMenuModel::storeView() const {
     return _storeView;
 }
 
-AvailableLevelsModel *MainMenuModel::selectLevelModle() const {
+QObject *MainMenuModel::selectLevelModle() const {
     return _selectLevelModle;
 }
 

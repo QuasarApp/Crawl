@@ -28,18 +28,11 @@ class AvailableLevelsModel: public BaseUserListModel
      * @see AvailableLevelsModel::getCurrentLevel
      * @see AvailableLevelsModel::setCurrentLevel
      * @see AvailableLevelsModel::currentLevelChanged
-
     */
     Q_PROPERTY(int currentLevel READ getCurrentLevel WRITE setCurrentLevel NOTIFY currentLevelChanged)
 
 public:
     AvailableLevelsModel();
-
-    /**
-     * @brief setAllLevels This method sets list of the available levels in game.
-     * @param newAllLevels This is new value of thge availabel games list.
-     */
-    void setAllLevels(const QList<const IItem *> &newAllLevels);
 
     /**
      * @brief getCurrentLevel This method return value of the curernt level property
@@ -66,10 +59,6 @@ public:
     Q_INVOKABLE void select(int levelId);
 
 
-    // BaseUserListModel interface
-protected:
-    const IItem *getItem(int id) const;
-
 signals:
     /**
      * @brief currentLevelChanged This signal emited when the currentLevel propertye is changed.
@@ -86,7 +75,6 @@ signals:
     void sigUserSelectLevel(int level);
 
 private:
-    QList<const IItem*> _allLevels;
     int currentLevel = -1;
 
 };

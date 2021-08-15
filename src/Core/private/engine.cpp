@@ -138,6 +138,10 @@ void Engine::handleUnlockedItemsListChanged(const QSet<int> &newSet) {
     static_cast<AvailableLevelsModel*>(_menu->selectLevelModle())->setKeys(QList<int>(newSet.begin(), newSet.end()));
 }
 
+void Engine::handleLevelChanged(int levelId) {
+
+}
+
 QObject *Engine::getGameObject(int id) const {
     if (!_currentLevel)
         return nullptr;
@@ -227,14 +231,20 @@ void Engine::init(const QMultiHash<int, const IItem *> &availabelItems) {
     _store->init(availabelItems);
     static_cast<StoreViewModel*>(_menu->storeView())->init(_store, _currentUser);
 
-    QList<const IItem*> availableWorlds;
-    for (const IItem * item : availabelItems) {
+    QList<int> availableWorlds;
+    for (int id : _currentUser->unlockedItems()) {
+        auto item = availabelItems.value(id);
         if (item->itemType() == IWorld::type()) {
-            availableWorlds.push_back(item);
+            availableWorlds.push_back(item->itemId());
         }
     }
 
-    static_cast<AvailableLevelsModel*>(_menu->selectLevelModle())->setAllLevels(availableWorlds);
+#define selectedLevelModel static_cast<AvailableLevelsModel*>(_menu->selectLevelModle())
+    selectedLevelModel->setStore(_store);
+    selectedLevelModel->setKeys(availableWorlds);
+
+    connect(selectedLevelModel, &AvailableLevelsModel::sigUserSelectLevel,
+            this, &Engine::handleLevelChanged);
 }
 
 }

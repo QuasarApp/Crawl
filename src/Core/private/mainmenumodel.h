@@ -31,7 +31,7 @@ class MainMenuModel : public QObject
     Q_PROPERTY(QObject* userSettingsModel READ userSettingsModel NOTIFY userSettingsModelChanged)
     Q_PROPERTY(bool visible READ getVisible WRITE setVisible NOTIFY visibleChanged)
     Q_PROPERTY(QObject * storeView READ storeView NOTIFY storeViewChanged)
-    Q_PROPERTY(AvailableLevelsModel * selectLevelModle READ selectLevelModle NOTIFY selectLevelModleChanged)
+    Q_PROPERTY(QObject * selectLevelModle READ selectLevelModle NOTIFY selectLevelModleChanged)
 
 public:
     MainMenuModel(QObject *ptr = nullptr);
@@ -65,7 +65,7 @@ public:
      * @brief selectLevelModle This method return pointer to the available levels model.
      * @return pointer to main available levels model.
      */
-    AvailableLevelsModel *selectLevelModle() const;
+    QObject *selectLevelModle() const;
 
 
 signals:

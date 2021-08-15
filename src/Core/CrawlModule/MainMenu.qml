@@ -118,7 +118,7 @@ Item {
         id: selectLvl
         source: SelectLevelView {
             id: selectLvlView
-            model: root.model ? root.model.availableLvlsModel: null
+            model: root.model ? root.model.selectLevelModle: null
 
         }
 

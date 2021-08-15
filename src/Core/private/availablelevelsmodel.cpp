@@ -15,16 +15,6 @@ AvailableLevelsModel::AvailableLevelsModel() {
 
 }
 
-void AvailableLevelsModel::setAllLevels(const QList<const IItem *> &newAllLevels) {
-    _allLevels = newAllLevels;
-    QList<int> keys;
-    for (auto level: qAsConst(_allLevels)) {
-        keys += level->itemId();
-    }
-
-    setKeys(keys);
-}
-
 int AvailableLevelsModel::getCurrentLevel() const {
     return currentLevel;
 }
@@ -38,12 +28,9 @@ void AvailableLevelsModel::setCurrentLevel(int newCurrentLevel) {
 
 void AvailableLevelsModel::select(int levelId) {
     if (getUser()->isUnlocked(levelId)) {
+        setCurrentLevel(levelId);
         emit sigUserSelectLevel(levelId);
     }
-}
-
-const IItem *AvailableLevelsModel::getItem(int id) const {
-    return _allLevels.value(id, nullptr);
 }
 
 }

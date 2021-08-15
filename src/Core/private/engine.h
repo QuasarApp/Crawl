@@ -174,6 +174,11 @@ private slots:
      */
     void handleUnlockedItemsListChanged(const QSet<int>& newSet);
 
+    /**
+     * @brief handleLevelChanged This slot invoked when user select new level.
+     * @param levelId level id
+     */
+    void handleLevelChanged(int levelId);
 private:
     void renderLoop();
 

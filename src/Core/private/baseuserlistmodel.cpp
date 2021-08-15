@@ -8,7 +8,7 @@
 
 #include "baseuserlistmodel.h"
 #include "user.h"
-
+#include "store.h"
 #include <Crawl/iitem.h>
 
 namespace CRAWL {
@@ -43,6 +43,14 @@ int BaseUserListModel::getIndexById(int id) const {
     return _keysIndexes.value(id, -1);
 }
 
+Store *BaseUserListModel::store() const {
+    return _store;
+}
+
+void BaseUserListModel::setStore(Store *newStore) {
+    _store = newStore;
+}
+
 const QList<int> &BaseUserListModel::keys() const {
     return _keys;
 }
@@ -75,7 +83,7 @@ void BaseUserListModel::setKeys(const QList<int> &visibleKeysList) {
 void BaseUserListModel::addKey(int newKey) {
     beginInsertRows({}, _keys.size(), _keys.size());
     _keys.push_back(newKey);
-    _keysIndexes[newKey] = _keys.size();
+    _keysIndexes[newKey] = _keys.size() - 1;
     endInsertRows();
 }
 
@@ -83,12 +91,12 @@ void BaseUserListModel::removeKey(int oldKey) {
     int idx = getIndexById(oldKey);
 
     if (idx >= 0) {
-        beginInsertRows({}, _keys.size(), _keys.size());
+        beginRemoveRows({}, _keys.size(), _keys.size());
 
         _keys.removeAt(idx);
         _keysIndexes.remove(oldKey);
 
-        endInsertRows();
+        endRemoveRows();
 
     }
 }
@@ -159,7 +167,10 @@ void BaseUserListModel::handleDroppedItem(int item) {
 
 void BaseUserListModel::handleUnlockedItemsListChanged(const QSet<int> &) {
     emit dataChanged(index(0,0), index(_keys.size() - 1, 0), {ItemWasBuy});
+}
 
+const IItem *BaseUserListModel::getItem(int id) const {
+    return _store->getItemById(id);
 }
 
 }
