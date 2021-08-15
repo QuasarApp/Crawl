@@ -1,0 +1,64 @@
+import QtQuick
+import ViewSolutionsModule
+import QtQuick.Controls
+import QtQuick.Controls.Material
+import QtQuick.Layouts
+
+Page {
+    id: store
+    property var model: null;
+    visible: model && model.visible
+    ColumnLayout {
+        anchors.fill: parent
+        ListView {
+            id: listView
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            model: store.model
+            delegate: delegateRow
+
+            Component {
+                id: delegateRow
+
+                Rectangle {
+                    anchors.fill: parent
+
+                    color: (itemId == currentLevel) ? "#ffaf2c": "#00000000"
+                    RowLayout {
+                        width: listView.width
+                        height: 100
+                        Image {
+                            id: img
+                            fillMode: Image.PreserveAspectCrop
+                            source: itemImage
+                            Layout.fillHeight: true
+                            Layout.preferredWidth: height * 2
+                        }
+
+                        Label {
+                            text: itemName
+                            Layout.fillHeight: true
+                        }
+
+                        Label {
+                            text: itemDescription
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
+                        }
+
+                        Button {
+                            text: qsTr("Select");
+                            visible: !itemWasBuy
+
+                            onClicked: () => {
+                                            if (store.model)
+                                                store.model.select(itemId);
+                                       }
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+}

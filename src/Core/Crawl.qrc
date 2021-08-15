@@ -26,5 +26,6 @@
         <file>CrawlModule/particles/Wint.qml</file>
         <file>CrawlModule/PreviewControl.qml</file>
         <file>CrawlModule/StoreView.qml</file>
+        <file>CrawlModule/SelectLevelView.qml</file>
     </qresource>
 </RCC>

@@ -8,7 +8,7 @@
 #ifndef STOREVIEWMODEL_H
 #define STOREVIEWMODEL_H
 
-#include <QAbstractListModel>
+#include "baseuserlistmodel.h"
 
 namespace CRAWL {
 
@@ -18,7 +18,7 @@ class User;
 /**
  * @brief The StoreViewModel class This is view model of the store. The object of this class should be initialized it he Store class.
  */
-class StoreViewModel: public QAbstractListModel
+class StoreViewModel: public BaseUserListModel
 {
     Q_OBJECT
     /**
@@ -29,11 +29,6 @@ class StoreViewModel: public QAbstractListModel
 public:
     StoreViewModel();
 
-    int rowCount(const QModelIndex &parent = {}) const override;
-    int columnCount(const QModelIndex &parent = {}) const override;
-    QVariant data(const QModelIndex &index, int role) const override;
-    QHash<int, QByteArray> roleNames() const override;
-
     /**
      * @brief init This method initialize data of the view model.
      * @param _store This is poiter to store that contains all inforamtion about store items.
@@ -41,12 +36,6 @@ public:
      * @see StoreViewModel::setUser
      */
     void init(Store * store, User* user);
-
-    /**
-     * @brief setUser This method update user pointer
-     * @param user This is new pointer to current user.
-     */
-    void setUser(User* user);
 
     /**
      * @brief visible This method return true if the store view is visible.
@@ -66,33 +55,20 @@ public:
      */
     Q_INVOKABLE void buy(int item);
 
+    // BaseUserListModel interface
+protected:
+    const IItem *getItem(int id) const;
+
 signals:
     /**
      * @brief visibleChanged This slot emited when store visibel changed
      */
     void visibleChanged();
 
-private slots:
-    void handleItemsUnlocked(const QSet<int> &);
-
 private:
 
-    void updateView();
-
-    enum StoreRoles {
-        ItemId,
-        ItemName,
-        ItemImage,
-        ItemDescription,
-        ItemWasBuy
-    };
-
     Store *_store = nullptr;
-    QList<int> _keys;
-    QHash<int, int> _keysIndexes;
-    User* _currentUser = nullptr;
     bool _visible = false;
-
 };
 
 }
