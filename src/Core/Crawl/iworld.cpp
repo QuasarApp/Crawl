@@ -41,6 +41,18 @@ IWorld::~IWorld() {
     delete _eventServer;
 }
 
+QString IWorld::itemTextType() const {
+    return IWorld::typeText();
+}
+
+unsigned int IWorld::type() {
+    return qHash(IWorld::typeText());
+}
+
+QString IWorld::typeText() {
+    return "WorldObject";
+}
+
 void IWorld::init() {
 }
 

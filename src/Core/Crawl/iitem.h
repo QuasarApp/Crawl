@@ -35,6 +35,13 @@ public:
     virtual QString itemTextId() const = 0;
 
     /**
+     * @brief itemTextType This method return text of the item group or type.
+     * @return text of the item group of type.
+     * @see IITem::itemType
+     */
+    virtual QString itemTextType() const = 0;
+
+    /**
      * @brief itemName This method should be return name of the item.
      * @return Name of the item (translated to all supported languages)
      */
@@ -92,6 +99,7 @@ public:
     /**
      * @brief itemId This method return hash of the IItem::itemTextId.
      * @return hash of the IItem::itemTextId.
+     * @see IItem::itemTextId
      * @note The not const implementation inlike const implementation write a id to cache.
      */
     unsigned int itemId();
@@ -99,9 +107,26 @@ public:
     /**
      * @brief itemId This method return hash of the IItem::itemTextId.
      * @return hash of the IItem::itemTextId.
-     * @warning if the object are const and not const implementation of the IItem::itemId method never invoked then this method return 0.
+     * @see IItem::itemTextId
+     * @warning This method not cached id value, so works sloyle then not cons implementation.
      */
     unsigned int itemId() const;
+
+    /**
+     * @brief itemType This method return item type id. (items group)
+     * @return item type id.
+     * @see IItem::itemTextType
+     * @note The not const implementation inlike const implementation write a id to cache.
+     */
+    unsigned int itemType();
+
+    /**
+     * @brief itemType This method return item type id. (items group)
+     * @return item type id.
+     * @see IItem::itemTextType
+     * @warning This method not cached id value, so works sloyle then not cons implementation.
+     */
+    unsigned int itemType() const;
 
     /**
      * @brief activeItems This method return set of the actived items.
@@ -156,6 +181,7 @@ public:
 
 private:
     unsigned int _id = 0;
+    unsigned int _typeItem = 0;
     QHash<int, const IItem*> _childs;
     QSet<int> _activeItems;
 

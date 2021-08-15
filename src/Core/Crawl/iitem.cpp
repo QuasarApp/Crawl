@@ -19,8 +19,8 @@ const QHash<int, const IItem *>& IItem::childItems() const {
     return _childs;
 }
 
-QMultiHash<int, const IItem *> IItem::childItemsRecursive() const {
-    QMultiHash<int, const IItem *> result;
+QMultiHash<int, const IItem *>  IItem::childItemsRecursive() const {
+    QMultiHash<int, const IItem *>  result;
 
     for (const IItem* item : _childs) {
         result.unite(item->childItemsRecursive());
@@ -70,4 +70,22 @@ void IItem::deactivate(int item) {
 bool IItem::isActive(int item) {
     return _childs.contains(item) && _activeItems.contains(item);
 }
+
+unsigned int IItem::itemType() {
+    if (_typeItem) {
+        return _typeItem;
+    }
+
+    _typeItem = qHash(itemTextType());
+    return _typeItem;
+}
+
+unsigned int IItem::itemType() const {
+    if (_typeItem) {
+        return _typeItem;
+    }
+
+    return qHash(itemTextType());
+}
+
 }

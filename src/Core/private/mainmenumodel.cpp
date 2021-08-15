@@ -6,6 +6,7 @@
 //#
 
 #include <listviewmodel.h>
+#include "availablelevelsmodel.h"
 #include "mainmenumodel.h"
 #include "settingsviewmodel.h"
 #include "storeviewmodel.h"
@@ -19,10 +20,12 @@ MainMenuModel::MainMenuModel(QObject *ptr): QObject (ptr) {
     _conf = QuasarAppUtils::Settings::instance();
     _userSettingsModel = new SettingsViewModel(this);
     _storeView = new StoreViewModel();
+    _selectLevelModle = new AvailableLevelsModel();
 }
 
 MainMenuModel::~MainMenuModel() {
     delete _storeView;
+    delete _selectLevelModle;
 }
 
 QObject *MainMenuModel::userSettingsModel() const {
@@ -42,6 +45,10 @@ void MainMenuModel::setVisible(bool newVisible) {
 
 QObject *MainMenuModel::storeView() const {
     return _storeView;
+}
+
+AvailableLevelsModel *MainMenuModel::selectLevelModle() const {
+    return _selectLevelModle;
 }
 
 }

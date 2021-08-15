@@ -5,6 +5,7 @@
 //# of this license document, but changing it is not allowed.
 //#
 
+#include "availablelevelsmodel.h"
 #include "engine.h"
 #include "mainmenumodel.h"
 
@@ -24,8 +25,9 @@ namespace CRAWL {
 
 Engine::Engine(QObject *parent): QObject(parent) {
     _store = new Store();
-    _currentUser = new User();
     _menu = new MainMenuModel();
+
+    setNewUser(new User());
 
 }
 
@@ -124,6 +126,18 @@ void Engine::stop() const {
     _currentLevel->previewScane()->start(_currentLevel->previewScane()->configuration());
 }
 
+void Engine::handleUnlockedItem(int item) {
+    static_cast<AvailableLevelsModel*>(_menu->selectLevelModle())->addKey(item);
+}
+
+void Engine::handleDroppedItem(int item) {
+    static_cast<AvailableLevelsModel*>(_menu->selectLevelModle())->removeKey(item);
+}
+
+void Engine::handleUnlockedItemsListChanged(const QSet<int> &newSet) {
+    static_cast<AvailableLevelsModel*>(_menu->selectLevelModle())->setKeys(QList<int>(newSet.begin(), newSet.end()));
+}
+
 QObject *Engine::getGameObject(int id) const {
     if (!_currentLevel)
         return nullptr;
@@ -171,6 +185,29 @@ QObject *Engine::menu() const {
     return _menu;
 }
 
+void Engine::setNewUser(User *user) {
+    if (_currentUser) {
+
+        disconnect(_currentUser, &User::sigUnlcoked, this, &Engine::handleUnlockedItem);
+        disconnect(_currentUser, &User::sigDropped, this, &Engine::handleDroppedItem);
+        disconnect(_currentUser, &User::sigUlockedItemsChanged,
+                   this, &Engine::handleUnlockedItemsListChanged);
+    }
+
+    _currentUser = user;
+    static_cast<StoreViewModel*>(_menu->storeView())->setUser(_currentUser);
+    static_cast<AvailableLevelsModel*>(_menu->selectLevelModle())->setUser(_currentUser);
+
+
+    if (_currentUser) {
+
+        connect(_currentUser, &User::sigUnlcoked, this, &Engine::handleUnlockedItem);
+        connect(_currentUser, &User::sigDropped, this, &Engine::handleDroppedItem);
+        connect(_currentUser, &User::sigUlockedItemsChanged,
+                this, &Engine::handleUnlockedItemsListChanged);
+    }
+}
+
 Store *Engine::store() const {
     return _store;
 }
@@ -186,10 +223,18 @@ User *Engine::currentUser() const {
     return _currentUser;
 }
 
-
-void Engine::initStore(const QMultiHash<int, const IItem *> &availabelItems) {
+void Engine::init(const QMultiHash<int, const IItem *> &availabelItems) {
     _store->init(availabelItems);
     static_cast<StoreViewModel*>(_menu->storeView())->init(_store, _currentUser);
+
+    QList<const IItem*> availableWorlds;
+    for (const IItem * item : availabelItems) {
+        if (item->itemType() == IWorld::type()) {
+            availableWorlds.push_back(item);
+        }
+    }
+
+    static_cast<AvailableLevelsModel*>(_menu->selectLevelModle())->setAllLevels(availableWorlds);
 }
 
 }

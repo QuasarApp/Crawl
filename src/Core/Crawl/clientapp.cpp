@@ -126,7 +126,7 @@ bool ClientApp::init(QQmlApplicationEngine *engine) {
 
     QMultiHash<int, const IItem *> availabelItems;
     initStore(availabelItems);
-    _engine->initStore(availabelItems);
+    _engine->init(availabelItems);
 
     _engine->setLevel(getLastLevel());
 

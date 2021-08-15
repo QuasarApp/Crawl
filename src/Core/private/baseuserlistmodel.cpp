@@ -72,6 +72,27 @@ void BaseUserListModel::setKeys(const QList<int> &visibleKeysList) {
     }
 }
 
+void BaseUserListModel::addKey(int newKey) {
+    beginInsertRows({}, _keys.size(), _keys.size());
+    _keys.push_back(newKey);
+    _keysIndexes[newKey] = _keys.size();
+    endInsertRows();
+}
+
+void BaseUserListModel::removeKey(int oldKey) {
+    int idx = getIndexById(oldKey);
+
+    if (idx >= 0) {
+        beginInsertRows({}, _keys.size(), _keys.size());
+
+        _keys.removeAt(idx);
+        _keysIndexes.remove(oldKey);
+
+        endInsertRows();
+
+    }
+}
+
 int BaseUserListModel::rowCount(const QModelIndex &) const {
     return _keys.size();
 }

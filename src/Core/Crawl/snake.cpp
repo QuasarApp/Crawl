@@ -41,6 +41,18 @@ Snake::~Snake( ){
     delete [] _vectors;
 }
 
+QString Snake::itemTextType() const {
+    return Snake::typeText();
+}
+
+QString Snake::typeText() {
+    return "PlayableObject";
+}
+
+unsigned int Snake::type() {
+    return qHash(typeText());
+}
+
 void Snake::render(unsigned int tbfMsec) {
     PlayableObject::render(tbfMsec);
 }

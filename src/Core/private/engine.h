@@ -107,10 +107,10 @@ public:
     User *currentUser() const;
 
     /**
-     * @brief initStore This method is wrapper of the Store::init method.
+     * @brief init This method initialize the main model. Sets available levels and items.
      * @param availabelItems This is list of available items.
      */
-    void initStore(const QMultiHash<int, const IItem *> &availabelItems);
+    void init(const QMultiHash<int, const IItem *> &availabelItems);
 
     /**
      * @brief store This pointer return pointer to store.
@@ -130,6 +130,11 @@ public:
      */
     QObject *menu() const;
 
+    /**
+     * @brief setNewUser This method will initialise the new user profile.
+     * @param user This is pointer to new user profile.
+     */
+    void setNewUser(User* user);
 
 signals:
     void scaneChanged();
@@ -150,6 +155,24 @@ private slots:
      * @brief stop This slots invoked when world finished own session.
      */
     void stop() const;
+
+    /**
+     * @brief handleUnlockedItem This slot invoked when emited the User::unclokItem signal.
+     * @param item This is id of the unlocked item
+     */
+    void handleUnlockedItem(int item);
+
+    /**
+     * @brief handleUnlockedItem This slot invoked when emited the User::droppItem signal.
+     * @param item This is id of the dropped item
+     */
+    void handleDroppedItem(int item);
+
+    /**
+     * @brief handleUnlockedItem This slot invoked when emited the User::setUnlockedItems signal.
+     * @param item This is new list of the unclod items.
+     */
+    void handleUnlockedItemsListChanged(const QSet<int>& newSet);
 
 private:
     void renderLoop();

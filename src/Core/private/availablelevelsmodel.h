@@ -18,6 +18,7 @@ class IItem;
 /**
  * @brief The AvailableLevelsModel class is model of the available levels qml view.
  * This model just show available levels of the current user.
+ * @see the SelectLevelView.qml module.
  */
 class AvailableLevelsModel: public BaseUserListModel
 {
@@ -64,6 +65,11 @@ public:
      */
     Q_INVOKABLE void select(int levelId);
 
+
+    // BaseUserListModel interface
+protected:
+    const IItem *getItem(int id) const;
+
 signals:
     /**
      * @brief currentLevelChanged This signal emited when the currentLevel propertye is changed.
@@ -82,6 +88,7 @@ signals:
 private:
     QList<const IItem*> _allLevels;
     int currentLevel = -1;
+
 };
 
 }

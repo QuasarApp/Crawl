@@ -42,4 +42,8 @@ void AvailableLevelsModel::select(int levelId) {
     }
 }
 
+const IItem *AvailableLevelsModel::getItem(int id) const {
+    return _allLevels.value(id, nullptr);
+}
+
 }

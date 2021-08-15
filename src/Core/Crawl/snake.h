@@ -28,6 +28,22 @@ public:
           QObject *ptr = nullptr);
     ~Snake() override;
 
+    QString itemTextType() const override;
+
+    /**
+     * @brief type This method return const string value of the all world types.
+     * @return const string value of the all world types.
+     * @see IItem::itemTextType
+     * @see IItem::type
+     */
+    static QString typeText();
+
+    /**
+     * @brief type This is wrapper of the IWorld::typeText method that invoke the qHash function for results string.
+     * @return integer type object id.
+     */
+    static unsigned int type();
+
     void render(unsigned int tbfMsec) override;
 
     void add(ClasterItem *object) override;
@@ -132,6 +148,7 @@ private:
     float _speed;
 
     int _hp = 100;
+
 };
 
 }

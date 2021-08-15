@@ -44,6 +44,18 @@ public:
      */
     void setKeys(const QList<int>& visibleKeysList);
 
+    /**
+     * @brief addKey This method add new key value for view.
+     * @param newKey new key value.
+     */
+    void addKey(int newKey);
+
+    /**
+     * @brief removeKey This method remove old key from view.
+     * @param oldKey This is old key that will be removed.
+     */
+    void removeKey(int oldKey);
+
     int rowCount(const QModelIndex &parent = {}) const override;
     int columnCount(const QModelIndex &parent = {}) const override;
     QVariant data(const QModelIndex &index, int role) const override;
