@@ -11,10 +11,10 @@ import QtQuick.Controls
 import QtQuick.Layouts
 
 Item {
-    id: item1
+    id: root
     property var model: null
 
-    visible: true
+    visible: Boolean(model && model.visible)
     z: 1
 
     GridLayout {
@@ -35,13 +35,21 @@ Item {
 
         transformOrigin: Item.Center
 
-
         MainMenuButton {
             id: play
             text: qsTr("Select level")
 
             onClicked: {
                 selectLvl.open()
+            }
+        }
+
+        MainMenuButton {
+            id: store
+            text: qsTr("Store")
+
+            onClicked: {
+                storePopUp.open()
             }
         }
 
@@ -70,7 +78,7 @@ Item {
         id: settingsPopUp
         source: SettingsView {
             id: settingsView
-            model: item1.model ? item1.model.userSettingsModel: null
+            model: root.model ? root.model.userSettingsModel: null
         }
 
         standardButtons:  Dialog.Save | Dialog.Cancel | Dialog.RestoreDefaults
@@ -93,19 +101,25 @@ Item {
     }
 
     PagePopUp {
-        id: selectLvl
-        source: SelectLvlView {
+        id: storePopUp
+        source: StoreView {
             id: view
-            model: item1.model ? item1.model.availableLvlsModel: null
+            model: root.model ? root.model.storeView: null
 
-            onStart: {
-                if (!item1.model)
-                    return;
+        }
 
-                item1.model.newGame(view.selectedLvl)
+        modal: false;
+        width: parent.width * 0.8
+        height: parent.height * 0.8;
 
-                selectLvl.close();
-            }
+    }
+
+    PagePopUp {
+        id: selectLvl
+        source: SelectLevelView {
+            id: selectLvlView
+            model: root.model ? root.model.availableLvlsModel: null
+
         }
 
         modal: false;

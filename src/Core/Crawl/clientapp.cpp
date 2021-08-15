@@ -39,9 +39,9 @@ QByteArray ClientApp::initTheme() {
 
 ILevel *ClientApp::getLastLevel() {
     for (const auto &data : qAsConst(_availableLvls)) {
-        if (data.model && data.model->world() && _engine->currentUser() &&
-                _engine->currentUser()->isUnlocked(data.model->world()->itemId())) {
-            return data.model;
+        if (data && data->world() && _engine->currentUser() &&
+                _engine->currentUser()->isUnlocked(data->world()->itemId())) {
+            return data;
         }
     }
 
@@ -50,18 +50,13 @@ ILevel *ClientApp::getLastLevel() {
 
 ClientApp::ClientApp() {
     _engine = new Engine();
-    _menu = new MainMenuModel();
-
-    connect(_menu, &MainMenuModel::sigLevelChanged, this, &ClientApp::changeLevel);
 }
 
 ClientApp::~ClientApp() {
-    delete _menu;
     delete _engine;
 
     for (auto it = _availableLvls.begin(); it != _availableLvls.end(); ++it) {
-        delete it.value().viewModel;
-        delete it.value().model;
+        delete it.value();
     }
 
     _availableLvls.clear();
@@ -69,15 +64,15 @@ ClientApp::~ClientApp() {
 
 void ClientApp::initStore(QMultiHash<int, const IItem *> & result) {
     for (const auto &data : qAsConst(_availableLvls)) {
-        if (data.model && data.model->world())
-            result.unite(data.model->world()->childItemsRecursive());
+        if (data && data->world())
+            result.unite(data->world()->childItemsRecursive());
     }
 }
 
 void ClientApp::changeLevel(int lvl) {
-    WordlData data = _availableLvls.value(lvl);
+    ILevel* data = _availableLvls.value(lvl, nullptr);
 
-    if (!data.model) {
+    if (!data) {
         QuasarAppUtils::Params::log("Failed to start lvl.", QuasarAppUtils::Error);
         return;
     }
@@ -89,7 +84,7 @@ void ClientApp::changeLevel(int lvl) {
         return;
     }
 
-    _engine->setLevel(data.model);
+    _engine->setLevel(data);
 }
 
 bool ClientApp::init(QQmlApplicationEngine *engine) {
@@ -104,7 +99,6 @@ bool ClientApp::init(QQmlApplicationEngine *engine) {
     engine->addImageProvider(QLatin1String("userItems"), new ImageProvider());
 
     root->setContextProperty("engine", QVariant::fromValue(_engine));
-    root->setContextProperty("mainmenu", QVariant::fromValue(_menu));
 
     qmlRegisterUncreatableMetaObject(
                 WorldStatus::staticMetaObject,
@@ -140,12 +134,7 @@ bool ClientApp::init(QQmlApplicationEngine *engine) {
 }
 
 void ClientApp::addLvl(ILevel *levelWordl) {
-    WordlData data;
-
-    data.model = levelWordl;
-    data.viewModel = new WorldViewData(data.model->world());
-    _availableLvls.insert(data.model->world()->itemId(), data);
-    _menu->addWorldViewModel(data.viewModel);
+    _availableLvls.insert(levelWordl->world()->itemId(), levelWordl);
 }
 
 }

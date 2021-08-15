@@ -73,6 +73,10 @@
         <source>Select level</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Store</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PreviewControl</name>
@@ -86,9 +90,9 @@
     </message>
 </context>
 <context>
-    <name>SelectLvlView</name>
+    <name>SelectLevelView</name>
     <message>
-        <source>Start</source>
+        <source>Select</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

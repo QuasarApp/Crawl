@@ -21,10 +21,6 @@ class User;
 class StoreViewModel: public BaseUserListModel
 {
     Q_OBJECT
-    /**
-     * @brief visible If you sets thsis proprtye to false then store view qml view will be hide.
-    */
-    Q_PROPERTY(bool visible READ visible  NOTIFY visibleChanged)
 
 public:
     StoreViewModel();
@@ -38,18 +34,6 @@ public:
     void init(Store * store, User* user);
 
     /**
-     * @brief visible This method return true if the store view is visible.
-     * @return true if the store view is visible.
-     */
-    bool visible() const;
-
-    /**
-     * @brief setVisible This method chnge the visible state of the qml view of store.
-     * @param newVisible This is new value of the qml-store visible
-     */
-    void setVisible(bool newVisible);
-
-    /**
      * @brief buy This is qml method for receive signal from view about buying item.
      * @param item This is item id that user want to buy.
      */
@@ -59,16 +43,9 @@ public:
 protected:
     const IItem *getItem(int id) const;
 
-signals:
-    /**
-     * @brief visibleChanged This slot emited when store visibel changed
-     */
-    void visibleChanged();
-
 private:
 
     Store *_store = nullptr;
-    bool _visible = false;
 };
 
 }

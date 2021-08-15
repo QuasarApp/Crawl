@@ -10,7 +10,6 @@
 
 #include <QObject>
 #include "settings.h"
-#include "worldviewdata.h"
 
 namespace ViewSolutions {
 class ListViewModel;
@@ -19,6 +18,7 @@ class ListViewModel;
 namespace CRAWL {
 
 class WorldInfo;
+class StoreViewModel;
 
 /**
  * @brief The MainMenuModel class This is main class for controll user interface
@@ -28,26 +28,35 @@ class MainMenuModel : public QObject
     Q_OBJECT
 
     Q_PROPERTY(QObject* userSettingsModel READ userSettingsModel NOTIFY userSettingsModelChanged)
-    Q_PROPERTY(QObject * availableLvlsModel READ availableLvlsModel NOTIFY availableLvlsModelChanged)
+    Q_PROPERTY(bool visible READ getVisible WRITE setVisible NOTIFY visibleChanged)
+    Q_PROPERTY(QObject * storeView READ storeView NOTIFY storeViewChanged)
 
 public:
     MainMenuModel(QObject *ptr = nullptr);
+    ~MainMenuModel();
     QObject* userSettingsModel() const;
-    QObject* availableLvlsModel() const;
-    void addWorldViewModel(QObject *);
-    void setAvailableLvls(const QList<QObject *> &newData);
-    Q_INVOKABLE void changeLevel(int lvl);
 
+    bool getVisible() const;
+    void setVisible(bool newVisible);
+
+    /**
+     * @brief storeView This method return pointer to store view model
+     * @return pointer to store view model
+     */
+    QObject *storeView() const;
 
 signals:
     void userSettingsModelChanged(QObject* userSettingsModel);
-    void sigLevelChanged(int lvl);
-    void availableLvlsModelChanged();
+
+    void visibleChanged();
+
+    void storeViewChanged();
 
 private:
     Settings *_conf = nullptr;
     QObject* _userSettingsModel = nullptr;
-    ViewSolutions::ListViewModel *_availableLvlsModel = nullptr;
+    bool visible = true;
+    StoreViewModel *_storeView = nullptr;
 
 };
 

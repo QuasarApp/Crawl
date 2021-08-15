@@ -5,14 +5,11 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick3D.Particles3D
 
-// https://doc.qt.io/qt-5/qqmlengine.html#qmlRegisterUncreatableMetaObject
-import engine.worldstatus
 
 View3D {
     id: scene;
 
     property var worldModel: null;
-    property alias showMenu: privateRoot.showMenu
     renderMode: View3D.Offscreen
 
     visible: worldModel && worldModel.visible
@@ -52,7 +49,6 @@ View3D {
         property var releativeCameraPosition: (worldModel)? worldModel.cameraReleativePosition: null
 
         property var gameMenu: null
-        property bool showMenu: (worldModel)? WorldStatus.Game !== worldModel.worldStatus : false;
 
         function add (cppObjId) {
             if (!worldModel) {
@@ -142,12 +138,6 @@ View3D {
                 } else if (comp.status === Component.Error) {
                     // Error Handling
                     console.log("Error loading component: " + privateRoot.gameMenuModel.view, comp.errorString());
-                }
-            }
-
-            function onShowMenuChanged() {
-                if (privateRoot.gameMenu) {
-                    privateRoot.gameMenu.visible = !showMenu
                 }
             }
         }

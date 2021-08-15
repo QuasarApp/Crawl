@@ -12,7 +12,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 
 AbstractMenuView {
-    columns: 2
+    columns: 4
     rows: 2
 
     MouseArea {
@@ -20,7 +20,7 @@ AbstractMenuView {
 
         Layout.fillHeight: true
         Layout.fillWidth: true
-        Layout.columnSpan: 2
+        Layout.columnSpan: 4
         Layout.rowSpan: 1
 
         onClicked: {

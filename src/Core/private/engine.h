@@ -21,6 +21,7 @@ class Store;
 class StartData;
 class User;
 class StoreViewModel;
+class MainMenuModel;
 
 /**
  * @brief The Engine class
@@ -31,9 +32,10 @@ class Engine : public QObject {
     Q_PROPERTY(QObject* player READ player NOTIFY playerChanged)
     Q_PROPERTY(QObject* world READ world NOTIFY worldChanged)
     Q_PROPERTY(QObject* nest READ nest NOTIFY worldChanged)
-    Q_PROPERTY(QObject* storeView READ storeView NOTIFY storeViewChanged)
 
     Q_PROPERTY(QObject* scane READ scane WRITE setScane NOTIFY scaneChanged)
+    Q_PROPERTY(QObject * menu READ menu NOTIFY menuChanged)
+
 
 public:
     Engine(QObject * parent = nullptr);
@@ -105,12 +107,6 @@ public:
     User *currentUser() const;
 
     /**
-     * @brief storeView This method return pointer to store view model
-     * @return pointer to store view model
-     */
-    QObject *storeView() const;
-
-    /**
      * @brief initStore This method is wrapper of the Store::init method.
      * @param availabelItems This is list of available items.
      */
@@ -128,11 +124,19 @@ public:
      */
     QObject *nest() const ;
 
+    /**
+     * @brief menu This is a main menu model.
+     * @return main menu model object.
+     */
+    QObject *menu() const;
+
+
 signals:
     void scaneChanged();
     void playerChanged();
     void worldChanged();
-    void storeViewChanged();
+
+    void menuChanged();
 
 private slots:
     /**
@@ -152,11 +156,11 @@ private:
 
     QObject *_scane = nullptr;
     ILevel* _currentLevel = nullptr;
+    MainMenuModel *_menu = nullptr;
 
     quint64 _oldTimeRender = 0;
 
     User *_currentUser = nullptr;
-    StoreViewModel *_storeView = nullptr;
     Store *_store = nullptr;
 
     QFuture<void> _renderLoopFuture;

@@ -7,7 +7,6 @@ import QtQuick.Layouts
 Page {
     id: store
     property var model: null;
-    visible: model && model.visible
     ColumnLayout {
         anchors.fill: parent
         ListView {

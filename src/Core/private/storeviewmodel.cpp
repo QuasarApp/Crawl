@@ -16,17 +16,6 @@ void StoreViewModel::init(Store *store, User *user) {
     _store = store;
 }
 
-bool StoreViewModel::visible() const {
-    return _visible;
-}
-
-void StoreViewModel::setVisible(bool newVisible) {
-    if (_visible == newVisible)
-        return;
-    _visible = newVisible;
-    emit visibleChanged();
-}
-
 void StoreViewModel::buy(int item) {
     if (_store && getUser()) {
         _store->buy(*getUser(), item);

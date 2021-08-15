@@ -6,6 +6,7 @@
 //#
 
 #include "engine.h"
+#include "mainmenumodel.h"
 
 #include <QQmlComponent>
 #include <Crawl/guiobject.h>
@@ -23,14 +24,15 @@ namespace CRAWL {
 
 Engine::Engine(QObject *parent): QObject(parent) {
     _store = new Store();
-    _storeView = new StoreViewModel;
     _currentUser = new User();
+    _menu = new MainMenuModel();
 
 }
 
 Engine::~Engine() {
     stopRenderLoop();
-    delete _storeView;
+    delete _menu;
+    delete _currentUser;
 }
 
 QObject *Engine::scane() {
@@ -38,7 +40,6 @@ QObject *Engine::scane() {
 }
 
 void Engine::setLevel(ILevel *world) {
-    _storeView->setVisible(!world);
 
     if (_currentLevel == world)
         return ;
@@ -166,6 +167,10 @@ void Engine::renderLoop() {
     }
 }
 
+QObject *Engine::menu() const {
+    return _menu;
+}
+
 Store *Engine::store() const {
     return _store;
 }
@@ -181,13 +186,10 @@ User *Engine::currentUser() const {
     return _currentUser;
 }
 
-QObject *Engine::storeView() const {
-    return _storeView;
-}
 
 void Engine::initStore(const QMultiHash<int, const IItem *> &availabelItems) {
     _store->init(availabelItems);
-    _storeView->init(_store, _currentUser);
+    static_cast<StoreViewModel*>(_menu->storeView())->init(_store, _currentUser);
 }
 
 }

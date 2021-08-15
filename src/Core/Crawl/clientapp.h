@@ -22,18 +22,9 @@ namespace CRAWL {
 
 class Engine;
 class IWorld;
-class WorldViewData;
 class MainMenuModel;
 class IControl;
 class Store;
-
-/**
- * @brief The WordlData struct simple structure that contains information about world.
- */
-struct WordlData {
-    WorldViewData* viewModel = nullptr;
-    ILevel * model = nullptr;
-};
 
 /**
  * @brief The ClientApp class This is main class of the Game engine.
@@ -87,8 +78,7 @@ private:
      */
     void changeLevel(int lvl);
 
-    QHash<int, WordlData> _availableLvls;
-    MainMenuModel *_menu = nullptr;
+    QHash<int, ILevel*> _availableLvls;
     Engine *_engine = nullptr;
 
 };

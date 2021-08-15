@@ -10,7 +10,6 @@
         <file>CrawlModule/Scene.qml</file>
         <file>CrawlModule/SettingsView.qml</file>
         <file>CrawlModule/SnakeItem.qml</file>
-        <file>CrawlModule/SelectLvlView.qml</file>
         <file>CrawlModule/DefaultMenu.qml</file>
         <file>CrawlModule/AbstractMenuView.qml</file>
         <file>CrawlModule/Light.qml</file>

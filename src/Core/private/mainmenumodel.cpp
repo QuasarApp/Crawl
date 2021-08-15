@@ -8,6 +8,7 @@
 #include <listviewmodel.h>
 #include "mainmenumodel.h"
 #include "settingsviewmodel.h"
+#include "storeviewmodel.h"
 
 #include <quasarapp.h>
 
@@ -17,28 +18,30 @@ MainMenuModel::MainMenuModel(QObject *ptr): QObject (ptr) {
 
     _conf = QuasarAppUtils::Settings::instance();
     _userSettingsModel = new SettingsViewModel(this);
-    _availableLvlsModel = new ViewSolutions::ListViewModel(this);
+    _storeView = new StoreViewModel();
+}
 
+MainMenuModel::~MainMenuModel() {
+    delete _storeView;
 }
 
 QObject *MainMenuModel::userSettingsModel() const {
     return _userSettingsModel;
 }
 
-QObject *MainMenuModel::availableLvlsModel() const {
-    return _availableLvlsModel;
+bool MainMenuModel::getVisible() const {
+    return visible;
 }
 
-void MainMenuModel::addWorldViewModel(QObject * data) {
-    _availableLvlsModel->addSource(data);
+void MainMenuModel::setVisible(bool newVisible) {
+    if (visible == newVisible)
+        return;
+    visible = newVisible;
+    emit visibleChanged();
 }
 
-void MainMenuModel::setAvailableLvls(const QList<QObject*> &newData) {
-    _availableLvlsModel->setSource(newData);
-}
-
-void MainMenuModel::changeLevel(int lvl) {
-    emit sigLevelChanged(lvl);
+QObject *MainMenuModel::storeView() const {
+    return _storeView;
 }
 
 }
