@@ -10,10 +10,6 @@ StoreViewModel::StoreViewModel() {
 
 }
 
-QModelIndex StoreViewModel::index(int row, int column, const QModelIndex &parent) const {
-    return QAbstractListModel::index(row, column, parent);
-}
-
 int StoreViewModel::rowCount(const QModelIndex &) const {
     return _keys.size();
 }
@@ -65,12 +61,17 @@ void StoreViewModel::init(Store *store, User *user) {
 
     int diff = store->size() - _keys.size();
 
-    if (diff > 0) {
-        beginInsertRows({}, _keys.size(), store->size() - 1);
-
+    auto update = [this](Store *store) {
         _store = store;
         _keys = store->keysList();
+        for (int index = 0; index < _keys.size(); ++index) {
+            _keysIndexes[index] = _keys[index];
+        }
+    };
 
+    if (diff > 0) {
+        beginInsertRows({}, _keys.size(), store->size() - 1);
+        update(store);
         endInsertRows();
 
     } else if (diff == 0) {
@@ -78,17 +79,26 @@ void StoreViewModel::init(Store *store, User *user) {
 
     } else  {
         beginRemoveRows({}, store->size(), _keys.size() - 1);
-
-        _store = store;
-        _keys = store->keysList();
-
+        update(store);
         endRemoveRows();
     }
 }
 
 void StoreViewModel::setUser(User *user) {
+    if (_currentUser) {
+        disconnect(_currentUser, &User::sigItemsUlocked,
+                this, &StoreViewModel::handleItemsUnlocked);
+
+    }
+
     _currentUser = user;
-    emit dataChanged(index(0,0), index(rowCount() - 1, columnCount() - 1), {ItemWasBuy});
+
+    if (_currentUser) {
+        connect(_currentUser, &User::sigItemsUlocked,
+                this, &StoreViewModel::handleItemsUnlocked);
+
+        handleItemsUnlocked(_currentUser->unlockedItems());
+    }
 }
 
 bool StoreViewModel::visible() const {
@@ -107,4 +117,11 @@ void StoreViewModel::buy(int item) {
         _store->buy(*_currentUser, item);
     }
 }
+
+void StoreViewModel::handleItemsUnlocked (const QSet<int> & ) {
+
+    emit dataChanged(index(0,0), index(_keys.size() - 1, 0), {ItemWasBuy});
+
+}
+
 }

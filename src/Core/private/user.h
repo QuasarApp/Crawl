@@ -145,10 +145,10 @@ signals:
     void xpChanged();
 
     /**
-     * @brief itemUlocked This signal emited when user unlocked item.
+     * @brief sigItemsUlocked This signal emited when user unlocked item.
      * @param unclokedItems This is unlocked items set. Each items in the set is id of the unclocked item.
      */
-    void itemUlocked(const QSet<int> & unclokedItems);
+    void sigItemsUlocked(const QSet<int> & unclokedItems);
 
 protected:
     /**

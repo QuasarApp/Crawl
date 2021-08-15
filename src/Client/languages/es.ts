@@ -112,6 +112,13 @@
     </message>
 </context>
 <context>
+    <name>StoreView</name>
+    <message>
+        <source>Buy</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>TestLvl::TestSnake</name>
     <message>
         <source>TestSnake</source>
