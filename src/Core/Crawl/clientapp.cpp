@@ -37,16 +37,6 @@ QByteArray ClientApp::initTheme() {
     }
 }
 
-ILevel *ClientApp::getLastLevel() {
-    for (const auto &data : qAsConst(_availableLvls)) {
-        if (data && data->world() && _engine->currentUser() &&
-                _engine->currentUser()->isUnlocked(data->world()->itemId())) {
-            return data;
-        }
-    }
-
-    return nullptr;
-}
 
 ClientApp::ClientApp() {
     _engine = new Engine();
@@ -54,37 +44,6 @@ ClientApp::ClientApp() {
 
 ClientApp::~ClientApp() {
     delete _engine;
-
-    for (auto it = _availableLvls.begin(); it != _availableLvls.end(); ++it) {
-        delete it.value();
-    }
-
-    _availableLvls.clear();
-}
-
-void ClientApp::initStore(QMultiHash<int, const IItem *> & result) {
-    for (const auto &data : qAsConst(_availableLvls)) {
-        if (data && data->world())
-            result.unite(data->world()->childItemsRecursive());
-    }
-}
-
-void ClientApp::changeLevel(int lvl) {
-    ILevel* data = _availableLvls.value(lvl, nullptr);
-
-    if (!data) {
-        QuasarAppUtils::Params::log("Failed to start lvl.", QuasarAppUtils::Error);
-        return;
-    }
-
-    if (!_engine) {
-        QuasarAppUtils::Params::log("Failed to start lvl, Engine not initialized.",
-                                    QuasarAppUtils::Error);
-
-        return;
-    }
-
-    _engine->setLevel(data);
 }
 
 bool ClientApp::init(QQmlApplicationEngine *engine) {
@@ -124,17 +83,13 @@ bool ClientApp::init(QQmlApplicationEngine *engine) {
     if (engine->rootObjects().isEmpty())
         return false;
 
-    QMultiHash<int, const IItem *> availabelItems;
-    initStore(availabelItems);
-    _engine->init(availabelItems);
-
-    _engine->setLevel(getLastLevel());
+    _engine->init();
 
     return true;
 }
 
 void ClientApp::addLvl(ILevel *levelWordl) {
-    _availableLvls.insert(levelWordl->world()->itemId(), levelWordl);
+    _engine->addLvl(levelWordl);
 }
 
 }

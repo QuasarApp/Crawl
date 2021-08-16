@@ -35,6 +35,12 @@ Engine::~Engine() {
     stopRenderLoop();
     delete _menu;
     delete _currentUser;
+
+    for (auto it = _availableLvls.begin(); it != _availableLvls.end(); ++it) {
+        delete it.value();
+    }
+
+    _availableLvls.clear();
 }
 
 QObject *Engine::scane() {
@@ -62,8 +68,17 @@ void Engine::setLevel(ILevel *world) {
         return;
     }
 
-    if (_currentLevel->world()) {
-        QuasarAppUtils::Params::log("Failed to init world. World name: " +
+    if (!_currentLevel->world()) {
+        QuasarAppUtils::Params::log("Failed to init world. The World Object is null: " +
+                                    _currentLevel->world()->itemName(),
+                                    QuasarAppUtils::Error);
+
+        _currentLevel = nullptr;
+        return;
+    }
+
+    if (!_currentLevel->previewScane()) {
+        QuasarAppUtils::Params::log("Failed to init world. The World Preview scane is null. World Name: " +
                                     _currentLevel->world()->itemName(),
                                     QuasarAppUtils::Error);
 
@@ -140,6 +155,25 @@ void Engine::handleUnlockedItemsListChanged(const QSet<int> &newSet) {
 
 void Engine::handleLevelChanged(int levelId) {
 
+    ILevel* data = _availableLvls.value(levelId, nullptr);
+
+    if (!data) {
+        QuasarAppUtils::Params::log("Failed to start lvl.", QuasarAppUtils::Error);
+        return;
+    }
+
+    setLevel(data);
+}
+
+ILevel *Engine::getLastLevel() {
+    for (const auto &data : qAsConst(_availableLvls)) {
+        if (data && data->world() && currentUser() &&
+               currentUser()->isUnlocked(data->world()->itemId())) {
+            return data;
+        }
+    }
+
+    return nullptr;
 }
 
 QObject *Engine::getGameObject(int id) const {
@@ -212,6 +246,14 @@ void Engine::setNewUser(User *user) {
     }
 }
 
+void Engine::addLvl(ILevel *levelWordl) {
+    if (!levelWordl->world()) {
+        QuasarAppUtils::Params::log("The Level not contains world object!!!");
+        return;
+    }
+    _availableLvls.insert(levelWordl->world()->itemId(), levelWordl);
+}
+
 Store *Engine::store() const {
     return _store;
 }
@@ -227,7 +269,14 @@ User *Engine::currentUser() const {
     return _currentUser;
 }
 
-void Engine::init(const QMultiHash<int, const IItem *> &availabelItems) {
+void Engine::init() {
+    QMultiHash<int, const IItem *> availabelItems;
+
+    for (const auto &data : qAsConst(_availableLvls)) {
+        if (data && data->world())
+            availabelItems.unite(data->world()->childItemsRecursive());
+    }
+
     _store->init(availabelItems);
     static_cast<StoreViewModel*>(_menu->storeView())->init(_store, _currentUser);
 

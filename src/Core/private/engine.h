@@ -110,7 +110,7 @@ public:
      * @brief init This method initialize the main model. Sets available levels and items.
      * @param availabelItems This is list of available items.
      */
-    void init(const QMultiHash<int, const IItem *> &availabelItems);
+    void init();
 
     /**
      * @brief store This pointer return pointer to store.
@@ -135,6 +135,12 @@ public:
      * @param user This is pointer to new user profile.
      */
     void setNewUser(User* user);
+
+    /**
+     * @brief addLvl This method should be add level to game.
+     * @param levelWordl This is world instance
+     */
+    void addLvl(ILevel* levelWordl);
 
 signals:
     void scaneChanged();
@@ -180,10 +186,15 @@ private slots:
      */
     void handleLevelChanged(int levelId);
 private:
+
+    ILevel * getLastLevel();
+
     void renderLoop();
 
     QObject *_scane = nullptr;
     ILevel* _currentLevel = nullptr;
+    QHash<int, ILevel*> _availableLvls;
+
     MainMenuModel *_menu = nullptr;
 
     quint64 _oldTimeRender = 0;

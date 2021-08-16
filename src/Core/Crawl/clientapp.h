@@ -58,13 +58,6 @@ public:
 
 private:
     QByteArray initTheme();
-    ILevel *getLastLevel();
-
-    /**
-     * @brief initStore This method push to @a result map all available store items.
-     * @param result This is result value. Hash map of the available items.
-     */
-    void initStore(QMultiHash<int, const IItem *> &result);
 
     /**
      * @brief addLvl This method should be add level to game.
@@ -72,13 +65,6 @@ private:
      */
     void addLvl(ILevel* levelWordl);
 
-    /**
-     * @brief changeLevel This method star new game in @a lvl
-     * @param lvl This is lvl name
-     */
-    void changeLevel(int lvl);
-
-    QHash<int, ILevel*> _availableLvls;
     Engine *_engine = nullptr;
 
 };
