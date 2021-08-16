@@ -7,8 +7,11 @@
 
 #include "testlevel.h"
 #include "world.h"
+#include "nest.h"
 
 TestLevel::TestLevel() {
     initTestLvlResources();
-    setWorld(new TestLvl::World());
+    auto world = new TestLvl::World();
+    setWorld(world);
+    setPreviewScane(new TestLvl::Nest(world));
 }

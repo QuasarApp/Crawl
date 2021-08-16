@@ -94,6 +94,9 @@ void Engine::setLevel(ILevel *world) {
 
     connect(_currentLevel->world(), &IPreviewScaneWorld::sigGameFinished,
             this, &Engine::stop);
+
+    _currentLevel->previewScane()->start({});
+
 }
 
 void Engine::setScane(QObject *newScane) {

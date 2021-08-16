@@ -104,12 +104,12 @@ void IWorld::initControl(IControl *control) {
 bool IWorld::start(const StartData& config) {
 
     setWorldStatus(WorldStatus::Game);
-    _backgroundAI->stopAI();
+    backgroundAI()->stopAI();
     setPlayer(initPlayer(config.snakeType()));
 
     userInterface()->setUserData(config.player());
 
-    worldChanged(_worldRules->cbegin());
+    worldChanged(worldRules()->cbegin());
     setTargetFps(60);
     setRunning(true);
     _eventServer->start();
@@ -320,7 +320,7 @@ void IWorld::removeAnyItemFromGroup(const QString &group,
 const WorldRule *IWorld::worldRules() {
 
     if (!_worldRules)
-        initWorldRules();
+        _worldRules = initWorldRules();
 
     return _worldRules;
 }

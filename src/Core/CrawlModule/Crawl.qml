@@ -30,12 +30,7 @@ ApplicationWindow {
 
     Scene {
         id: nest;
-        worldModel: (model)? model.world : null;
-        anchors.fill: parent;
-    }
-
-    StoreView {
-        model: (mainWindow.model)? mainWindow.model.storeView: null
+        worldModel: (model)? model.nest : null;
         anchors.fill: parent;
     }
 

@@ -41,6 +41,11 @@ void IWorldItem::render(unsigned int) {
     if (!_playerObject)
         return;
 
+    if (_fFirstRenderIteration) {
+        firstSpawn();
+        _fFirstRenderIteration = false;
+    }
+
     if (_playerObject->position().distanceToPoint(position()) >
             _world->cameraReleativePosition().z() * 3) {
         respawn();
@@ -80,6 +85,10 @@ void IWorldItem::respawn() {
                                          - _world->cameraReleativePosition().z() * 1.5);
 
     setY(_playerObject->position().y() + dY);
+}
+
+void IWorldItem::firstSpawn() {
+
 }
 
 bool IWorldItem::destroyIsScheduled() const {

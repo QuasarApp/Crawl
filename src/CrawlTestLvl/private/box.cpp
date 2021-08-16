@@ -6,7 +6,7 @@
 //#
 
 #include "box.h"
-
+#include "Crawl/iworld.h"
 #include <QColor>
 
 namespace TestLvl {
@@ -34,6 +34,14 @@ void Box::action(IWorldItem *item) {
     if (item->className() == getPlayer()->className()) {
         respawn();
     }
+}
+
+void Box::firstSpawn() {
+    float dX = rand() % static_cast<int>(world()->cameraReleativePosition().z());
+    setX(dX);
+
+    float dY = rand() % static_cast<int>(world()->cameraReleativePosition().z());
+    setY(dY);
 }
 
 }

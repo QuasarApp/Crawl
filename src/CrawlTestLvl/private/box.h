@@ -17,6 +17,10 @@ class Box: public CRAWL::IWorldItem {
 public:
     Box();
     void action(IWorldItem *item) override;
+
+    // IWorldItem interface
+public:
+    void firstSpawn() override;
 };
 }
 #endif // BOX_H

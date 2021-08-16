@@ -71,6 +71,11 @@ public:
     virtual void respawn();
 
     /**
+     * @brief firstSpawn This method is respawn this object on the world when it created. By Default this method do nothing.
+     */
+    virtual void firstSpawn();
+
+    /**
      * @brief destroyIsScheduled This method return true if the current object has been scheduled to destroy.
      * @return true if the current object has been scheduled to destroy, else false.
      * @see IWorldItem::destroy
@@ -141,6 +146,7 @@ private:
 
     bool _fDecorative = true;
     bool _fDistroy = false;
+    bool _fFirstRenderIteration = true;
     int _supportedEvents;
 
     friend class IWorld;
