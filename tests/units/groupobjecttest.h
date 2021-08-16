@@ -5,12 +5,11 @@
 //# of this license document, but changing it is not allowed.
 //#
 
-#include "test.h"
-#include "testutils.h"
-
-
 #ifndef GROUPOBJECTTEST_H
 #define GROUPOBJECTTEST_H
+
+#include "test.h"
+#include "testutils.h"
 
 /**
  * @brief The GroupObjectTest class will be tests the CRAWL::GroupObject class from the core library.

@@ -23,10 +23,6 @@ class CRAWL_JUNGLE_LEVEL_EXPORT Grees: public CRAWL::IWorldItem
     Q_OBJECT
 public:
     Grees();
-
-    // IWorldItem interface
-protected:
-    void onIntersects(const IWorldItem *item) override;
 };
 }
 #endif // GREES_H

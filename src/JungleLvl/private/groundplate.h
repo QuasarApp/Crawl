@@ -30,9 +30,6 @@ public:
 signals:
     void tiliesCountChanged();
 
-protected:
-    void onIntersects(const IWorldItem *item) override;
-
 private:
     int _tiliesCount = 1;
 };

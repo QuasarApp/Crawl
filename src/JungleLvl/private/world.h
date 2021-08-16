@@ -22,13 +22,15 @@ public:
     CRAWL::WorldRule *initWorldRules() override;
     QString initHdrBackGround() const override;
     QString description() const override;
-    QString imagePreview() const override;
-    QString name() const override;
-    int costToUnlock() const override;
+    QString image() const override;
+    QString itemName() const override;
+    int cost() const override;
     CRAWL::IControl *initUserInterface() const override;
-    void initPlayerControl(CRAWL::IControl *control) override;
-    CRAWL::PlayableObject *initPlayer() const override;
+    void initControl(CRAWL::IControl *control) override;
+    CRAWL::PlayableObject *initPlayer(int) const override;
     CRAWL::IAI *initBackGroundAI() const override;
+    QString itemTextId() const override;
+    int requiredTier() const override;
 
 private slots:
     void handleXViewChanged(double dx);

@@ -22,18 +22,9 @@ namespace CRAWL {
 
 class Engine;
 class IWorld;
-class WorldViewData;
 class MainMenuModel;
 class IControl;
-
-
-/**
- * @brief The WordlData struct simple structure that contains information about world.
- */
-struct WordlData {
-    WorldViewData* viewModel = nullptr;
-    IWorld * model = nullptr;
-};
+class Store;
 
 /**
  * @brief The ClientApp class This is main class of the Game engine.
@@ -62,28 +53,20 @@ public:
         static_assert(std::is_base_of_v<ILevel, LevelType>,
                 "Plrease use the child classes of the ILevel interface for tegistering new levels in the crawl game.");
 
-        addLvl(LevelType().world());
+        addLvl(new LevelType());
     }
 
 private:
     QByteArray initTheme();
-    IWorld* getLastWorld();
 
     /**
      * @brief addLvl This method should be add level to game.
      * @param levelWordl This is world instance
      */
-    void addLvl(IWorld* levelWordl);
+    void addLvl(ILevel* levelWordl);
 
-    /**
-     * @brief start This method star new game in @a lvl
-     * @param lvl This is lvl name
-     */
-    void start(const QString& lvl);
-
-    QHash<QString, WordlData> _availableLvls;
-    MainMenuModel *_menu = nullptr;
     Engine *_engine = nullptr;
+
 };
 
 }

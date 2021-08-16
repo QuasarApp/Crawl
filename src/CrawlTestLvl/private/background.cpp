@@ -14,10 +14,6 @@ Background::Background(): CRAWL::GroundClaster("TestBackground") {
     registerItemType<Plate>();
 }
 
-void Background::onIntersects(const IWorldItem *item) {
-    Q_UNUSED(item)
-}
-
 unsigned int Background::itemsCount() const {
     return 3;
 }

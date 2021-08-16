@@ -5,59 +5,96 @@
 //# of this license document, but changing it is not allowed.
 //#
 
+#include "availablelevelsmodel.h"
 #include "engine.h"
+#include "mainmenumodel.h"
 
 #include <QQmlComponent>
 #include <Crawl/guiobject.h>
+#include <Crawl/ipreviewscaneworld.h>
 #include "Crawl/iworld.h"
 #include <QThread>
 #include <quasarapp.h>
+#include <storeviewmodel.h>
 #include "Crawl/icontrol.h"
 #include "QDateTime"
 #include "QtConcurrent"
+#include "store.h"
 
 namespace CRAWL {
 
 Engine::Engine(QObject *parent): QObject(parent) {
+    _store = new Store();
+    _menu = new MainMenuModel();
+
+    setNewUser(new User());
 
 }
 
 Engine::~Engine() {
-    stopRenderLoop();
+
+
+    for (auto it = _availableLvls.begin(); it != _availableLvls.end(); ++it) {
+        delete it.value();
+    }
+
+    _availableLvls.clear();
+
+    delete _menu;
+    delete _currentUser;
 }
 
 QObject *Engine::scane() {
     return _scane;
 }
 
-void Engine::setQmlEngine(QQmlEngine *newEngine) {
-    if (_engine == newEngine)
-        return;
+void Engine::setLevel(ILevel *world) {
 
-    _engine = newEngine;
-}
-
-void Engine::setWorld(IWorld *world) {
-    if (_currentWorld == world)
+    if (_currentLevel == world)
         return ;
 
-    if (_currentWorld) {
-        _currentWorld->reset();
+    if (_currentLevel) {
+        _currentLevel->reset();
     }
 
-    _currentWorld = world;
+    _currentLevel = world;
     emit worldChanged();
 
-    if (!prepareNewWorld()) {
-        QuasarAppUtils::Params::log("Failed to init world. World name: " + _currentWorld->name(),
+    if (!_currentLevel) {
+
+        QuasarAppUtils::Params::log("Failed to init world. The World object is null! ",
                                     QuasarAppUtils::Error);
 
-        _currentWorld = nullptr;
+        _currentLevel = nullptr;
         return;
     }
 
-    startRenderLoop();
-    _currentWorld->runAsBackGround();
+    if (!_currentLevel->world()) {
+        QuasarAppUtils::Params::log("Failed to init world. The World Object is null: " +
+                                    _currentLevel->world()->itemName(),
+                                    QuasarAppUtils::Error);
+
+        _currentLevel = nullptr;
+        return;
+    }
+
+    if (!_currentLevel->previewScane()) {
+        QuasarAppUtils::Params::log("Failed to init world. The World Preview scane is null. World Name: " +
+                                    _currentLevel->world()->itemName(),
+                                    QuasarAppUtils::Error);
+
+        _currentLevel = nullptr;
+        return;
+    }
+
+    connect(_currentLevel->previewScane(), &IPreviewScaneWorld::sigPrepareIsFinished,
+            this, &Engine::start);
+
+    connect(_currentLevel->world(), &IPreviewScaneWorld::sigGameFinished,
+            this, &Engine::stop);
+
+    _currentLevel->previewScane()->start({});
+
 }
 
 void Engine::setScane(QObject *newScane) {
@@ -68,109 +105,148 @@ void Engine::setScane(QObject *newScane) {
 }
 
 QObject *Engine::player() const {
-    if (_currentWorld)
-        return _currentWorld->_player;
+    if (_currentLevel && _currentLevel->world())
+        return _currentLevel->world()->player();
 
     return nullptr;
 }
 
 QObject *Engine::world() const {
-    return _currentWorld;
+    if (!_currentLevel)
+        return nullptr;
+
+    return _currentLevel->world();
 }
 
+void Engine::start(const StartData& config) const {
+    if (!_currentLevel)
+        return;
+
+
+    if (!_currentLevel->previewScane()->stop()) {
+        return;
+    }
+
+    _currentLevel->world()->start(config);
+}
+
+void Engine::stop() const {
+    if (!_currentLevel)
+        return;
+
+    _currentLevel->previewScane()->start(_currentLevel->previewScane()->configuration());
+}
+
+void Engine::handleUnlockedItem(int item) {
+    static_cast<AvailableLevelsModel*>(_menu->selectLevelModle())->addKey(item);
+}
+
+void Engine::handleDroppedItem(int item) {
+    static_cast<AvailableLevelsModel*>(_menu->selectLevelModle())->removeKey(item);
+}
+
+void Engine::handleUnlockedItemsListChanged(const QSet<int> &newSet) {
+    static_cast<AvailableLevelsModel*>(_menu->selectLevelModle())->setKeys(QList<int>(newSet.begin(), newSet.end()));
+}
+
+void Engine::handleLevelChanged(int levelId) {
+
+    ILevel* data = _availableLvls.value(levelId, nullptr);
+
+    if (!data) {
+        QuasarAppUtils::Params::log("Failed to start lvl.", QuasarAppUtils::Error);
+        return;
+    }
+
+    setLevel(data);
+}
+
+ILevel *Engine::getLastLevel() {
+    for (const auto &data : qAsConst(_availableLvls)) {
+        if (data && data->world() && currentUser() &&
+               currentUser()->isUnlocked(data->world()->itemId())) {
+            return data;
+        }
+    }
+
+    return nullptr;
+}
 
 QObject *Engine::menu() const {
     return _menu;
 }
 
-void Engine::setMenu(QObject *newMenu) {
-    if (_menu == newMenu) {
-        return;
+void Engine::setNewUser(User *user) {
+    if (_currentUser) {
+
+        disconnect(_currentUser, &User::sigUnlcoked, this, &Engine::handleUnlockedItem);
+        disconnect(_currentUser, &User::sigDropped, this, &Engine::handleDroppedItem);
+        disconnect(_currentUser, &User::sigUlockedItemsChanged,
+                   this, &Engine::handleUnlockedItemsListChanged);
     }
 
-    _menu = newMenu;
-    emit menuChanged();
+    _currentUser = user;
+    static_cast<StoreViewModel*>(_menu->storeView())->setUser(_currentUser);
+    static_cast<AvailableLevelsModel*>(_menu->selectLevelModle())->setUser(_currentUser);
+
+
+    if (_currentUser) {
+
+        connect(_currentUser, &User::sigUnlcoked, this, &Engine::handleUnlockedItem);
+        connect(_currentUser, &User::sigDropped, this, &Engine::handleDroppedItem);
+        connect(_currentUser, &User::sigUlockedItemsChanged,
+                this, &Engine::handleUnlockedItemsListChanged);
+    }
 }
 
-int Engine::prepareLvlProgress() const {
-    return _prepareLvlProgress;
+void Engine::addLvl(ILevel *levelWordl) {
+    if (!levelWordl->world()) {
+        QuasarAppUtils::Params::log("The Level not contains world object!!!");
+        return;
+    }
+    _availableLvls.insert(levelWordl->world()->itemId(), levelWordl);
 }
 
-bool Engine::start() const {
-    if (!_currentWorld)
-        return false;
-
-    if (!_currentWorld->isInit())
-        return false;
-
-    return _currentWorld->start();
+Store *Engine::store() const {
+    return _store;
 }
 
-QObject *Engine::getGameObject(int id) const {
-    if (!_currentWorld)
+QObject *Engine::nest() const {
+    if (!_currentLevel)
         return nullptr;
 
-    return _currentWorld->getItem(id);
+    return _currentLevel->previewScane();
 }
 
-void Engine::startRenderLoop() {
-    if (isRendering())
-        return;
-
-    _renderLoop = true;
-    _renderLoopFuture = QtConcurrent::run([this](){renderLoop();});
+User *Engine::currentUser() const {
+    return _currentUser;
 }
 
-void Engine::stopRenderLoop() {
-    _renderLoop = false;
-    _renderLoopFuture.waitForFinished();
-}
+void Engine::init() {
+    QMultiHash<int, const IItem *> availabelItems;
 
-bool Engine::isRendering() const {
-    return _renderLoopFuture.isRunning();
-}
-
-void Engine::setPrepareLvlProgress(int newPrepareLvlProgress) {
-    if (_prepareLvlProgress == newPrepareLvlProgress) {
-        return;
-    }
-    _prepareLvlProgress = newPrepareLvlProgress;
-    emit prepareLvlProgressChanged();
-}
-
-bool Engine::prepareNewWorld() {
-    if (!_currentWorld->prepare()) {
-        return false;
+    for (const auto &data : qAsConst(_availableLvls)) {
+        if (data && data->world())
+            availabelItems.unite(data->world()->childItemsRecursive());
     }
 
-    if (!_currentWorld->userInterface()->init()) {
-        return false;
-    }
+    _store->init(availabelItems);
+    static_cast<StoreViewModel*>(_menu->storeView())->init(_store, _currentUser);
 
-    setMenu(_currentWorld->userInterface());
-
-    return true;
-}
-
-void Engine::renderLoop() {
-
-    if (!_currentWorld)
-        return;
-
-    while (_renderLoop) {
-
-        quint64 currentTime = QDateTime::currentMSecsSinceEpoch();
-
-        if (!_oldTimeRender) {
-            _oldTimeRender = currentTime;
-            continue;
+    QList<int> availableWorlds;
+    for (int id : _currentUser->unlockedItems()) {
+        auto item = availabelItems.value(id);
+        if (item->itemType() == IWorld::type()) {
+            availableWorlds.push_back(item->itemId());
         }
-
-        _currentWorld->render(currentTime - _oldTimeRender);
-        _oldTimeRender = currentTime;
     }
 
+#define selectedLevelModel static_cast<AvailableLevelsModel*>(_menu->selectLevelModle())
+    selectedLevelModel->setStore(_store);
+    selectedLevelModel->setKeys(availableWorlds);
 
+    connect(selectedLevelModel, &AvailableLevelsModel::sigUserSelectLevel,
+            this, &Engine::handleLevelChanged);
 }
 
 }

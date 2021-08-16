@@ -30,8 +30,30 @@ AbsLvlSnake::AbsLvlSnake(): Snake(AUTO_CLASS_NAME) {
     registerItemType<AbsLvlSnakeItem>();
 }
 
-void AbsLvlSnake::onIntersects(const IWorldItem *item) {
-    Q_UNUSED(item);
+QString AbsLvlSnake::itemTextId() const {
+    return "AbsLvlSnake";
 }
+
+QString AbsLvlSnake::itemName() const {
+    return tr("AbsLvlSnake");
+}
+
+QString AbsLvlSnake::description() const {
+    return tr("AbsLvlSnake Snake");
+
+}
+
+QString AbsLvlSnake::image() const {
+    return "";
+}
+
+int AbsLvlSnake::cost() const {
+    return 0;
+}
+
+int AbsLvlSnake::requiredTier() const {
+    return 0;
+}
+
 
 }

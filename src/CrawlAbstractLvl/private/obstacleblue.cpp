@@ -16,8 +16,4 @@ ObstacleBlue::ObstacleBlue() : IWorldItem(AUTO_CLASS_NAME) {
     setZ(0);
 }
 
-void ObstacleBlue::onIntersects(const IWorldItem *item) {
-        Q_UNUSED(item);
-}
-
 }

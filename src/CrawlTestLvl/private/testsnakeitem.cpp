@@ -15,8 +15,4 @@ TestSnakeItem::TestSnakeItem():CRAWL::SnakeItem("TestSnakeItem") {
 
 }
 
-void TestSnakeItem::onIntersects(const IWorldItem *item) {
-    Q_UNUSED(item);
-
-}
 }

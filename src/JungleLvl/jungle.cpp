@@ -8,12 +8,14 @@
 
 #include "jungle.h"
 #include "world.h"
+#include "nest.h"
 
 Jungle::Jungle() {
-
-}
-
-CRAWL::IWorld *Jungle::world() {
     initJungleLvlResources();
-    return new JungleLvl::World();
+
+    auto world = new JungleLvl::World();
+
+    setWorld(world);
+
+    setPreviewScane(new JungleLvl::Nest(world));
 }

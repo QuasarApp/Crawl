@@ -8,6 +8,7 @@
 #ifndef CRAWL_SNAKE_H
 #define CRAWL_SNAKE_H
 
+#include "iitem.h"
 #include "playableobject.h"
 #include "Extensions/autogenerateclaster.h"
 
@@ -18,7 +19,7 @@ class SnakeItem;
 /**
  * @brief The Snake class This class implement render mehod for snake object.
  */
-class CRAWL_EXPORT Snake : public PlayableObject, public AutoGenerateClaster
+class CRAWL_EXPORT Snake : public PlayableObject, public AutoGenerateClaster, public IItem
 {
     Q_OBJECT
 public:
@@ -27,13 +28,28 @@ public:
           QObject *ptr = nullptr);
     ~Snake() override;
 
+    QString itemTextType() const override;
+
+    /**
+     * @brief type This method return const string value of the all world types.
+     * @return const string value of the all world types.
+     * @see IItem::itemTextType
+     * @see IItem::type
+     */
+    static QString typeText();
+
+    /**
+     * @brief type This is wrapper of the IWorld::typeText method that invoke the qHash function for results string.
+     * @return integer type object id.
+     */
+    static unsigned int type();
+
     void render(unsigned int tbfMsec) override;
 
     void add(ClasterItem *object) override;
     void remove(ClasterItem *object) override;
     void remove(int id) override;
     void init() override;
-
 
     // IPlayer interface
     /**
@@ -130,6 +146,8 @@ private:
     unsigned int _clickIndex;
     QVector3D* _vectors;
     float _speed;
+
+    int _hp = 100;
 
 };
 

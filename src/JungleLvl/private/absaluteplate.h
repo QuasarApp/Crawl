@@ -11,10 +11,6 @@ class AbsalutePlate : public CRAWL::IWorldItem
 public:
     AbsalutePlate();
 
-    // IWorldItem interface
-protected:
-    void onIntersects(const IWorldItem *item) override;
-
     // IRender interface
 public:
     void render(unsigned int tbfMsec) override;

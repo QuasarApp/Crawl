@@ -5,15 +5,14 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick3D.Particles3D
 
-// https://doc.qt.io/qt-5/qqmlengine.html#qmlRegisterUncreatableMetaObject
-import engine.worldstatus
 
 View3D {
     id: scene;
 
-    property var model: null;
-    property alias showMenu: privateRoot.showMenu
+    property var worldModel: null;
     renderMode: View3D.Offscreen
+
+    visible: worldModel && worldModel.visible
 
     Label {
         text: scane.renderStats.fps
@@ -44,26 +43,23 @@ View3D {
     ParticleSystem3D {
         id: privateRoot
         property var arrayObjects: []
-        property var world: (model)? model.world: null
 
-        property var gameMenuModel: (model)? model.menu: null
-        property var player: (world)? world.player: null
-        property var releativeCameraPosition: (world)? world.cameraReleativePosition: null
-        property var progress: (model)? model.prepareLvlProgress: null
+        property var gameMenuModel: (worldModel)? worldModel.menu: null
+        property var player: (worldModel)? worldModel.player: null
+        property var releativeCameraPosition: (worldModel)? worldModel.cameraReleativePosition: null
 
         property var gameMenu: null
-        property bool showMenu: (world)? WorldStatus.Game !== world.worldStatus : false;
 
         function add (cppObjId) {
-            if (!model) {
+            if (!worldModel) {
                 console.log("create object fail")
                 return;
             }
 
-            const objModel = model.getGameObject(cppObjId);
+            const objModel = worldModel.getItem(cppObjId);
 
             if (!objModel) {
-                console.log("object model not found");
+                console.log("model of the crawl object is not found");
                 return;
             }
 
@@ -95,7 +91,7 @@ View3D {
         }
 
         Connections {
-            target: privateRoot.world;
+            target: worldModel;
             function onSigOBjctsListChanged(diff) {
                 if (!diff) {
                     console.log("diff not found");
@@ -142,12 +138,6 @@ View3D {
                 } else if (comp.status === Component.Error) {
                     // Error Handling
                     console.log("Error loading component: " + privateRoot.gameMenuModel.view, comp.errorString());
-                }
-            }
-
-            function onShowMenuChanged() {
-                if (privateRoot.gameMenu) {
-                    privateRoot.gameMenu.visible = !showMenu
                 }
             }
         }

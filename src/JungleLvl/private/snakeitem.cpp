@@ -19,8 +19,4 @@ void SnakeItem::init() {
 
 }
 
-void SnakeItem::onIntersects(const IWorldItem *) {
-
-}
-
 }

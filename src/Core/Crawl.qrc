@@ -10,7 +10,6 @@
         <file>CrawlModule/Scene.qml</file>
         <file>CrawlModule/SettingsView.qml</file>
         <file>CrawlModule/SnakeItem.qml</file>
-        <file>CrawlModule/SelectLvlView.qml</file>
         <file>CrawlModule/DefaultMenu.qml</file>
         <file>CrawlModule/AbstractMenuView.qml</file>
         <file>CrawlModule/Light.qml</file>
@@ -24,5 +23,8 @@
         <file>CrawlCoreAssets/particles/smokeSprite.png</file>
         <file>CrawlModule/particles/Fire.qml</file>
         <file>CrawlModule/particles/Wint.qml</file>
+        <file>CrawlModule/PreviewControl.qml</file>
+        <file>CrawlModule/StoreView.qml</file>
+        <file>CrawlModule/SelectLevelView.qml</file>
     </qresource>
 </RCC>

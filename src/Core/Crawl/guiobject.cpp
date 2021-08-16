@@ -36,6 +36,10 @@ void GuiObject::generateId() {
     setGuiId(id++);
 }
 
+void GuiObject::setContainerSize(const QVector3D &newContainerSize) {
+    _containerSize = newContainerSize;
+}
+
 bool GuiObject::visible() const {
     return _visible;
 }
@@ -132,14 +136,14 @@ QVector3D GuiObject::center() const {
 }
 
 bool GuiObject::intersects(const QVector3D &point) const {
-    auto radius = _size / 2;
+    auto radius = _containerSize / 2;
     float thisMidRadius = (radius.z() + radius.y() + radius.x()) / 3;
     return center().distanceToPoint(point) < thisMidRadius ;
 }
 
 bool GuiObject::intersects(const GuiObject &object) const {
-    auto radius = _size / 2;
-    auto objRadius = object.size() / 2;
+    auto radius = _containerSize / 2;
+    auto objRadius = object._containerSize / 2;
     float thisMidRadius = (radius.z() + radius.y() + radius.x()) / 3;
     float objMidRadius = (objRadius.z() + objRadius.y() + objRadius.x()) / 3;
 

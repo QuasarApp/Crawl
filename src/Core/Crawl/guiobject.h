@@ -157,6 +157,13 @@ public:
     int guiId() const;
     void setGuiId(int guiId);
 
+    /**
+     * @brief containerSize This method sets container size of object. Change this propertye for setting correct work the GuiObject::intersects method.
+     * @param newContainerSize new is new value of the object contaier cube.
+     * @see GuiObject::intersects
+     */
+    void setContainerSize(const QVector3D &newContainerSize);
+
 signals:
     void guiIdChanged(int guiId);
     void colorChanged(QString color);
@@ -213,6 +220,7 @@ private:
 
     QVector3D _position;
     QVector3D _size;
+    QVector3D _containerSize = {1,1,1};
     QQuaternion _rotation;
     QString _mash;
     QString _className;

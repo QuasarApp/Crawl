@@ -6,8 +6,10 @@
 //#
 
 #include <listviewmodel.h>
+#include "availablelevelsmodel.h"
 #include "mainmenumodel.h"
 #include "settingsviewmodel.h"
+#include "storeviewmodel.h"
 
 #include <quasarapp.h>
 
@@ -17,28 +19,36 @@ MainMenuModel::MainMenuModel(QObject *ptr): QObject (ptr) {
 
     _conf = QuasarAppUtils::Settings::instance();
     _userSettingsModel = new SettingsViewModel(this);
-    _availableLvlsModel = new ViewSolutions::ListViewModel(this);
+    _storeView = new StoreViewModel();
+    _selectLevelModle = new AvailableLevelsModel();
+}
 
+MainMenuModel::~MainMenuModel() {
+    delete _storeView;
+    delete _selectLevelModle;
 }
 
 QObject *MainMenuModel::userSettingsModel() const {
     return _userSettingsModel;
 }
 
-QObject *MainMenuModel::availableLvlsModel() const {
-    return _availableLvlsModel;
+bool MainMenuModel::getVisible() const {
+    return visible;
 }
 
-void MainMenuModel::addWorldViewModel(QObject * data) {
-    _availableLvlsModel->addSource(data);
+void MainMenuModel::setVisible(bool newVisible) {
+    if (visible == newVisible)
+        return;
+    visible = newVisible;
+    emit visibleChanged();
 }
 
-void MainMenuModel::setAvailableLvls(const QList<QObject*> &newData) {
-    _availableLvlsModel->setSource(newData);
+QObject *MainMenuModel::storeView() const {
+    return _storeView;
 }
 
-void MainMenuModel::newGame(const QString &lvl) {
-    emit sigNewGame(lvl);
+QObject *MainMenuModel::selectLevelModle() const {
+    return _selectLevelModle;
 }
 
 }

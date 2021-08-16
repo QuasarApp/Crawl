@@ -30,30 +30,93 @@ const IWorldItem *IWorldItem::getItem(int id) const {
 }
 
 const IWorldItem *IWorldItem::getPlayer() const {
-    return _playerObject;
+    if (!_world)
+        return nullptr;
+    return static_cast<const IWorldItem *>(_world->player());
 }
 
 void IWorldItem::render(unsigned int) {
+    auto _playerObject = getPlayer();
+
+    if (!_playerObject)
+        return;
+
+    if (_fFirstRenderIteration) {
+        firstSpawn();
+        _fFirstRenderIteration = false;
+    }
+
     if (_playerObject->position().distanceToPoint(position()) >
             _world->cameraReleativePosition().z() * 3) {
-
-        float dX = _world->cameraReleativePosition().z() * 2 +
-                (rand() % static_cast<int>(_world->cameraReleativePosition().z()));
-
-        setX(_playerObject->position().x() + dX);
-
-        float dY = (rand() % static_cast<int>(_world->cameraReleativePosition().z() * 3)
-                                             - _world->cameraReleativePosition().z() * 1.5);
-
-        setY(_playerObject->position().y() + dY);
+        respawn();
     }
 }
 
 void IWorldItem::init() {}
 
-void IWorldItem::initOnWorld(const IWorld *world, const IWorldItem * player) {
+void IWorldItem::initOnWorld(const IWorld *world) {
     _world = world;
-    _playerObject = player;
+}
+
+int IWorldItem::supportedEvents() const {
+    return _supportedEvents;
+}
+
+bool IWorldItem::isSopportEvent(int event) const {
+    return (_supportedEvents & event) == event;
+}
+
+void IWorldItem::destroy() {
+    _fDistroy = true;
+}
+
+void IWorldItem::respawn() {
+    auto _playerObject = getPlayer();
+
+    if (!_playerObject)
+        return;
+
+    float dX = _world->cameraReleativePosition().z() * 2 +
+            (rand() % static_cast<int>(_world->cameraReleativePosition().z()));
+
+    setX(_playerObject->position().x() + dX);
+
+    float dY = (rand() % static_cast<int>(_world->cameraReleativePosition().z() * 3)
+                                         - _world->cameraReleativePosition().z() * 1.5);
+
+    setY(_playerObject->position().y() + dY);
+}
+
+void IWorldItem::firstSpawn() {
+
+}
+
+bool IWorldItem::destroyIsScheduled() const {
+    return _fDistroy;
+}
+
+void IWorldItem::action(IWorldItem *) {
+
+}
+
+void IWorldItem::setSupportedEvents(int newSupportedEvents) {
+    _supportedEvents = newSupportedEvents;
+}
+
+void IWorldItem::addSupportOfEvent(int newSupportedEvent) {
+    _supportedEvents = _supportedEvents | newSupportedEvent;
+}
+
+void IWorldItem::dropSupportOfEvent(int depricatedEvent) {
+    _supportedEvents = _supportedEvents & (~depricatedEvent);
+}
+
+bool IWorldItem::isDecorative() const {
+    return _fDecorative;
+}
+
+void IWorldItem::setFDecorative(bool newFDecorative) {
+    _fDecorative = newFDecorative;
 }
 
 const IWorld *IWorldItem::world() const {

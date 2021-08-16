@@ -23,7 +23,7 @@ AbsLvlWorld::AbsLvlWorld() {
     setCameraRotation(QQuaternion::fromEulerAngles({0,0,0}));
 }
 
-CRAWL::PlayableObject *AbsLvlWorld::initPlayer() const {
+CRAWL::PlayableObject *AbsLvlWorld::initPlayer(int) const {
     return new AbsLvlSnake();
 }
 
@@ -60,16 +60,16 @@ QString AbsLvlWorld::description() const {
     return tr("This a abstract lvl");
 }
 
-QString AbsLvlWorld::imagePreview() const {
+QString AbsLvlWorld::image() const {
     return "qrc:/hdr/hdr/testHDR.jpg";
 
 }
 
-QString AbsLvlWorld::name() const {
+QString AbsLvlWorld::itemName() const {
     return tr("AbstractLvl");
 }
 
-int AbsLvlWorld::costToUnlock() const {
+int AbsLvlWorld::cost() const {
     return 0;
 }
 
@@ -77,8 +77,16 @@ CRAWL::IControl *AbsLvlWorld::initUserInterface() const {
     return new AbsLvlControl();
 }
 
-void AbsLvlWorld::initPlayerControl(CRAWL::IControl *control) {
-    return IWorld::initPlayerControl(control);
+void AbsLvlWorld::initControl(CRAWL::IControl *control) {
+    return IWorld::initControl(control);
+}
+
+QString AbsLvlWorld::itemTextId() const {
+    return "AbstractLevel";
+}
+
+int AbsLvlWorld::requiredTier() const {
+    return 0;
 }
 
 }

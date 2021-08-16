@@ -16,8 +16,6 @@ AbsalutePlate::AbsalutePlate(): CRAWL::IWorldItem(AUTO_CLASS_NAME) {
     setColor("#000000");
 }
 
-void AbsalutePlate::onIntersects(const IWorldItem *) {}
-
 void AbsalutePlate::render(unsigned int ) {
     setposition(getPlayer()->position() + QVector3D{0,0,-100});
 }

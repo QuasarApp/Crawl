@@ -31,8 +31,28 @@ Snake::Snake(): CRAWL::Snake("JungleSnake") {
                              {1, 0.5}});
 }
 
-void Snake::onIntersects(const IWorldItem *) {
+QString Snake::itemTextId() const {
+    return "JungleSnake";
+}
 
+QString Snake::itemName() const {
+    return tr("JungleSnake");
+}
+
+QString Snake::description() const {
+    return tr("JungleSnake Snake");;
+}
+
+QString Snake::image() const {
+    return "";
+}
+
+int Snake::cost() const {
+    return 0;
+}
+
+int Snake::requiredTier() const {
+    return 0;
 }
 
 unsigned int Snake::itemsCount() const {

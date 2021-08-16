@@ -19,10 +19,6 @@ class Plate: public CRAWL::GroundTile {
 public:
     Plate();
 
-    // IWorldItem interface
-protected:
-    void onIntersects(const IWorldItem *item) override;
-
     // IRender interface
 public:
     void render(unsigned int tbfMsec) override;

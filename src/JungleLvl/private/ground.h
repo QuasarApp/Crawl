@@ -20,13 +20,6 @@ class Ground : public CRAWL::GroundClaster
 {
 public:
     Ground();
-
-    // IWorldItem interface
-protected:
-    void onIntersects(const IWorldItem *item) override;
-
-    // AutoGenerateClaster interface
-public:
     unsigned int itemsCount() const override;
 };
 

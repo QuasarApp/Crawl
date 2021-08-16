@@ -18,13 +18,12 @@ IControl::~IControl() {
 
 }
 
-const QString &IControl::view() const {
-    return _view;
-}
+const QString &IControl::view() {
+    if (_view.isEmpty()) {
+        setView(initQmlView());
+    }
 
-bool IControl::init() {
-    setView(initQmlView());
-    return _view.size();
+    return _view;
 }
 
 void IControl::setView(const QString &newView) {

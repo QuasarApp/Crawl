@@ -10,6 +10,7 @@
 #include <QQuaternion>
 #include <quasarapp.h>
 #include <cmath>
+#include "iworld.h"
 
 namespace CRAWL {
 
@@ -32,10 +33,24 @@ Snake::Snake(const QString &name, const QString &viewTempalte, QObject *ptr):
     setLengthBetwinItemsMap({{0, 0.8},
                               {0.4, 1.2},
                               {1, 0.5}});
+
+    addSupportOfEvent(Events::Intersects);
 }
 
 Snake::~Snake( ){
     delete [] _vectors;
+}
+
+QString Snake::itemTextType() const {
+    return Snake::typeText();
+}
+
+QString Snake::typeText() {
+    return "PlayableObject";
+}
+
+unsigned int Snake::type() {
+    return qHash(typeText());
 }
 
 void Snake::render(unsigned int tbfMsec) {

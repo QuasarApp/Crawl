@@ -31,7 +31,7 @@ CRAWL::WorldRule *World::initWorldRules() {
     using Day = CRAWL::Day<CRAWL::Sun, CRAWL::Moon>;
 
     return new CRAWL::WorldRule {
-        {0, {{registerObject<Box>(), 100},
+        {0, {{registerObject<Box>(), 1000},
              {registerObject<CRAWL::Fire>(), 10},
              {registerObject<CRAWL::DynamicWint>(), 1},
 
@@ -48,15 +48,15 @@ QString World::description() const {
     return "This a test lvl";
 }
 
-QString World::imagePreview() const {
+QString World::image() const {
     return "qrc:/hdr/hdr/testHDR.jpg";
 }
 
-QString World::name() const {
+QString World::itemName() const {
     return "Test";
 }
 
-int World::costToUnlock() const {
+int World::cost() const {
     return 0;
 }
 
@@ -64,21 +64,29 @@ CRAWL::IControl *World::initUserInterface() const {
     return new TestControl();
 }
 
-void World::initPlayerControl(CRAWL::IControl *control) {
+void World::initControl(CRAWL::IControl *control) {
     if (auto test = dynamic_cast<TestControl*>(control)) {
         connect(test, &TestControl::xChanged, this, &World::handleXViewChanged);
         connect(test, &TestControl::yChanged, this, &World::handleYViewChanged);
     }
 
-    return IWorld::initPlayerControl(control);
+    return IWorld::initControl(control);
 }
 
-CRAWL::PlayableObject *World::initPlayer() const {
+CRAWL::PlayableObject *World::initPlayer(int) const {
     return new TestSnake();
 }
 
 CRAWL::IAI *World::initBackGroundAI() const {
     return IWorld::initBackGroundAI();
+}
+
+QString World::itemTextId() const {
+    return "TestLevel";
+}
+
+int World::requiredTier() const {
+    return 0;
 }
 
 void World::handleXViewChanged(double dx) {

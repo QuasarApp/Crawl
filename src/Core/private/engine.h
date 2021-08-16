@@ -12,10 +12,16 @@
 #include <QObject>
 #include <QQmlEngine>
 #include <Crawl/diff.h>
+#include <Crawl/ilevel.h>
 
 namespace CRAWL {
 
 class IWorld;
+class Store;
+class StartData;
+class User;
+class StoreViewModel;
+class MainMenuModel;
 
 /**
  * @brief The Engine class
@@ -25,10 +31,11 @@ class Engine : public QObject {
     Q_OBJECT
     Q_PROPERTY(QObject* player READ player NOTIFY playerChanged)
     Q_PROPERTY(QObject* world READ world NOTIFY worldChanged)
+    Q_PROPERTY(QObject* nest READ nest NOTIFY worldChanged)
 
     Q_PROPERTY(QObject* scane READ scane WRITE setScane NOTIFY scaneChanged)
-    Q_PROPERTY(QObject* menu READ menu WRITE setMenu NOTIFY menuChanged)
-    Q_PROPERTY(int _prepareLvlProgress READ prepareLvlProgress WRITE setPrepareLvlProgress NOTIFY prepareLvlProgressChanged)
+    Q_PROPERTY(QObject * menu READ menu NOTIFY menuChanged)
+
 
 public:
     Engine(QObject * parent = nullptr);
@@ -41,16 +48,10 @@ public:
     Q_INVOKABLE QObject* scane();
 
     /**
-     * @brief setQmlEngine This method sets qml engine
-     * @param newEngine This is pointer to the qml engine.
+     * @brief setLevel This method set new world level for game.
+     * @param world This is pointer to new world level.
      */
-    void setQmlEngine(QQmlEngine *newEngine);
-
-    /**
-     * @brief setWorld This method set new world for game.
-     * @param world This is pointer to new world.
-     */
-    void setWorld(IWorld *world);
+    void setLevel(ILevel *world);
 
     /**
      * @brief setScane This method sets new scane object. The scane object are
@@ -77,52 +78,46 @@ public:
     QObject* world() const;
 
     /**
-     * @brief menu This method return pointer to cistom menu.
-     * @return pointer to custom menu.
-     * @note menu creating in the Wolrld object.
+     * @brief currentUser This method return pointer too current user.
+     * @return pointer too current user.
+     */
+    User *currentUser() const;
+
+    /**
+     * @brief init This method initialize the main model. Sets available levels and items.
+     * @param availabelItems This is list of available items.
+     */
+    void init();
+
+    /**
+     * @brief store This pointer return pointer to store.
+     * @return pointer to store.
+     */
+    Store *store() const;
+
+    /**
+     * @brief nest This method return pointer to the nest model.
+     * @return pointer to the nest model.
+     */
+    QObject *nest() const ;
+
+    /**
+     * @brief menu This is a main menu model.
+     * @return main menu model object.
      */
     QObject *menu() const;
 
     /**
-     * @brief setMenu This method sets new menu object.
-     * @param newMenu
+     * @brief setNewUser This method will initialise the new user profile.
+     * @param user This is pointer to new user profile.
      */
-    void setMenu(QObject *newMenu);
+    void setNewUser(User* user);
 
     /**
-     * @brief prepareLvlProgress This method return rurrent progress of the loading lvl.
-     * @return current progress of loading new level on the world. progress range is 0 - 100 
+     * @brief addLvl This method should be add level to game.
+     * @param levelWordl This is world instance
      */
-    int prepareLvlProgress() const;
-
-    /**
-     * @brief start This method run current lvl
-     * @return true if lvl started successful.
-     */
-    bool start() const;
-
-    /**
-     * @brief getGameObject This method using in qml for getting main model of the gui objects.
-     * @param id This is id of the gui object.
-     * @return pointer to game object model
-     */
-    Q_INVOKABLE QObject *getGameObject(int id) const;
-
-    /**
-     * @brief startRenderLoop This method start render loop in engine.
-     */
-    void startRenderLoop();
-
-    /**
-     * @brief stopRenderLoop This method stop render loop in engine.
-     */
-    void stopRenderLoop();
-
-    /**
-     * @brief isRendering This method erturn true if the render loop is working else false.
-     * @return true if the render loop is working else false.
-     */
-    bool isRendering() const;
+    void addLvl(ILevel* levelWordl);
 
 signals:
     void scaneChanged();
@@ -130,24 +125,57 @@ signals:
     void worldChanged();
 
     void menuChanged();
-    void prepareLvlProgressChanged();
 
+private slots:
+    /**
+     * @brief start This method run current lvl ( move prepared data from the nest to game world)
+     * @param config This is confuguration that created new game world.
+     * @return true if lvl started successful.
+     */
+    void start(const StartData &config) const;
+
+    /**
+     * @brief stop This slots invoked when world finished own session.
+     */
+    void stop() const;
+
+    /**
+     * @brief handleUnlockedItem This slot invoked when emited the User::unclokItem signal.
+     * @param item This is id of the unlocked item
+     */
+    void handleUnlockedItem(int item);
+
+    /**
+     * @brief handleUnlockedItem This slot invoked when emited the User::droppItem signal.
+     * @param item This is id of the dropped item
+     */
+    void handleDroppedItem(int item);
+
+    /**
+     * @brief handleUnlockedItem This slot invoked when emited the User::setUnlockedItems signal.
+     * @param item This is new list of the unclod items.
+     */
+    void handleUnlockedItemsListChanged(const QSet<int>& newSet);
+
+    /**
+     * @brief handleLevelChanged This slot invoked when user select new level.
+     * @param levelId level id
+     */
+    void handleLevelChanged(int levelId);
 private:
-    void setPrepareLvlProgress(int newPrepareLvlProgress);
-    bool prepareNewWorld();
+
+    ILevel * getLastLevel();
+
     void renderLoop();
 
-
     QObject *_scane = nullptr;
-    QQmlEngine *_engine = nullptr;
-    IWorld* _currentWorld = nullptr;
-    QObject *_menu = nullptr;
-    int _prepareLvlProgress;
+    ILevel* _currentLevel = nullptr;
+    QHash<int, ILevel*> _availableLvls;
 
-    quint64 _oldTimeRender = 0;
+    MainMenuModel *_menu = nullptr;
 
-    QFuture<void> _renderLoopFuture;
-    bool _renderLoop = false;
+    User *_currentUser = nullptr;
+    Store *_store = nullptr;
 };
 
 }

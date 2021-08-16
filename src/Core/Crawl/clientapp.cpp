@@ -14,6 +14,7 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <quasarapp.h>
+#include <store.h>
 
 #include <engine.h>
 #include <qmlnotifyservice.h>
@@ -22,6 +23,7 @@
 #include "pluginloader.h"
 #include <viewsolutions.h>
 #include "worldstatus.h"
+#include "user.h"
 
 namespace CRAWL {
 
@@ -35,52 +37,13 @@ QByteArray ClientApp::initTheme() {
     }
 }
 
+
 ClientApp::ClientApp() {
     _engine = new Engine();
-    _menu = new MainMenuModel();
-
-    connect(_menu, &MainMenuModel::sigNewGame, this, &ClientApp::start);
 }
 
 ClientApp::~ClientApp() {
-    delete _menu;
     delete _engine;
-
-    for (auto it = _availableLvls.begin(); it != _availableLvls.end(); ++it) {
-        delete it.value().viewModel;
-        delete it.value().model;
-    }
-
-    _availableLvls.clear();
-}
-
-IWorld *ClientApp::getLastWorld() {
-    for (const auto &data : qAsConst(_availableLvls)) {
-        if (data.viewModel && data.viewModel->unlocked()) {
-            return data.model;
-        }
-    }
-
-    return nullptr;
-}
-
-void ClientApp::start(const QString &lvl) {
-    WordlData data = _availableLvls.value(lvl);
-
-    if (!data.model) {
-        QuasarAppUtils::Params::log("Failed to start lvl.", QuasarAppUtils::Error);
-        return;
-    }
-
-    if (!_engine) {
-        QuasarAppUtils::Params::log("Failed to start lvl, Engine not initialized.",
-                                    QuasarAppUtils::Error);
-
-        return;
-    }
-
-    _engine->setWorld(data.model);
-    _engine->start();
 }
 
 bool ClientApp::init(QQmlApplicationEngine *engine) {
@@ -95,7 +58,6 @@ bool ClientApp::init(QQmlApplicationEngine *engine) {
     engine->addImageProvider(QLatin1String("userItems"), new ImageProvider());
 
     root->setContextProperty("engine", QVariant::fromValue(_engine));
-    root->setContextProperty("mainmenu", QVariant::fromValue(_menu));
 
     qmlRegisterUncreatableMetaObject(
                 WorldStatus::staticMetaObject,
@@ -121,19 +83,13 @@ bool ClientApp::init(QQmlApplicationEngine *engine) {
     if (engine->rootObjects().isEmpty())
         return false;
 
-    _engine->setWorld(getLastWorld());
-    _engine->setQmlEngine(engine);
+    _engine->init();
 
     return true;
 }
 
-void ClientApp::addLvl(IWorld *levelWordl) {
-    WordlData data;
-
-    data.model = levelWordl;
-    data.viewModel = new WorldViewData(data.model);
-    _availableLvls.insert(data.model->name(), data);
-    _menu->addWorldViewModel(data.viewModel);
+void ClientApp::addLvl(ILevel *levelWordl) {
+    _engine->addLvl(levelWordl);
 }
 
 }

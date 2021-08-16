@@ -88,15 +88,15 @@ QString World::description() const {
     return tr("Jungle world.");
 }
 
-QString World::imagePreview() const {
+QString World::image() const {
     return "qrc:/hdr/hdr/jungleBanner.jpg";
 }
 
-QString World::name() const {
+QString World::itemName() const {
     return tr("Jungle");
 }
 
-int World::costToUnlock() const {
+int World::cost() const {
     return 0;
 }
 
@@ -104,16 +104,24 @@ CRAWL::IControl *World::initUserInterface() const {
     return IWorld::initUserInterface();
 }
 
-void World::initPlayerControl(CRAWL::IControl *control) {
-    return IWorld::initPlayerControl(control);
+void World::initControl(CRAWL::IControl *control) {
+    return IWorld::initControl(control);
 }
 
-CRAWL::PlayableObject *World::initPlayer() const {
+CRAWL::PlayableObject *World::initPlayer(int) const {
     return new Snake();
 }
 
 CRAWL::IAI *World::initBackGroundAI() const {
     return IWorld::initBackGroundAI();
+}
+
+QString World::itemTextId() const {
+    return "JungleLevel";
+}
+
+int World::requiredTier() const {
+    return 0;
 }
 
 void World::handleXViewChanged(double dx) {

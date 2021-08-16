@@ -26,10 +26,6 @@ public:
 
     void render(unsigned int tbfMsec) override;
     void init() override;
-
-    // IWorldItem interface
-protected:
-    void onIntersects(const IWorldItem *item) override;
 };
 
 }

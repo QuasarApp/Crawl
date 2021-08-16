@@ -17,6 +17,7 @@ ParticleEffect::ParticleEffect(const QString &name,
                                QObject *ptr):
     IWorldItem(name, viewTempalte, ptr) {
 
+    setFDecorative(true);
 }
 
 bool ParticleEffect::enabled() const {

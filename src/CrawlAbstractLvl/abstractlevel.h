@@ -19,10 +19,6 @@ inline void initAbstractLvlResources() { Q_INIT_RESOURCE(abstractLevel);
 class CRAWL_ABSTRACT_LEVEL_EXPORT AbstractLevel: public CRAWL::ILevel {
 public:
     AbstractLevel();
-
-    // ILevel interface
-public:
-    CRAWL::IWorld *world() override;
 };
 
 #endif // ABSTRACTLEVEL_H

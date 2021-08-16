@@ -16,8 +16,4 @@ ObstacleRed::ObstacleRed() : IWorldItem(AUTO_CLASS_NAME) {
     setZ(0);
 }
 
-void ObstacleRed::onIntersects(const IWorldItem *item) {
-        Q_UNUSED(item);
-}
-
 }

@@ -41,19 +41,12 @@ public:
      * @brief view This method retun qml view element.
      * @return return path to qml view.
      */
-    const QString &view() const;
+    const QString &view();
+
 signals:
     void viewChanged();
 
 private:
-
-    /**
-     * @brief init This method intialize this object.
-     * @note do not invoke this method monualy.
-     * @return True if initialize finished succesfful.
-     */
-    bool init();
-
     /**
      * @brief setView This method sets new value of qml view element.
      * @param newView path to qml view.
