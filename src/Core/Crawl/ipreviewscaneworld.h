@@ -50,7 +50,6 @@ signals:
 
 private slots:
 
-    void handleStop();
     void handleRotation(double x, double y);
     void handleStart();
     void handleSelect(int item, bool isSelected);

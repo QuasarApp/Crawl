@@ -29,6 +29,10 @@
         <source>Crawl</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Please Select level. If level is not availabel please bue it first.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>DefaultMenu</name>
@@ -80,10 +84,6 @@
 </context>
 <context>
     <name>PreviewControl</name>
-    <message>
-        <source>Back to menu.</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Start</source>
         <translation type="unfinished"></translation>

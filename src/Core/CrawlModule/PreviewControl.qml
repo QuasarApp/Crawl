@@ -23,10 +23,6 @@ AbstractMenuView {
         Layout.columnSpan: 4
         Layout.rowSpan: 1
 
-        onClicked: {
-            model.userTap()
-        }
-
 
         property bool track: false
         property real oldX: 0
@@ -66,19 +62,10 @@ AbstractMenuView {
     }
 
     Button {
-        text: qsTr("Back to menu.")
-        onClicked: {
-            if (model) {
-                model.backToMenu()
-            }
-        }
-    }
-
-    Button {
         text: qsTr("Start")
         onClicked: {
             if (model) {
-                model.backToMenu()
+                model.start()
             }
         }
     }

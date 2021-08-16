@@ -29,8 +29,8 @@ Item {
         anchors.bottomMargin: 0
         anchors.topMargin: 0
 
-        columns: 3
-        rows: 2
+        columns: 1
+        rows: 10
 
 
         transformOrigin: Item.Center
@@ -74,59 +74,6 @@ Item {
 
     }
 
-    PagePopUp {
-        id: settingsPopUp
-        source: SettingsView {
-            id: settingsView
-            model: root.model ? root.model.userSettingsModel: null
-        }
-
-        standardButtons:  Dialog.Save | Dialog.Cancel | Dialog.RestoreDefaults
-        modal: false;
-        width: parent.width * 0.8
-        height: parent.height * 0.8;
-
-        onAccepted: {
-            settingsView.save();
-        }
-
-        onReset: {
-            settingsView.reset();
-        }
-
-        onOpened: {
-            settingsView.update();
-        }
-
-    }
-
-    PagePopUp {
-        id: storePopUp
-        source: StoreView {
-            id: view
-            model: root.model ? root.model.storeView: null
-
-        }
-
-        modal: false;
-        width: parent.width * 0.8
-        height: parent.height * 0.8;
-
-    }
-
-    PagePopUp {
-        id: selectLvl
-        source: SelectLevelView {
-            id: selectLvlView
-            model: root.model ? root.model.selectLevelModle: null
-
-        }
-
-        modal: false;
-        width: parent.width * 0.8
-        height: parent.height * 0.8;
-
-    }
 }
 
 

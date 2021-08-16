@@ -21,6 +21,7 @@
 #include "diff.h"
 #include "eventserver.h"
 #include "player.h"
+#include <QtConcurrent>
 
 namespace CRAWL {
 
@@ -37,6 +38,7 @@ IWorld::IWorld() {
 }
 
 IWorld::~IWorld() {
+    disconnect();
     reset();
     delete _eventServer;
 }
@@ -61,11 +63,6 @@ IControl *IWorld::initUserInterface() const {
 }
 
 void IWorld::render(unsigned int tbfMsec) {
-
-    if (!_running) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-        return;
-    }
 
     _ItemsMutex.lock();
     QList<int> toRemove;
@@ -103,17 +100,26 @@ void IWorld::initControl(IControl *control) {
 
 bool IWorld::start(const StartData& config) {
 
+    auto player = dynamic_cast<Player*>(userInterface());
+    if (!player) {
+        QuasarAppUtils::Params::log("Failed to start world. T userIterface control should be children class of the Palyer class",
+                                    QuasarAppUtils::Error);
+
+        return false;
+    }
+
     setWorldStatus(WorldStatus::Game);
     backgroundAI()->stopAI();
     setPlayer(initPlayer(config.snakeType()));
 
-    userInterface()->setUserData(config.player());
+    player->setUserData(config.player());
 
     worldChanged(worldRules()->cbegin());
     setTargetFps(60);
-    setRunning(true);
     _eventServer->start();
     setVisible(true);
+
+    startRenderLoop();
 
     return true;
 }
@@ -150,9 +156,12 @@ IWorldItem *IWorld::generate(const QString &objectType) const {
 }
 
 bool IWorld::stop() {
-    setRunning(false);
-    setVisible(false);
     _eventServer->stop();
+
+    stopRenderLoopWithClearItems();
+    setVisible(false);
+
+    emit sigGameFinished();
     return true;
 }
 
@@ -167,7 +176,6 @@ IWorldItem *IWorld::getItem(int id) const {
 }
 
 void IWorld::clearItems() {
-    IWorld::stop();
 
     while (_items.cbegin() != _items.cend()) {
         removeItem(*_items.cbegin());
@@ -242,6 +250,8 @@ void IWorld::removeItem(IWorldItem* item, QList<int> *removedObjectsList) {
 
 void IWorld::reset() {
 
+    stop();
+
     if (_player) {
         _player = nullptr;
     }
@@ -261,7 +271,6 @@ void IWorld::reset() {
         _backgroundAI = nullptr;
     }
 
-    clearItems();
     setHdr("");
 
 }
@@ -317,6 +326,44 @@ void IWorld::removeAnyItemFromGroup(const QString &group,
     removeItem(anyObjectId, removedObjectsList);
 }
 
+void IWorld::startRenderLoop() {
+    if (isRendering())
+        return;
+
+    _renderLoop = true;
+    _renderLoopFuture = QtConcurrent::run([this](){renderLoop();});
+}
+
+void IWorld::stopRenderLoopWithClearItems() {
+    stopRenderLoop();
+    clearItems();
+}
+
+void IWorld::stopRenderLoop() {
+    _renderLoop = false;
+    _renderLoopFuture.waitForFinished();
+}
+
+bool IWorld::isRendering() const {
+    return _renderLoopFuture.isRunning();
+}
+
+void IWorld::renderLoop() {
+
+    while (_renderLoop) {
+
+        quint64 currentTime = QDateTime::currentMSecsSinceEpoch();
+
+        if (!_oldTimeRender) {
+            _oldTimeRender = currentTime;
+            continue;
+        }
+
+        render(currentTime - _oldTimeRender);
+        _oldTimeRender = currentTime;
+    }
+}
+
 const WorldRule *IWorld::worldRules() {
 
     if (!_worldRules)
@@ -334,16 +381,8 @@ void IWorld::setVisible(bool visible) {
     emit visibleChanged();
 }
 
-void IWorld::playerIsDead(PlayableObject *) const {
-    emit sigGameFinished();
-}
-
-bool IWorld::running() const {
-    return _running;
-}
-
-void IWorld::setRunning(bool newRunning) {
-    _running = newRunning;
+void IWorld::playerIsDead(PlayableObject *) {
+    stop();
 }
 
 int IWorld::targetFps() const {
@@ -402,10 +441,10 @@ IAI *IWorld::backgroundAI() {
     return _backgroundAI;
 }
 
-Player *IWorld::userInterface() {
+IControl *IWorld::userInterface() {
 
     if (!_userInterface) {
-        _userInterface = dynamic_cast<Player*>(initUserInterface());
+        _userInterface = initUserInterface();
         initControl(_userInterface);
     }
 
@@ -486,20 +525,11 @@ void IWorld::runAsBackGround() {
     setTargetFps(30);
 }
 
-QObject *IWorld::getMenu() const {
-    return _menu;
+QObject *IWorld::getMenu() {
+    return userInterface();
 }
 
-void IWorld::setMenu(QObject *newMenu) {
-    if (_menu == newMenu)
-        return;
-
-    _menu = newMenu;
-    emit menuChanged();
-}
-
-bool IWorld::visible() const
-{
+bool IWorld::visible() const {
     return _visible;
 }
 

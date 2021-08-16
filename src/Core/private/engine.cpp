@@ -32,15 +32,16 @@ Engine::Engine(QObject *parent): QObject(parent) {
 }
 
 Engine::~Engine() {
-    stopRenderLoop();
-    delete _menu;
-    delete _currentUser;
+
 
     for (auto it = _availableLvls.begin(); it != _availableLvls.end(); ++it) {
         delete it.value();
     }
 
     _availableLvls.clear();
+
+    delete _menu;
+    delete _currentUser;
 }
 
 QObject *Engine::scane() {
@@ -85,9 +86,6 @@ void Engine::setLevel(ILevel *world) {
         _currentLevel = nullptr;
         return;
     }
-
-    startRenderLoop();
-    _currentLevel->world()->runAsBackGround();
 
     connect(_currentLevel->previewScane(), &IPreviewScaneWorld::sigPrepareIsFinished,
             this, &Engine::start);
@@ -136,11 +134,6 @@ void Engine::stop() const {
     if (!_currentLevel)
         return;
 
-
-    if (!_currentLevel->world()->stop()) {
-        return;
-    }
-
     _currentLevel->previewScane()->start(_currentLevel->previewScane()->configuration());
 }
 
@@ -177,49 +170,6 @@ ILevel *Engine::getLastLevel() {
     }
 
     return nullptr;
-}
-
-QObject *Engine::getGameObject(int id) const {
-    if (!_currentLevel)
-        return nullptr;
-
-    return _currentLevel->world()->getItem(id);
-}
-
-void Engine::startRenderLoop() {
-    if (isRendering())
-        return;
-
-    _renderLoop = true;
-    _renderLoopFuture = QtConcurrent::run([this](){renderLoop();});
-}
-
-void Engine::stopRenderLoop() {
-    _renderLoop = false;
-    _renderLoopFuture.waitForFinished();
-}
-
-bool Engine::isRendering() const {
-    return _renderLoopFuture.isRunning();
-}
-
-void Engine::renderLoop() {
-
-    if (!_currentLevel)
-        return;
-
-    while (_renderLoop) {
-
-        quint64 currentTime = QDateTime::currentMSecsSinceEpoch();
-
-        if (!_oldTimeRender) {
-            _oldTimeRender = currentTime;
-            continue;
-        }
-
-        _currentLevel->world()->render(currentTime - _oldTimeRender);
-        _oldTimeRender = currentTime;
-    }
 }
 
 QObject *Engine::menu() const {

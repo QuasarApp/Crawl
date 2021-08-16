@@ -78,29 +78,6 @@ public:
     QObject* world() const;
 
     /**
-     * @brief getGameObject This method using in qml for getting main model of the gui objects.
-     * @param id This is id of the gui object.
-     * @return pointer to game object model
-     */
-    Q_INVOKABLE QObject *getGameObject(int id) const;
-
-    /**
-     * @brief startRenderLoop This method start render loop in engine.
-     */
-    void startRenderLoop();
-
-    /**
-     * @brief stopRenderLoop This method stop render loop in engine.
-     */
-    void stopRenderLoop();
-
-    /**
-     * @brief isRendering This method erturn true if the render loop is working else false.
-     * @return true if the render loop is working else false.
-     */
-    bool isRendering() const;
-
-    /**
      * @brief currentUser This method return pointer too current user.
      * @return pointer too current user.
      */
@@ -197,13 +174,8 @@ private:
 
     MainMenuModel *_menu = nullptr;
 
-    quint64 _oldTimeRender = 0;
-
     User *_currentUser = nullptr;
     Store *_store = nullptr;
-
-    QFuture<void> _renderLoopFuture;
-    bool _renderLoop = false;
 };
 
 }

@@ -13,6 +13,7 @@
 #include "playableobject.h"
 #include "startdata.h"
 
+#include <QFuture>
 #include <QHash>
 #include <QMap>
 #include <QMultiHash>
@@ -67,11 +68,10 @@ class CRAWL_EXPORT IWorld : public QObject, public IRender, public IItem
 
     /**
      * @brief menu This propertye contains user interface model that initialised on the IWorld::userInterface method. For get more information see the IContol class.
-     * @see IWorld::setMenu
      * @see IWorld::getMenu
      * @see IWorld::userInterface
     */
-    Q_PROPERTY(QObject * menu READ getMenu WRITE setMenu NOTIFY menuChanged)
+    Q_PROPERTY(QObject * menu READ getMenu NOTIFY menuChanged)
     Q_PROPERTY(QString hdr READ hdr NOTIFY hdrChanged)
     Q_PROPERTY(bool visible READ visible NOTIFY visibleChanged)
 
@@ -187,7 +187,7 @@ public:
      * @return pointe to requaried object.
      * @note if you want to get ovject in the render function of another ItemWorld object then use the IWorldItem::getItem method.
      */
-    IWorldItem *getItem(int id) const;
+    Q_INVOKABLE IWorldItem *getItem(int id) const;
 
     /**
      * @brief cameraReleativePosition return  a releative of player camera position.
@@ -199,7 +199,7 @@ public:
      * @brief userInterface This method return pointer to userinterface.
      * @return pointer to user interface
      */
-    Player *userInterface();
+    IControl *userInterface();
 
     /**
      * @brief wordlStatus This method return current world status.
@@ -246,19 +246,10 @@ public:
     /**
      * @brief menu This method return current pointer to the user interface of this world.
      * @return pointer of the user Interface of this world.
-     * @see IWorld::setMenu
      * @see IWorld::menu
      * @see IWorld::userInterface
      */
-    QObject *getMenu() const;
-    /**
-     * @brief setMenu This method sets new user interface object fot this world.
-     * @param newMenu This is new object of user interfavce of this world.
-     * @see IWorld::getMenu
-     * @see IWorld::menu
-     * @see IWorld::userInterface
-     */
-    void setMenu(QObject *newMenu);
+    QObject *getMenu();
 
     /**
      * @brief reset This method reset all world objects.
@@ -430,18 +421,6 @@ protected:
     void updateWorld();
 
     /**
-     * @brief running This varibale check in render function if the running is true then render loop are working correctly
-     * @return status of the render function
-     */
-    bool running() const;
-
-    /**
-     * @brief setRunning This method sets runnign render function status.
-     * @param newRunning new status of the render function
-     */
-    void setRunning(bool newRunning);
-
-    /**
      * @brief worldRules This method return world cure map.
      * @return world rule map.
      */
@@ -456,7 +435,35 @@ protected:
     /**
      * @brief playerIsDead This method will be invoked when player object get signal dead.
      */
-    virtual void playerIsDead(PlayableObject*) const;
+    virtual void playerIsDead(PlayableObject*);
+
+    /**
+     * @brief isRendering This method erturn true if the render loop is working else false.
+     * @return true if the render loop is working else false.
+     * @see IWorld::stopRenderLoop
+     * @see IWorld::startRenderLoop
+     */
+    bool isRendering() const;
+
+    /**
+     * @brief stopRenderLoop This method stop render loop in engine.
+     * @see IWorld::isRendering
+     * @see IWorld::startRenderLoop
+     */
+    void stopRenderLoop();
+
+    /**
+     * @brief startRenderLoop This method start render loop in engine.
+     * @see IWorld::stopRenderLoop
+     * @see IWorld::isRendering
+     */
+    void startRenderLoop();
+
+    /**
+     * @brief stopRenderLoopWithClearItems This method stoped render loop and clear all created items.
+     * @see IWorld::stopRenderLoop
+     */
+    void stopRenderLoopWithClearItems();
 
 protected slots:
     virtual void onIntersects(const IWorldItem * trigger, QList<const IWorldItem *> list);
@@ -476,7 +483,6 @@ private slots:
     void handleStop();
 
 private:
-
     /**
      * @brief clearItems This method remove all created items from world.
      */
@@ -536,6 +542,9 @@ private:
     void removeAnyItemFromGroup(const QString &group,
                                 QList<int>* removedObjectsList = nullptr);
 
+    void renderLoop();
+    QFuture<void> _renderLoopFuture;
+
     EventServer * _eventServer = nullptr;
 
     QHash<int, IWorldItem*> _items;
@@ -553,15 +562,16 @@ private:
 
     PlayableObject *_player = nullptr;
     IAI *_backgroundAI = nullptr;
-    Player *_userInterface = nullptr;
-    QObject *_menu = nullptr;
+    IControl *_userInterface = nullptr;
 
     int _worldStatus = 0;
     QHash<QString, std::function<IWorldItem*()>> _registeredTypes;
 
     int _targetFps = 60;
-    bool _running = false;
+    quint64 _oldTimeRender = 0;
+
     bool _visible = true;
+    bool _renderLoop = false;
 
     // testing
     friend ClastersTest;

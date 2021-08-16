@@ -23,10 +23,6 @@ public:
     QString initQmlView() const override;
 
 signals:
-    /**
-     * @brief backToMenu Emit when user click the return to main menu button.
-     */
-    void backToMenu();
 
     /**
      * @brief start emited when user click start button from the preview menu.

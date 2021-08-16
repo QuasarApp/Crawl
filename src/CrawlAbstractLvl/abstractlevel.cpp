@@ -8,9 +8,13 @@
 #include "abstractlevel.h"
 #include "abslvlworld.h"
 
+#include <absnest.h>
+
 AbstractLevel::AbstractLevel() {
     initAbstractLvlResources();
 
-    setWorld(new AbstractLvl::AbsLvlWorld());
+    auto world = new AbstractLvl::AbsLvlWorld();
+    setWorld(world);
+    setPreviewScane(new AbstractLvl::AbsNest(world));
 }
 

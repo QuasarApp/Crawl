@@ -13,6 +13,9 @@ namespace CRAWL {
 IPreviewScaneWorld::IPreviewScaneWorld(const IWorld* mainWorld) {
     debug_assert(mainWorld, "The mainWorld world option should be initialized.");
     _mainWorld = mainWorld;
+
+    setCameraReleativePosition({0, 100, 100});
+    setCameraRotation(QQuaternion::fromEulerAngles(-40,0,0));
 }
 
 QString IPreviewScaneWorld::itemTextId() const {
@@ -50,33 +53,32 @@ bool IPreviewScaneWorld::start(const StartData& config) {
 
     worldChanged(worldRules()->cbegin());
     setTargetFps(60);
-    setRunning(true);
+    setVisible(true);
+    startRenderLoop();
 
     return true;
 }
 
 bool IPreviewScaneWorld::stop() {
-    setRunning(false);
-    reset();
+    stopRenderLoopWithClearItems();
+    setVisible(false);
+
     return true;
 }
 
-void IPreviewScaneWorld::handleStop() {
-    stop();
-}
-
 void IPreviewScaneWorld::handleRotation(double x, double y) {
-    auto normal = (QQuaternion::fromEulerAngles(x, y, 0) * QVector3D{0,0,1}).normalized();
+    auto rotation = cameraRotation() * QQuaternion::fromEulerAngles(x, y, 0);
+    auto normal = (rotation * QVector3D{0,0,1}).normalized();
 
     setCameraReleativePosition(normal * 100);
-    setCameraRotation(QQuaternion::rotationTo({1.0f, 0.0, 0.0}, {0,0,0}));
+    setCameraRotation(rotation);
 }
 
 void IPreviewScaneWorld::handleStart() {
     auto playerObj = dynamic_cast<IItem*>(player());
     _configuration.setSnakePerks(playerObj->activeItems());
     emit sigPrepareIsFinished(_configuration);
-    handleStop();
+    stop();
 }
 
 void IPreviewScaneWorld::handleSelect(int item, bool isSelected) {
@@ -97,7 +99,6 @@ void IPreviewScaneWorld::initControl(IControl *control) {
     auto controlObject = dynamic_cast<PreviewControl*>(control);
 
     if (controlObject) {
-        connect(controlObject, &PreviewControl::backToMenu, this, &IPreviewScaneWorld::handleStop);
         connect(controlObject, &PreviewControl::mousePositionChanged, this, &IPreviewScaneWorld::handleRotation);
         connect(controlObject, &PreviewControl::start, this, &IPreviewScaneWorld::handleStart);
         connect(controlObject, &PreviewControl::select, this, &IPreviewScaneWorld::handleSelect);

@@ -56,10 +56,10 @@ View3D {
                 return;
             }
 
-            const objModel = model.getGameObject(cppObjId);
+            const objModel = worldModel.getItem(cppObjId);
 
             if (!objModel) {
-                console.log("object model not found");
+                console.log("model of the crawl object is not found");
                 return;
             }
 
