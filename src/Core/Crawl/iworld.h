@@ -78,8 +78,20 @@ class CRAWL_EXPORT IWorld : public QObject, public IRender, public IItem
     Q_PROPERTY(int worldStatus READ wordlStatus WRITE setWorldStatus NOTIFY worldStatusChanged)
 
 public:
+    /**
+     * @brief IWorld This main constructor of the world object. You need to initialize all chold items of the world using the IItem::AddChildItem method.
+     */
     IWorld();
     ~IWorld() override;
+
+    /**
+     * @brief initPlayer The implementation of This interface must be return playerObject by type. This method should be generate new object of the player by type.
+     * @param objectType This is type of requried snake object. See the IItem::itemId method.
+     * @return raw pointer to the player object.
+     * @note The Palyer object will be deleted when wold distroed.
+     *  So do not delete your created player pbject yuorself.
+     */
+    virtual PlayableObject* initPlayer(int objectType) const = 0;
 
     QString itemTextType() const override;
 
@@ -98,15 +110,6 @@ public:
     static unsigned int type();
 
     void init() override;
-
-    /**
-     * @brief initPlayer The implementation of This interface must be return playerObject by type.
-     * @param objectType This is type of requried snake object.
-     * @return raw pointer to the player object.
-     * @note The Palyer object will be deleted when wold distroed.
-     *  So do not delete your created player pbject yuorself.
-     */
-    virtual PlayableObject* initPlayer(int objectType) const = 0;
 
     /**
      * @brief initWorldRules The implementation of this interface must be retun initialized list of the world rules.

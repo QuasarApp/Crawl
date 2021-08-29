@@ -33,19 +33,25 @@ public:
      * @return pointer to the level world.
      * @see ILevel::setWorld
      */
-    IWorld* world();
+    IWorld* world() const;
 
     /**
      * @brief previewScane this method should be create a model of the snake preview scane.
      * @return pointer to the model of the preview scane.
      * @see ILevel::setPreviewScane
      */
-    IPreviewScaneWorld* previewScane();
+    IPreviewScaneWorld* previewScane() const;
 
     /**
      * @brief reset This method unload all loaded data from level.
      */
     void reset();
+
+    /**
+     * @brief availableItems This method return list of the all items of this module.
+     * @return list of all items of this level. exept world. for get world object use the ILevel::world method.
+     */
+    const QMultiHash<int, IItem*>& availableItems() const;
 
 protected:
     /**
@@ -64,10 +70,18 @@ protected:
      */
     void setPreviewScane(IPreviewScaneWorld *newPreviewScane);
 
+    /**
+     * @brief addItem This method add item to the level. Use this method i constructor of the ILevel child class.
+     * @param item This is pointer to item
+     * @note All added objects will be deleted wint this object.
+     */
+    void addItem(IItem* item);
+
 private:
 
     IWorld* _world = nullptr;
     IPreviewScaneWorld* _previewScane = nullptr;
+    QMultiHash<int, IItem*> _items;
 };
 
 }

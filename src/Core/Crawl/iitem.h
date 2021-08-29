@@ -14,10 +14,55 @@
 #include <QString>
 #include "global.h"
 
+/**
+ * @brief IITEM_OBJECT This macross init the item id for child IItem classes.
+ * For each items with this macross automaticly added two method:
+ *  - staticTextId This is static method that return text value of the object.
+ *  - staticId This is static method that return integer value of the item object.
+*/
+#define IITEM_OBJECT(ObjectTextID) \
+    public: \
+        QString itemTextId() const override { return ObjectTextID } \
+        static QString staticTextId() { return ObjectTextID}; \
+        static QString staticId() { return qHash(ObjectTextID)};
+
+
 namespace CRAWL {
 
 /**
+ * @brief The ChildIteAction struct contains two lambda function with actions for remove and add item to a parent item.
+ * The parent can be run any actions when item added or dropped.
+ */
+struct ChildItemAction {
+    /**
+     * @brief _onAdded This actions for added item to parent
+     */
+    std::function<void()> _onAdded = {nullptr};
+    /**
+     * @brief _onDropped This action for remove item from parent
+     */
+    std::function<void()> _onDropped = {nullptr};
+
+    /**
+     * @brief isValid This method check this structure to valid. The object is valid when all actions is inited else invalid.
+     * @return true if this object is valid else false.
+     */
+    bool isValid() const;
+};
+
+/**
  * @brief The IItem class contains base description of the game items (player perks, game levels, and levels items.)
+ * Each item contains own unique text id. The unique text id should be implemented in the staticTextId function. This functions must be static.
+ *  Each items must be contains the IITEM_OBJECT macross.
+ * @code{cpp}
+ * class MyItem : public IItem {
+ *  IITEM_OBJECT ("ItemTextId")
+ * ...
+ * }
+ * @endcode
+ * @see IITEM_OBJECT
+ * @note You can use the IITEM_OBJECT macross and staticTextId. This macros create default implementation of the itemTextId method;
+ * If you implements the staticTextId you can use the IITEM_OBJECT macross.
  */
 class CRAWL_EXPORT IItem
 {
@@ -77,24 +122,27 @@ public:
      * @note The child items connot be removed automaticalu. All child items will be removed in the Store object.
      * @see IItem::addChildItem
      * @see IItem::childItemsRecursive
+     * @see IItem::getChildActions
      */
-    const QHash<int, const IItem *> &childItems() const;
+    const QHash<int, ChildItemAction> &childItems() const;
 
     /**
-     * @brief childItemsRecursive This method return hash map of all items of this item.
-     * @note This method working recursive.
-     * @return Hash map of the all child items (include current item).
+     * @brief getChild This method return structure with dropp and add actions for the item.
+     * @param id This is id of the child object.
+     * @return structure with dropp and add actions for the item.
+     * @note if The item with @a id not found then return invalid Actions object. @see ChildItemAction::isValid
+     * @see IItem::childItems
      * @see IItem::addChildItem
-     * @see IItem::childItems
+     * @see IItem::childItemsRecursive
      */
-    QMultiHash<int, const IItem *> childItemsRecursive() const;
+    ChildItemAction getChildActions(int id) const;
 
     /**
-     * @brief addChildItem This method add child item.
-     * @param item This is pointe of the item.
-     * @see IItem::childItems
+     * @brief registerActions This method add to this item actions for item with an @a itemID
+     * @param itemID This id of the item that will be registered.
+     * @param action This is actions structure for an @a itemID
      */
-    void addChildItem(const IItem* item);
+    void registerActions(int itemID, const ChildItemAction& action);
 
     /**
      * @brief itemId This method return hash of the IItem::itemTextId.
@@ -156,7 +204,7 @@ public:
      * @see IItem::deactivate
      * @see IItem::isActive
      */
-    virtual void activate(int item);
+    void activate(int item);
 
     /**
      * @brief deactivate This method deactivate the child item with @a item id of this item.
@@ -166,7 +214,7 @@ public:
      * @see IItem::activeItems
      * @see IItem::isActive
      */
-    virtual void deactivate(int item);
+    void deactivate(int item);
 
     /**
      * @brief isActive This method will be return true if the @a item is actived. else false. If the item not child item of this object the this method return false.
@@ -182,7 +230,7 @@ public:
 private:
     unsigned int _id = 0;
     unsigned int _typeItem = 0;
-    QHash<int, const IItem*> _childs;
+    QHash<int, ChildItemAction> _childs;
     QSet<int> _activeItems;
 
 };

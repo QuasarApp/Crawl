@@ -8,6 +8,7 @@
 
 #include "iitem.h"
 #include <QHash>
+#include "quasarapp.h"
 
 namespace CRAWL {
 
@@ -15,23 +16,16 @@ IItem::IItem() {
 
 }
 
-const QHash<int, const IItem *>& IItem::childItems() const {
+const QHash<int, ChildItemAction> &IItem::childItems() const {
     return _childs;
 }
 
-QMultiHash<int, const IItem *>  IItem::childItemsRecursive() const {
-    QMultiHash<int, const IItem *>  result;
-
-    for (const IItem* item : _childs) {
-        result.unite(item->childItemsRecursive());
-    }
-
-    result.insert(itemId(), this);
-    return result;
+void IItem::registerActions(int itemID, const ChildItemAction &action) {
+    _childs[itemID] = action;
 }
 
-void IItem::addChildItem(const IItem *item) {
-    _childs.insert(item->itemId(), item);
+ChildItemAction IItem::getChildActions(int id) const {
+    return childItems().value(id, {});
 }
 
 unsigned int IItem::itemId() {
@@ -60,11 +54,30 @@ void IItem::setActiveItems(const QSet<int> &newActiveItems) {
 }
 
 void IItem::activate(int item) {
+
+    if (_activeItems.contains(item)) {
+        return;
+    }
+
     _activeItems += item;
+
+    auto actions = _childs.value(item);
+    if (actions.isValid()) {
+       actions._onAdded();
+    }
 }
 
 void IItem::deactivate(int item) {
+    if (_activeItems.contains(item)) {
+        return;
+    }
+
     _activeItems -= item;
+
+    auto actions = _childs.value(item);
+    if (actions.isValid()) {
+       actions._onDropped();
+    }
 }
 
 bool IItem::isActive(int item) {
@@ -86,6 +99,10 @@ unsigned int IItem::itemType() const {
     }
 
     return qHash(itemTextType());
+}
+
+bool ChildItemAction::isValid() const {
+    return _onAdded && _onDropped;
 }
 
 }

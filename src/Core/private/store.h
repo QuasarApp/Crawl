@@ -14,6 +14,7 @@
 namespace CRAWL {
 
 class IItem;
+class ILevel;
 
 /**
  * @brief The Store class contains method for control all game items beetwin users.
@@ -33,10 +34,9 @@ public:
 
     /**
      * @brief init This method initialise store of the game.
-     * @param availabelItems This is hash of the available item.
      * @return true if the items inited successfuly else false.
      */
-    bool init(const QMultiHash<int, const IItem *> &availabelItems);
+    virtual void init(const ILevel* level) = 0;
 
     /**
      * @brief getItemById This method return item by id.
@@ -57,8 +57,15 @@ public:
      */
     QList<int> keysList() const;
 
+protected:
+    /**
+     * @brief store This method provide accsess for the local storage.
+     * @return local storage object.
+     */
+    QMultiHash<int, IItem *> &store();
+
 private:
-    QMultiHash<int, const IItem*> _store;
+    QMultiHash<int, IItem*> _store;
 };
 }
 #endif // STORE_H

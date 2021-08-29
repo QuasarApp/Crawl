@@ -74,6 +74,7 @@ public:
      */
     void setStore(Store *newStore);
 
+
 protected:
 
     enum ViewItemRoles {

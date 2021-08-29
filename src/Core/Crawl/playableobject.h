@@ -11,6 +11,7 @@
 #include "global.h"
 #include "iworlditem.h"
 #include "Extensions/movableobject.h"
+#include "iitem.h"
 
 namespace CRAWL {
 
@@ -21,7 +22,7 @@ class IControl;
  * @brief The PlayableObject class support works withe the IControl child classes.
  * **How to is works**? You need to override the  PlayableObject::setControl method for adding your own cpntroll classes. By Default This class use The DefaultControl class.
  */
-class CRAWL_EXPORT PlayableObject: public IWorldItem, public MovableObject {
+class CRAWL_EXPORT PlayableObject: public IWorldItem, public MovableObject, public IItem {
     Q_OBJECT
 public:
     PlayableObject(const QString& name,

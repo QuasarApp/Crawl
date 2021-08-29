@@ -34,12 +34,6 @@ bool Store::buy(User &buyer, int itemId) {
     return true;
 }
 
-bool Store::init(const QMultiHash<int, const IItem *> &availabelItems) {
-    _store = availabelItems;
-
-    return true;
-}
-
 const IItem *Store::getItemById(int id) const {
     return _store.value(id, nullptr);
 }
@@ -50,5 +44,9 @@ int Store::size() const {
 
 QList<int> Store::keysList() const {
     return QList<int>{_store.keyBegin(), _store.keyEnd()};
+}
+
+QMultiHash<int, IItem *> &Store::store() {
+    return _store;
 }
 }
