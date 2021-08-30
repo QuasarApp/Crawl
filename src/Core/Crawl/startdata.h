@@ -15,6 +15,7 @@
 namespace CRAWL {
 
 class User;
+class IItem;
 class PlayableObject;
 
 /**
@@ -25,7 +26,7 @@ class CRAWL_EXPORT StartData
 public:
     StartData();
 
-    StartData(User * player, int snake);
+    StartData(User * player, IItem *snake);
 
     /**
      * @brief player This method return pointer to user that will be control player snake.
@@ -42,37 +43,20 @@ public:
     void setPlayer(User *newPlayer);
 
     /**
-     * @brief snakeType This method return select for game snake object type.
-     * @return select for game snake object.
-     * @see StartData::setSnakeType
+     * @brief snake This method return pointer to snake object that selected player.
+     * @return pointer to snake object that selected player.
      */
-    int snakeType() const;
+    IItem *snake() const;
 
     /**
-     * @brief setSnakeType This method sets new selected for game object type,
-     * @param newSnake This is  new selected for game object
-     * @see StartData::snakeType
+     * @brief setSnake This method sets new pointer of the selected snake.
+     * @param newSnake This is pointer of the selected items.
      */
-    void setSnakeType(int newSnake);
-
-    /**
-     * @brief snakePerks This method return the list of the used snake upgrades.
-     * @return list of the used upgrades of the snake.
-     * @see StartData::setSnakePerks
-     */
-    const QSet<int> &snakePerks() const;
-
-    /**
-     * @brief setSnakePerks This method sets new list of the used upgrades.
-     * @param newSnakePerks This is list of the used upgrades.
-     * @see StartData::snakePerks
-     */
-    void setSnakePerks(const QSet<int> &newSnakePerks);
+    void setSnake(IItem *newSnake);
 
 private:
     User *_player = nullptr;
-    int _snakeType;
-    QSet<int> _snakePerks;
+    IItem *_snake = nullptr;
 };
 
 }

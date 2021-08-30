@@ -138,7 +138,14 @@ void Engine::stop() const {
 }
 
 void Engine::handleUnlockedItem(int item) {
-    static_cast<AvailableLevelsModel*>(_menu->selectLevelModle())->addKey(item);
+    auto itemObj = store()->getItemById(item);
+
+    if (!itemObj)
+        return;
+
+    if (itemObj->itemType() == IWorld::type()) {
+        static_cast<AvailableLevelsModel*>(_menu->selectLevelModle())->addKey(item);
+    }
 }
 
 void Engine::handleDroppedItem(int item) {
@@ -238,6 +245,7 @@ void Engine::init() {
     static_cast<StoreViewModel*>(_menu->storeView())->init(_store, _currentUser);
 
 #define selectedLevelModel static_cast<AvailableLevelsModel*>(_menu->selectLevelModle())
+
     selectedLevelModel->setStore(_store);
     selectedLevelModel->setKeys(availableWorlds);
 

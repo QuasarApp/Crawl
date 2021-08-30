@@ -22,6 +22,7 @@
 #include "eventserver.h"
 #include "player.h"
 #include <QtConcurrent>
+#include "snake.h"
 #include "store.h"
 
 namespace CRAWL {
@@ -116,9 +117,11 @@ bool IWorld::start(const StartData& config) {
     backgroundAI()->stopAI();
     setWorldStatus(WorldStatus::Game);
 
-    if (!setPlayer(config.snakeType())) {
+    auto snakeOject = dynamic_cast<Snake*>(config.snake());
+    if (!snakeOject)
         return false;
-    }
+
+    setPlayer(snakeOject);
 
     player->setUserData(config.player());
 
@@ -157,21 +160,6 @@ void IWorld::setPlayer(QObject *newPlayer) {
     addItem(_player);
 
     emit playerChanged();
-}
-
-bool IWorld::setPlayer(int snakeId) {
-    auto snake = dynamic_cast<PlayableObject*>(store()->getItemById(snakeId));
-
-    if (!snake) {
-        QuasarAppUtils::Params::log("Failed to start world. The snake should be not null",
-                                    QuasarAppUtils::Error);
-        return false;
-
-    }
-
-    setPlayer(snake);
-
-    return true;
 }
 
 IWorldItem *IWorld::generate(const QString &objectType) const {
@@ -340,7 +328,9 @@ bool IWorld::removeAtomicItem(IWorldItem *obj) {
     _itemsGroup.remove(obj->className(), obj->guiId());
     _items.remove(obj->guiId());
 
-    obj->deleteLater();
+    if (!obj->isExternal()) {
+        obj->deleteLater();
+    }
 
     return true;
 }

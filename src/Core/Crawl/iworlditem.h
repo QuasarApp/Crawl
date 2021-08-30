@@ -89,6 +89,13 @@ public:
      */
     virtual void action(IWorldItem* item);
 
+    /**
+     * @brief external This method return true if this object is external.
+     * @return return true if this object is external else false
+     * @see IWorldItem::setExternal
+     */
+    bool isExternal() const;
+
 protected:
 
     /**
@@ -139,6 +146,13 @@ protected:
      */
     void dropSupportOfEvent(int depricatedEvent);
 
+    /**
+     * @brief setExternal This method mark object as external. The external objects do not remove automaticaly after removed from the world.
+     * @param newExternal This is new value. Set this value to true for ignore distroy object after delete from the world
+     * @see IWorldItem::isExternal
+    */
+    void setExternal(bool newExternal);
+
 private:
     void initOnWorld(const IWorld* world);
 
@@ -147,6 +161,7 @@ private:
     bool _fDecorative = true;
     bool _fDistroy = false;
     bool _fFirstRenderIteration = true;
+    bool _external = false;
     int _supportedEvents;
 
     friend class IWorld;

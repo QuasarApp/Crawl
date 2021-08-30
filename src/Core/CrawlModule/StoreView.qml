@@ -15,6 +15,7 @@ Page {
             Layout.fillWidth: true
             model: store.model
             delegate: delegateRow
+            clip: true
 
             Component {
                 id: delegateRow

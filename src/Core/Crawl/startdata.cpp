@@ -13,9 +13,9 @@ StartData::StartData() {
 
 }
 
-StartData::StartData(User *player, int snake) {
+StartData::StartData(User *player, IItem* snake) {
     setPlayer(player);
-    setSnakeType(snake);
+    setSnake(snake);
 }
 
 
@@ -27,20 +27,12 @@ void StartData::setPlayer(User *newPlayer) {
     _player = newPlayer;
 }
 
-int StartData::snakeType() const {
-    return _snakeType;
+IItem *StartData::snake() const {
+    return _snake;
 }
 
-void StartData::setSnakeType(int newSnake) {
-    _snakeType = newSnake;
-}
-
-const QSet<int> &StartData::snakePerks() const {
-    return _snakePerks;
-}
-
-void StartData::setSnakePerks(const QSet<int> &newSnakePerks) {
-    _snakePerks = newSnakePerks;
+void StartData::setSnake(IItem *newSnake) {
+    _snake = newSnake;
 }
 
 }

@@ -7,6 +7,7 @@
 
 #include "ipreviewscaneworld.h"
 #include "previewcontrol.h"
+#include "snake.h"
 
 namespace CRAWL {
 
@@ -43,9 +44,11 @@ int IPreviewScaneWorld::requiredTier() const {
 bool IPreviewScaneWorld::start(const StartData& config) {
     _configuration = config;
 
-    if (!setPlayer(config.snakeType())) {
+    auto snakeOject = dynamic_cast<Snake*>(config.snake());
+    if (!snakeOject)
         return false;
-    };
+
+    setPlayer(snakeOject);
 
     worldChanged(worldRules()->cbegin());
     setTargetFps(60);
@@ -72,7 +75,7 @@ void IPreviewScaneWorld::handleRotation(double x, double y) {
 
 void IPreviewScaneWorld::handleStart() {
     auto playerObj = dynamic_cast<IItem*>(player());
-    _configuration.setSnakePerks(playerObj->activeItems());
+    _configuration.setSnake(playerObj);
     emit sigPrepareIsFinished(_configuration);
     stop();
 }

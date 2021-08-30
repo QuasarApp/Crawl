@@ -326,12 +326,6 @@ protected:
     void setPlayer(QObject *newPlayer);
 
     /**
-     * @brief setPlayer This method sets new player object by snake id.
-     * @param snakeId This is snake object id that user will be control.
-     */
-    bool setPlayer(int snakeId);
-
-    /**
      * @brief generate This method shold be generate object from the  @a objectType.
      *  Override this method for add support yourown objects.
      *  @note If your objects not requre custom setting then use the default implementation of the generate method.

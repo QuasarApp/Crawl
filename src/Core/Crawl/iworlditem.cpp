@@ -58,6 +58,14 @@ void IWorldItem::initOnWorld(const IWorld *world) {
     _world = world;
 }
 
+bool IWorldItem::isExternal() const {
+    return _external;
+}
+
+void IWorldItem::setExternal(bool newExternal) {
+    _external = newExternal;
+}
+
 int IWorldItem::supportedEvents() const {
     return _supportedEvents;
 }
