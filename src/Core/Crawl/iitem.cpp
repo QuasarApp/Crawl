@@ -84,6 +84,14 @@ bool IItem::isActive(int item) {
     return _childs.contains(item) && _activeItems.contains(item);
 }
 
+const Store *IItem::store() const {
+    return _store;
+}
+
+void IItem::setStore(const Store *newStore) {
+    _store = newStore;
+}
+
 unsigned int IItem::itemType() {
     if (_typeItem) {
         return _typeItem;

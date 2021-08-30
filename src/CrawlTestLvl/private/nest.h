@@ -17,7 +17,7 @@ namespace TestLvl {
 class Nest: public CRAWL::IPreviewScaneWorld
 {
 public:
-    Nest(IWorld* mainWorld);
+    Nest();
 
     // IWorld interface
 public:

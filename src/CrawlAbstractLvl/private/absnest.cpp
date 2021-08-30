@@ -12,7 +12,7 @@
 
 namespace AbstractLvl {
 
-AbsNest::AbsNest(IWorld * mainWorld): CRAWL::IPreviewScaneWorld(mainWorld) {
+AbsNest::AbsNest(): CRAWL::IPreviewScaneWorld() {
 
 }
 

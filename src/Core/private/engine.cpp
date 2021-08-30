@@ -19,12 +19,12 @@
 #include "Crawl/icontrol.h"
 #include "QDateTime"
 #include "QtConcurrent"
-#include "store.h"
+#include "offlinestore.h"
 
 namespace CRAWL {
 
 Engine::Engine(QObject *parent): QObject(parent) {
-    _store = new Store();
+    _store = new OfflineStore();
     _menu = new MainMenuModel();
 
     setNewUser(new User());
@@ -223,23 +223,19 @@ User *Engine::currentUser() const {
 }
 
 void Engine::init() {
-    QMultiHash<int, const IItem *> availabelItems;
+    QList<int> availableWorlds;
 
     for (const auto &data : qAsConst(_availableLvls)) {
-        if (data && data->world())
-            availabelItems.unite(data->world()->childItemsRecursive());
-    }
+        if (data && data->world()) {
+            if (data->world()->itemType() == IWorld::type() && _currentUser->isUnlocked(data->world()->itemId())) {
+                availableWorlds.push_back(data->world()->itemId());
+            }
 
-    _store->init(availabelItems);
-    static_cast<StoreViewModel*>(_menu->storeView())->init(_store, _currentUser);
-
-    QList<int> availableWorlds;
-    for (int id : _currentUser->unlockedItems()) {
-        auto item = availabelItems.value(id);
-        if (item->itemType() == IWorld::type()) {
-            availableWorlds.push_back(item->itemId());
+            _store->addLevel(data);
         }
     }
+
+    static_cast<StoreViewModel*>(_menu->storeView())->init(_store, _currentUser);
 
 #define selectedLevelModel static_cast<AvailableLevelsModel*>(_menu->selectLevelModle())
     selectedLevelModel->setStore(_store);

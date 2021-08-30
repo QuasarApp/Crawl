@@ -10,12 +10,13 @@
 #include "world.h"
 #include "nest.h"
 
+#include "snake.h"
+
 Jungle::Jungle() {
     initJungleLvlResources();
+    setWorld(new JungleLvl::World());
 
-    auto world = new JungleLvl::World();
+    setPreviewScane(new JungleLvl::Nest());
 
-    setWorld(world);
-
-    setPreviewScane(new JungleLvl::Nest(world));
+    addItem(new JungleLvl::Snake());
 }

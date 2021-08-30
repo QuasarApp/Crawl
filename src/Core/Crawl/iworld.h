@@ -84,15 +84,6 @@ public:
     IWorld();
     ~IWorld() override;
 
-    /**
-     * @brief initPlayer The implementation of This interface must be return playerObject by type. This method should be generate new object of the player by type.
-     * @param objectType This is type of requried snake object. See the IItem::itemId method.
-     * @return raw pointer to the player object.
-     * @note The Palyer object will be deleted when wold distroed.
-     *  So do not delete your created player pbject yuorself.
-     */
-    virtual PlayableObject* initPlayer(int objectType) const = 0;
-
     QString itemTextType() const override;
 
     /**
@@ -335,6 +326,12 @@ protected:
     void setPlayer(QObject *newPlayer);
 
     /**
+     * @brief setPlayer This method sets new player object by snake id.
+     * @param snakeId This is snake object id that user will be control.
+     */
+    bool setPlayer(int snakeId);
+
+    /**
      * @brief generate This method shold be generate object from the  @a objectType.
      *  Override this method for add support yourown objects.
      *  @note If your objects not requre custom setting then use the default implementation of the generate method.
@@ -546,6 +543,9 @@ private:
                                 QList<int>* removedObjectsList = nullptr);
 
     void renderLoop();
+
+    void clear();
+
     QFuture<void> _renderLoopFuture;
 
     EventServer * _eventServer = nullptr;

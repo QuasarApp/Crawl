@@ -108,10 +108,6 @@ void World::initControl(CRAWL::IControl *control) {
     return IWorld::initControl(control);
 }
 
-CRAWL::PlayableObject *World::initPlayer(int) const {
-    return new Snake();
-}
-
 CRAWL::IAI *World::initBackGroundAI() const {
     return IWorld::initBackGroundAI();
 }

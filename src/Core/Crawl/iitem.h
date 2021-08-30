@@ -14,6 +14,7 @@
 #include <QString>
 #include "global.h"
 
+
 /**
  * @brief IITEM_OBJECT This macross init the item id for child IItem classes.
  * For each items with this macross automaticly added two method:
@@ -28,6 +29,8 @@
 
 
 namespace CRAWL {
+
+class Store;
 
 /**
  * @brief The ChildIteAction struct contains two lambda function with actions for remove and add item to a parent item.
@@ -227,11 +230,28 @@ public:
      */
     bool isActive(int item);
 
+    /**
+     * @brief store This mrthod sets pointer value of the global store object.
+     *  Usualy this method invoked in the Store::addLevel method. (when item adding into store).
+     *  @param newStore This is new pinter value of the store object.
+     */
+    void setStore(const Store *newStore);
+
+protected:
+
+    /**
+     * @brief store This method return pointer to the store object.
+     * @return pointer to curent store object. If object is not initialized on the global store then return nullptr
+     */
+    const Store *store() const;
+
+
 private:
     unsigned int _id = 0;
     unsigned int _typeItem = 0;
     QHash<int, ChildItemAction> _childs;
     QSet<int> _activeItems;
+    const Store *_store = nullptr;
 
 };
 

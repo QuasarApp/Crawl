@@ -16,9 +16,15 @@ OfflineStore::OfflineStore() {
 
 }
 
-void OfflineStore::init(const ILevel *level) {
-    store().unite(level->availableItems());
+void OfflineStore::addLevel(const ILevel *level) {
+
+    for (auto item : qAsConst(level->availableItems())) {
+        item->setStore(this);
+        store().insert(item->itemId(), item);
+    }
+
     store().insert(level->world()->itemId(), level->world());
+    level->world()->setStore(this);
 }
 
 }

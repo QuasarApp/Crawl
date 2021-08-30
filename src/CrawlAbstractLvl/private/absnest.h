@@ -19,7 +19,7 @@ namespace AbstractLvl {
 class AbsNest: public CRAWL::IPreviewScaneWorld
 {
 public:
-    AbsNest(IWorld *mainWorld);
+    AbsNest();
 
     // IWorld interface
 public:

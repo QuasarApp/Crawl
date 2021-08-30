@@ -25,8 +25,6 @@ namespace TestLvl {
 World::World() {
     setCameraReleativePosition({50,0,100});
     setCameraRotation(QQuaternion::fromEulerAngles({0,0,0}));
-
-    addChildItem();
 }
 
 CRAWL::WorldRule *World::initWorldRules() {
@@ -73,10 +71,6 @@ void World::initControl(CRAWL::IControl *control) {
     }
 
     return IWorld::initControl(control);
-}
-
-CRAWL::PlayableObject *World::initPlayer(int) const {
-    return new TestSnake();
 }
 
 CRAWL::IAI *World::initBackGroundAI() const {

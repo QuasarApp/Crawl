@@ -20,7 +20,7 @@ class OfflineStore : public Store
 public:
     OfflineStore();
 
-    void init(const ILevel *level) override;
+    void addLevel(const ILevel *level) override;
 };
 
 }

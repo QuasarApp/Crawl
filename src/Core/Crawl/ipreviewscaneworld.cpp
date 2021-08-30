@@ -10,9 +10,7 @@
 
 namespace CRAWL {
 
-IPreviewScaneWorld::IPreviewScaneWorld(const IWorld* mainWorld) {
-    debug_assert(mainWorld, "The mainWorld world option should be initialized.");
-    _mainWorld = mainWorld;
+IPreviewScaneWorld::IPreviewScaneWorld() {
 
     setCameraReleativePosition({0, 100, 100});
     setCameraRotation(QQuaternion::fromEulerAngles(-40,0,0));
@@ -42,14 +40,12 @@ int IPreviewScaneWorld::requiredTier() const {
     return 0;
 }
 
-PlayableObject *IPreviewScaneWorld::initPlayer(int objectType) const {
-    return _mainWorld->initPlayer(objectType);
-}
-
 bool IPreviewScaneWorld::start(const StartData& config) {
     _configuration = config;
 
-    setPlayer(initPlayer(config.snakeType()));
+    if (!setPlayer(config.snakeType())) {
+        return false;
+    };
 
     worldChanged(worldRules()->cbegin());
     setTargetFps(60);

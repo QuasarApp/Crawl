@@ -22,6 +22,7 @@
 #include "eventserver.h"
 #include "player.h"
 #include <QtConcurrent>
+#include "store.h"
 
 namespace CRAWL {
 
@@ -39,7 +40,11 @@ IWorld::IWorld() {
 
 IWorld::~IWorld() {
     disconnect();
-    reset();
+
+    IWorld::stop();
+
+    clear();
+
     delete _eventServer;
 }
 
@@ -102,15 +107,18 @@ bool IWorld::start(const StartData& config) {
 
     auto player = dynamic_cast<Player*>(userInterface());
     if (!player) {
-        QuasarAppUtils::Params::log("Failed to start world. T userIterface control should be children class of the Palyer class",
+        QuasarAppUtils::Params::log("Failed to start world. The userIterface control should be children class of the Palyer class",
                                     QuasarAppUtils::Error);
 
         return false;
     }
 
-    setWorldStatus(WorldStatus::Game);
     backgroundAI()->stopAI();
-    setPlayer(initPlayer(config.snakeType()));
+    setWorldStatus(WorldStatus::Game);
+
+    if (!setPlayer(config.snakeType())) {
+        return false;
+    }
 
     player->setUserData(config.player());
 
@@ -149,6 +157,21 @@ void IWorld::setPlayer(QObject *newPlayer) {
     addItem(_player);
 
     emit playerChanged();
+}
+
+bool IWorld::setPlayer(int snakeId) {
+    auto snake = dynamic_cast<PlayableObject*>(store()->getItemById(snakeId));
+
+    if (!snake) {
+        QuasarAppUtils::Params::log("Failed to start world. The snake should be not null",
+                                    QuasarAppUtils::Error);
+        return false;
+
+    }
+
+    setPlayer(snake);
+
+    return true;
 }
 
 IWorldItem *IWorld::generate(const QString &objectType) const {
@@ -248,14 +271,7 @@ void IWorld::removeItem(IWorldItem* item, QList<int> *removedObjectsList) {
     emit sigOBjctsListChanged(diff);
 }
 
-void IWorld::reset() {
-
-    stop();
-
-    if (_player) {
-        _player = nullptr;
-    }
-
+void CRAWL::IWorld::clear() {
     if (_worldRules) {
         delete _worldRules;
         _worldRules = nullptr;
@@ -270,9 +286,18 @@ void IWorld::reset() {
         delete _backgroundAI;
         _backgroundAI = nullptr;
     }
+}
 
+void IWorld::reset() {
+
+    stop();
+
+    if (_player) {
+        _player = nullptr;
+    }
+
+    clear();
     setHdr("");
-
 }
 
 

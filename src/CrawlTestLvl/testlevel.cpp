@@ -8,10 +8,13 @@
 #include "testlevel.h"
 #include "world.h"
 #include "nest.h"
+#include "testsnake.h"
 
 TestLevel::TestLevel() {
     initTestLvlResources();
-    auto world = new TestLvl::World();
-    setWorld(world);
-    setPreviewScane(new TestLvl::Nest(world));
+    setWorld(new TestLvl::World());
+    setPreviewScane(new TestLvl::Nest());
+
+    addItem(new TestLvl::TestSnake());
+
 }

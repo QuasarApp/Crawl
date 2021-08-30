@@ -34,7 +34,7 @@ bool Store::buy(User &buyer, int itemId) {
     return true;
 }
 
-const IItem *Store::getItemById(int id) const {
+IItem *Store::getItemById(int id) const {
     return _store.value(id, nullptr);
 }
 

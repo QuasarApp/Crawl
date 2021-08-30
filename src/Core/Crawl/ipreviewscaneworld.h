@@ -23,7 +23,7 @@ public:
      * @brief IPreviewScaneWorld This is main constructo of the preview world model.
      * @param mainWorld This pointer to the main world. This is needed for correctly working initPalayer methods. The implementation of the some methods should be identy with the main world.
      */
-    IPreviewScaneWorld(const IWorld* mainWorld);
+    IPreviewScaneWorld();
 
     // IItem interface
 public:
@@ -33,7 +33,6 @@ public:
     QString image() const override final;
     int cost() const override final;
     int requiredTier() const override final;
-    PlayableObject *initPlayer(int objectType) const override final;
     void initControl(IControl *control) override;
     IControl* initUserInterface() const override;
     bool start(const StartData &config) override;

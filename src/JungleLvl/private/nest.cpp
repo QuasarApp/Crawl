@@ -16,7 +16,7 @@
 
 namespace JungleLvl {
 
-Nest::Nest(IWorld *mainWorld): CRAWL::IPreviewScaneWorld(mainWorld) {
+Nest::Nest(): CRAWL::IPreviewScaneWorld() {
 
 }
 

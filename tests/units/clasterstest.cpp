@@ -45,7 +45,6 @@ public:
 
     // IWorld interface
 public:
-    CRAWL::PlayableObject *initPlayer(int) const override {return nullptr;};
     CRAWL::WorldRule *initWorldRules() override {return nullptr;};
     QString initHdrBackGround() const override {return "";};
     QString description() const override {return "";};

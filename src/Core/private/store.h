@@ -33,17 +33,17 @@ public:
     bool buy(User& buyer, int itemId);
 
     /**
-     * @brief init This method initialise store of the game.
+     * @brief addLevel This method add level objects to store.
      * @return true if the items inited successfuly else false.
      */
-    virtual void init(const ILevel* level) = 0;
+    virtual void addLevel(const ILevel* level) = 0;
 
     /**
      * @brief getItemById This method return item by id.
      * @param id This is id of the required item.
      * @return pointer to item. if The item with @a id not found then return nullptr.
      */
-    const IItem* getItemById(int id) const;
+    IItem* getItemById(int id) const;
 
     /**
      * @brief size This method return count of the available items in store.
