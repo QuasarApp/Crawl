@@ -8,7 +8,7 @@
 #include "offlinestore.h"
 
 #include <Crawl/ilevel.h>
-#include "Crawl/iworld.h"
+#include "Crawl/ipreviewscaneworld.h"
 
 namespace CRAWL {
 
@@ -19,12 +19,11 @@ OfflineStore::OfflineStore() {
 void OfflineStore::addLevel(const ILevel *level) {
 
     for (auto item : qAsConst(level->availableItems())) {
-        item->setStore(this);
-        store().insert(item->itemId(), item);
+        addItem(item);
     }
 
-    store().insert(level->world()->itemId(), level->world());
-    level->world()->setStore(this);
+    addItem(level->world());
+    level->previewScane()->setStore(this);
 }
 
 }

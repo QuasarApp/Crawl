@@ -9,21 +9,18 @@
 
 namespace CRAWL {
 
-StartData::StartData() {
 
-}
-
-StartData::StartData(User *player, IItem* snake) {
+StartData::StartData(const User *player, IItem* snake) {
     setPlayer(player);
     setSnake(snake);
 }
 
 
-User *StartData::player() const{
+const User *StartData::player() const{
     return _player;
 }
 
-void StartData::setPlayer(User *newPlayer) {
+void StartData::setPlayer(const User *newPlayer) {
     _player = newPlayer;
 }
 

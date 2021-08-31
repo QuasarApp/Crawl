@@ -42,30 +42,61 @@ public:
      * @brief getItemById This method return item by id.
      * @param id This is id of the required item.
      * @return pointer to item. if The item with @a id not found then return nullptr.
+     * @see Store::getItemsByType
+     * @see Store::keysListByType
+     * @see Store::keysList
      */
     IItem* getItemById(int id) const;
 
     /**
      * @brief size This method return count of the available items in store.
      * @return count of the available items.
+     * @see Store::keysList
      */
     int size() const;
 
     /**
      * @brief keysList This method return a list of available keys
      * @return a list of available keys
+     * @see Store::getItemsByType
+     * @see Store::getItemById
+     * @see Store::keysListByType
      */
     QList<int> keysList() const;
 
+    /**
+     * @brief keysListByType This method return list with ids of all available items for a @a user by @a type.
+     * @param type This is type of the requried items
+     * @param user This is pointer of the user for that searched items. Skip this param for getting all items by type.
+     * @return list with ids of all available items for a @a user by @a type.
+     * @see Store::getItemsByType
+     * @see Store::getItemById
+     * @see Store::keysList
+
+     */
+    QList<int> keysListByType(unsigned int type, const User* user = nullptr) const;
+
+    /**
+     * @brief getItemsByType This method return list of all available items for a @a user by @a type.
+     * @param type This is type of the requried items
+     * @param user This is pointer of the user for that searched items. Skip this param for getting all items by type.
+     * @return list with ids of all available items for a @a user by @a type.
+     * @see Store::keysListByType
+     * @see Store::getItemById
+     * @see Store::keysList
+     */
+    QHash<int, IItem*> getItemsByType(unsigned int type, const User* user = nullptr) const;
+
 protected:
     /**
-     * @brief store This method provide accsess for the local storage.
-     * @return local storage object.
+     * @brief addItem This method add item to store.
+     * @param item This is item that will be added into store object.
      */
-    QMultiHash<int, IItem *> &store();
+    void addItem(IItem * item);
 
 private:
-    QMultiHash<int, IItem*> _store;
+    QMultiHash<int, QMultiHash<int, IItem *>> _store;
+    QMultiHash<int, IItem *> _all;
 };
 }
 #endif // STORE_H

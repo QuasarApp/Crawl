@@ -12,12 +12,31 @@
 
 namespace CRAWL {
 
+class AvailableSnakesModel;
+class InventoryModel;
+
 /**
  * @brief The IPreviewScaneWorld class is interface of the all preview scanes models.
  */
 class CRAWL_EXPORT IPreviewScaneWorld: public IWorld
 {
     Q_OBJECT
+
+    /**
+     * availableSnakesModel This property contais pointer to the model of the available snakes in view.
+     * @see IPreviewScaneWorld::availableSnakesModelChanged
+     * @see IPreviewScaneWorld::getAvailableSnakesModel
+     * @see IPreviewScaneWorld::setAvailableSnakesModel
+    */
+    Q_PROPERTY(QObject * availableSnakesModel READ getAvailableSnakesModel NOTIFY availableSnakesModelChanged)
+
+    /**
+     * availableItemsModel This property contais pointer to the model of the available items in view.
+     * @see IPreviewScaneWorld::getAvailableItemsModel
+     * @see IPreviewScaneWorld::availableItemsModelChanged
+    */
+    Q_PROPERTY(QObject * availableItemsModel READ getAvailableItemsModel NOTIFY availableItemsModelChanged)
+
 public:
     /**
      * @brief IPreviewScaneWorld This is main constructo of the preview world model.
@@ -36,9 +55,25 @@ public:
     void initControl(IControl *control) override;
     IControl* initUserInterface() const override;
     bool start(const StartData &config) override;
+
     bool stop() override;
 
-    const StartData &configuration() const;
+    /**
+     * @brief getAvailableSnakesModel This method return current model of the available snakes view.
+     * @return current model of the available snakes view.
+     * @see IPreviewScaneWorld::availableSnakesModelChanged
+     * @see IPreviewScaneWorld::setAvailableSnakesModel
+     * @see IPreviewScaneWorld::availableSnakesModel
+     */
+    QObject *getAvailableSnakesModel() const;
+
+    /**
+     * @brief getAvailableItemsModel This method return current model of the items view.
+     * @return current model of the items view.
+     * @see IPreviewScaneWorld::availableItemsModelChanged
+     * @see IPreviewScaneWorld::availableItemsModel
+     */
+    QObject *getAvailableItemsModel() const;
 
 signals:
     /**
@@ -47,6 +82,33 @@ signals:
      */
     void sigPrepareIsFinished(const StartData& config);
 
+    /**
+     * @brief availableSnakesModelChanged This signale emited when the availableSnakes model changed.
+     * @see IPreviewScaneWorld::setAvailableSnakesModel
+     * @see IPreviewScaneWorld::getAvailableSnakesModel
+     * @see IPreviewScaneWorld::availableSnakesModel
+     */
+    void availableSnakesModelChanged();
+
+    /**
+     * @brief availableItemsModelChanged This signal emited when items view model changed.
+     * @see IPreviewScaneWorld::getAvailableItemsModel
+     * @see IPreviewScaneWorld::availableItemsModel
+     */
+    void availableItemsModelChanged();
+
+protected:
+    /**
+     * @brief setAvailableSnakesModel This method sets new model for snakes view.
+     * @param newAvailableSnakesModel This is new model of snakes view.
+     * @see IPreviewScaneWorld::availableSnakesModelChanged
+     * @see IPreviewScaneWorld::getAvailableSnakesModel
+     * @see IPreviewScaneWorld::availableSnakesModel
+
+     */
+    void setAvailableSnakesModel(AvailableSnakesModel *newAvailableSnakesModel);
+
+
 private slots:
 
     void handleRotation(double x, double y);
@@ -54,10 +116,10 @@ private slots:
     void handleSelect(int item, bool isSelected);
 
 private:
-    StartData _configuration;
-    const IWorld* _mainWorld;
-
-
+    QHash<int, IItem *> _availableSnakes;
+    AvailableSnakesModel *_availableSnakesModel = nullptr;
+    const User* _user = nullptr;
+    InventoryModel *_availableItemsModel = nullptr;
 };
 
 }

@@ -8,6 +8,8 @@
 #include "ipreviewscaneworld.h"
 #include "previewcontrol.h"
 #include "snake.h"
+#include "store.h"
+#include "availablesnakesmodel.h"
 
 namespace CRAWL {
 
@@ -42,13 +44,8 @@ int IPreviewScaneWorld::requiredTier() const {
 }
 
 bool IPreviewScaneWorld::start(const StartData& config) {
-    _configuration = config;
-
-    auto snakeOject = dynamic_cast<Snake*>(config.snake());
-    if (!snakeOject)
-        return false;
-
-    setPlayer(snakeOject);
+    _availableSnakes = store()->getItemsByType(Snake::type(), config.player());
+    _user = config.player();
 
     worldChanged(worldRules()->cbegin());
     setTargetFps(60);
@@ -74,8 +71,8 @@ void IPreviewScaneWorld::handleRotation(double x, double y) {
 }
 
 void IPreviewScaneWorld::handleStart() {
-    auto playerObj = dynamic_cast<IItem*>(player());
-    _configuration.setSnake(playerObj);
+    auto playerObj = dynamic_cast<Snake*>(player());
+    StartData _configuration(_user, playerObj);
     emit sigPrepareIsFinished(_configuration);
     stop();
 }
@@ -90,8 +87,16 @@ void IPreviewScaneWorld::handleSelect(int item, bool isSelected) {
     }
 }
 
-const StartData &IPreviewScaneWorld::configuration() const {
-    return _configuration;
+QObject *IPreviewScaneWorld::getAvailableSnakesModel() const {
+    return _availableSnakesModel;
+}
+
+void IPreviewScaneWorld::setAvailableSnakesModel(AvailableSnakesModel *newAvailableSnakesModel) {
+    if (_availableSnakesModel == newAvailableSnakesModel)
+        return;
+
+    _availableSnakesModel = newAvailableSnakesModel;
+    emit availableSnakesModelChanged();
 }
 
 void IPreviewScaneWorld::initControl(IControl *control) {
@@ -107,6 +112,10 @@ void IPreviewScaneWorld::initControl(IControl *control) {
 
 IControl *IPreviewScaneWorld::initUserInterface() const {
     return new PreviewControl();
+}
+
+QObject *IPreviewScaneWorld::getAvailableItemsModel() const {
+    return m_availableItemsModel;
 }
 
 }

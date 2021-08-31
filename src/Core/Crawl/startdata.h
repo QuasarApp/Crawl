@@ -24,23 +24,22 @@ class PlayableObject;
 class CRAWL_EXPORT StartData
 {
 public:
-    StartData();
 
-    StartData(User * player, IItem *snake);
+    StartData(const User * player, IItem *snake);
 
     /**
      * @brief player This method return pointer to user that will be control player snake.
      * @return pointer to user that will be control player snake.
      * @see StartData::setPlayer
      */
-    User *player() const;
+    const User *player() const;
 
     /**
      * @brief setPlayer This method sets
      * @param newPlayer This is new object of the user.
      * @see StartData::player
      */
-    void setPlayer(User *newPlayer);
+    void setPlayer(const User *newPlayer);
 
     /**
      * @brief snake This method return pointer to snake object that selected player.
@@ -55,7 +54,7 @@ public:
     void setSnake(IItem *newSnake);
 
 private:
-    User *_player = nullptr;
+    const User *_player = nullptr;
     IItem *_snake = nullptr;
 };
 
