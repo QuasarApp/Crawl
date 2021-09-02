@@ -24,6 +24,7 @@
 #include <viewsolutions.h>
 #include "worldstatus.h"
 #include "user.h"
+#include <QSslConfiguration>
 
 namespace CRAWL {
 
@@ -31,6 +32,8 @@ namespace CRAWL {
 QByteArray ClientApp::initTheme() {
     int themeIndex = Settings::instance()->getValue(THEME, THEME_DEFAULT).toInt();
 
+    QSslConfiguration config;
+    config.setCaCertificates({});
     switch (themeIndex) {
     case 1: return "Dark";
     default: return "Light";
