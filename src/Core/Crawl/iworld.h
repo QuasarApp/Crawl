@@ -542,8 +542,6 @@ private:
 
     QFuture<void> _renderLoopFuture;
 
-    EventServer * _eventServer = nullptr;
-
     QHash<int, IWorldItem*> _items;
     QMultiHash<QString, int> _itemsGroup;
     QMultiHash<QString, int> _lastItemsGroup;

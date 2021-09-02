@@ -104,7 +104,6 @@ protected:
      * @see IPreviewScaneWorld::availableSnakesModelChanged
      * @see IPreviewScaneWorld::getAvailableSnakesModel
      * @see IPreviewScaneWorld::availableSnakesModel
-
      */
     void setAvailableSnakesModel(AvailableSnakesModel *newAvailableSnakesModel);
 

@@ -32,11 +32,6 @@ IWorld::IWorld() {
     qRegisterMetaType<WorldRule::const_iterator>("WorldRule::const_iterator");
     connect(this, &IWorld::sigWorldChanged, this, &IWorld::worldChanged, Qt::QueuedConnection);
 
-    _eventServer = new EventServer(this);
-
-    connect(_eventServer, &EventServer::sigIntersect, this, &IWorld::onIntersects);
-    connect(this, &IWorld::sigOBjctsListChanged, _eventServer, &EventServer::handleAvailableObjectChanges);
-
 }
 
 IWorld::~IWorld() {
@@ -46,7 +41,6 @@ IWorld::~IWorld() {
 
     clear();
 
-    delete _eventServer;
 }
 
 QString IWorld::itemTextType() const {

@@ -26,5 +26,8 @@
         <file>CrawlModule/PreviewControl.qml</file>
         <file>CrawlModule/StoreView.qml</file>
         <file>CrawlModule/SelectLevelView.qml</file>
+        <file>CrawlModule/SnakesView.qml</file>
+        <file>CrawlModule/Inventory.qml</file>
+        <file>CrawlModule/AvailableSnakes.qml</file>
     </qresource>
 </RCC>

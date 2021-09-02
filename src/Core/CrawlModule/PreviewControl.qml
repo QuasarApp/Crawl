@@ -12,6 +12,8 @@ import QtQuick.Controls
 import QtQuick.Layouts
 
 AbstractMenuView {
+    id: root
+    property var model: null
     columns: 4
     rows: 2
 
@@ -59,6 +61,28 @@ AbstractMenuView {
                                oldX = mouse.x;
 
                            }
+    }
+
+    AvailableSnakes {
+
+        Layout.columnSpan: 4
+        Layout.rowSpan: 1
+        Layout.preferredHeight: root.height * 0.1
+
+        model: (root.model)? root.model.availableSnakesModel: null
+    }
+
+    Inventory {
+
+        Layout.preferredHeight: root.height * 0.2
+
+        Layout.columnSpan: 4
+        Layout.rowSpan: 1
+        model: (root.model)? root.model.availableItemsModel: null
+    }
+
+    Item {
+        Layout.fillWidth: true
     }
 
     Button {

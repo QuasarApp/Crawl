@@ -10,6 +10,7 @@
 #include "snake.h"
 #include "store.h"
 #include "availablesnakesmodel.h"
+#include "inventorymodel.h"
 
 namespace CRAWL {
 
@@ -115,7 +116,7 @@ IControl *IPreviewScaneWorld::initUserInterface() const {
 }
 
 QObject *IPreviewScaneWorld::getAvailableItemsModel() const {
-    return m_availableItemsModel;
+    return _availableItemsModel;
 }
 
 }

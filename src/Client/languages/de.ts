@@ -24,6 +24,13 @@
     </message>
 </context>
 <context>
+    <name>AvailableSnakes</name>
+    <message>
+        <source>Buy</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Crawl</name>
     <message>
         <source>Crawl</source>
@@ -38,6 +45,13 @@
     <name>DefaultMenu</name>
     <message>
         <source>Back to menu.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Inventory</name>
+    <message>
+        <source>Buy</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
