@@ -14,7 +14,18 @@
 namespace CRAWL {
 
 /**
- * @brief The ControlPos class
+ * @brief The Refresh enum Lists the shapes to convert the group object to.
+ */
+enum Refresh {
+    CIRCLE,
+    SPHERE,
+    SQUARE,
+    CUBE,
+    LINE
+};
+
+/**
+ * @brief The ControlPos class The class that control position of group objects.
  */
 class ControlPos: public GroupObject {
 public:
@@ -25,22 +36,37 @@ public:
     void add(ClasterItem *object);
     void remove(ClasterItem *object);
 
+    /**
+     * @brief changeLayout This method defines the shape of the group object.
+     * @param fig This is the name of the figure to change the group object.
+     */
+    void changeLayout(const Refresh &fig);
+
+    /**
+     * @brief setDistance This method sets, depending on the shape selected, the radius for the circle or the indentation for the square.
+     * @param dist This is the radius or margin.
+     */
+    void setDistance(int dist);
+
 private:
 
-    /**
-     * @brief The _Figure enum
-     */
-    enum _Figure {
-        CIRCLE,
-        SQUARE,
-        LINE
-    };
+    int _distance;
+    Refresh _shape;
 
     /**
-     * @brief changeLayout
-     * @param fig
+     * @brief updatePosition This method updates the coordinates of the positions of all objects.
      */
-    void changeLayout(const _Figure &fig);
+    void updatePosition();
+
+    /**
+     * @brief drawCircle This method updates the coordinates to a circle shape.
+     */
+    void drawCircle();
+
+    /**
+     * @brief drawSquare This method updates the coordinates to a square shape.
+     */
+    void drawSquare();
 
 };
 

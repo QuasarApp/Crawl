@@ -6,6 +6,8 @@
 //#
 
 #include "controlpos.h"
+#include "clasteritem.h"
+#include <QtMath>
 
 namespace CRAWL {
 
@@ -15,28 +17,74 @@ ControlPos::ControlPos() {
 
 void ControlPos::add(ClasterItem *object) {
 
-    GroupObject::updatePosition();
+    Claster::add(object);
+    updatePosition();
 
 }
 
 void ControlPos::remove(ClasterItem *object) {
 
-    GroupObject::updatePosition();
+    Claster::remove(object->guiId());
+    updatePosition();
 
 }
 
-void ControlPos::changeLayout(const _Figure &fig) {
+void ControlPos::changeLayout(const Refresh &fig) {
+    _shape = fig;
+}
 
-    if (fig == CIRCLE) {
-        GroupObject::updatePosition();
+void ControlPos::setDistance(int dist) {
+    _distance = dist;
+}
+
+void ControlPos::updatePosition() {
+
+    switch (_shape) {
+        case CIRCLE:
+            drawCircle();
+            break;
+
+        case SQUARE:
+            drawSquare();
+            break;
+
+        case LINE:
+            break;
+
+        default:
+            break;
+     }
+
+}
+
+void ControlPos::drawCircle() {
+
+    float step =  360 / objects().size();
+    int temp = 1;
+
+    for (ClasterItem* object: objects()) {
+
+        float x = _distance * qCos(step*temp);
+        float y = _distance * qSin(step*temp);
+        GroupObject::updatePosition(object->guiId(), {x, y, 0});
+
+        temp++;
     }
 
-    if (fig == SQUARE) {
-        GroupObject::updatePosition();
-    }
+}
 
-    if (fig == LINE) {
-        GroupObject::updatePosition();
+void ControlPos::drawSquare() {
+
+    float step =  360 / objects().size();
+    int temp = 1;
+
+    for (ClasterItem* object: objects()) {
+
+        float x = _distance * qCos(step*temp);
+        float y = _distance * qSin(step*temp);
+        GroupObject::updatePosition(object->guiId(), {x, y, 0});
+
+        temp++;
     }
 
 }
