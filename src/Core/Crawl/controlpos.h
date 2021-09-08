@@ -18,9 +18,7 @@ namespace CRAWL {
  */
 enum Refresh {
     CIRCLE,
-    SPHERE,
     SQUARE,
-    CUBE,
     LINE
 };
 
