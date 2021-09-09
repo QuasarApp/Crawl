@@ -59,8 +59,13 @@ void ControlPos::updatePosition() {
 
 void ControlPos::drawCircle() {
 
+    if (objects().size() == 0) {
+        QuasarAppUtils::Params::log(QString("The number of objects is zero. Add object."));
+        return;
+    }
+
     float step =  360 / objects().size();
-    int temp = 1;
+    int temp = 0;
 
     for (ClasterItem* object: objects()) {
 
@@ -75,16 +80,28 @@ void ControlPos::drawCircle() {
 
 void ControlPos::drawSquare() {
 
-    float step =  360 / objects().size();
-    int temp = 1;
+    if (objects().size() == 0) {
+        QuasarAppUtils::Params::log(QString("The number of objects is zero. Add object."));
+        return;
+    }
 
-    for (ClasterItem* object: objects()) {
+    int height = qFloor(qSqrt(objects().size()));
+    int width = qCeil(qSqrt(objects().size()));
 
-        float x = _distance * qCos(step*temp);
-        float y = _distance * qSin(step*temp);
-        GroupObject::updatePosition(object->guiId(), {x, y, 0});
+    int coutObj = 0;
+    for (int y = 0; y < height; y++) {
 
-        temp++;
+        coutObj = coutObj+y;
+        for (int x = 0; x < width; x++) {
+
+            if (coutObj == objects().size()) {
+                return;
+            }
+            GroupObject::updatePosition(objects()[coutObj]->guiId(), {float(x + _distance),
+                                                                      float(y + _distance),
+                                                                      0});
+            coutObj++;
+        }
     }
 
 }
