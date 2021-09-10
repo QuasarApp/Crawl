@@ -48,8 +48,6 @@ public:
 
 private:
 
-    int _distance;
-    Refresh _shape;
 
     /**
      * @brief updatePosition This method updates the coordinates of the positions of all objects.
@@ -65,6 +63,9 @@ private:
      * @brief drawSquare This method updates the coordinates to a square shape.
      */
     void drawSquare();
+    
+    int _distance;
+    Refresh _shape;
 
 };
 
