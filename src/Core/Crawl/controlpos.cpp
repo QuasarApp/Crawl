@@ -31,10 +31,12 @@ void ControlPos::remove(ClasterItem *object) {
 
 void ControlPos::changeLayout(const Refresh &fig) {
     _shape = fig;
+    updatePosition();
 }
 
 void ControlPos::setDistance(int dist) {
     _distance = dist;
+    updatePosition();
 }
 
 void ControlPos::updatePosition() {
