@@ -60,7 +60,7 @@ void ControlPos::updatePosition() {
 void ControlPos::drawCircle() {
 
     if (objects().size() == 0) {
-        QuasarAppUtils::Params::log(QString("The number of objects is zero. Add object."));
+        QuasarAppUtils::Params::log(QString("The number of objects is zero. Add object.", QuasarAppUtils::Error));
         return;
     }
 
