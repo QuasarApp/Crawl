@@ -51,6 +51,7 @@ void ControlPos::updatePosition() {
             break;
 
         case LINE:
+            drawLine();
             break;
 
         default:
@@ -62,7 +63,7 @@ void ControlPos::updatePosition() {
 void ControlPos::drawCircle() {
 
     if (objects().size() == 0) {
-        QuasarAppUtils::Params::log(QString("The number of objects is zero. Add object.", QuasarAppUtils::Error));
+        QuasarAppUtils::Params::log(QString("The number of objects is zero. Add object."), QuasarAppUtils::Error);
         return;
     }
 
@@ -83,29 +84,40 @@ void ControlPos::drawCircle() {
 void ControlPos::drawSquare() {
 
     if (objects().size() == 0) {
-        QuasarAppUtils::Params::log(QString("The number of objects is zero. Add object."));
+        QuasarAppUtils::Params::log(QString("The number of objects is zero. Add object."), QuasarAppUtils::Error);
         return;
     }
 
     int height = qFloor(qSqrt(objects().size()));
-    int width = qCeil(qSqrt(objects().size()));
 
-    int coutObj = 0;
-    for (int y = 0; y < height; y++) {
+    int indObject = 0;
+    for (auto idObj = objects().keyBegin(); idObj != objects().keyEnd(); idObj++) {
 
-        coutObj = coutObj+y;
-        for (int x = 0; x < width; x++) {
+        int x = indObject % height;
+        int y = qCeil(indObject  / height);
 
-            if (coutObj == objects().size()) {
-                return;
-            }
-            GroupObject::updatePosition(objects()[coutObj]->guiId(), {float(x + _distance),
-                                                                      float(y + _distance),
-                                                                      0});
-            coutObj++;
-        }
+        GroupObject::updatePosition(idObj, {x + _distance,
+                                            y + _distance,
+                                            0});
+        indObject++;
+
     }
 
+}
+
+void ControlPos::drawLine() {
+
+    if (objects().size() == 0) {
+        QuasarAppUtils::Params::log(QString("The number of objects is zero. Add object."), QuasarAppUtils::Error);
+        return;
+    }
+
+    float xObject = 0;
+    for (ClasterItem* object: objects()) {
+        GroupObject::updatePosition(object->guiId(), {xObject + _distance, 0, 0});
+
+        xObject++;
+    }
 }
 
 }

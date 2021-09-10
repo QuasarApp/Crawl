@@ -63,6 +63,11 @@ private:
      * @brief drawSquare This method updates the coordinates to a square shape.
      */
     void drawSquare();
+
+    /**
+     * @brief drawLine This method updates the coordinates to a line shape.
+     */
+    void drawLine();
     
     int _distance;
     Refresh _shape;
