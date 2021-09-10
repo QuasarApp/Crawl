@@ -24,7 +24,7 @@ void ControlPos::add(ClasterItem *object) {
 
 void ControlPos::remove(ClasterItem *object) {
 
-    Claster::remove(object->guiId());
+    Claster::remove(object);
     updatePosition();
 
 }
