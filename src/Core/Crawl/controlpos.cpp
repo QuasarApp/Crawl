@@ -93,10 +93,10 @@ void ControlPos::drawSquare() {
     int indObject = 0;
     for (auto idObj = objects().keyBegin(); idObj != objects().keyEnd(); idObj++) {
 
-        int x = indObject % height;
-        int y = qCeil(indObject  / height);
+        float x = indObject % height;
+        float y = qCeil(indObject  / height);
 
-        GroupObject::updatePosition(idObj, {x + _distance,
+        GroupObject::updatePosition(*idObj, {x + _distance,
                                             y + _distance,
                                             0});
         indObject++;
