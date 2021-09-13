@@ -5,13 +5,15 @@
 //# of this license document, but changing it is not allowed.
 //#
 
-
 #include "groupobjbox.h"
 #include "groupobjboxitem.h"
 
 namespace TestLvl {
 
 GroupObjBox::GroupObjBox() {
+
+    setDistance(2);
+    changeLayout(CRAWL::Refresh::CIRCLE);
 
 }
 
