@@ -14,10 +14,13 @@
 namespace TestLvl {
 
 class GroupObjboxItem: public CRAWL::ClasterItem, public Box {
-    Q_OBJECT
+
 public:
     GroupObjboxItem();
 
+    // IRender interface
+public:
+    void init();
     void render(unsigned int tbfMsec);
 };
 

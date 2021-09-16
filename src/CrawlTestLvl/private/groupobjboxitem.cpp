@@ -9,7 +9,11 @@
 
 namespace TestLvl {
 
-GroupObjboxItem::GroupObjboxItem(): CRAWL::ClasterItem("GroupObjboxItem"), Box {
+GroupObjboxItem::GroupObjboxItem(): CRAWL::ClasterItem("GroupObjboxItem") {
+
+}
+
+void GroupObjboxItem::init() {
 
 }
 
