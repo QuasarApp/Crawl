@@ -11,11 +11,26 @@
 
 namespace TestLvl {
 
-GroupObjBox::GroupObjBox() {
+GroupObjBox::GroupObjBox(): CRAWL::IWorldItem("GroupObjBox") {
 
-    setDistance(10);
+    setDistance(2);
     changeLayout(CRAWL::Refresh::CIRCLE);
 
+    add(new GroupObjboxItem);
+    add(new GroupObjboxItem);
+    add(new GroupObjboxItem);
+    add(new GroupObjboxItem);
+    add(new GroupObjboxItem);
+
+}
+
+void GroupObjBox::render(unsigned int tbfMsec)
+{
+
+}
+
+void GroupObjBox::init()
+{
 
 }
 

@@ -13,10 +13,15 @@
 
 namespace TestLvl {
 
-class GroupObjBox: public CRAWL::ControlPos {
+class GroupObjBox: public CRAWL::ControlPos, public CRAWL::IWorldItem {
 public:
     GroupObjBox();
 
+
+    // IRender interface
+public:
+    void render(unsigned int tbfMsec);
+    void init();
 };
 
 }
