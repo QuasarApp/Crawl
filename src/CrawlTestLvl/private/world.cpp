@@ -38,7 +38,7 @@ CRAWL::WorldRule *World::initWorldRules() {
 
              {registerObject<Background>(), 1},
              {registerObject<Day>(), 1}}},
-        {2,
+        {500,
             {
                 {registerObject<GroupObjBox>(),20}
             }
