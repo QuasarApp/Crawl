@@ -5,8 +5,8 @@
 //# of this license document, but changing it is not allowed.
 //#
 
-#ifndef CONTROLPOS_H
-#define CONTROLPOS_H
+#ifndef LAYOUT_H
+#define LAYOUT_H
 
 #include <Crawl/groupobject.h>
 
@@ -25,9 +25,9 @@ enum Refresh {
 /**
  * @brief The ControlPos class The class that control position of group objects.
  */
-class ControlPos: public GroupObject {
+class Layout: public GroupObject {
 public:
-    ControlPos();
+    Layout();
 
 // Claster interface
 public:
@@ -75,4 +75,4 @@ private:
 };
 
 }
-#endif // CONTROLPOS_H
+#endif // LAYOUT_H

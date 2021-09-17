@@ -7,20 +7,34 @@
 
 #include "box.h"
 #include "groupobjbox.h"
-#include "groupobjboxitem.h"
 
 namespace TestLvl {
 
-GroupObjBox::GroupObjBox(): CRAWL::IWorldItem("GroupObjBox") {
+GroupObjBox::GroupObjBox(): CRAWL::ClasterItem("GroupObjBox") {
 
     setDistance(2);
     changeLayout(CRAWL::Refresh::CIRCLE);
 
-    add(new GroupObjboxItem);
-    add(new GroupObjboxItem);
-    add(new GroupObjboxItem);
-    add(new GroupObjboxItem);
-    add(new GroupObjboxItem);
+    add(new Box);
+    add(new Box);
+    add(new Box);
+    add(new Box);
+    add(new Box);
+    add(new Box);
+    add(new Box);
+    add(new Box);
+    add(new Box);
+    add(new Box);
+    add(new Box);
+    add(new Box);
+    add(new Box);
+    add(new Box);
+    add(new Box);
+    add(new Box);
+    add(new Box);
+    add(new Box);
+    add(new Box);
+    add(new Box);
 
 }
 
@@ -33,6 +47,8 @@ void GroupObjBox::init()
 {
 
 }
+
+
 
 
 }

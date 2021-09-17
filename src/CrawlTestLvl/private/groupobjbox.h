@@ -8,12 +8,12 @@
 #ifndef GROUPOBJBOX_H
 #define GROUPOBJBOX_H
 
-#include "Crawl/controlpos.h"
-#include "Crawl/iworlditem.h"
+#include "Crawl/layout.h"
+#include "Crawl/clasteritem.h"
 
 namespace TestLvl {
 
-class GroupObjBox: public CRAWL::ControlPos, public CRAWL::IWorldItem {
+class GroupObjBox: public CRAWL::Layout, public CRAWL::ClasterItem {
 public:
     GroupObjBox();
 
@@ -22,6 +22,7 @@ public:
 public:
     void render(unsigned int tbfMsec);
     void init();
+
 };
 
 }

@@ -7,12 +7,12 @@
 
 #ifndef BOX_H
 #define BOX_H
-#include "Crawl/iworlditem.h"
+#include "Crawl/clasteritem.h"
 
 namespace TestLvl {
 
 
-class Box: public CRAWL::IWorldItem {
+class Box: public CRAWL::ClasterItem {
 
 public:
     Box();

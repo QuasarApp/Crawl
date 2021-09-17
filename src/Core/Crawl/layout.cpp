@@ -5,41 +5,41 @@
 //# of this license document, but changing it is not allowed.
 //#
 
-#include "controlpos.h"
+#include "layout.h"
 #include "clasteritem.h"
 #include <QtMath>
 
 namespace CRAWL {
 
-ControlPos::ControlPos() {
+Layout::Layout() {
 
 }
 
-void ControlPos::add(ClasterItem *object) {
+void Layout::add(ClasterItem *object) {
 
     Claster::add(object);
     updatePosition();
 
 }
 
-void ControlPos::remove(ClasterItem *object) {
+void Layout::remove(ClasterItem *object) {
 
     Claster::remove(object);
     updatePosition();
 
 }
 
-void ControlPos::changeLayout(const Refresh &fig) {
+void Layout::changeLayout(const Refresh &fig) {
     _shape = fig;
     updatePosition();
 }
 
-void ControlPos::setDistance(int dist) {
+void Layout::setDistance(int dist) {
     _distance = dist;
     updatePosition();
 }
 
-void ControlPos::updatePosition() {
+void Layout::updatePosition() {
 
     switch (_shape) {
         case CIRCLE:
@@ -60,7 +60,7 @@ void ControlPos::updatePosition() {
 
 }
 
-void ControlPos::drawCircle() {
+void Layout::drawCircle() {
 
     if (objects().size() == 0) {
         QuasarAppUtils::Params::log(QString("The number of objects is zero. Add object."), QuasarAppUtils::Error);
@@ -81,7 +81,7 @@ void ControlPos::drawCircle() {
 
 }
 
-void ControlPos::drawSquare() {
+void Layout::drawSquare() {
 
     if (objects().size() == 0) {
         QuasarAppUtils::Params::log(QString("The number of objects is zero. Add object."), QuasarAppUtils::Error);
@@ -105,7 +105,7 @@ void ControlPos::drawSquare() {
 
 }
 
-void ControlPos::drawLine() {
+void Layout::drawLine() {
 
     if (objects().size() == 0) {
         QuasarAppUtils::Params::log(QString("The number of objects is zero. Add object."), QuasarAppUtils::Error);
