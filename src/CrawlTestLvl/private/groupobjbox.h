@@ -13,7 +13,7 @@
 
 namespace TestLvl {
 
-class GroupObjBox: public CRAWL::Layout, public CRAWL::ClasterItem {
+class GroupObjBox: public CRAWL::Layout, public CRAWL::IWorldItem {
 public:
     GroupObjBox();
 

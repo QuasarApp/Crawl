@@ -10,9 +10,9 @@
 
 namespace TestLvl {
 
-GroupObjBox::GroupObjBox(): CRAWL::ClasterItem("GroupObjBox") {
+GroupObjBox::GroupObjBox(): CRAWL::IWorldItem("GroupObjBox") {
 
-    setDistance(2);
+    setDistance(20);
     changeLayout(CRAWL::Refresh::CIRCLE);
 
     add(new Box);
@@ -40,7 +40,7 @@ GroupObjBox::GroupObjBox(): CRAWL::ClasterItem("GroupObjBox") {
 
 void GroupObjBox::render(unsigned int tbfMsec)
 {
-
+    Layout::render(tbfMsec);
 }
 
 void GroupObjBox::init()
