@@ -11,7 +11,7 @@
 
 namespace TestLvl {
 
-Box::Box(): IWorldItem("Box") {
+Box::Box(): ClasterItem("Box") {
     setMash("qrc:/mesh/meshes/cube.mesh");
     setSize({2,2,2});
     setColor(QColor::fromRgb(rand()).name());

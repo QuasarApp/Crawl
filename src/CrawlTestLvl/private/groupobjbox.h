@@ -5,22 +5,25 @@
 //# of this license document, but changing it is not allowed.
 //#
 
-#ifndef BOX_H
-#define BOX_H
+#ifndef GROUPOBJBOX_H
+#define GROUPOBJBOX_H
+
+#include "Crawl/layout.h"
 #include "Crawl/clasteritem.h"
 
 namespace TestLvl {
 
-
-class Box: public CRAWL::ClasterItem {
-
+class GroupObjBox: public CRAWL::Layout, public CRAWL::IWorldItem {
 public:
-    Box();
-    void action(IWorldItem *item) override;
+    GroupObjBox();
 
-    // IWorldItem interface
+
+    // IRender interface
 public:
-    void firstSpawn() override;
+    void render(unsigned int tbfMsec);
+    void init();
+
 };
+
 }
-#endif // BOX_H
+#endif // GROUPOBJBOX_H
