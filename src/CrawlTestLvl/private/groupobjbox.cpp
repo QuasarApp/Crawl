@@ -41,6 +41,7 @@ GroupObjBox::GroupObjBox(): CRAWL::IWorldItem("GroupObjBox") {
 void GroupObjBox::render(unsigned int tbfMsec)
 {
     Layout::render(tbfMsec);
+    IWorldItem::render(tbfMsec);
 }
 
 void GroupObjBox::init()
