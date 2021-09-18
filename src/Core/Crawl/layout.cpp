@@ -57,7 +57,7 @@ void Layout::updatePosition() {
         default:
             break;
      }
-
+     updatePosition();
 }
 
 void Layout::drawCircle() {
