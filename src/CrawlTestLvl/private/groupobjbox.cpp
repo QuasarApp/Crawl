@@ -5,7 +5,7 @@
 //# of this license document, but changing it is not allowed.
 //#
 
-#include "box.h"
+#include "boxitem.h"
 #include "groupobjbox.h"
 
 namespace TestLvl {
@@ -15,26 +15,26 @@ GroupObjBox::GroupObjBox(): CRAWL::IWorldItem("GroupObjBox") {
     setDistance(20);
     changeLayout(CRAWL::Refresh::CIRCLE);
 
-    add(new Box);
-    add(new Box);
-    add(new Box);
-    add(new Box);
-    add(new Box);
-    add(new Box);
-    add(new Box);
-    add(new Box);
-    add(new Box);
-    add(new Box);
-    add(new Box);
-    add(new Box);
-    add(new Box);
-    add(new Box);
-    add(new Box);
-    add(new Box);
-    add(new Box);
-    add(new Box);
-    add(new Box);
-    add(new Box);
+    add(new BoxItem);
+    add(new BoxItem);
+    add(new BoxItem);
+    add(new BoxItem);
+    add(new BoxItem);
+    add(new BoxItem);
+    add(new BoxItem);
+    add(new BoxItem);
+    add(new BoxItem);
+    add(new BoxItem);
+    add(new BoxItem);
+    add(new BoxItem);
+    add(new BoxItem);
+    add(new BoxItem);
+    add(new BoxItem);
+    add(new BoxItem);
+    add(new BoxItem);
+    add(new BoxItem);
+    add(new BoxItem);
+    add(new BoxItem);
 
 }
 
