@@ -14,16 +14,65 @@
 namespace CRAWL {
 
 /**
- * @brief The Refresh enum Lists the shapes to convert the group object to.
+ * @brief The LayoutType enum Lists the shapes to convert the group object to.
  */
-enum Refresh {
+enum LayoutType {
+    /// The circle property calls the drawCircle method, which recalculates and updates
+    /// the coordinates of the passed object's positions.
     CIRCLE,
+
+    /// The square property calls the drawSquare method, which updates the coordinates of
+    /// the objects' positions, giving them the shape of a square.
     SQUARE,
+
+    /// The LINE property calls the drawLine method, which updates the coordinates of the
+    /// objects' positions, giving it a line shape.
     LINE
 };
 
 /**
- * @brief The ControlPos class The class that control position of group objects.
+ * @brief The Layout class The class that control position of group objects.
+ * ### Requried child classes: IWorldItem
+ *
+ * This class overloads the add() and remove() methods, which add objects to the cluster while updating positions according to the selected LayoutType.
+ * Has two public methods for setting the distance to the object and selecting the grouping of objects.
+ *
+ * ## Example of use
+ *
+ * ### For what this object uses
+ * This object is convenient to use if you want to create a cluster object directly, within which subobjects are grouped into a circle or square, depending on the selected property.
+ * For example : snake obstacle.
+ *
+ * ### Example of use
+ *
+ * 1. Create the GroupObjObstacle class.
+ *
+ * ```cpp
+ *
+ * class GroupObjObstacle: public CRAWL::Layout, public CRAWL::IWorldItem {
+ *
+ *      // sets the distance to the object from the center.
+ *      setDistance(20);
+ *
+ *      // Set the property of grouping objects
+ *      changeLayout(CRAWL::LayoutType::CIRCLE);
+ *
+ *      for(int i(0); i < 20; i++) {
+ *          add(new BoxItem);
+ *      }
+ *
+ * };
+ * ```
+ *
+ * @note The added object must inherit from ClasterItem and have a child class required for overloading software renderers.
+ *
+ * All done. Now the added objects will be grouped into a circle shape.
+ *
+ * You can change the center-to-object distance and the shape of a group of objects using the setDistance and changeLayout methods.
+ *
+ * @note This class requried the GuiObject functions as a parent class.
+ * @note This class requires an overload of the render method; The implementation must call the render methods of the parent classes.
+ *
  */
 class Layout: public GroupObject {
 public:
@@ -38,7 +87,7 @@ public:
      * @brief changeLayout This method defines the shape of the group object.
      * @param fig This is the name of the figure to change the group object.
      */
-    void changeLayout(const Refresh &fig);
+    void changeLayout(const LayoutType &fig);
 
     /**
      * @brief setDistance This method sets, depending on the shape selected, the radius for the circle or the indentation for the square.
@@ -70,7 +119,7 @@ private:
     void drawLine();
     
     int _distance;
-    Refresh _shape;
+    LayoutType _shape;
 
 };
 

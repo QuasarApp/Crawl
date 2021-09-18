@@ -13,28 +13,11 @@ namespace TestLvl {
 GroupObjBox::GroupObjBox(): CRAWL::IWorldItem("GroupObjBox") {
 
     setDistance(20);
-    changeLayout(CRAWL::Refresh::CIRCLE);
+    changeLayout(CRAWL::LayoutType::CIRCLE);
 
-    add(new BoxItem);
-    add(new BoxItem);
-    add(new BoxItem);
-    add(new BoxItem);
-    add(new BoxItem);
-    add(new BoxItem);
-    add(new BoxItem);
-    add(new BoxItem);
-    add(new BoxItem);
-    add(new BoxItem);
-    add(new BoxItem);
-    add(new BoxItem);
-    add(new BoxItem);
-    add(new BoxItem);
-    add(new BoxItem);
-    add(new BoxItem);
-    add(new BoxItem);
-    add(new BoxItem);
-    add(new BoxItem);
-    add(new BoxItem);
+    for(int i(0); i < 20; i++)   {
+        add(new BoxItem);
+    }
 
 }
 

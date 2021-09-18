@@ -29,7 +29,7 @@ void Layout::remove(ClasterItem *object) {
 
 }
 
-void Layout::changeLayout(const Refresh &fig) {
+void Layout::changeLayout(const LayoutType &fig) {
     _shape = fig;
     updatePosition();
 }
@@ -57,7 +57,7 @@ void Layout::updatePosition() {
         default:
             break;
      }
-     updatePosition();
+
 }
 
 void Layout::drawCircle() {
