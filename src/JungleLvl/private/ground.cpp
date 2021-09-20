@@ -14,6 +14,6 @@ Ground::Ground() : CRAWL::GroundClaster("JungelGroud") {
 }
 
 unsigned int Ground::itemsCount() const {
-    return 5;
+    return 3;
 }
 }
