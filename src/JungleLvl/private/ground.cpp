@@ -16,4 +16,8 @@ Ground::Ground() : CRAWL::GroundClaster("JungelGroud") {
 unsigned int Ground::itemsCount() const {
     return 3;
 }
+
+int Ground::newObjectDistance() const {
+    return 150;
+}
 }

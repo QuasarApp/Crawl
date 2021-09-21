@@ -21,6 +21,10 @@ class Ground : public CRAWL::GroundClaster
 public:
     Ground();
     unsigned int itemsCount() const override;
+
+    // GroundClaster interface
+protected:
+    int newObjectDistance() const;
 };
 
 }
