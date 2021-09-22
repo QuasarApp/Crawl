@@ -12,6 +12,7 @@
 #include "abslvlworld.h"
 #include <abslvlsnake.h>
 #include "Crawl/iworlditem.h"
+#include "groupobstaclered.h"
 
 #include "Crawl/defaultlight.h"
 
@@ -31,23 +32,23 @@ CRAWL::WorldRule *AbsLvlWorld::initWorldRules() {
 
     return new CRAWL::WorldRule {
 
-        {0,
-            {
-                {registerObject<Baff>(), 10}, {registerObject<CRAWL::DefaultLight>(), 1}
-            }
-        },
-
-        {20,
+        {200,
             {
                 {registerObject<ObstacleBlue>(), 10}, {registerObject<CRAWL::DefaultLight>(), 1}
             }
         },
 
-        {30,
+        {300,
             {
-                {registerObject<ObstacleRed>(), 40}, {registerObject<CRAWL::DefaultLight>(), 1}
+                {registerObject<GroupObstacleRed>(), 1}, {registerObject<CRAWL::DefaultLight>(), 1}
             }
-        }
+        },
+
+//        {30,
+//            {
+//                {registerObject<ObstacleRed>(), 40}, {registerObject<CRAWL::DefaultLight>(), 1}
+//            }
+//        }
 
     };
 }
