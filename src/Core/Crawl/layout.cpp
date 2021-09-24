@@ -89,6 +89,7 @@ void Layout::drawSquare() {
     }
 
     int height = qFloor(qSqrt(objects().size()));
+    int width = qFloor(objects().size() / height);
 
     int indObject = 0;
     for (auto idObj = objects().keyBegin(); idObj != objects().keyEnd(); idObj++) {
@@ -96,8 +97,8 @@ void Layout::drawSquare() {
         float x = indObject % height;
         float y = qCeil(indObject  / height);
 
-        GroupObject::updatePosition(*idObj, {x + _distance,
-                                            y + _distance,
+        GroupObject::updatePosition(*idObj, {(x * _distance) - (height  * _distance / 2),
+                                            (y * _distance) - (width  * _distance / 2),
                                             0});
         indObject++;
 
@@ -113,8 +114,10 @@ void Layout::drawLine() {
     }
 
     float xObject = 0;
+    float height =  objects().size() * _distance;
+
     for (ClasterItem* object: objects()) {
-        GroupObject::updatePosition(object->guiId(), {xObject + _distance, 0, 0});
+        GroupObject::updatePosition(object->guiId(), {xObject * _distance - (height / 2 * _distance), 0, 0});
 
         xObject++;
     }
