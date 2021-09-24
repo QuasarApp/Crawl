@@ -38,7 +38,7 @@ CRAWL::WorldRule *AbsLvlWorld::initWorldRules() {
             }
         },
 
-        {300,
+        {210,
             {
                 {registerObject<GroupObstacleRed>(), 1}, {registerObject<CRAWL::DefaultLight>(), 1}
             }
