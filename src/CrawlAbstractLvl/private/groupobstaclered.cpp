@@ -13,7 +13,7 @@ namespace AbstractLvl {
 GroupObstacleRed::GroupObstacleRed(): CRAWL::IWorldItem(AUTO_CLASS_NAME) {
 
     QQuaternion rotation =
-        QQuaternion::fromAxisAndAngle(QVector3D(0,1,0), 90);
+        QQuaternion::fromEulerAngles(QVector3D(0,0,60));
 
     setDistance(7);
     setRotation(rotation);
