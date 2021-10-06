@@ -23,19 +23,13 @@ void GroupObject::render(unsigned int tbfMsec) {
 
         if (Localpropertys *props = getLocalpropertys(object->guiId())) {
 
-            if (!props->_rotation.isNull()) {
+            if (!props->_rotation.isNull())
                 object->setRotation(_this->rotation() * props->_rotation);
 
-                QVector3D reCalcVectorPs = reCalcPos(props->_position,
-                                                  _this->rotation().toEulerAngles());
+            QVector3D reCalcVectorPs = reCalcPos(props->_position,
+                                              _this->rotation().toEulerAngles());
 
-                object->setposition(_this->position() + reCalcVectorPs);
-
-            } else {
-                object->setposition(_this->position() + props->_position);
-            }
-
-
+            object->setposition(_this->position() + reCalcVectorPs);
         }
 
     }
