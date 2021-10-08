@@ -5,22 +5,22 @@
 //# of this license document, but changing it is not allowed.
 //#
 
-#ifndef BOX_H
-#define BOX_H
-#include "Crawl/clasteritem.h"
+#ifndef OBSTACLEREBITEM_H
+#define OBSTACLEREBITEM_H
 
-namespace TestLvl {
+#include "obstaclered.h"
 
+namespace AbstractLvl {
 
-class Box: public CRAWL::ClasterItem {
-
+class ObstacleRebItem: public ObstacleRed {
 public:
-    Box();
-    void action(IWorldItem *item) override;
+    ObstacleRebItem();
 
-    // IWorldItem interface
+    // IRender interface
 public:
-    void firstSpawn() override;
+    void render(unsigned int tbfMsec);
 };
+
 }
-#endif // BOX_H
+
+#endif // OBSTACLEREBITEM_H

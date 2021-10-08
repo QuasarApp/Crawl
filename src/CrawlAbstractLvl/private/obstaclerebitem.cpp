@@ -5,18 +5,16 @@
 //# of this license document, but changing it is not allowed.
 //#
 
-#ifndef OBJOBSTACLERED_H
-#define OBJOBSTACLERED_H
-#include "Crawl/clasteritem.h"
+#include "obstaclerebitem.h"
 
 namespace AbstractLvl {
 
-class ObstacleRed: public CRAWL::ClasterItem {
-public:
-    ObstacleRed();
-
-};
+ObstacleRebItem::ObstacleRebItem() {
 
 }
 
-#endif // OBJOBSTACLERED_H
+void ObstacleRebItem::render(unsigned int tbfMsec) {
+
+}
+
+}

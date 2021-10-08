@@ -123,6 +123,8 @@ protected:
 private:
     QHash<int, Localpropertys> _extrapropertys;
 
+    const QVector3D reCalcPos(const QVector3D& pos, const QVector3D& eulerAngles) const;
+
 };
 }
 #endif // GROUPOBJECT_H

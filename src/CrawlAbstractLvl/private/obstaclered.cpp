@@ -9,7 +9,7 @@
 
 namespace AbstractLvl {
 
-ObstacleRed::ObstacleRed() : IWorldItem(AUTO_CLASS_NAME) {
+ObstacleRed::ObstacleRed() : CRAWL::ClasterItem(AUTO_CLASS_NAME) {
     setMash("qrc:/mesh/meshes/ObstacleRed.mesh");
     setSize({1,1,1});
     setColor("#ff1927");

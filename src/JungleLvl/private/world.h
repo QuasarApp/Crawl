@@ -14,6 +14,7 @@ namespace JungleLvl {
 
 class World : public CRAWL::IWorld {
 
+    Q_OBJECT
     // IWorld interface
 public:
 

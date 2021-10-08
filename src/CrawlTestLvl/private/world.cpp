@@ -18,6 +18,7 @@
 #include <Crawl/fire.h>
 #include <Crawl/moon.h>
 #include <Crawl/sun.h>
+#include <groupobjbox.h>
 
 namespace TestLvl {
 
@@ -31,12 +32,18 @@ CRAWL::WorldRule *World::initWorldRules() {
     using Day = CRAWL::Day<CRAWL::Sun, CRAWL::Moon>;
 
     return new CRAWL::WorldRule {
-        {0, {{registerObject<Box>(), 1000},
+        {0, {{registerObject<Box>(), 100},
              {registerObject<CRAWL::Fire>(), 10},
              {registerObject<CRAWL::DynamicWint>(), 1},
 
              {registerObject<Background>(), 1},
-             {registerObject<Day>(), 1}}}
+             {registerObject<Day>(), 1}}},
+        {300,
+            {
+                {registerObject<GroupObjBox>(),5}
+            }
+        },
+
     };
 }
 
