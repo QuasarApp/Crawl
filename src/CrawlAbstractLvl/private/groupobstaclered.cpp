@@ -13,13 +13,13 @@ namespace AbstractLvl {
 GroupObstacleRed::GroupObstacleRed(): CRAWL::IWorldItem(AUTO_CLASS_NAME) {
 
     QQuaternion rotation =
-        QQuaternion::fromEulerAngles(QVector3D(0,0,-90));
+        QQuaternion::fromEulerAngles(QVector3D(0,0,90));
 
     setDistance(7);
     setRotation(rotation);
     changeLayout(CRAWL::LayoutType::LINE);
 
-    for(int i(0); i < 4; i++)   {
+    for(int i(0); i < 10; i++)   {
         add(new ObstacleRebItem);
     }
 
