@@ -73,14 +73,16 @@ void GroupObjectTest::testBehavior() const {
     QVector3D localPosition = {10,0,0};
     QQuaternion localRotation = QQuaternion::fromEulerAngles(0,5,0);
 
-    object.updatePosition(item.guiId(), localPosition);
     object.updateRotation(item.guiId(), localRotation);
+    object.render(0);
+    // after invoke the render function all positions and rotations should be changed
+    QVERIFY(item.rotation() == (object.rotation() * localRotation));
+
+    object.updatePosition(item.guiId(), localPosition);
+    object.setRotation(QQuaternion::fromEulerAngles(0,0,0));
 
     object.render(0);
-
-    // after invoke the render function all positions and rotations should be changed
     QVERIFY(item.position() == (object.position() + localPosition));
-    QVERIFY(item.rotation() == (object.rotation() * localRotation));
 
 
     object.remove(&item);
